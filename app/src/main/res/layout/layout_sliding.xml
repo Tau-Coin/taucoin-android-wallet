@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/slidingMenu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_gradient"
+    android:gravity="center_horizontal"
+    android:clickable="true"
+    android:layout_gravity="start">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_centerHorizontal="true"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/icon_img"
+        android:layout_width="61dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="61dp"
+        android:src="@mipmap/logo"
+        app:civ_border_width="0.6dp"
+        app:civ_border_color="#FFD2D1D5"/>
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_below="@id/icon_img"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="E-mail"/>
+        <TextView
+            android:id="@+id/username"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User name"/>
+
+        <TextView
+            android:id="@+id/help"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:layout_marginTop="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Help"
+            android:textColor="@drawable/text_color"/>
+        <TextView
+            android:textColor="@drawable/text_color"
+            android:id="@+id/about"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="About"
+            />
+        <Button
+            android:id="@+id/about_us"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:background="@drawable/click_item"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:textColor="#3C3F41"
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Our Website"
+            />
+    </LinearLayout>
+
+    <Button
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/logout"
+        android:layout_width="100dp"
+        android:textAllCaps="false"
+        android:layout_height="wrap_content"
+        android:text="@string/lagout"
+        android:textSize="18sp"
+        android:textColor="#ffffff"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/backgroud_color3" />
+</RelativeLayout>
+

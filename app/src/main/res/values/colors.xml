@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorStart">#BE7831</color>
+    <color name="colorStop">#8494A1</color>
+
+    <color name="light_green">#2BBBAD</color>
+    <color name="dark_green">#144F42</color>
+    <color name="blue">#2196F3</color>
+    <color name="blue_">#5274BA</color>
+    <color name="light_red">#F44336</color>
+    <color name="dark_red">#841B19</color>
+    <color name="grass_green">#4CAF50</color>
+    <color name="green">#176228</color>
+    <color name="wallet_home_color5">#2196F3</color>
+    <color name="wallet_home_color55">#00508D</color>
+
+    <!--FB9500-->
+    <color name="yellow">#FFAB00</color>
+    <color name="yellow_">#FB9500</color>
+
+    <color name="black">#000000</color>
+    <color name="write">#ffffff</color>
+    <color name="bg">#F19322</color>
+
+
+    <color name="c1">#1e55b7</color>
+    <color name="c2">#f34942</color>
+    <color name="c3">#3b4859</color>
+    <color name="c4">#8392a7</color>
+    <color name="c5">#b2bbc7</color>
+    <color name="c6">#c2c4ca</color>
+    <color name="c7">#e1e1e1</color>
+    <color name="c8">#ffffff</color>
+    <color name="c9">#f4f5f7</color>
+    <color name="c10">#697282</color>
+    <color name="text_dark">#ffffff</color>
+</resources>
