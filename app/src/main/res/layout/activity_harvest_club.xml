@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.BalanceActivity">
+
+    <com.mofei.tau.view.CustomToolBar
+        android:id="@+id/club_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.mofei.tau.view.CustomToolBar>
+
+    <!--<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:text="@string/club"
+        android:layout_gravity="center"/>-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="30dp"
+        android:text="@string/laverdetstein"
+        android:layout_gravity="center"/>
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+        <TextView
+             android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="Harvest Club No :"
+            android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/club_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#0000ff"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text=""
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="Club Harvest Power :"
+            android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/club_harvest_power"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#0000ff"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text=""
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="Self Harvest Power :"
+            android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/self_harvest_power"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#0000ff"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text=""
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="Leader Address : "
+        android:layout_gravity="center"/>
+    <TextView
+        android:id="@+id/leader_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="5dp"
+        android:text=" "
+        android:layout_gravity="center"/>
+    <View
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"></View>
+    <Button
+        android:visibility="gone"
+        android:id="@+id/club_back_wallet_home"
+        android:layout_marginTop="40dp"
+        android:textAllCaps="false"
+        android:layout_gravity="center"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:background="@drawable/backgroud_color4"
+        android:text="Wallet Home" />
+    <Button
+        android:visibility="gone"
+        android:id="@+id/club_logout"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"
+        android:layout_gravity="center"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:background="@drawable/backgroud_color3"
+        android:text="Logout" />
+
+</LinearLayout>

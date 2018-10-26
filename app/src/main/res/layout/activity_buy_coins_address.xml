@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    tools:context=".activity.BalanceActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:text="Buy Coins"
+        android:layout_gravity="center"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        android:text="@string/laverdetstein"
+        android:layout_gravity="center"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        android:text="BTC Receive Address"
+        android:layout_gravity="center"/>
+     <ImageView
+         android:layout_gravity="center"
+         android:id="@+id/btc_receive_address_iv"
+         android:layout_width="80dp"
+         android:layout_height="80dp" />
+    <TextView
+        android:id="@+id/btc_receive_address_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        android:text="XXXXXXXXXXXXX"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        android:text="Your TAUcoin investment....."
+        android:layout_gravity="center"/>
+
+
+    <Button
+        android:id="@+id/buy_coins_back_wallet_home"
+        android:layout_marginTop="40dp"
+        android:textAllCaps="false"
+        android:layout_gravity="center"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:background="@drawable/backgroud_color4"
+        android:text="Wallet Home" />
+    <Button
+        android:visibility="gone"
+        android:id="@+id/balanceLogout"
+        android:layout_marginTop="40dp"
+        android:textAllCaps="false"
+        android:layout_gravity="center"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:background="@drawable/backgroud_color3"
+        android:text="Logout" />
+
+</LinearLayout>
