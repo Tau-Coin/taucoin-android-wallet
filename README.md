@@ -7,19 +7,19 @@
 
 ### **1. register**
 - The user must first register with the valid mailbox for the first time.
-      ###### 1. Type a valid mailbox in the mailbox input box.
-      ###### 2.  Click the Send button to get the verification code.
-      ###### 3. Go to the mailbox to find the verification code, type the verification code input box.
-      ###### 4. Type password (password not restricted)
-      ###### 5. Finally, click the Register button to register, and when the registration is successful, it will automatically jump to the login interface with the user's mailbox and password.
+     ###### 1. Type a valid mailbox in the mailbox input box.
+     ###### 2.  Click the Send button to get the verification code.
+     ###### 3. Go to the mailbox to find the verification code, type the verification code input box.
+     ###### 4. Type password (password not restricted)
+     ###### 5. Finally, click the Register button to register, and when the registration is successful, it will automatically jump to the login interface with the user's mailbox and password.
 
 ------------
 ### **２. Sign in** 
 - The login box and password input box fill in the registered mailbox and password to login.
-      ###### 1. If the user has just registered, he will bring back the account mailbox and password which he has just registered and fill in the mailbox and password box automatically.
-      ###### 2. If a user needs to log in with a previously registered account, click the Minor Button to clear the input box, and then manually type in his account
-      ###### 3. Click Login button to login, login successfully will jump to the main page.
-      ###### 4. If you want to remember the password, you need to click the remember password check box to select it. The password will automatically fill in the password box after login, otherwise the password box will be empty after login.
+     ###### 1. If the user has just registered, he will bring back the account mailbox and password which he has just registered and fill in the mailbox and password box automatically.
+     ###### 2. If a user needs to log in with a previously registered account, click the Minor Button to clear the input box, and then manually type in his account
+     ###### 3. Click Login button to login, login successfully will jump to the main page.
+     ###### 4. If you want to remember the password, you need to click the remember password check box to select it. The password will automatically fill in the password box after login, otherwise the password box will be empty after login.
  
 ------------
 
