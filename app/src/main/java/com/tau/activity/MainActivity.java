@@ -47,6 +47,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private Button balanceButton,harvestClubButton,keyAddressesButton,bountyButton,sendReceiveButton,logoutButton,buyCoinsButton,abourtUs;
 
+    Button test;
+
     private TextView userNameTV,about,help;
 
     private static KeyGenerator instance;
@@ -107,6 +109,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         about=findViewById(R.id.about);
         help=findViewById(R.id.help);
 
+        test=findViewById(R.id.test);
+
 
        String user_name=getIntent().getStringExtra("user_name");
         //L.e(user_name);
@@ -149,6 +153,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         abourtUs. setOnClickListener(this);
         about.setOnClickListener(this);
         help.setOnClickListener(this);
+
+        test.setOnClickListener(this);
 
         mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
@@ -317,6 +323,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 helpintent.setData(bitcointalk_uri);
                 startActivity(helpintent);
 
+                break;
+
+            case R.id.test:
+                startActivity(new Intent(this,TextActivity.class));
                 break;
         }
     }

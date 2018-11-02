@@ -225,7 +225,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                         L.i("onComplete");
                     }
                 });
-
     }
 
     private void register(String email,String verficode,String password) {

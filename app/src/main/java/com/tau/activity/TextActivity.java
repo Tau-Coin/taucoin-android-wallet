@@ -1,16 +1,16 @@
 package com.mofei.tau.activity;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import com.mofei.tau.R;
+import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
+import com.mofei.tau.db.greendao.UTXORecordDaoUtils;
+import com.mofei.tau.db.greendao.User;
 import com.mofei.tau.entity.req_parameter.FBAddressEmail;
 import com.mofei.tau.entity.req_parameter.FBAddressEmlVeri;
-import com.mofei.tau.entity.req_parameter.FBAddressImage;
 import com.mofei.tau.entity.req_parameter.FBAddressPubKey;
 import com.mofei.tau.entity.res_post.Balance;
 import com.mofei.tau.entity.res_post.BalanceRet;
@@ -30,6 +30,9 @@ import com.mofei.tau.entity.res_put.Login0Ret;
 import com.mofei.tau.info.SharedPreferencesHelper;
 import com.mofei.tau.net.ApiService;
 import com.mofei.tau.net.NetWorkManager;
+import com.mofei.tau.transaction.TransactionHistory;
+import com.mofei.tau.transaction.UTXORecord;
+import com.mofei.tau.util.L;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,9 +71,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
 
         Log.i(TAG,fbid +" "+address);
 
-
-
-         userId=SharedPreferencesHelper.getInstance(TextActivity.this).getString("userId","userId");
+        userId=SharedPreferencesHelper.getInstance(TextActivity.this).getString("userId","userId");
 
         Address=SharedPreferencesHelper.getInstance(TextActivity.this).getString("Address","Address");
 
@@ -85,6 +86,8 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
         findViewById(R.id.buyCoins).setOnClickListener(this);
         findViewById(R.id.login1).setOnClickListener(this);
         findViewById(R.id.referralURL).setOnClickListener(this);
+
+        findViewById(R.id.insert).setOnClickListener(this);
     }
 
 
@@ -122,6 +125,35 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
                 break;
             case R.id.referralURL:
                 getData8();
+                break;
+
+            case R.id.insert:
+
+               /* L.e("111");
+                User user = new User();
+                user.setAge(10);
+                user.setName("ly");
+                MyApplication.getInstances().getDaoSession().insert(user);
+                Log.i("-------", "添加成功");*/
+                L.e("111");
+                TransactionHistory transactionHistory=new TransactionHistory();
+                transactionHistory.setTxId("setTxId");
+                transactionHistory.setFromAddress("setFromAddress");
+               // TransactionHistoryDaoUtils.getInstance().insertTransactionHistoryData(transactionHistory);
+
+
+               // TransactionHistoryDaoUtils.getInstance().deleteTransactionHistoryData(transactionHistory);
+
+                TransactionHistoryDaoUtils.getInstance().deleteTransactionHistoryByKey(transactionHistory.getId());
+               // TransactionHistoryDaoUtils.getInstance().deleteAllData();
+                /* UTXORecord utxoRecord=new UTXORecord();
+                utxoRecord.setAddress("xinye");
+                utxoRecord.setBestblockhash("haxihaxihaxi");
+                utxoRecord.setCoinbase(true);
+                utxoRecord.setTxId("111");
+                UTXORecordDaoUtils.getInstance().insertUTXORecordData(utxoRecord);*/
+
+                L.e("添加成功");
                 break;
         }
     }

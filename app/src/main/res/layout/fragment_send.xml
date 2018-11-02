@@ -1,15 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.SendFragment"
-    android:background="#00ffff">
+    android:background="#E0E0E0"
+    android:gravity="center">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
+        android:id="@+id/amount_ll"
+        android:background="#ffffff"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:paddingRight="10dp">
 
-</FrameLayout>
+        <EditText
+            android:id="@+id/amount"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:hint="input amount"
+            android:inputType="text"
+            android:textColor="#000000"
+            android:singleLine="true"
+            android:textColorHint=" #A3A3A3"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TAU"
+            android:textSize="18sp"
+            android:layout_marginRight="20dp"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:paddingLeft="20dp"
+        android:id="@+id/address_rl"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/amount_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff">
+        <EditText
+            android:singleLine="true"
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="input address"
+            android:textColor="#000000"
+            android:textColorHint=" #A3A3A3"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/send_tau"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:cardElevation="20dp"
+        app:cardCornerRadius="5dp"
+        android:layout_below="@id/address_rl"
+        android:layout_marginTop="40dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Send after confirmation"
+            android:textSize="18sp"/>
+
+    </android.support.v7.widget.CardView>
+
+   <!-- <Button
+       android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/address_rl"
+        android:id="@+id/send_tau"
+        android:layout_width="match_parent"
+        android:textAllCaps="false"
+        android:layout_height="60dp"
+        android:text="Send after confirmation"
+        android:textSize="18sp"
+        android:textColor="#6D6D6D"
+        android:background="@drawable/backgroud_send_tau" />-->
+
+    <RelativeLayout
+        android:id="@+id/history"
+        android:layout_marginTop="80dp"
+        android:layout_below="@id/send_tau"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#ffffff"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:gravity="center"
+            android:text="historical records"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@mipmap/icon_arrow"/>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

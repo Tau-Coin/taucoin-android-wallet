@@ -2,6 +2,7 @@ package com.mofei.tau.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -29,6 +30,7 @@ import com.mofei.tau.fragment.ReceiveFragment;
 import com.mofei.tau.fragment.SendFragment;
 import com.mofei.tau.info.SharedPreferencesHelper;
 import com.mofei.tau.util.L;
+import com.mofei.tau.view.CustomToolBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +38,8 @@ import java.util.List;
 
 public class SendAndReceiveActivity extends BaseActivity implements View.OnClickListener {
 
-    //private Button mBackWalletHomeBt,mSRLogoutBt;
 
+    private CustomToolBar mMainCustomToolBar;
 
     //声明四个Tab分别对应的Fragment
     private SendFragment sendFragment;
@@ -48,30 +50,22 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
     private RadioGroup radioGroup;
     private RadioButton sendRadioButton,manageRadioButton,receiveRadioButton;
 
-//
-    private ViewPager viewPager;
+   // private ViewPager viewPager;
     public static final int[] image={R.drawable.aa,R.drawable.ab,R.drawable.ac};
     private List<ImageView> imageViewsList;
-    private List<ImageView> imageViewsDotList;
-
 
     private Handler handler=new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_send_and_receive);
 
-       /* mBackWalletHomeBt=findViewById(R.id.send_receive_back_wallet_home);
-        mBackWalletHomeBt.setOnClickListener(this);
-
-        mSRLogoutBt=findViewById(R.id.transaction_logout);
-
-        mSRLogoutBt.setOnClickListener(this);*/
 
         initViews();//初始化控件
         initEvents();//初始化事件
-        selectTab(1);//默认选中第一个Tab
+        selectTab(0);//默认选中第一个Tab
 
        //
         imageViewsList= new ArrayList<ImageView>();
@@ -83,94 +77,33 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
             imageViewsList.add(imageView);
         }
 
-        viewPager=findViewById(R.id.ad_paper);
-        viewPager.setAdapter(new ADAdapter());
-        viewPager.setCurrentItem(Integer.MAX_VALUE/2);
 
-        handler.postDelayed(new ADRunble(),3000);
-        imageViewsDotList=new ArrayList<>();
-        imageViewsDotList.add(findViewById(R.id.dot1));
-        imageViewsDotList.add(findViewById(R.id.dot2));
-        imageViewsDotList.add(findViewById(R.id.dot3));
+        titleBar();
 
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+    }
+
+
+    private void titleBar() {
+        //标题栏
+        mMainCustomToolBar = findViewById(R.id.send_receive_titlebar);
+        mMainCustomToolBar.getTitleTextView().setText("Transactions");
+        mMainCustomToolBar.getTitleTextView().setTextColor(Color.WHITE);
+        mMainCustomToolBar.getTitleTextView().setTextSize(22);
+        mMainCustomToolBar.disableLeftTextView();
+        //mMainCustomToolBar.disableRightView();
+        mMainCustomToolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-
-                for (int i1=0;i1<imageViewsDotList.size();i1++){
-
-                    if(i1==i%imageViewsDotList.size()){
-                        imageViewsDotList.get(i1).setImageResource(R.mipmap.round_r);
-                    }else {
-                        imageViewsDotList.get(i1).setImageResource(R.mipmap.round_w);
-                    }
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
+            public void onClick(View v) {
+                finish();
             }
         });
     }
-
-    class ADRunble implements  Runnable{
-        @Override
-        public void run() {
-            int position=viewPager.getCurrentItem();
-            position++;
-            if(position>Integer.MAX_VALUE){
-                position=0;
-            }
-            viewPager.setCurrentItem(position);
-            handler.postDelayed(new ADRunble(),3000);
-
-        }
-    }
-
-    class ADAdapter extends PagerAdapter{
-
-        @Override
-        public int getCount() {
-           // return imageViewsList.size();
-            return Integer.MAX_VALUE;
-        }
-
-        @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
-            return view==o;
-        }
-
-        @Override
-        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            //container.removeView(imageViewsList.get(position));
-        }
-
-        @NonNull
-        @Override
-        public Object instantiateItem(@NonNull ViewGroup container, int position) {
-
-            ImageView view=imageViewsList.get(position % imageViewsList.size());
-            ViewParent parent=view.getParent();
-            if(parent!=null){
-                ((ViewGroup)parent).removeView(view);
-            }
-            container.addView(view);
-            return view;
-        }
-    }
-
 
     private void initViews() {
 
         frameLayoutFragment=findViewById(R.id.fragment);
         radioGroup=findViewById(R.id.tab_radiogroup);
-
         sendRadioButton=findViewById(R.id.send);
         manageRadioButton=findViewById(R.id.manage);
         receiveRadioButton=findViewById(R.id.receive);
@@ -223,8 +156,6 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
         switch (i) {
             //当选中点击的是微信的Tab时
             case 0:
-                //设置微信的ImageButton为绿色
-
                 //如果微信对应的Fragment没有实例化，则进行实例化，并显示出来
                 if (sendFragment == null) {
                     sendFragment = new SendFragment();

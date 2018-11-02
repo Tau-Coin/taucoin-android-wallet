@@ -116,86 +116,81 @@
 
 
         <TextView
-            android:id="@+id/login_msg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:padding="10dp"
-            android:text=""
-            android:textSize="16sp"
-            android:visibility="gone" />
-
-        <TextView
             android:id="@+id/register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/rem_for_psw"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:text="Register"
             android:textColor="#ffffff"
             android:textSize="16sp" />
     </LinearLayout>
 
-    <Button
-        android:textAllCaps="false"
-        android:id="@+id/login_bt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/rem_for_psw"
-        android:background="@drawable/backgroud_color2"
-        android:text="Login"
-        android:textColor="#ffffff"
-        android:textSize="16sp" />
     <LinearLayout
-        android:layout_marginBottom="60dp"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/rem_for_psw"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/llContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
 
-
-        <!--记住密码选择框-->
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <Button
+            android:textAllCaps="false"
+            android:id="@+id/login_bt"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            >
+            android:background="@drawable/backgroud_color2"
+            android:text="Login"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
 
-            <CheckBox
-                android:id="@+id/cbRememberPs"
+        <LinearLayout
+            android:layout_below="@id/login_bt"
+            android:id="@+id/rem_for_psw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!--记住密码选择框-->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="#ffffff"
-                android:paddingTop="10dp" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                >
+
+                <CheckBox
+                    android:id="@+id/cbRememberPs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="#ffffff"
+                     />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="remember password"
+                    android:textColor="#ffffff"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/forgotPass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="remember password"
+                android:text="forgot password ?"
                 android:textColor="#ffffff"
                 android:textSize="12sp" />
+
         </LinearLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/forgotPass"
-            android:padding="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="forgot password ?"
-            android:textColor="#ffffff"
-            android:textSize="12sp" />
-
     </LinearLayout>
-
-
 
 </RelativeLayout>

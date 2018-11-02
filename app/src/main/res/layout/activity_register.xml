@@ -88,7 +88,6 @@
             android:focusableInTouchMode="true"
             android:paddingRight="10dp">
 
-
             <EditText
                 android:id="@+id/edEmail"
                 android:layout_width="0dp"

@@ -6,58 +6,30 @@
     android:orientation="vertical"
     tools:context=".activity.BalanceActivity">
 
-    <RelativeLayout
-        android:visibility="gone"
+    <com.mofei.tau.view.CustomToolBar
+        android:id="@+id/send_receive_titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <android.support.v4.view.ViewPager
-            android:id="@+id/ad_paper"
-            android:layout_width="match_parent"
-            android:layout_height="100dp">
-
-        </android.support.v4.view.ViewPager>
-
-        <LinearLayout
-            android:layout_alignBottom="@id/ad_paper"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:id="@+id/dot1"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@mipmap/round_w"/>
-            <ImageView
-                android:id="@+id/dot2"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@mipmap/round_w"/>
-            <ImageView
-                android:id="@+id/dot3"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@mipmap/round_w"/>
-        </LinearLayout>
-    </RelativeLayout>
+    </com.mofei.tau.view.CustomToolBar>
 
     <FrameLayout
         android:id="@+id/fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-         android:layout_weight="1"/>
+        android:layout_weight="1"/>
+
 
     <RadioGroup
         android:id="@+id/tab_radiogroup"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-
         android:orientation="horizontal"
         android:background="@color/write"
         android:gravity="center">
 
         <RadioButton
             android:id="@+id/send"
+            android:checked="true"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -67,7 +39,6 @@
             android:text="Send"
             android:textColor="@drawable/selector_tab_text_color"/>
         <RadioButton
-            android:checked="true"
             android:id="@+id/manage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -88,165 +59,6 @@
             android:text="Receive"
             android:textColor="@drawable/selector_tab_text_color"/>
 
-
     </RadioGroup>
-
-
-    <!--<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:layout_marginTop="5dp"
-        android:textStyle="bold"
-        android:text="Transaction"
-        android:layout_gravity="center"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="10dp"
-        android:text="@string/laverdetstein"
-        android:layout_gravity="center"/>
-    <LinearLayout
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_marginLeft="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="balance : "
-            android:layout_gravity="center"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#0000ff"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="100.061"
-            android:layout_gravity="center"/>
-        <TextView
-            android:layout_marginLeft="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="TAU"
-            android:layout_gravity="center"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-       <EditText
-           android:layout_width="200dp"
-           android:layout_height="wrap_content" />
-        <TextView
-            android:layout_margin="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginTop="20dp"
-            android:textStyle="bold"
-            android:text="TAU" />
-    </LinearLayout>
-    <LinearLayout
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:layout_width="200dp"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_margin="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginTop="20dp"
-            android:textStyle="bold"
-            android:text="TAU" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_marginLeft="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="total cost ≈ "
-            android:layout_gravity="center"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#0000ff"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="-3.000"
-            android:layout_gravity="center"/>
-        <TextView
-            android:layout_marginLeft="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="TAU"
-            android:layout_gravity="center"/>
-
-    </LinearLayout>
-
-    <EditText
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="to the address"/>
-    <Button
-        android:layout_marginTop="20dp"
-        android:textAllCaps="false"
-        android:layout_gravity="center"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:textColor="#ffffff"
-        android:background="@drawable/backgroud_color5"
-        android:text="Submit" />
-    <Button
-        android:id="@+id/send_receive_back_wallet_home"
-        android:layout_marginTop="20dp"
-        android:textAllCaps="false"
-        android:layout_gravity="center"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:textColor="#ffffff"
-        android:background="@drawable/backgroud_color4"
-        android:text="Wallet Home" />
-    <Button
-        android:id="@+id/transaction_logout"
-        android:layout_marginTop="20dp"
-        android:textAllCaps="false"
-        android:layout_gravity="center"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:textColor="#ffffff"
-        android:background="@drawable/backgroud_color3"
-        android:text="Logout" />
-    <TextView
-
-        android:layout_marginTop="5dp"
-        android:layout_width="wrap_content"
-        android:textColor="#0000ff"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
-        android:text="records list >>"/>-->
 
 </LinearLayout>

@@ -9,6 +9,7 @@ import org.greenrobot.greendao.database.Database;
 
 /**
  * GreenDaoManager中创建数据库,并对其进行管理：
+ * Create and manage database in GreenDaoManager:
  */
 public class GreenDaoManager {
     private static final String DB_NAME = "greendao";
@@ -31,6 +32,8 @@ public class GreenDaoManager {
         if (mInstance == null) {
             MySQLiteOpenHelper helper = new MySQLiteOpenHelper(MyApplication.getContext(), DB_NAME, null);
             Database db = helper.getWritableDb();
+
+           // Database database=helper.getEncryptedReadableDb("mima123");//加密
             daoMaster = new DaoMaster(db);
             daoSession = daoMaster.newSession();
         }

@@ -73,6 +73,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/referralURL"
         android:text="referralURL"/>
+    <Button
+        android:layout_margin="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/insert"
+        android:text="sqlite_in"/>
 
 
 

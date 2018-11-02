@@ -7,9 +7,12 @@ import android.util.Log;
 
 import com.mofei.tau.db.greendao.DaoMaster;
 
+import org.greenrobot.greendao.database.Database;
+
 
 /**
  * 处理数据库升级的逻辑：
+ * Logic for handling database upgrade:
  */
 public class MySQLiteOpenHelper extends DaoMaster.OpenHelper {
     public MySQLiteOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory) {
@@ -37,5 +40,18 @@ public class MySQLiteOpenHelper extends DaoMaster.OpenHelper {
             default:
                 break;
         }
+
+       /* //把需要管理的数据库表DAO作为最后一个参数传入到方法中
+        MigrationHelper.migrate(db, new MigrationHelper.ReCreateAllTableListener() {
+            @Override public void onCreateAllTables(Database db, boolean ifNotExists) {
+                DaoMaster.createAllTables(db, ifNotExists);
+            }
+            @Override public void onDropAllTables(Database db, boolean ifExists) {
+                DaoMaster.dropAllTables(db, ifExists);
+            }
+            }, MovieCollectDao.class);
+*/
+
+
     }
 }
