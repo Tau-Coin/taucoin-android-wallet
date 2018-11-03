@@ -161,12 +161,13 @@ public class TransactionHistoryDaoUtils {
         return getTransactionHistoryDao().loadAll();
     }
 
-    /* *//**
+    /**
      * 根据名称查询 以年龄降序排列
      *
      * @param name
      * @return
-     *//*
+     */
+    /*
     public List<Accounts> queryUserByName(String name) {
         Query<Accounts> build = null;
         try {
