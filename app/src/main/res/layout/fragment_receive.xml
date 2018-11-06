@@ -1,15 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ReceiveFragment"
-    android:background="#ffff00">
+    android:background="#E0E0E0"
+     android:gravity="center"
+    tools:context=".fragment.ReceiveFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
+        android:id="@+id/amount_ll"
+        android:background="#ffffff"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:paddingRight="10dp">
 
-</FrameLayout>
+        <EditText
+            android:id="@+id/amount"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:hint="input amount"
+            android:inputType="text"
+            android:textColor="#000000"
+            android:singleLine="true"
+            android:textColorHint=" #A3A3A3"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TAU"
+            android:textSize="18sp"
+            android:layout_marginRight="20dp"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:paddingLeft="20dp"
+        android:id="@+id/address_rl"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/amount_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff">
+        <EditText
+            android:singleLine="true"
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="input address"
+            android:textColor="#000000"
+            android:textColorHint=" #A3A3A3"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/address_rl"
+        android:id="@+id/generate_code"
+        android:text="Generate two-dimensional code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/generate_code"
+        android:id="@+id/payment_info"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"/>
+
+</RelativeLayout>

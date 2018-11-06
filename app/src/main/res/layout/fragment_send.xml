@@ -69,7 +69,7 @@
         app:cardElevation="20dp"
         app:cardCornerRadius="5dp"
         android:layout_below="@id/address_rl"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground">
@@ -99,8 +99,9 @@
         android:background="@drawable/backgroud_send_tau" />-->
 
     <RelativeLayout
+
+        android:visibility="invisible"
         android:id="@+id/history"
-        android:layout_marginTop="80dp"
         android:layout_below="@id/send_tau"
         android:layout_width="match_parent"
         android:layout_height="50dp"

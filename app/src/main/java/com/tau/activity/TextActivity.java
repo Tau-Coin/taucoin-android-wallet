@@ -7,8 +7,6 @@ import android.view.View;
 
 import com.mofei.tau.R;
 import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
-import com.mofei.tau.db.greendao.UTXORecordDaoUtils;
-import com.mofei.tau.db.greendao.User;
 import com.mofei.tau.entity.req_parameter.FBAddressEmail;
 import com.mofei.tau.entity.req_parameter.FBAddressEmlVeri;
 import com.mofei.tau.entity.req_parameter.FBAddressPubKey;
@@ -154,6 +152,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
                 UTXORecordDaoUtils.getInstance().insertUTXORecordData(utxoRecord);*/
 
                 L.e("添加成功");
+
                 break;
         }
     }

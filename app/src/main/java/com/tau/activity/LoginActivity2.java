@@ -63,9 +63,13 @@ public class LoginActivity2 extends BaseActivity implements View.OnClickListener
 
                     break;
                 case 0x15:
-                    if(status.equals("401")){
+                    if(status=="401"){
                         showToast("email or password is wrong");
-                }
+                    }
+
+                    /*if(status.equals("401")){
+                        showToast("email or password is wrong");
+                    }*/
                     break;
             }
         }

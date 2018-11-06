@@ -9,12 +9,12 @@ import com.mofei.tau.db.GreenDaoManager;
 import com.mofei.tau.db.greendao.DaoMaster;
 import com.mofei.tau.db.greendao.DaoSession;
 import com.mofei.tau.net.NetWorkManager;
+import com.mofei.tau.src.io.taucoin.android.wallet.Wallet;
+import com.mofei.tau.util.L;
 
 
 public class MyApplication extends Application {
     private static Context context;
-
-
 
     private DaoMaster.DevOpenHelper mHelper;
     private SQLiteDatabase db;
@@ -31,6 +31,9 @@ public class MyApplication extends Application {
         //初始化greendao
         GreenDaoManager.getInstance();
 
+        L.e("在这里初始化UTXO");
+
+        Wallet.getInstance();
        // instances = this;
       //  setDatabase();
 
@@ -43,8 +46,6 @@ public class MyApplication extends Application {
     public static Context getContext() {
         return context;
     }
-
-
 
     private void setDatabase() {
         // 通过 DaoMaster 的内部类 DevOpenHelper，你可以得到一个便利的 SQLiteOpenHelper 对象。
@@ -64,5 +65,6 @@ public class MyApplication extends Application {
     public SQLiteDatabase getDb() {
         return db;
     }
+
 }
 
