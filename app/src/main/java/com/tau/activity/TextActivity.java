@@ -15,12 +15,22 @@ import com.mofei.tau.entity.res_post.BalanceRet;
 import com.mofei.tau.entity.req_parameter.FBAddress;
 import com.mofei.tau.entity.res_post.Club;
 import com.mofei.tau.entity.res_post.ClubRet;
+import com.mofei.tau.entity.res_post.Height;
 import com.mofei.tau.entity.res_post.Login1;
 import com.mofei.tau.entity.res_post.Login1Ret;
 import com.mofei.tau.entity.res_post.Login1RetSerializer;
+import com.mofei.tau.entity.res_post.RawTX;
+import com.mofei.tau.entity.res_post.RawTXRet;
+import com.mofei.tau.entity.res_post.RawTXRetVin;
+import com.mofei.tau.entity.res_post.RawTXRetVinScriptSig;
+import com.mofei.tau.entity.res_post.RawTXRetVout;
+import com.mofei.tau.entity.res_post.RawTXRetVoutScriptPubKey;
 import com.mofei.tau.entity.res_post.ReferralURL;
 import com.mofei.tau.entity.res_post.StatusMessage;
 import com.mofei.tau.entity.res_post.TalkUpdateRet;
+import com.mofei.tau.entity.res_post.UTXOList;
+import com.mofei.tau.entity.res_post.UTXOListRet;
+import com.mofei.tau.entity.res_post.UTXOListRetScriptPubkey;
 import com.mofei.tau.entity.res_put.BuyCoins;
 import com.mofei.tau.entity.res_put.BuyCoinsRet;
 import com.mofei.tau.entity.res_put.Login0;
@@ -38,6 +48,8 @@ import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.security.cert.CertificateFactory;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
@@ -57,6 +69,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
     private static String TAG = "FacebookLoginDemo";
     String userId;
     String Address;
+    String address;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +78,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
 
         String fbid= SharedPreferencesHelper.getInstance(TextActivity.this).getString("userId","userId");
 
-        String address=SharedPreferencesHelper.getInstance(TextActivity.this).getString("Address","Address");
+        address=SharedPreferencesHelper.getInstance(TextActivity.this).getString("Address","Address");
 
         Log.i(TAG,fbid +" "+address);
 
@@ -86,6 +99,10 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
         findViewById(R.id.referralURL).setOnClickListener(this);
 
         findViewById(R.id.insert).setOnClickListener(this);
+
+        findViewById(R.id.getHeight).setOnClickListener(this);
+        findViewById(R.id.getUTXOList).setOnClickListener(this);
+        findViewById(R.id.getRawTX).setOnClickListener(this);
     }
 
 
@@ -154,8 +171,136 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
                 L.e("添加成功");
 
                 break;
+
+            case R.id.getHeight:
+                getHeight();
+                break;
+
+            case R.id.getUTXOList:
+                getUTXOList();
+                break;
+            case R.id.getRawTX:
+
+                getRawTX();
+
+                break;
         }
     }
+
+    private void getRawTX() {
+
+        Map<String,String> txid=new HashMap<>();
+
+        txid.put("txid","28b15b032a6e0bc3f2a43ba8d7ec5d2b8377c5898f1dfbbe6b4bac0e90657bd7");
+        ApiService apiService=NetWorkManager.getApiService();
+        Observable<RawTX<RawTXRet<RawTXRetVin<RawTXRetVinScriptSig>,RawTXRetVout<RawTXRetVoutScriptPubKey>>>> observable=apiService.getRawTransation(txid);
+        observable.subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<RawTX<RawTXRet<RawTXRetVin<RawTXRetVinScriptSig>, RawTXRetVout<RawTXRetVoutScriptPubKey>>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(RawTX<RawTXRet<RawTXRetVin<RawTXRetVinScriptSig>, RawTXRetVout<RawTXRetVoutScriptPubKey>>> rawTXRetRawTX) {
+
+                        L.e(TAG,"Message: "+rawTXRetRawTX.getMessage());
+                        L.e(TAG,"Status: "+rawTXRetRawTX.getStatus());
+                        L.e(TAG,"Status: "+rawTXRetRawTX.getRet().getTxid());
+                        L.e(TAG,"Status: "+rawTXRetRawTX.getRet().getBlocktime());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        L.e("onError");
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                        L.e("onComplete");
+                    }
+                });
+    }
+
+    private void getUTXOList() {
+
+        Map<String,String> address=new HashMap<>();
+        String s=SharedPreferencesHelper.getInstance(TextActivity.this).getString("Address","Address");
+        L.e("Address:"+s);
+        address.put("address",s);
+        ApiService apiService=NetWorkManager.getApiService();
+        Observable<UTXOList<UTXOListRet<UTXOListRetScriptPubkey>>> observable=apiService.getUTXOList(address);
+        observable.subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<UTXOList<UTXOListRet<UTXOListRetScriptPubkey>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(UTXOList<UTXOListRet<UTXOListRetScriptPubkey>> utxoListRetUTXOList) {
+
+                        L.e(TAG,"Message: "+utxoListRetUTXOList.getMessage());
+                        L.e(TAG,"Status: "+utxoListRetUTXOList.getStatus());
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        L.e("onError");
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        L.e("onComplete");
+                    }
+                });
+    }
+
+    private void getHeight() {
+
+        ApiService apiService=NetWorkManager.getApiService();
+        Observable<Height> observable=apiService.getHeight();
+        observable.subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Height>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Height height) {
+
+                        L.e(TAG,"Message: "+height.getMessage());
+                        L.e(TAG,"Status: "+height.getStatus());
+                        L.e(TAG,"height: "+height.getHeight());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        L.e("onError");
+                        e.printStackTrace();
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                        L.e("onComplete");
+                    }
+                });
+    }
+
+
 
     private void getData8() {
 

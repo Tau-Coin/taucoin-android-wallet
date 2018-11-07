@@ -12,13 +12,23 @@ import com.mofei.tau.entity.res_post.BalanceRet;
 import com.mofei.tau.entity.req_parameter.FBAddress;
 import com.mofei.tau.entity.res_post.Club;
 import com.mofei.tau.entity.res_post.ClubRet;
+import com.mofei.tau.entity.res_post.Height;
 import com.mofei.tau.entity.res_post.Login1;
 import com.mofei.tau.entity.res_post.Login1Ret;
 import com.mofei.tau.entity.res_post.Login1RetSerializer;
 import com.mofei.tau.entity.res_post.LoginRes;
+import com.mofei.tau.entity.res_post.RawTX;
+import com.mofei.tau.entity.res_post.RawTXRet;
+import com.mofei.tau.entity.res_post.RawTXRetVin;
+import com.mofei.tau.entity.res_post.RawTXRetVinScriptSig;
+import com.mofei.tau.entity.res_post.RawTXRetVout;
+import com.mofei.tau.entity.res_post.RawTXRetVoutScriptPubKey;
 import com.mofei.tau.entity.res_post.ReferralURL;
 import com.mofei.tau.entity.res_post.StatusMessage;
 import com.mofei.tau.entity.res_post.TalkUpdateRet;
+import com.mofei.tau.entity.res_post.UTXOList;
+import com.mofei.tau.entity.res_post.UTXOListRet;
+import com.mofei.tau.entity.res_post.UTXOListRetScriptPubkey;
 import com.mofei.tau.entity.res_put.BuyCoins;
 import com.mofei.tau.entity.res_put.BuyCoinsRet;
 import com.mofei.tau.entity.res_put.Login0;
@@ -93,5 +103,14 @@ public interface ApiService {
 
     @POST("getBalance/")
     Observable<Balance<BalanceRet>> getBalance2(@Body Map<String,String> email);
+
+    @POST("getHeight/")
+    Observable<Height> getHeight();
+
+    @POST("getUTXOList/")
+    Observable<UTXOList<UTXOListRet<UTXOListRetScriptPubkey>>> getUTXOList(@Body Map<String,String> address);
+
+    @POST("getRawTransation/")
+    Observable<RawTX<RawTXRet<RawTXRetVin<RawTXRetVinScriptSig>,RawTXRetVout<RawTXRetVoutScriptPubKey>>>> getRawTransation(@Body Map<String,String> txid);
 
 }

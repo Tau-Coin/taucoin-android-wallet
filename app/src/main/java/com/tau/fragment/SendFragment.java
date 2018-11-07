@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,13 @@ import android.widget.TextView;
 
 import com.mofei.tau.R;
 import com.mofei.tau.activity.HistoryTransationActivity;
+import com.mofei.tau.info.SharedPreferencesHelper;
+import com.mofei.tau.src.com.google.bitcoin.core.AddressFormatException;
+import com.mofei.tau.src.com.google.bitcoin.core.ECKey;
 import com.mofei.tau.src.com.google.bitcoin.core.NetworkParameters;
+import com.mofei.tau.src.com.google.bitcoin.core.Utils;
 import com.mofei.tau.src.io.taucoin.android.wallet.Wallet;
+import com.mofei.tau.src.io.taucoin.android.wallet.keystore.KeyStore;
 import com.mofei.tau.src.io.taucoin.android.wallet.transactions.CreateTransactionResult;
 import com.mofei.tau.src.io.taucoin.android.wallet.transactions.Transaction;
 import com.mofei.tau.src.io.taucoin.android.wallet.transactions.TransactionFailReason;
@@ -36,9 +42,6 @@ public class SendFragment extends Fragment{
     private CardView sendCV;
     private RelativeLayout historyRl;
 
-
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +50,7 @@ public class SendFragment extends Fragment{
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_send, container, false);
 
@@ -74,11 +76,21 @@ public class SendFragment extends Fragment{
                 String amount=amountET.getText().toString().trim();
                 String address=addressET.getText().toString().trim();
 
+                String PrivKey=SharedPreferencesHelper.getInstance(getActivity()).getString("Privkey","私钥为空");
+                Log.e("PrivKey",PrivKey);
+                String PrivKey1="L33kD6h1JcJhuVdBysEYyjrD9SS5m1VPFJ9jPj2c1eYatCsPXaT8";
+                String newPrivKeyStr = null;
+                try {
+                    newPrivKeyStr = Utils.convertWIFPrivkeyIntoPrivkey(PrivKey1);
+                } catch (AddressFormatException e) {
+                    System.out.println(e.toString());
+                    return;
+                }
+                ECKey key = new ECKey(new BigInteger(newPrivKeyStr, 16));
+                KeyStore.getInstance().addKey(key);
+
                 HashMap<String, BigInteger> receipts = new HashMap<String, BigInteger>();
                 receipts.put("TNg7dixGbuNzNvdfqPLCYCp61A7iGd3EWs", new BigInteger("700000000", 10));
-
-             //   BigInteger amountBigInt=new BigInteger(String.valueOf(Integer.parseInt(amount)*10000000),10);
-                //receipts.put(address,amountBigInt);
 
                 Wallet wallet = Wallet.getInstance();
                 Transaction tx = new Transaction(NetworkParameters.mainNet());

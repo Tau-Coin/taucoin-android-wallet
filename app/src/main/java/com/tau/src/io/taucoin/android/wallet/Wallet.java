@@ -44,6 +44,7 @@ import java.math.BigInteger;
 import java.util.*;
 
 public class Wallet implements Serializable {
+
     private static final long serialVersionUID = 3L;
 
     private static Wallet sSingleton = null;
@@ -77,8 +78,8 @@ public class Wallet implements Serializable {
         keyStore.addKey(key);
     }
 
-    public synchronized CreateTransactionResult createTransaction(Map<String, BigInteger> receipts, boolean bSubtractFeeFromReceipts,
-            FeeRate userFeeRate, Transaction tx) {
+    public synchronized CreateTransactionResult createTransaction(Map<String, BigInteger> receipts, boolean bSubtractFeeFromReceipts,FeeRate userFeeRate, Transaction tx) {
+
         CreateTransactionResult result = new CreateTransactionResult();
 
         // Step1: validate address
@@ -238,6 +239,7 @@ public class Wallet implements Serializable {
             // TODO: fill input rewards
 
             // Sign input and rewards
+
             try {
                 tx.signInputsAndRewards(Transaction.SigHash.ALL, keyStore);
             } catch (ScriptException e) {

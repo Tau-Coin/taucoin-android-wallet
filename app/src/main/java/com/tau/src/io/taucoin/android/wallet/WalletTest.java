@@ -202,16 +202,19 @@ public class WalletTest {
         //System.out.println("Signature:" + Utils.bytesToHexString(signature));
 
         KeyStore.getInstance().addKey(testkey);
+
         HashMap<String, BigInteger> receipts = new HashMap<String, BigInteger>();
         receipts.put("TNg7dixGbuNzNvdfqPLCYCp61A7iGd3EWs", new BigInteger("700000000", 10));
 
         Wallet wallet = Wallet.getInstance();
         Transaction tx = new Transaction(NetworkParameters.mainNet());
         CreateTransactionResult result = wallet.createTransaction(receipts, false, null, tx);
+
         if (result.failReason == TransactionFailReason.NO_ERROR) {
             System.out.println("Create tx success");
             System.out.println(tx.toString());
             System.out.println("Hex:");
+            //
             System.out.println(tx.dumpIntoHexStr());
         } else {
             System.out.println("Create tx failed");
