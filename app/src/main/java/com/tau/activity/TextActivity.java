@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.mofei.tau.R;
+import com.mofei.tau.constant.TAU_BaseURL;
 import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
 import com.mofei.tau.entity.req_parameter.FBAddressEmail;
 import com.mofei.tau.entity.req_parameter.FBAddressEmlVeri;
@@ -28,6 +29,7 @@ import com.mofei.tau.entity.res_post.RawTXRetVoutScriptPubKey;
 import com.mofei.tau.entity.res_post.ReferralURL;
 import com.mofei.tau.entity.res_post.StatusMessage;
 import com.mofei.tau.entity.res_post.TalkUpdateRet;
+import com.mofei.tau.entity.res_post.UTXOBean;
 import com.mofei.tau.entity.res_post.UTXOList;
 import com.mofei.tau.entity.res_post.UTXOListRet;
 import com.mofei.tau.entity.res_post.UTXOListRetScriptPubkey;
@@ -39,16 +41,19 @@ import com.mofei.tau.info.SharedPreferencesHelper;
 import com.mofei.tau.net.ApiService;
 import com.mofei.tau.net.NetWorkManager;
 import com.mofei.tau.transaction.TransactionHistory;
-import com.mofei.tau.transaction.UTXORecord;
 import com.mofei.tau.util.L;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.security.cert.CertificateFactory;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.SSLContext;
@@ -62,7 +67,13 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class TextActivity extends BaseActivity implements View.OnClickListener{
 
@@ -177,6 +188,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
                 break;
 
             case R.id.getUTXOList:
+                L.e("getUTXOList");
                 getUTXOList();
                 break;
             case R.id.getRawTX:
@@ -184,7 +196,14 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
                 getRawTX();
 
                 break;
+           /* case R.id.sendRawTransation:
+                sendRawTransation();
+                break;*/
         }
+    }
+
+    private void sendRawTransation() {
+
     }
 
     private void getRawTX() {
@@ -226,6 +245,63 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
                 });
     }
 
+    private void getUTXOList2() {
+        OkHttpClient client = new OkHttpClient();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            String s=SharedPreferencesHelper.getInstance(TextActivity.this).getString("Address","Address");
+            L.e(s);
+            jsonObject.put("address", s);
+
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonObject.toString());
+
+            URL url = new URL( TAU_BaseURL.BASE_URL_TEXT+ "getUTXOList/");
+            Request requestBuilder = new Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .build();
+            Call call = client.newCall(requestBuilder);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.i("fail", "fail");
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+
+                    if (response.isSuccessful()) {
+                        L.e("message： " + response.body().string());
+                       /* try {
+                            JSONObject jsonObject=new JSONObject(response.body().string());
+                            String isUserExist= (String) jsonObject.get("message");
+
+                            Log.e(TAG, "message： " + isUserExist);
+
+                            *//*if(isUserExist.equals("fail")){
+
+                                //  handler.sendEmptyMessage(0x133);
+                                //  login_0();
+                            }else {
+                                JsonObject ret= (JsonObject) jsonObject.get("ret");
+                                JsonObject serializer_account= (JsonObject) ret.get("serializer_account");
+                                String address=serializer_account.get("address").toString();
+                                String pubkey=serializer_account.get("pubkey").toString();
+
+                            }*//*
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }*/
+                    } else {
+
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void getUTXOList() {
 
         Map<String,String> address=new HashMap<>();
@@ -233,20 +309,27 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
         L.e("Address:"+s);
         address.put("address",s);
         ApiService apiService=NetWorkManager.getApiService();
-        Observable<UTXOList<UTXOListRet<UTXOListRetScriptPubkey>>> observable=apiService.getUTXOList(address);
+        Observable<UTXOList> observable=apiService.getUTXOList(address);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<UTXOList<UTXOListRet<UTXOListRetScriptPubkey>>>() {
+                .subscribe(new Observer<UTXOList>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(UTXOList<UTXOListRet<UTXOListRetScriptPubkey>> utxoListRetUTXOList) {
+                    public void onNext(UTXOList utxoListRetUTXOList) {
 
-                        L.e(TAG,"Message: "+utxoListRetUTXOList.getMessage());
-                        L.e(TAG,"Status: "+utxoListRetUTXOList.getStatus());
+                        L.e("Message: "+utxoListRetUTXOList.getMessage());
+                        L.e("Status: "+utxoListRetUTXOList.getStatus());
+                        L.e("utxos"+utxoListRetUTXOList.getUtxosX().size());
+                        List<UTXOList.UtxosBean> list=utxoListRetUTXOList.getUtxosX();
+                        for (int i=0;i<list.size();i++){
+                            L.e("utxos"+utxoListRetUTXOList.getUtxosX().get(i).getTxid());
+                        }
+
+
 
                     }
 
@@ -260,6 +343,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
                     @Override
                     public void onComplete() {
                         L.e("onComplete");
+
                     }
                 });
     }

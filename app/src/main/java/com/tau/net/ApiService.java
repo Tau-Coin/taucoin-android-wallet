@@ -26,6 +26,7 @@ import com.mofei.tau.entity.res_post.RawTXRetVoutScriptPubKey;
 import com.mofei.tau.entity.res_post.ReferralURL;
 import com.mofei.tau.entity.res_post.StatusMessage;
 import com.mofei.tau.entity.res_post.TalkUpdateRet;
+import com.mofei.tau.entity.res_post.UTXOBean;
 import com.mofei.tau.entity.res_post.UTXOList;
 import com.mofei.tau.entity.res_post.UTXOListRet;
 import com.mofei.tau.entity.res_post.UTXOListRetScriptPubkey;
@@ -108,9 +109,11 @@ public interface ApiService {
     Observable<Height> getHeight();
 
     @POST("getUTXOList/")
-    Observable<UTXOList<UTXOListRet<UTXOListRetScriptPubkey>>> getUTXOList(@Body Map<String,String> address);
+    Observable<UTXOList> getUTXOList(@Body Map<String,String> address);
 
     @POST("getRawTransation/")
     Observable<RawTX<RawTXRet<RawTXRetVin<RawTXRetVinScriptSig>,RawTXRetVout<RawTXRetVoutScriptPubKey>>>> getRawTransation(@Body Map<String,String> txid);
 
+    @POST("sendRawTransation/")
+    Observable<Height> sendRawTransation(@Body Map<String,String> tx_hex);
 }

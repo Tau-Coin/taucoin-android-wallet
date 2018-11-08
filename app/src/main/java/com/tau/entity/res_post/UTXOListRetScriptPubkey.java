@@ -1,14 +1,12 @@
 package com.mofei.tau.entity.res_post;
 
-import java.io.Serializable;
-
 /**
  * Created by ly on 18-11-7
  *
  * @version 1.0
  * @description:
  */
-public class UTXOListRetScriptPubkey implements Serializable{
+public class UTXOListRetScriptPubkey{
     /**
      * "scriptPubKey": {
      "asm": "OP_DUP OP_HASH160 ea43a256f38cf159090a68c76a5b255a6c08a9ce OP_EQUALVERIFY OP_CHECKSIG",
