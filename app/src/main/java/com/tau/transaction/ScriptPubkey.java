@@ -16,6 +16,8 @@
 
 package com.mofei.tau.transaction;
 
+import java.util.List;
+
 /**
  * UTXO data is pulled from centeric server. This class is the wrapper of raw data.
  * Raw data with json format is as follow:
@@ -35,9 +37,10 @@ public class ScriptPubkey {
 
     public String asm;
     public String hex;
-    public int reqSigs;
-    public String type;
-    public String address;
+   // public int reqSigs;
+   //  public String type;
+   // public String address;
+
 
     public String getAsm() {
         return asm;
@@ -55,7 +58,7 @@ public class ScriptPubkey {
         this.hex = hex;
     }
 
-    public int getReqSigs() {
+    /*public int getReqSigs() {
         return reqSigs;
     }
 
@@ -77,5 +80,7 @@ public class ScriptPubkey {
 
     public void setAddress(String address) {
         this.address = address;
-    }
+    }*/
+
+
 }

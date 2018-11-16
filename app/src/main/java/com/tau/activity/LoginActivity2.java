@@ -45,6 +45,7 @@ public class LoginActivity2 extends BaseActivity implements View.OnClickListener
     private Button loginBt;
 
     private String status;
+
     private String user_nane;
 
     Handler handler = new Handler() {
@@ -58,7 +59,7 @@ public class LoginActivity2 extends BaseActivity implements View.OnClickListener
                         intent.putExtra("user_name",user_nane);
                         startActivity(intent);
                         showToast("login successful");
-                        finish();
+                       // finish();
                     }
 
                     break;
@@ -194,8 +195,8 @@ public class LoginActivity2 extends BaseActivity implements View.OnClickListener
                         SharedPreferencesHelper.getInstance(LoginActivity2.this).putString("email",loginRes.getEmail());
                         user_nane=loginRes.getEmail();
                         SharedPreferencesHelper.getInstance(LoginActivity2.this).putString("user_nane",user_nane);
-                        L.e(loginRes.getAddress());
-                        L.e(loginRes.getPubkey());
+                        L.e("getAddress:"+loginRes.getAddress());
+                        L.e("getPubkey: "+loginRes.getPubkey());
 
                         SharedPreferencesHelper.getInstance(LoginActivity2.this).putString("Pubkey", loginRes.getPubkey());
                         SharedPreferencesHelper.getInstance(LoginActivity2.this).putString("Address",loginRes.getAddress());

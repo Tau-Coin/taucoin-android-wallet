@@ -16,8 +16,14 @@
 
 package com.mofei.tau.src.io.taucoin.android.wallet.utxo;
 
+import com.mofei.tau.db.greendao.UTXORecordDaoUtils;
+import com.mofei.tau.transaction.ScriptPubkey;
+import com.mofei.tau.transaction.UTXORecord;
+import com.mofei.tau.util.L;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UTXOManager {
 
@@ -49,53 +55,23 @@ public class UTXOManager {
         }
         */
 
-        ScriptPubkey scriptPubkey1 = new ScriptPubkey();
-        scriptPubkey1.asm = "OP_DUP OP_HASH160 8b5e153ecd8d53fd2e430d4fd7baaf6ec891a021 OP_EQUALVERIFY OP_CHECKSIG";
-        scriptPubkey1.hex = "76a9148b5e153ecd8d53fd2e430d4fd7baaf6ec891a02188ac";
+        List<UTXORecord> utxoRecordList= UTXORecordDaoUtils.getInstance().queryAllData();
 
-        UTXORecord utxo1 = new UTXORecord();
-        utxo1.txId = "f604e96b9f304a2032d9bfbfa578c9a8b84576054f9180c3575beb3dded95846";
-        utxo1.address = "TNg7dixGbuNzNvdfqPLCYCp61A7iGd3EWs";
-        utxo1.vout = 1L;
-        utxo1.value = new BigInteger("8999400000", 10);
-        utxo1.confirmations = 84;
-        utxo1.scriptPubKey = scriptPubkey1;
+        L.e( "数据库里的数据："+utxoRecordList.size());
+        for (int i=0;i<utxoRecordList.size();i++){
 
-        vCoins.add(utxo1);
+            UTXORecord utxoRecord=utxoRecordList.get(i);
+            L.e(utxoRecord.getTxId()+" getTxId");
+            L.e(utxoRecord.getAddress()+" getAddress");
+            L.e(utxoRecord.getVout()+" getVout");
+            L.e(utxoRecord.getValue()+" getValue");
+            L.e(utxoRecord.getConfirmations()+" getConfirmations");
+            L.e(utxoRecord.getScriptPubKey().getAsm()+" getScriptPubKey_getAsm");
+            L.e(utxoRecord.getScriptPubKey().getHex()+" getScriptPubKey_getHex");
 
-        ScriptPubkey scriptPubkey2 = new ScriptPubkey();
-        scriptPubkey2.asm = "OP_DUP OP_HASH160 8b5e153ecd8d53fd2e430d4fd7baaf6ec891a021 OP_EQUALVERIFY OP_CHECKSIG";
-        scriptPubkey2.hex = "76a9148b5e153ecd8d53fd2e430d4fd7baaf6ec891a02188ac";
-
-        UTXORecord utxo2 = new UTXORecord();
-        utxo2.txId = "061a13728f58404832281758c963add8096e8e6614c718b44b634dc9e73d9a8f";
-        utxo2.address = "TNg7dixGbuNzNvdfqPLCYCp61A7iGd3EWs";
-        utxo2.vout = 1L;
-        utxo2.value = new BigInteger("100000000", 10);
-        utxo2.confirmations = 84;
-        utxo2.scriptPubKey = scriptPubkey2;
-
-        vCoins.add(utxo2);
-
-        UTXORecord utxo3 = new UTXORecord();
-        utxo3.txId = "ce047a1978ae0160cc8f130b24672a810e93216f18de7b64ee90dc5160ba383b";
-        utxo3.address = "TNg7dixGbuNzNvdfqPLCYCp61A7iGd3EWs";
-        utxo3.vout = 0L;
-        utxo3.value = new BigInteger("600000000", 10);
-        utxo3.confirmations = 84;
-        utxo3.scriptPubKey = scriptPubkey2;
-
-        vCoins.add(utxo3);
-
-        UTXORecord utxo4 = new UTXORecord();
-        utxo4.txId = "ce047a1978ae0160cc8f130b24672a810e93216f18de7b64ee90dc5160ba383b";
-        utxo4.address = "TNg7dixGbuNzNvdfqPLCYCp61A7iGd3EWs";
-        utxo4.vout = 1L;
-        utxo4.value = new BigInteger("100000000", 10);
-        utxo4.confirmations = 84;
-        utxo4.scriptPubKey = scriptPubkey2;
-
-        vCoins.add(utxo4);
+            L.e("---------------");
+            vCoins.add(utxoRecord);
+        }
 
         return true;
     }

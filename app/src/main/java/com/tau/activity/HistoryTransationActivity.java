@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.mofei.tau.R;
 import com.mofei.tau.adapter.HistoryEventRecycleAdapter;
+import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
+import com.mofei.tau.transaction.TransactionHistory;
 import com.mofei.tau.util.L;
 import com.mofei.tau.view.CustomToolBar;
 import com.mofei.tau.view.SmartDialog;
@@ -65,12 +67,14 @@ public class HistoryTransationActivity extends BaseActivity {
             }
         });
 
-        List<String> list=new ArrayList<>();
+       /* List<String> list=new ArrayList<>();
         for (int i=0;i<50;i++){
             list.add("data" +i);
-        }
+        }*/
 
-        historyEventRecycleAdapter=new HistoryEventRecycleAdapter(this,list);
+       List<TransactionHistory> transactionHistoryList=TransactionHistoryDaoUtils.getInstance().queryAllData();
+
+        historyEventRecycleAdapter=new HistoryEventRecycleAdapter(this,transactionHistoryList);
         /**
          * 设置布局方向
          * Setting layout direction

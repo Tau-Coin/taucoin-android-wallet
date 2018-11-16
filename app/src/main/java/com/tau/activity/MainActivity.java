@@ -25,6 +25,8 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.mofei.tau.R;
 import com.mofei.tau.entity.req_parameter.Logout;
+import com.mofei.tau.entity.res_post.Balance;
+import com.mofei.tau.entity.res_post.BalanceRet;
 import com.mofei.tau.entity.res_post.LoginRes;
 import com.mofei.tau.info.SharedPreferencesHelper;
 import com.mofei.tau.info.key_address.taucoin.Key;
@@ -35,7 +37,9 @@ import com.mofei.tau.util.L;
 import com.mofei.tau.view.CustomToolBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -59,6 +63,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private RelativeLayout layout;
 
+    private TextView mBalanceTauTV;
+
+    private double double_coins;
+
+    private double reward;
+
     private int status;
 
 
@@ -81,6 +91,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                        // startActivity(new Intent(MainActivity.this,LoginActivity2.class));
                         showToast("logout successful");
                     }
+                    break;
+
+                case 0x20:
+                    if(status==401){
+                        showToast("Email does not exist");
+                    }else if(status==402){
+                        showToast("Fail to get balance");
+                    }
+                    break;
+                case 0x21:
+                    Double double_8=new Double("100000000");
+                    Double coin_double=new Double(double_coins);
+                    L.e("转换后的数据：　"+coin_double/double_8);
+                    mBalanceTauTV.setText(""+coin_double/double_8);
                     break;
             }
         }
@@ -108,6 +132,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         userNameTV=findViewById(R.id.username);
         about=findViewById(R.id.about);
         help=findViewById(R.id.help);
+        mBalanceTauTV=findViewById(R.id.balance_tau);
 
         test=findViewById(R.id.test);
 
@@ -155,6 +180,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         help.setOnClickListener(this);
 
         test.setOnClickListener(this);
+
+        showWaitDialog();
+        getBalanceData(SharedPreferencesHelper.getInstance(MainActivity.this).getString("email",""));
 
         mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
@@ -382,5 +410,56 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         super.onPause();
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
+    }
+
+
+    public void getBalanceData(String email) {
+        Map<String,String> emailMap=new HashMap<>();
+        emailMap.put("email",email);
+        ApiService apiService=NetWorkManager.getApiService();
+        Observable<Balance<BalanceRet>> observable=apiService.getBalance2(emailMap);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Balance<BalanceRet>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Balance<BalanceRet> balanceRetBalance) {
+
+                        L.e(balanceRetBalance.getStatus()+"");
+                        L.e(balanceRetBalance.getMessage());
+                        status=balanceRetBalance.getStatus();
+                        double_coins=balanceRetBalance.getRet().getCoins();
+                        reward= balanceRetBalance.getRet().getRewards();
+
+                        SharedPreferencesHelper.getInstance(MainActivity.this).putString("balance",""+double_coins);
+                        SharedPreferencesHelper.getInstance(MainActivity.this).putString("reward",""+reward);
+                        SharedPreferencesHelper.getInstance(MainActivity.this).putString("utxo",""+balanceRetBalance.getRet().getUtxo());
+
+                        L.e("Coins"+balanceRetBalance.getRet().getCoins());
+                        L.e(balanceRetBalance.getRet().getPubkey());
+                        L.e(balanceRetBalance.getRet().getUtxo()+"");
+                        L.e(balanceRetBalance.getRet().getRewards()+"");
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideWaitDialog();
+                        L.e("error");
+                        e.printStackTrace();
+                        h.sendEmptyMessage(0x20);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        h.sendEmptyMessage(0x21);
+                        hideWaitDialog();
+                        L.e("complete");
+                    }
+                });
     }
 }

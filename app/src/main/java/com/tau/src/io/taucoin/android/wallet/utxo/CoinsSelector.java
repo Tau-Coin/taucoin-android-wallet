@@ -17,6 +17,7 @@
 package com.mofei.tau.src.io.taucoin.android.wallet.utxo;
 
 import com.mofei.tau.src.io.taucoin.android.wallet.blockchain.Constants;
+import com.mofei.tau.transaction.UTXORecord;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

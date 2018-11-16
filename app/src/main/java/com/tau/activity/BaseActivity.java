@@ -28,7 +28,6 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
-
         NetWorkManager.getInstance(this).init();
 
         userId= SharedPreferencesHelper.getInstance(BaseActivity.this).getString("userId","userId");

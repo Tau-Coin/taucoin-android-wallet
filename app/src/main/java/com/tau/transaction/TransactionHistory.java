@@ -33,44 +33,29 @@ public class TransactionHistory {
     private String toAddress;
 
     private long time;
-    
-    // value
-    @Convert(converter = UTXORecord.BigIntegerConverter.class, columnType = String.class)
-    private BigInteger  value;
 
-    public static class BigIntegerConverter implements PropertyConverter<BigInteger,String>{
+    private int confirmations;
 
-        @Override
-        public BigInteger convertToEntityProperty(String databaseValue) {
-            if (databaseValue == null) {
-                return null;
-            }
-            return new Gson().fromJson(databaseValue, BigInteger.class);
-        }
+    private String  value;
 
-        @Override
-        public String convertToDatabaseValue(BigInteger entityProperty) {
-            if (entityProperty == null) {
-                return null;
-            }
-            return new Gson().toJson(entityProperty);
-        }
-    }
+    private boolean result;
 
-    @Convert(converter = TransactionStatusConverter.class, columnType = String.class)
-    private TransactionStatus status;
+    private String message;
 
-    @Generated(hash = 1744372665)
-    public TransactionHistory(Long id, String txId, String sentOrReceived, String fromAddress, String toAddress,
-            long time, BigInteger value, TransactionStatus status) {
+    @Generated(hash = 785203878)
+    public TransactionHistory(Long id, String txId, String sentOrReceived,
+            String fromAddress, String toAddress, long time, int confirmations,
+            String value, boolean result, String message) {
         this.id = id;
         this.txId = txId;
         this.sentOrReceived = sentOrReceived;
         this.fromAddress = fromAddress;
         this.toAddress = toAddress;
         this.time = time;
+        this.confirmations = confirmations;
         this.value = value;
-        this.status = status;
+        this.result = result;
+        this.message = message;
     }
 
     @Generated(hash = 63079048)
@@ -125,40 +110,39 @@ public class TransactionHistory {
         this.time = time;
     }
 
-    public BigInteger getValue() {
+    public int getConfirmations() {
+        return this.confirmations;
+    }
+
+    public void setConfirmations(int confirmations) {
+        this.confirmations = confirmations;
+    }
+
+    public String getValue() {
         return this.value;
     }
 
-    public void setValue(BigInteger value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
-    public TransactionStatus getStatus() {
-        return this.status;
+    public boolean getResult() {
+        return this.result;
     }
 
-    public void setStatus(TransactionStatus status) {
-        this.status = status;
+    public void setResult(boolean result) {
+        this.result = result;
     }
 
-    public static class TransactionStatusConverter implements PropertyConverter<TransactionStatus,String>{
-
-        @Override
-        public TransactionStatus convertToEntityProperty(String databaseValue) {
-            if (databaseValue == null) {
-                return null;
-            }
-            return new Gson().fromJson(databaseValue, TransactionStatus.class);
-
-        }
-
-        @Override
-        public String convertToDatabaseValue(TransactionStatus entityProperty) {
-            if (entityProperty == null) {
-                return null;
-            }
-            return new Gson().toJson(entityProperty);
-        }
+    public String getMessage() {
+        return this.message;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+
+    
+    
 }

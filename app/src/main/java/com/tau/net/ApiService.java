@@ -13,6 +13,7 @@ import com.mofei.tau.entity.req_parameter.FBAddress;
 import com.mofei.tau.entity.res_post.Club;
 import com.mofei.tau.entity.res_post.ClubRet;
 import com.mofei.tau.entity.res_post.Height;
+import com.mofei.tau.entity.res_post.HexRet;
 import com.mofei.tau.entity.res_post.Login1;
 import com.mofei.tau.entity.res_post.Login1Ret;
 import com.mofei.tau.entity.res_post.Login1RetSerializer;
@@ -112,8 +113,8 @@ public interface ApiService {
     Observable<UTXOList> getUTXOList(@Body Map<String,String> address);
 
     @POST("getRawTransation/")
-    Observable<RawTX<RawTXRet<RawTXRetVin<RawTXRetVinScriptSig>,RawTXRetVout<RawTXRetVoutScriptPubKey>>>> getRawTransation(@Body Map<String,String> txid);
+    Observable<RawTX> getRawTransation(@Body Map<String,String> txid);
 
     @POST("sendRawTransation/")
-    Observable<Height> sendRawTransation(@Body Map<String,String> tx_hex);
+    Observable<HexRet> sendRawTransation(@Body Map<String,String> tx_hex);
 }

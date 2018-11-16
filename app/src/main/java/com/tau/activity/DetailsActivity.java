@@ -47,9 +47,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         initData();
 
-
     }
-
 
 
     private void initView() {
@@ -59,7 +57,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         mWalletBt=findViewById(R.id.back_wallet);
         mWalletAddressIv=findViewById(R.id.wallet_address_iv);
         mCbDisplayPrivatekey=findViewById(R.id.cbDisplayPrivatekey);
-        mCbDisplayAddress=findViewById(R.id.cbDisplayAddress);
+        mCbDisplayAddress=findViewById(R.id.cbDisplayPublkey);
 
         titleBar();
     }
@@ -113,17 +111,17 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 // SaveImageToSysAlbum();  //保存到相册
                 AlertDialog dialog = new AlertDialog.Builder(DetailsActivity.this)
                         // .setIcon(R.mipmap.icon)//设置标题的图片
-                        .setTitle("是否要保存地址二维码")//设置对话框的标题
-                        .setMessage("如要保存请点击 确定 否则请点击 取消")//设置对话框的内容
+                        .setTitle("Do you want to save the address two-dimensional code?")//设置对话框的标题
+                        .setMessage("If you want to save, please click OK or click Cancel.")//设置对话框的内容
                         //设置对话框的按钮
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
                                 dialog.dismiss();
                             }
                         })
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 saveImage(mWalletAddressIv);
@@ -202,14 +200,14 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     /**
                      * 第二种
                      */
-                    mAddressTV.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    mPubkeyTV.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 } else {
                     //默认状态显示密码--设置文本 要一起写才能起作用 InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
                     //mEtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     /**
                      * 第二种
                      */
-                    mAddressTV.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    mPubkeyTV.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
             }
         });

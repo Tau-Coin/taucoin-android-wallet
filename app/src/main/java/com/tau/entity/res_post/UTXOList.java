@@ -22,7 +22,6 @@ public class UTXOList {
 
     private String status;
     private String message;
-    //private T utxos;
     @SerializedName("utxos")
     private List<UtxosBean> utxosX;
 
@@ -42,13 +41,7 @@ public class UTXOList {
         this.message = message;
     }
 
-    //public T getUtxos() {
-    //   return utxos;
-    //}
 
-    //public void setUtxos(T utxos) {
-     //   this.utxos = utxos;
-    //}
 
     public List<UtxosBean> getUtxosX() {
         return utxosX;

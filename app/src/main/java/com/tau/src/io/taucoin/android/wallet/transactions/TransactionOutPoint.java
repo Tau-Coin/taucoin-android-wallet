@@ -17,17 +17,15 @@
 
 package com.mofei.tau.src.io.taucoin.android.wallet.transactions;
 
-import com.mofei.tau.src.com.google.bitcoin.core.Address;
 import com.mofei.tau.src.com.google.bitcoin.core.NetworkParameters;
 import com.mofei.tau.src.com.google.bitcoin.core.ProtocolException;
 import com.mofei.tau.src.com.google.bitcoin.core.Sha256Hash;
 import com.mofei.tau.src.com.google.bitcoin.core.Script;
 import com.mofei.tau.src.com.google.bitcoin.core.ScriptException;
 import com.mofei.tau.src.com.google.bitcoin.core.Utils;
-import com.mofei.tau.src.com.google.bitcoin.core.VarInt;
 
 import com.mofei.tau.src.io.taucoin.android.wallet.blockchain.Message;
-import com.mofei.tau.src.io.taucoin.android.wallet.utxo.UTXORecord;
+import com.mofei.tau.transaction.UTXORecord;
 
 import java.io.IOException;
 import java.io.OutputStream;

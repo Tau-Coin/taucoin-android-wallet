@@ -63,14 +63,14 @@ public class KeyDaoUtils {
      * @param list
      * @return
      */
-    public boolean insertOrReplaceMultiData(final List<TransactionHistory> list) {
+    public boolean insertOrReplaceMultiData(final List<Key> list) {
         boolean flag = false;
         try {
             getKeyDao().getSession().runInTx(new Runnable() {
                 @Override
                 public void run() {
-                    for (TransactionHistory transactionHistory : list) {
-                        daoManager.getDaoSession().insertOrReplace(transactionHistory);
+                    for (Key key : list) {
+                        daoManager.getDaoSession().insertOrReplace(key);
                     }
                 }
             });

@@ -182,9 +182,10 @@ public class Transaction extends Message implements Serializable {
      */
     public String toString() {
         StringBuffer s = new StringBuffer();
-        s.append("  ");
-        s.append("txid:" + getHashAsString());
-        s.append("\n");
+        s.append("{");
+        s.append("\"txid\":" + "\""+getHashAsString()+"\"");
+       // s.append("\n");
+        s.append(",");
         if (isCoinBase()) {
             String script = "???";
             String script2 = "???";
@@ -195,38 +196,42 @@ public class Transaction extends Message implements Serializable {
             return "     == COINBASE TXN (scriptSig " + script + ")  (scriptPubKey " + script2 + ")";
         }
 
-        s.append("inputs:[\n");
+        s.append("\"inputs\":[");
         for (TransactionInput in : inputs) {
-            s.append("     [\n");
-
-            s.append("          ");
-            s.append("txid:" + in.outpoint.hash.toString() + "\n");
-            s.append("          ");
-            s.append("vout:" + in.outpoint.index + "\n");
-            s.append("          ");
-            s.append("scriptSig:" + Utils.bytesToHexString(in.scriptBytes) + "\n");
-            s.append("          ");
-            s.append("sequence:" + in.sequence + "\n");
-
-            s.append("     ]\n");
+            s.append("{");
+           // s.append("          ");
+            s.append("\"txid\":" + "\""+in.outpoint.hash.toString() + "\"");
+            s.append(",");
+           // s.append("          ");
+            s.append("\"vout\":" + in.outpoint.index );
+            s.append(",");
+            //s.append("          ");
+            s.append("\"scriptSig\":" +"\""+ Utils.bytesToHexString(in.scriptBytes) + "\"");
+            s.append(",");
+           // s.append("          ");
+            s.append("\"sequence\":" + in.sequence );
+            s.append("}");
         }
-        s.append("]\n");
+       // s.append("]\n");
 
-        s.append("\n");
-        s.append("outputs:[\n");
+        s.append("]");
+       // s.append("\n");
+        s.append(",");
+        s.append("\"outputs\":[");
 
         for (TransactionOutput out : outputs) {
-            s.append("     [\n");
-
-            s.append("          ");
-            s.append("value:" + out.value.toString() + "\n");
-            s.append("          ");
-            s.append("scriptPubkey:" + Utils.bytesToHexString(out.scriptBytes) + "\n");
-
-            s.append("     ]\n");
+            s.append("{");
+           // s.append("          ");
+            s.append("\"value\":" + out.value.toString() );
+            s.append(",");
+           // s.append("          ");
+            s.append("\"scriptPubkey\":" +"\""+ Utils.bytesToHexString(out.scriptBytes) + "\"");
+            s.append("}");
+            s.append(",");
         }
-        s.append("]\n");
-
+       // s.append("]\n");
+        s.append("]");
+        s.append("}");
         return s.toString();
     }
 
@@ -265,7 +270,7 @@ public class Transaction extends Message implements Serializable {
      * This method is similar to SignatureHash in script.cpp
      *
      * @param hashType This should always be set to SigHash.ALL currently. Other types are unused.
-     * @param wallet A wallet is required to fetch the keys needed for signing.
+     * @param 　 A wallet is required to fetch the keys needed for signing.
      */
     public void signInputsAndRewards(SigHash hashType, KeyStore keyStore) throws ScriptException {
         assert inputs.size() > 0;
@@ -294,6 +299,9 @@ public class Transaction extends Message implements Serializable {
             byte[] connectedPubKeyHash = input.outpoint.getConnectedPubKeyHash();
             System.out.println("Outpoint pubkey hash:" + Utils.bytesToHexString(connectedPubKeyHash));
             ECKey key = keyStore.findKeyFromPubHash(connectedPubKeyHash);
+            if (key==null) {
+                throw new ScriptException("Can't find corresponding key from keystore");
+            }
             // This assert should never fire. If it does, it means the wallet is inconsistent.
             assert key != null : "Transaction exists in wallet that we cannot redeem: " + Utils.bytesToHexString(connectedPubKeyHash);
             // Keep the key around for the script creation step below.

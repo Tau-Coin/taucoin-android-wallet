@@ -16,31 +16,16 @@
 
 package com.mofei.tau.src.io.taucoin.android.wallet;
 
-import com.mofei.tau.src.com.google.bitcoin.core.Address;
 import com.mofei.tau.src.com.google.bitcoin.core.AddressFormatException;
-import com.mofei.tau.src.com.google.bitcoin.core.Base58;
 import com.mofei.tau.src.com.google.bitcoin.core.ECKey;
 import com.mofei.tau.src.com.google.bitcoin.core.NetworkParameters;
-import com.mofei.tau.src.com.google.bitcoin.core.ProtocolException;
-import com.mofei.tau.src.com.google.bitcoin.core.Sha256Hash;
-import com.mofei.tau.src.com.google.bitcoin.core.Script;
-import com.mofei.tau.src.com.google.bitcoin.core.ScriptException;
 import com.mofei.tau.src.com.google.bitcoin.core.Utils;
 
-import com.mofei.tau.src.io.taucoin.android.wallet.blockchain.Constants;
 import com.mofei.tau.src.io.taucoin.android.wallet.keystore.KeyStore;
 import com.mofei.tau.src.io.taucoin.android.wallet.transactions.Transaction;
-import com.mofei.tau.src.io.taucoin.android.wallet.transactions.TransactionOutPoint;
-import com.mofei.tau.src.io.taucoin.android.wallet.transactions.TransactionInput;
-import com.mofei.tau.src.io.taucoin.android.wallet.transactions.TransactionInputReward;
-import com.mofei.tau.src.io.taucoin.android.wallet.transactions.TransactionOutput;
 import com.mofei.tau.src.io.taucoin.android.wallet.transactions.TransactionFailReason;
 import com.mofei.tau.src.io.taucoin.android.wallet.transactions.CreateTransactionResult;
-import com.mofei.tau.src.io.taucoin.android.wallet.utxo.CoinsSelector;
-import com.mofei.tau.src.io.taucoin.android.wallet.utxo.UTXOManager;
-import com.mofei.tau.src.io.taucoin.android.wallet.utxo.UTXORecord;
 
-import java.io.*;
 import java.math.BigInteger;
 import java.util.*;
 

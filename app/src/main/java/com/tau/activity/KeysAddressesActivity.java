@@ -102,17 +102,17 @@ public class KeysAddressesActivity extends BaseActivity implements View.OnClickL
                // SaveImageToSysAlbum();  //保存到相册
                 AlertDialog dialog = new AlertDialog.Builder(KeysAddressesActivity.this)
                         // .setIcon(R.mipmap.icon)//设置标题的图片
-                        .setTitle("是否要保存地址二维码")//设置对话框的标题
-                        .setMessage("如要保存请点击 确定 否则请点击 取消")//设置对话框的内容
+                        .setTitle("Save address two-dimensional code?")//设置对话框的标题
+                        .setMessage("If you want to save, please click OK or click Cancel.")//设置对话框的内容
                         //设置对话框的按钮
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
                                 dialog.dismiss();
                             }
                         })
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 saveImage(mAddressTwoDimensionCodeIV);

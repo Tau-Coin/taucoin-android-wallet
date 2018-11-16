@@ -3,14 +3,17 @@ package com.mofei.tau.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,26 +24,52 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 
 import com.mofei.tau.R;
+import com.mofei.tau.db.greendao.KeyDaoUtils;
+import com.mofei.tau.db.greendao.UTXORecordDaoUtils;
+import com.mofei.tau.entity.req_parameter.Logout;
+import com.mofei.tau.entity.res_post.Balance;
+import com.mofei.tau.entity.res_post.BalanceRet;
+import com.mofei.tau.entity.res_post.UTXOList;
 import com.mofei.tau.fragment.ManageFragment;
 import com.mofei.tau.fragment.ReceiveFragment;
 import com.mofei.tau.fragment.SendFragment;
 import com.mofei.tau.info.SharedPreferencesHelper;
+import com.mofei.tau.net.ApiService;
+import com.mofei.tau.net.NetWorkManager;
+import com.mofei.tau.transaction.Key;
+import com.mofei.tau.transaction.ScriptPubkey;
+import com.mofei.tau.transaction.UTXORecord;
 import com.mofei.tau.util.L;
 import com.mofei.tau.view.CustomToolBar;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class SendAndReceiveActivity extends BaseActivity implements View.OnClickListener {
 
+    private Button balanceButton,harvestClubButton,keyAddressesButton,bountyButton,sendReceiveButton,logoutButton,buyCoinsButton,abourtUs;
+    private TextView userNameTV,about,help;
 
     private CustomToolBar mMainCustomToolBar;
-
+    private DrawerLayout mDrawerLayout;
+    private RelativeLayout layout;
+    private int status;
     //声明四个Tab分别对应的Fragment
     private SendFragment sendFragment;
     private ManageFragment manageFragment;
@@ -56,6 +85,30 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
 
     private Handler handler=new Handler();
 
+    private List<UTXORecord> utxoRecordList;
+    public static List<UTXOList.UtxosBean> utxo_list;
+    public static double balance;
+    public static double utxo;
+
+
+    Handler h = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0x13:
+                    L.i("handler");
+                    if(status==0){
+                        finish();
+                        SharedPreferencesHelper.getInstance(SendAndReceiveActivity.this).putBoolean("isLogin",false);
+                        L.i( "logout");
+                        // startActivity(new Intent(MainActivity.this,LoginActivity2.class));
+                        showToast("logout successful");
+                    }
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,24 +118,13 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
 
         initViews();//初始化控件
         initEvents();//初始化事件
+
+        initData();
         selectTab(0);//默认选中第一个Tab
-
-       //
-        imageViewsList= new ArrayList<ImageView>();
-        for (int i=0;i<image.length;i++){
-            ImageView imageView=new ImageView(this);
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            imageView.setImageResource(image[i]);
-            imageViewsList.add(imageView);
-        }
-
 
         titleBar();
 
-
     }
-
 
     private void titleBar() {
         //标题栏
@@ -101,22 +143,73 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
     }
 
     private void initViews() {
-
         frameLayoutFragment=findViewById(R.id.fragment);
         radioGroup=findViewById(R.id.tab_radiogroup);
         sendRadioButton=findViewById(R.id.send);
         manageRadioButton=findViewById(R.id.manage);
         receiveRadioButton=findViewById(R.id.receive);
+        mDrawerLayout=findViewById(R.id.drawerLayout);
+        layout=findViewById(R.id.slidingMenu);
 
+        abourtUs=findViewById(R.id.about_us);
+        userNameTV=findViewById(R.id.username);
+        about=findViewById(R.id.about);
+        help=findViewById(R.id.help);
+        logoutButton=findViewById(R.id.logout);
+
+
+        userNameTV.setText(SharedPreferencesHelper.getInstance(SendAndReceiveActivity.this).getString("user_nane",""));
 
     }
 
+    private void initData() {
+
+
+        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View view, float v) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View view) {
+                view.setClickable(true);
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View view) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int i) {
+
+            }
+        });
+
+        imageViewsList= new ArrayList<ImageView>();
+        for (int i=0;i<image.length;i++){
+            ImageView imageView=new ImageView(this);
+            imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            imageView.setImageResource(image[i]);
+            imageViewsList.add(imageView);
+        }
+    }
     private void initEvents() {
         //初始化四个Tab的点击事件
-
         sendRadioButton.setOnClickListener(this);
         manageRadioButton.setOnClickListener(this);
         receiveRadioButton.setOnClickListener(this);
+
+        logoutButton.setOnClickListener(this);
+        about. setOnClickListener(this);
+        help.setOnClickListener(this);
+
+
+        showWaitDialog();
+        //getUTXOList();
+        getBalanceData(SharedPreferencesHelper.getInstance(this).getString("email",""));
 
     }
 
@@ -134,6 +227,32 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
                 break;
             case R.id.receive:
                 selectTab(2);
+                break;
+            case R.id.about_us:
+                Intent aboutUsIntent = new Intent();
+                aboutUsIntent.setAction(Intent.ACTION_VIEW);
+                String github_url = "https://www.taucoin.io/";
+                Uri git_uri = Uri.parse(github_url);
+                aboutUsIntent.setData(git_uri);
+                startActivity(aboutUsIntent);
+                break;
+
+            case R.id.about:
+                startActivity(new Intent(this,AboutActivity.class));
+                break;
+
+            case R.id.help:
+                Intent helpintent = new Intent();
+                helpintent.setAction(Intent.ACTION_VIEW);
+                String bitcointalk = "https://bitcointalk.org/index.php?topic=4757879";
+                Uri bitcointalk_uri = Uri.parse(bitcointalk);
+                helpintent.setData(bitcointalk_uri);
+                startActivity(helpintent);
+
+                break;
+            case R.id.logout:
+                showWaitDialog();
+                logout();
                 break;
            /* case R.id.send_receive_back_wallet_home:
                 finish();
@@ -201,5 +320,195 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
         }
 
     }
+
+
+    public void getBalanceData(String email) {
+        Map<String,String> emailMap=new HashMap<>();
+        emailMap.put("email",email);
+        ApiService apiService=NetWorkManager.getApiService();
+        Observable<Balance<BalanceRet>> observable=apiService.getBalance2(emailMap);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Balance<BalanceRet>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Balance<BalanceRet> balanceRetBalance) {
+
+                        L.e(balanceRetBalance.getStatus()+"");
+                        L.e(balanceRetBalance.getMessage());
+
+                        balance=balanceRetBalance.getRet().getCoins();
+                        utxo=balanceRetBalance.getRet().getUtxo();
+                        SharedPreferencesHelper.getInstance(SendAndReceiveActivity.this).putString("balance",""+balanceRetBalance.getRet().getCoins());
+                        SharedPreferencesHelper.getInstance(SendAndReceiveActivity.this).putString("reward",""+balanceRetBalance.getRet().getRewards());
+                        SharedPreferencesHelper.getInstance(SendAndReceiveActivity.this).putString("utxo",""+balanceRetBalance.getRet().getUtxo());
+
+                        //balance,reward,utxo插入KeyBD
+                        Key key=new Key();
+                        key.setPubkey(SharedPreferencesHelper.getInstance(SendAndReceiveActivity.this).getString("Pubkey","Pubkey"));
+                        key.setPrivkey(SharedPreferencesHelper.getInstance(SendAndReceiveActivity.this).getString("Privkey","Privkey"));
+                        key.setPubkey(SharedPreferencesHelper.getInstance(SendAndReceiveActivity.this).getString("Address","Address"));
+                        key.setUtxo((long) balanceRetBalance.getRet().getUtxo());
+                        key.setBalance((long) balanceRetBalance.getRet().getCoins());
+                        key.setReward((long) balanceRetBalance.getRet().getRewards());
+
+                        KeyDaoUtils.getInstance().deleteAllData();
+                        KeyDaoUtils.getInstance().insertKeyStoreData(key);
+
+                        L.e("Coins"+balanceRetBalance.getRet().getCoins());
+                        L.e(balanceRetBalance.getRet().getPubkey());
+                        L.e(balanceRetBalance.getRet().getUtxo()+"");
+                        L.e(balanceRetBalance.getRet().getRewards()+"");
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideWaitDialog();
+                        L.e("error");
+                        e.printStackTrace();
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                        getUTXOList();
+
+                        L.e("complete");
+                    }
+                });
+    }
+
+    public void getUTXOList() {
+        Map<String,String> address=new HashMap<>();
+        String addre=SharedPreferencesHelper.getInstance(this).getString("Address","Address");
+        L.e("getUTXOList_Address: "+addre);
+        String pub=SharedPreferencesHelper.getInstance(this).getString("Pubkey","Pubkey");
+        L.e("getUTXOList_publ: "+pub);
+        String Priv=SharedPreferencesHelper.getInstance(this).getString("Privkey","Privkey");
+        L.e("getUTXOList_Privkey: "+Priv);
+
+        address.put("address",addre);
+        ApiService apiService= NetWorkManager.getApiService();
+        Observable<UTXOList> observable=apiService.getUTXOList(address);
+        observable.subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<UTXOList>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(UTXOList utxoListRetUTXOList) {
+
+                        L.e("Message : "+utxoListRetUTXOList.getMessage());
+                        L.e("Status : "+utxoListRetUTXOList.getStatus());
+                        L.e("utxos-size :"+utxoListRetUTXOList.getUtxosX().size());
+
+                        utxoRecordList=new ArrayList<>();
+                        utxo_list=utxoListRetUTXOList.getUtxosX();
+                        L.e("getUtxosX的个数",utxo_list.size()+"");
+                        for (int i=0;i<utxo_list.size();i++){
+                            L.e("进ｆｏｒ_utxo "+i);
+
+                            UTXORecord utxoRecord=new UTXORecord();
+                            utxoRecord.setConfirmations(utxoListRetUTXOList.getUtxosX().get(i).getConfirmations());
+                            utxoRecord.setTxId(utxoListRetUTXOList.getUtxosX().get(i).getTxid());
+                            utxoRecord.setVout(utxoListRetUTXOList.getUtxosX().get(i).getVout());
+                            utxoRecord.setAddress(utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getAddresses().get(0));
+
+                            ScriptPubkey scriptPubkey =new ScriptPubkey();
+                            scriptPubkey.setAsm(utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getAsm());
+                            scriptPubkey.setHex(utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getHex());
+                            //scriptPubkey.setReqSigs(utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getReqSigs());
+                            // scriptPubkey.setType(utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getType());
+                            // scriptPubkey.setAddress(utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getAddresses().get(0));
+                            utxoRecord.setScriptPubKey(scriptPubkey);
+                            utxoRecord.setVersion(utxoListRetUTXOList.getUtxosX().get(i).getVersion());
+                            utxoRecord.setCoinbase(utxoListRetUTXOList.getUtxosX().get(i).isCoinbase());
+                            utxoRecord.setBestblockhash(utxoListRetUTXOList.getUtxosX().get(i).getBestblockhash());
+                            utxoRecord.setBestblockheight(utxoListRetUTXOList.getUtxosX().get(i).getBlockheight());
+                            utxoRecord.setBestblocktime(utxoListRetUTXOList.getUtxosX().get(i).getBestblocktime());
+                            utxoRecord.setBlockhash(utxoListRetUTXOList.getUtxosX().get(i).getBlockhash());
+                            utxoRecord.setBlockheight(utxoListRetUTXOList.getUtxosX().get(i).getBlockheight());
+                            utxoRecord.setBlocktime(utxoListRetUTXOList.getUtxosX().get(i).getBlocktime());
+
+                            L.e("getValue="+utxoListRetUTXOList.getUtxosX().get(i).getValue());
+                            //把5.00000000转化成50000000
+                            Double d = new Double(utxoListRetUTXOList.getUtxosX().get(i).getValue())*Math.pow(10,8);
+                            L.e("double"+d);
+                            java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
+                            nf.setGroupingUsed(false);
+                            L.e("转化后　"+nf.format(d));
+
+                            utxoRecord.setValue( new BigInteger(nf.format(d)));
+
+                            utxoRecordList.add(utxoRecord);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        hideWaitDialog();
+                        L.e("onError");
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        L.e("onComplete");
+                        UTXORecordDaoUtils.getInstance().deleteAllData();
+                        UTXORecordDaoUtils.getInstance().insertOrReplaceMultiData(utxoRecordList);
+                        hideWaitDialog();
+                    }
+                });
+    }
+
+
+    private void logout() {
+        ApiService apiService= NetWorkManager.getApiService();
+        Observable<Logout> observable=apiService.logout();
+        observable.subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Logout>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Logout logout) {
+
+                        L.i(logout.getStatus());
+                        L.i(logout.getMessage());
+                        L.e("onNext");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        L.e("onError");
+                        e.printStackTrace();
+                        hideWaitDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        hideWaitDialog();
+                        h.sendEmptyMessage(0x13);
+                        startActivity(new Intent(SendAndReceiveActivity.this,LoginActivity2.class));
+                        //  showToast("login successful");
+                        L.i("onComplete");
+                    }
+                });
+    }
+
 
 }

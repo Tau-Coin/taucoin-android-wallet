@@ -3,6 +3,8 @@ package com.mofei.tau.db.greendao;
 import com.mofei.tau.db.GreenDaoManager;
 import com.mofei.tau.transaction.TransactionHistory;
 
+import org.greenrobot.greendao.query.Query;
+
 import java.util.List;
 
 /**
@@ -161,27 +163,32 @@ public class TransactionHistoryDaoUtils {
         return getTransactionHistoryDao().loadAll();
     }
 
+
+    /*public List<TransactionHistory> queryConfirmationsLow2() {
+        return (List<TransactionHistory>) getTransactionHistoryDao().queryBuilder().where();
+    }*/
+
+
+
     /**
      * 根据名称查询 以年龄降序排列
      *
      * @param name
      * @return
      */
-    /*
-    public List<Accounts> queryUserByName(String name) {
-        Query<Accounts> build = null;
+
+
+    public List<TransactionHistory> queryTransactionByName(String name) {
+        Query<TransactionHistory> build = null;
         try {
-            build = getAccountsDao().queryBuilder()
-                    .where(AccountsDao.Properties.Name.eq(name))
-                    .orderDesc(AccountsDao.Properties.Age)
+            build = getTransactionHistoryDao().queryBuilder()
+                    .where(TransactionHistoryDao.Properties.TxId.eq(name))
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return build.list();
     }
-*/
     /**
      * 根据参数查询
      *　Query based on parameters
@@ -189,7 +196,7 @@ public class TransactionHistoryDaoUtils {
      * @param param
      * @return
      */
-    public List<TransactionHistory> queryUserByParams(String where, String... param) {
+    public List<TransactionHistory> queryTransactionHistoryByParams(String where, String... param) {
         return getTransactionHistoryDao().queryRaw(where, param);
     }
 

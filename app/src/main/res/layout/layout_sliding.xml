@@ -41,7 +41,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="User name"/>
+            android:text="Please re register the new account"/>
 
         <TextView
             android:id="@+id/help"
@@ -53,15 +53,13 @@
             android:text="Help"
             android:textColor="@drawable/text_color"/>
         <TextView
-            android:textColor="@drawable/text_color"
             android:id="@+id/about"
             android:textSize="16sp"
             android:textStyle="italic"
             android:layout_marginTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="About"
-            />
+            android:text="About" />
         <Button
             android:id="@+id/about_us"
             android:gravity="center"

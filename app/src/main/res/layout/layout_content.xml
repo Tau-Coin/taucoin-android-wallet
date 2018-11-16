@@ -14,13 +14,13 @@
         </com.mofei.tau.view.CustomToolBar>
 
         <RelativeLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
                 <android.support.v4.view.ViewPager
                     android:id="@+id/ad_paper"
                     android:layout_width="match_parent"
                     android:layout_height="180dp">
-
                 </android.support.v4.view.ViewPager>
 
                 <LinearLayout
@@ -50,9 +50,41 @@
                 </LinearLayout>
         </RelativeLayout>
 
-        <ScrollView
-            android:background="#ffffff"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:layout_marginTop="20dp"
+            android:text="Yours Balance"
+            android:layout_gravity="center"/>
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/balance_tau"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#0000ff"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:text=""
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:text="TAU"
+                    android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_marginTop="40dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
                 <LinearLayout
@@ -80,6 +112,7 @@
                             android:textSize="16sp"/>
 
                         <Button
+                            android:visibility="gone"
                             android:layout_gravity="center"
                             android:id="@+id/balance"
                             android:layout_width="match_parent"
@@ -116,6 +149,18 @@
                             android:background="@drawable/backgroud_color1" />
 
                         <Button
+                            android:enabled="true"
+                            android:layout_gravity="center"
+                            android:id="@+id/send_and_receive"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:textAllCaps="false"
+                            android:text="Send"
+                            android:textSize="18sp"
+                            android:textColor="#ffffff"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/backgroud_color1" />
+                        <Button
                             android:visibility="gone"
                             android:textAllCaps="false"
                             android:layout_gravity="center"
@@ -140,18 +185,7 @@
                             android:layout_marginTop="25dp"
                             android:background="@drawable/backgroud_color1" />
 
-                        <Button
-                            android:enabled="true"
-                            android:layout_gravity="center"
-                            android:id="@+id/send_and_receive"
-                            android:layout_width="match_parent"
-                            android:layout_height="70dp"
-                            android:textAllCaps="false"
-                            android:text="Send"
-                            android:textSize="18sp"
-                            android:textColor="#ffffff"
-                            android:layout_marginTop="25dp"
-                            android:background="@drawable/backgroud_color1" />
+
 
                         <Button
                             android:enabled="true"
@@ -164,18 +198,6 @@
                             android:textSize="18sp"
                             android:textColor="#ffffff"
                             android:layout_marginTop="25dp"
-                            android:background="@drawable/backgroud_color1" />
-                        <Button
-                            android:enabled="true"
-                            android:layout_gravity="center"
-                            android:layout_width="match_parent"
-                            android:layout_height="70dp"
-                            android:textAllCaps="false"
-                            android:text="Test"
-                            android:textSize="18sp"
-                            android:textColor="#ffffff"
-                            android:layout_marginTop="25dp"
-                            android:layout_marginBottom="90dp"
                             android:background="@drawable/backgroud_color1" />
 
                 </LinearLayout>

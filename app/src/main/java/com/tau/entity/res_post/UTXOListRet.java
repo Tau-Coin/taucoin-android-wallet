@@ -1,9 +1,5 @@
 package com.mofei.tau.entity.res_post;
 
-import com.mofei.tau.src.io.taucoin.android.wallet.utxo.ScriptPubkey;
-
-import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.List;
 
 /**

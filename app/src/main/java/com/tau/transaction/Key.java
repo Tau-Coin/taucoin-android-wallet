@@ -25,18 +25,12 @@ public class Key {
     private String pubkey;
     private String privkey;
     private String address;
-
-    @Convert(converter =BigIntegerConverter.class, columnType = String.class)
-    private BigInteger utxo;
-    @Convert(converter =BigIntegerConverter.class, columnType = String.class)
-    private BigInteger reward;
-    @Convert(converter =BigIntegerConverter.class, columnType = String.class)
-    private BigInteger balance;
-
-
-    @Generated(hash = 2056518582)
-    public Key(Long id, String pubkey, String privkey, String address, BigInteger utxo,
-            BigInteger reward, BigInteger balance) {
+    private long utxo;
+    private long reward;
+    private long balance;
+    @Generated(hash = 1996025511)
+    public Key(Long id, String pubkey, String privkey, String address, long utxo,
+            long reward, long balance) {
         this.id = id;
         this.pubkey = pubkey;
         this.privkey = privkey;
@@ -45,102 +39,51 @@ public class Key {
         this.reward = reward;
         this.balance = balance;
     }
-
-
     @Generated(hash = 2076226027)
     public Key() {
     }
-
-
     public Long getId() {
         return this.id;
     }
-
-
     public void setId(Long id) {
         this.id = id;
     }
-
-
     public String getPubkey() {
         return this.pubkey;
     }
-
-
     public void setPubkey(String pubkey) {
         this.pubkey = pubkey;
     }
-
-
     public String getPrivkey() {
         return this.privkey;
     }
-
-
     public void setPrivkey(String privkey) {
         this.privkey = privkey;
     }
-
-
     public String getAddress() {
         return this.address;
     }
-
-
     public void setAddress(String address) {
         this.address = address;
     }
-
-
-    public BigInteger getUtxo() {
+    public long getUtxo() {
         return this.utxo;
     }
-
-
-    public void setUtxo(BigInteger utxo) {
+    public void setUtxo(long utxo) {
         this.utxo = utxo;
     }
-
-
-    public BigInteger getReward() {
+    public long getReward() {
         return this.reward;
     }
-
-
-    public void setReward(BigInteger reward) {
+    public void setReward(long reward) {
         this.reward = reward;
     }
-
-
-    public BigInteger getBalance() {
+    public long getBalance() {
         return this.balance;
     }
-
-
-    public void setBalance(BigInteger balance) {
+    public void setBalance(long balance) {
         this.balance = balance;
     }
 
-
-    public static class BigIntegerConverter implements PropertyConverter<BigInteger,String> {
-
-        @Override
-        public BigInteger convertToEntityProperty(String databaseValue) {
-            if (databaseValue == null) {
-                return null;
-            }
-            return new Gson().fromJson(databaseValue, BigInteger.class);
-        }
-
-        @Override
-        public String convertToDatabaseValue(BigInteger entityProperty) {
-            if (entityProperty == null) {
-                return null;
-            }
-            return new Gson().toJson(entityProperty);
-        }
-    }
-
-    
     
 }

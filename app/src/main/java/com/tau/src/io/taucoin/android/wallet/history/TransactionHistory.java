@@ -35,4 +35,5 @@ public class TransactionHistory {
     public long time;
 
     public TransactionStatus status;
+
 }

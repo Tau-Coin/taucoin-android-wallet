@@ -13,30 +13,27 @@
         android:layout_height="wrap_content">
     </com.mofei.tau.view.CustomToolBar>
 
-    <!--<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        android:layout_marginTop="20dp"
-        android:textStyle="bold"
-        android:text="Wallet"
-        android:layout_gravity="center"/>-->
-    <!--<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="20dp"
-        android:text="User name"
-        android:layout_gravity="center"/>-->
     <TextView
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:layout_marginTop="10dp"
-        android:text="My Account "
-        android:layout_gravity="center"/>
+        android:text="Address"
+        android:layout_marginLeft="20dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_alignParentLeft="true"
+        android:textIsSelectable="true"
+        android:id="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text=""
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="20dp"
+        />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,19 +42,36 @@
         android:text="PublicKey"
         android:layout_marginLeft="20dp"
          android:textStyle="bold"/>
-    <TextView
-        android:textIsSelectable="true"
-        android:id="@+id/public_key"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="10dp"
-        android:text=""
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-         />
-    <TextView
 
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:password="true"
+            android:textIsSelectable="true"
+            android:id="@+id/public_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:text=""
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="20dp"
+            />
+        <CheckBox
+            android:layout_marginRight="15dp"
+            android:checked="false"
+            android:id="@+id/cbDisplayPublkey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:button="@drawable/code_address"/>
+    </RelativeLayout>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
@@ -91,48 +105,11 @@
             android:button="@drawable/code_address"/>
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="10dp"
-        android:text="Address"
-        android:layout_marginLeft="20dp"
-        android:textStyle="bold"/>
-
-    <RelativeLayout
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_alignParentLeft="true"
-            android:password="true"
-            android:textIsSelectable="true"
-            android:id="@+id/address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text=""
-            android:layout_marginRight="40dp"
-            android:layout_marginLeft="20dp"
-            />
-        <CheckBox
-            android:layout_marginRight="15dp"
-            android:checked="false"
-            android:id="@+id/cbDisplayAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:button="@drawable/code_address"/>
-    </RelativeLayout>
-
-
     <ImageView
         android:id="@+id/wallet_address_iv"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-     />
+        android:layout_height="wrap_content" />
     <TextView
         android:visibility="invisible"
         android:id="@+id/to_details"

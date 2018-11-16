@@ -22,8 +22,8 @@ public class MD5_BASE64Util {
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             BASE64Encoder base64en = new BASE64Encoder();
-           // return base64en.encode(str.getBytes("utf-8"));
-            return base64en.encode(md5.digest(str.getBytes("utf-8")));
+            return base64en.encode(str.getBytes("utf-8"));
+           // return base64en.encode(md5.digest(str.getBytes("utf-8")));
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             return null;
         }

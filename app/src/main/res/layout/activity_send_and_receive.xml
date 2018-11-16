@@ -1,65 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".activity.BalanceActivity">
-
-    <com.mofei.tau.view.CustomToolBar
-        android:id="@+id/send_receive_titlebar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </com.mofei.tau.view.CustomToolBar>
-
-    <FrameLayout
-        android:id="@+id/fragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+    android:id="@+id/drawerLayout"
+    tools:context=".activity.MainActivity">
 
 
-    <RadioGroup
-        android:id="@+id/tab_radiogroup"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:background="@color/write"
-        android:gravity="center">
+    <include layout="@layout/layout_transation_content"/>
 
-        <RadioButton
-            android:id="@+id/send"
-            android:checked="true"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/selector_tab_send"
-            android:button="@null"
-            android:gravity="center"
-            android:text="Send"
-            android:textColor="@drawable/selector_tab_text_color"/>
-        <RadioButton
-            android:id="@+id/receive"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/selector_tab_receive"
-            android:button="@null"
-            android:gravity="center"
-            android:text="Receive"
-            android:textColor="@drawable/selector_tab_text_color"/>
-        <RadioButton
-            android:id="@+id/manage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/selector_tab_manage"
-            android:button="@null"
-            android:gravity="center"
-            android:text="Manage"
-            android:textColor="@drawable/selector_tab_text_color"/>
+    <include layout="@layout/layout_sliding"/>
 
 
-    </RadioGroup>
-
-</LinearLayout>
+</android.support.v4.widget.DrawerLayout>

@@ -60,50 +60,50 @@ import org.greenrobot.greendao.converter.PropertyConverter;
 public class UTXORecord implements Comparable<UTXORecord> {
 
     @Id
-    private Long id;
+    public Long id;
 
     // TXID with HEX fromat string
-    private String txId;
+    public String txId;
 
     // Spent or not
-    private boolean spent;
+    public boolean spent;
 
     // Address
-    private String address;
+    public String address;
 
     // vout index
-    private long vout;
+    public long vout;
 
     // confirmations
-    private long confirmations;
+    public long confirmations;
 
     // version
-    private long version;
+    public long version;
 
     // Is coinbase?
-    private boolean coinbase;
+    public boolean coinbase;
 
     // bestblockhash with HEX fromat string
-    private String bestblockhash;
+    public String bestblockhash;
 
     // bestblockheight
-    private long bestblockheight;
+    public long bestblockheight;
 
     // bestblocktime
-    private long bestblocktime;
+    public long bestblocktime;
 
     // blockhash
-    private String blockhash;
+    public String blockhash;
 
     // blockheight
-    private long blockheight;
+    public long blockheight;
 
     // blocktime
-    private long blocktime;
+    public long blocktime;
 
     // value
     @Convert(converter = BigIntegerConverter.class, columnType = String.class)
-    private BigInteger  value;
+    public BigInteger  value;
 
     public static class BigIntegerConverter implements PropertyConverter<BigInteger,String>{
 
@@ -126,7 +126,7 @@ public class UTXORecord implements Comparable<UTXORecord> {
 
     // scriptPubKey
     @Convert(converter = ScriptPubkeyConverter.class, columnType = String.class)
-    private ScriptPubkey scriptPubKey;
+    public ScriptPubkey scriptPubKey;
 
     @Generated(hash = 1084351274)
     public UTXORecord(Long id, String txId, boolean spent, String address, long vout, long confirmations,

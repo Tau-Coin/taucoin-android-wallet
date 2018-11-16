@@ -73,12 +73,62 @@
         android:layout_height="wrap_content"
         android:id="@+id/referralURL"
         android:text="referralURL"/>
-    <Button
+    <LinearLayout
         android:layout_margin="1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/insert"
-        android:text="sqlite_in"/>
+        android:orientation="horizontal">
+        <Button
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/insert"
+            android:text="deletetransationHistroy"/>
+        <Button
+            android:layout_weight="1"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/delete"
+            android:text="delete_UTXORecord"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/getHeight"
+            android:text="getHeight"/>
+        <Button
+            android:layout_weight="1"
+            android:layout_margin="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/getUTXOList"
+            android:text="getUTXOList"/>
+        <Button
+            android:layout_weight="1"
+            android:layout_margin="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/getRawTX"
+            android:text="getRawTX"/>
+
+        <Button
+            android:layout_weight="1"
+            android:layout_margin="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sendRawTransation"
+            android:text="sendRawTransation"/>
+
+    </LinearLayout>
+
 
 
 

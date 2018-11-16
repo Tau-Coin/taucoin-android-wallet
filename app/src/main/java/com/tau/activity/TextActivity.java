@@ -8,6 +8,7 @@ import android.view.View;
 import com.mofei.tau.R;
 import com.mofei.tau.constant.TAU_BaseURL;
 import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
+import com.mofei.tau.db.greendao.UTXORecordDaoUtils;
 import com.mofei.tau.entity.req_parameter.FBAddressEmail;
 import com.mofei.tau.entity.req_parameter.FBAddressEmlVeri;
 import com.mofei.tau.entity.req_parameter.FBAddressPubKey;
@@ -40,17 +41,22 @@ import com.mofei.tau.entity.res_put.Login0Ret;
 import com.mofei.tau.info.SharedPreferencesHelper;
 import com.mofei.tau.net.ApiService;
 import com.mofei.tau.net.NetWorkManager;
+import com.mofei.tau.transaction.ScriptPubkey;
 import com.mofei.tau.transaction.TransactionHistory;
+import com.mofei.tau.transaction.UTXORecord;
 import com.mofei.tau.util.L;
+import com.mofei.tau.util.MD5_BASE64Util;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.net.URL;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.security.cert.CertificateFactory;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -86,7 +92,6 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text);
 
-
         String fbid= SharedPreferencesHelper.getInstance(TextActivity.this).getString("userId","userId");
 
         address=SharedPreferencesHelper.getInstance(TextActivity.this).getString("Address","Address");
@@ -96,7 +101,6 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
         userId=SharedPreferencesHelper.getInstance(TextActivity.this).getString("userId","userId");
 
         Address=SharedPreferencesHelper.getInstance(TextActivity.this).getString("Address","Address");
-
 
         findViewById(R.id.Balance).setOnClickListener(this);
         findViewById(R.id.login0).setOnClickListener(this);
@@ -114,6 +118,8 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
         findViewById(R.id.getHeight).setOnClickListener(this);
         findViewById(R.id.getUTXOList).setOnClickListener(this);
         findViewById(R.id.getRawTX).setOnClickListener(this);
+
+        findViewById(R.id.delete).setOnClickListener(this);
     }
 
 
@@ -161,16 +167,18 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
                 user.setName("ly");
                 MyApplication.getInstances().getDaoSession().insert(user);
                 Log.i("-------", "添加成功");*/
-                L.e("111");
+                /*L.e("111");
                 TransactionHistory transactionHistory=new TransactionHistory();
                 transactionHistory.setTxId("setTxId");
-                transactionHistory.setFromAddress("setFromAddress");
-               // TransactionHistoryDaoUtils.getInstance().insertTransactionHistoryData(transactionHistory);
-
-
+                transactionHistory.setResult(true);
+                transactionHistory.setToAddress("dsdsafafdaaas");
+                transactionHistory.setValue("1111");
+                transactionHistory.setTime(1000000);
+                TransactionHistoryDaoUtils.getInstance().insertTransactionHistoryData(transactionHistory);
+*/
                // TransactionHistoryDaoUtils.getInstance().deleteTransactionHistoryData(transactionHistory);
 
-                TransactionHistoryDaoUtils.getInstance().deleteTransactionHistoryByKey(transactionHistory.getId());
+               // TransactionHistoryDaoUtils.getInstance().deleteTransactionHistoryByKey(transactionHistory.getId());
                // TransactionHistoryDaoUtils.getInstance().deleteAllData();
                 /* UTXORecord utxoRecord=new UTXORecord();
                 utxoRecord.setAddress("xinye");
@@ -179,8 +187,14 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
                 utxoRecord.setTxId("111");
                 UTXORecordDaoUtils.getInstance().insertUTXORecordData(utxoRecord);*/
 
-                L.e("添加成功");
+                TransactionHistoryDaoUtils.getInstance().deleteAllData();
+                L.e("shanchu成功");
 
+               /* List<TransactionHistory> unComformTX=TransactionHistoryDaoUtils.getInstance().queryTransactionHistoryByParams("where CONFIRMATIONS<?", String.valueOf(2));
+                for (int i=0;i<unComformTX.size();i++){
+                    L.e("unComformTX"+i);
+                }
+                L.e("成功");*/
                 break;
 
             case R.id.getHeight:
@@ -192,13 +206,16 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
                 getUTXOList();
                 break;
             case R.id.getRawTX:
-
                 getRawTX();
-
                 break;
-           /* case R.id.sendRawTransation:
+            case R.id.sendRawTransation:
                 sendRawTransation();
-                break;*/
+                break;
+            case R.id.delete:
+               // TransactionHistoryDaoUtils.getInstance().deleteAllData();
+                UTXORecordDaoUtils.getInstance().deleteAllData();
+                break;
+
         }
     }
 
@@ -212,102 +229,61 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
 
         txid.put("txid","28b15b032a6e0bc3f2a43ba8d7ec5d2b8377c5898f1dfbbe6b4bac0e90657bd7");
         ApiService apiService=NetWorkManager.getApiService();
-        Observable<RawTX<RawTXRet<RawTXRetVin<RawTXRetVinScriptSig>,RawTXRetVout<RawTXRetVoutScriptPubKey>>>> observable=apiService.getRawTransation(txid);
+        Observable<RawTX> observable=apiService.getRawTransation(txid);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<RawTX<RawTXRet<RawTXRetVin<RawTXRetVinScriptSig>, RawTXRetVout<RawTXRetVoutScriptPubKey>>>>() {
+                .subscribe(new Observer<RawTX>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(RawTX<RawTXRet<RawTXRetVin<RawTXRetVinScriptSig>, RawTXRetVout<RawTXRetVoutScriptPubKey>>> rawTXRetRawTX) {
+                    public void onNext(RawTX rawTX) {
 
-                        L.e(TAG,"Message: "+rawTXRetRawTX.getMessage());
-                        L.e(TAG,"Status: "+rawTXRetRawTX.getStatus());
-                        L.e(TAG,"Status: "+rawTXRetRawTX.getRet().getTxid());
-                        L.e(TAG,"Status: "+rawTXRetRawTX.getRet().getBlocktime());
+                        TransactionHistory transactionHistory=new TransactionHistory();
+                        L.e(list.get(0).getTxid());
+                        transactionHistory.setTxId(list.get(0).getTxid());
+                        transactionHistory.setConfirmations(rawTX.getRet().getConfirmations());
+                        transactionHistory.setResult(true);
+                        transactionHistory.setToAddress("sdsddfageaggeag");
+                        L.e(list.get(0).getValue());
+                        transactionHistory.setValue(list.get(0).getValue());
+                        L.e(""+list.get(0).getBlocktime());
+                        transactionHistory.setTime(list.get(0).getBlocktime());
+
+                        TransactionHistoryDaoUtils.getInstance().insertTransactionHistoryData(transactionHistory);
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
 
-                        L.e("onError");
-                        e.printStackTrace();
                     }
 
                     @Override
                     public void onComplete() {
 
-                        L.e("onComplete");
                     }
                 });
     }
 
-    private void getUTXOList2() {
-        OkHttpClient client = new OkHttpClient();
-        JSONObject jsonObject = new JSONObject();
-        try {
-            String s=SharedPreferencesHelper.getInstance(TextActivity.this).getString("Address","Address");
-            L.e(s);
-            jsonObject.put("address", s);
 
-            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonObject.toString());
-
-            URL url = new URL( TAU_BaseURL.BASE_URL_TEXT+ "getUTXOList/");
-            Request requestBuilder = new Request.Builder()
-                    .url(url)
-                    .post(requestBody)
-                    .build();
-            Call call = client.newCall(requestBuilder);
-            call.enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.i("fail", "fail");
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-
-                    if (response.isSuccessful()) {
-                        L.e("message： " + response.body().string());
-                       /* try {
-                            JSONObject jsonObject=new JSONObject(response.body().string());
-                            String isUserExist= (String) jsonObject.get("message");
-
-                            Log.e(TAG, "message： " + isUserExist);
-
-                            *//*if(isUserExist.equals("fail")){
-
-                                //  handler.sendEmptyMessage(0x133);
-                                //  login_0();
-                            }else {
-                                JsonObject ret= (JsonObject) jsonObject.get("ret");
-                                JsonObject serializer_account= (JsonObject) ret.get("serializer_account");
-                                String address=serializer_account.get("address").toString();
-                                String pubkey=serializer_account.get("pubkey").toString();
-
-                            }*//*
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }*/
-                    } else {
-
-                    }
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    List<UTXORecord> utxoRecordList;
+    List<UTXOList.UtxosBean> list;
 
     private void getUTXOList() {
 
         Map<String,String> address=new HashMap<>();
-        String s=SharedPreferencesHelper.getInstance(TextActivity.this).getString("Address","Address");
-        L.e("Address:"+s);
-        address.put("address",s);
+
+        String addre=SharedPreferencesHelper.getInstance(TextActivity.this).getString("Address","Address");
+        L.e("Address: "+addre);
+        String pub=SharedPreferencesHelper.getInstance(TextActivity.this).getString("Pubkey","Pubkey");
+        L.e("publ: "+pub);
+        String Priv=SharedPreferencesHelper.getInstance(TextActivity.this).getString("Privkey","Privkey");
+        L.e("Privkey: "+Priv);
+
+        address.put("address",addre);
         ApiService apiService=NetWorkManager.getApiService();
         Observable<UTXOList> observable=apiService.getUTXOList(address);
         observable.subscribeOn(Schedulers.io())
@@ -321,15 +297,77 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
                     @Override
                     public void onNext(UTXOList utxoListRetUTXOList) {
 
-                        L.e("Message: "+utxoListRetUTXOList.getMessage());
-                        L.e("Status: "+utxoListRetUTXOList.getStatus());
-                        L.e("utxos"+utxoListRetUTXOList.getUtxosX().size());
-                        List<UTXOList.UtxosBean> list=utxoListRetUTXOList.getUtxosX();
+                        L.e("Message : "+utxoListRetUTXOList.getMessage());
+                        L.e("Status : "+utxoListRetUTXOList.getStatus());
+                        L.e("utxos-size :"+utxoListRetUTXOList.getUtxosX().size());
+
+                        utxoRecordList=new ArrayList<>();
+                        list=utxoListRetUTXOList.getUtxosX();
                         for (int i=0;i<list.size();i++){
-                            L.e("utxos"+utxoListRetUTXOList.getUtxosX().get(i).getTxid());
+
+                            L.e("getTxid :"+utxoListRetUTXOList.getUtxosX().get(i).getTxid());
+                            L.e("getAddresses :"+utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getAddresses().get(0));
+                            L.e("getVout :"+utxoListRetUTXOList.getUtxosX().get(i).getVout());
+                            L.e("getValue :"+utxoListRetUTXOList.getUtxosX().get(i).getValue());
+                            L.e("getConfirmations :"+utxoListRetUTXOList.getUtxosX().get(i).getConfirmations());
+                            L.e("getAsm :"+utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getAsm());
+                            L.e("getHex :"+utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getHex());
+
+                            L.e("getBlockhash :"+utxoListRetUTXOList.getUtxosX().get(i).getBlockhash());
+                            L.e("getBlockheight :"+utxoListRetUTXOList.getUtxosX().get(i).getBlockheight());
+                            L.e("getBlocktime :"+utxoListRetUTXOList.getUtxosX().get(i).getBlocktime());
+
+                            L.e("getBestblockhash :"+utxoListRetUTXOList.getUtxosX().get(i).getBestblockhash());
+                            L.e("getBestblocktime :"+utxoListRetUTXOList.getUtxosX().get(i).getBestblocktime());
+                            L.e("getBestblockheight :"+utxoListRetUTXOList.getUtxosX().get(i).getBestblockheight());
+
+                            L.e("getVersion :"+utxoListRetUTXOList.getUtxosX().get(i).getVersion());
+
+                            L.e("isCoinbase :"+utxoListRetUTXOList.getUtxosX().get(i).isCoinbase());
+
+                            L.e("getAddresses :"+utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getAddresses());
+
+                            L.e("========================"+i);
+
+                            UTXORecord utxoRecord=new UTXORecord();
+                            utxoRecord.setConfirmations(utxoListRetUTXOList.getUtxosX().get(i).getConfirmations());
+                            utxoRecord.setTxId(utxoListRetUTXOList.getUtxosX().get(i).getTxid());
+
+                            utxoRecord.setVout(utxoListRetUTXOList.getUtxosX().get(i).getVout());
+                            //utxoRecord.setVout(1L);
+                            utxoRecord.setAddress(utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getAddresses().get(0));
+
+
+                            ScriptPubkey scriptPubkey =new ScriptPubkey();
+                            scriptPubkey.setAsm(utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getAsm());
+                            scriptPubkey.setHex(utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getHex());
+                            //scriptPubkey.setReqSigs(utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getReqSigs());
+                           // scriptPubkey.setType(utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getType());
+                           // scriptPubkey.setAddress(utxoListRetUTXOList.getUtxosX().get(i).getScriptPubKey().getAddresses().get(0));
+                            utxoRecord.setScriptPubKey(scriptPubkey);
+                            utxoRecord.setVersion(utxoListRetUTXOList.getUtxosX().get(i).getVersion());
+                            utxoRecord.setCoinbase(utxoListRetUTXOList.getUtxosX().get(i).isCoinbase());
+                            utxoRecord.setBestblockhash(utxoListRetUTXOList.getUtxosX().get(i).getBestblockhash());
+                            utxoRecord.setBestblockheight(utxoListRetUTXOList.getUtxosX().get(i).getBlockheight());
+                            utxoRecord.setBestblocktime(utxoListRetUTXOList.getUtxosX().get(i).getBestblocktime());
+                            utxoRecord.setBlockhash(utxoListRetUTXOList.getUtxosX().get(i).getBlockhash());
+                            utxoRecord.setBlockheight(utxoListRetUTXOList.getUtxosX().get(i).getBlockheight());
+                            utxoRecord.setBlocktime(utxoListRetUTXOList.getUtxosX().get(i).getBlocktime());
+
+                            L.e("getValue="+utxoListRetUTXOList.getUtxosX().get(i).getValue());
+                            L.e("getValue="+Double.parseDouble(utxoListRetUTXOList.getUtxosX().get(i).getValue())*Math.pow(10,8));
+                            L.e(""+utxoListRetUTXOList.getUtxosX().get(i).getValue());
+                            //把5.00000000转化成50000000
+                            Double d = new Double(utxoListRetUTXOList.getUtxosX().get(i).getValue())*Math.pow(10,8);
+                            L.e("double"+d);
+                            java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
+                            nf.setGroupingUsed(false);
+                            L.e("d:="+nf.format(d));
+
+                            utxoRecord.setValue( new BigInteger(nf.format(d)));
+
+                            utxoRecordList.add(utxoRecord);
                         }
-
-
 
                     }
 
@@ -343,6 +381,8 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
                     @Override
                     public void onComplete() {
                         L.e("onComplete");
+
+                        UTXORecordDaoUtils.getInstance().insertOrReplaceMultiData(utxoRecordList);
 
                     }
                 });
@@ -370,7 +410,6 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
 
                     @Override
                     public void onError(Throwable e) {
-
                         L.e("onError");
                         e.printStackTrace();
 
@@ -453,7 +492,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
                          String address= login1RetLogin1.getRet().getSerializer_account().getAddress();
                          Log.e(TAG, "address: " +address);
                          String Pubkey= login1RetLogin1.getRet().getSerializer_account().getPubkey();
-                         Log.e(TAG, "Pubkey: " +Pubkey);
+                         Log.e(TAG, "Pubkey : " +Pubkey);
                      }
 
                      @Override

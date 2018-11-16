@@ -15,9 +15,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.mofei.tau.R;
 import com.mofei.tau.adapter.HistoryEventRecycleAdapter;
+import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
+import com.mofei.tau.transaction.TransactionHistory;
+import com.mofei.tau.util.L;
 import com.mofei.tau.view.CustomToolBar;
 import com.mofei.tau.view.SwipeRecyclerView;
 
@@ -30,13 +34,13 @@ import java.util.List;
  */
 public class ManageFragment extends Fragment {
 
-
-    private CustomToolBar mMainCustomToolBar;
     private SwipeRefreshLayout swipeRefreshLayout;
     // private RecyclerView historyRecyclerView;
     private SwipeRecyclerView swipeRecyclerView;
     private HistoryEventRecycleAdapter historyEventRecycleAdapter;
+    private List<TransactionHistory> txList;
 
+    private Toast mToast = null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +63,13 @@ public class ManageFragment extends Fragment {
 
     private void initEvent(View view) {
 
+        txList=new ArrayList<>();
+        List<TransactionHistory> tempTXHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
+        if (!tempTXHistoryList.isEmpty()){
+            txList.clear();
+            txList.addAll(tempTXHistoryList);
+        }
+
         swipeRecyclerView=view.findViewById(R.id.history_recycleView);
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
         //Set the background color of the drop-down progress bar, default white.
@@ -69,23 +80,23 @@ public class ManageFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                List<TransactionHistory> tempTXHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
+                if (!tempTXHistoryList.isEmpty()){
+                    txList.clear();
+                    txList.addAll(tempTXHistoryList);
+                }
+                historyEventRecycleAdapter.notifyDataSetChanged();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         swipeRefreshLayout.setRefreshing(false);
                     }
-                },3000);
-
+                },2000);
             }
         });
 
-        List<String> list=new ArrayList<>();
-        for (int i=0;i<50;i++){
-            list.add("data" +i);
-        }
-
-        historyEventRecycleAdapter=new HistoryEventRecycleAdapter(getActivity(),list);
+       // List<TransactionHistory> transactionHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
+        historyEventRecycleAdapter=new HistoryEventRecycleAdapter(getActivity(),txList);
         /**
          * 设置布局方向
          * Setting layout direction
@@ -116,12 +127,25 @@ public class ManageFragment extends Fragment {
         swipeRecyclerView.setRightClickListener(new SwipeRecyclerView.OnRightClickListener() {
             @Override
             public void onRightClick(int position, String id) {
-
-               // showToast("删除数据"+position);
+                L.e("删除数据"+position);
+                TransactionHistoryDaoUtils.getInstance().deleteTransactionHistoryData(txList.get(position));
+                txList.remove(position);
+                historyEventRecycleAdapter.notifyDataSetChanged();
+                showToast("delete successfully");
 
             }
         });
+    }
 
+
+    public void showToast(String text) {
+        if (null != text) {
+            if (null != mToast) {
+                mToast.cancel();
+            }
+            mToast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
+            mToast.show();
+        }
     }
 
 

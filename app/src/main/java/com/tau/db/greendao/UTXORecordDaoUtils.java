@@ -1,5 +1,7 @@
 package com.mofei.tau.db.greendao;
 
+import android.database.Cursor;
+
 import com.mofei.tau.db.GreenDaoManager;
 import com.mofei.tau.transaction.UTXORecord;
 
@@ -184,5 +186,7 @@ public class UTXORecordDaoUtils {
     public UTXORecordDao getUTXORecordDao() {
         return daoManager.getDaoSession().getUTXORecordDao();
     }
+
+
 
 }

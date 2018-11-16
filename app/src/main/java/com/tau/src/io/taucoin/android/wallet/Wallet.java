@@ -31,13 +31,12 @@ import com.mofei.tau.src.io.taucoin.android.wallet.keystore.KeyStore;
 import com.mofei.tau.src.io.taucoin.android.wallet.transactions.Transaction;
 import com.mofei.tau.src.io.taucoin.android.wallet.transactions.TransactionOutPoint;
 import com.mofei.tau.src.io.taucoin.android.wallet.transactions.TransactionInput;
-import com.mofei.tau.src.io.taucoin.android.wallet.transactions.TransactionInputReward;
 import com.mofei.tau.src.io.taucoin.android.wallet.transactions.TransactionOutput;
 import com.mofei.tau.src.io.taucoin.android.wallet.transactions.TransactionFailReason;
 import com.mofei.tau.src.io.taucoin.android.wallet.transactions.CreateTransactionResult;
 import com.mofei.tau.src.io.taucoin.android.wallet.utxo.CoinsSelector;
 import com.mofei.tau.src.io.taucoin.android.wallet.utxo.UTXOManager;
-import com.mofei.tau.src.io.taucoin.android.wallet.utxo.UTXORecord;
+import com.mofei.tau.transaction.UTXORecord;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -92,7 +91,6 @@ public class Wallet implements Serializable {
         ArrayList<Recipient> arrSendTo = new ArrayList<Recipient>();
         for (Map.Entry<String, BigInteger> entry : receipts.entrySet()) {
             Recipient r;
-
             try {
                 BigInteger v = entry.getValue();
                 if (!Constants.duringMoneyRange(v)) {

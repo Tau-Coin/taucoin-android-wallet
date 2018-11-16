@@ -178,6 +178,11 @@ public class BalanceActivity extends BaseActivity implements View.OnClickListene
                         status=balanceRetBalance.getStatus();
                         double_coins=balanceRetBalance.getRet().getCoins();
                         reward= balanceRetBalance.getRet().getRewards();
+
+                        SharedPreferencesHelper.getInstance(BalanceActivity.this).putString("balance",""+double_coins);
+                        SharedPreferencesHelper.getInstance(BalanceActivity.this).putString("reward",""+reward);
+                        SharedPreferencesHelper.getInstance(BalanceActivity.this).putString("utxo",""+balanceRetBalance.getRet().getUtxo());
+
                         L.e("Coins"+balanceRetBalance.getRet().getCoins());
                         L.e(balanceRetBalance.getRet().getPubkey());
                         L.e(balanceRetBalance.getRet().getUtxo()+"");
@@ -200,9 +205,6 @@ public class BalanceActivity extends BaseActivity implements View.OnClickListene
                         L.e("complete");
                     }
                 });
-
-
-
     }
 
 

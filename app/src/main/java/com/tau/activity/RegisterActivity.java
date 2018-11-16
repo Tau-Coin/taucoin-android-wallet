@@ -151,7 +151,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     return;
                 }
 
-                showWaitDialog();
+                showWaitDialog("obtaining validation code...");
                 getVerfiCode(email_);
 
                 //login1_okhttp();
@@ -178,7 +178,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     showToast("password is empty");
                     return;
                 }
-                showWaitDialog();
+                showWaitDialog("register...");
                 register(email,verifcode,password);
               // register("1@qq.com","1234","123");
                 break;
