@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,7 +13,7 @@
             android:layout_height="wrap_content">
         </com.mofei.tau.view.CustomToolBar>
 
-        <RelativeLayout
+       <!-- <RelativeLayout
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -48,9 +48,12 @@
                             android:layout_height="11dp"
                             android:src="@mipmap/round_w"/>
                 </LinearLayout>
-        </RelativeLayout>
+        </RelativeLayout>-->
 
         <TextView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/user"
+            android:layout_below="@id/main_titlebar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
@@ -59,6 +62,8 @@
             android:layout_gravity="center"/>
 
         <LinearLayout
+            android:id="@+id/balance_ll"
+            android:layout_below="@id/user"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -83,125 +88,134 @@
 
         </LinearLayout>
 
-        <ScrollView
-            android:layout_marginTop="40dp"
+        <Button
+            android:visibility="gone"
+            android:layout_below="@id/balance_ll"
+            android:enabled="true"
+            android:layout_gravity="center"
+            android:id="@+id/test"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-                <LinearLayout
+            android:layout_height="70dp"
+            android:textAllCaps="false"
+            android:text="Test"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/backgroud_color1" />
+
+        <LinearLayout
+           android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+                <!-- <TextView
+                     android:visibility="gone"
+                     android:layout_marginTop="20dp"
+                     android:layout_gravity="center"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="@string/laverdetstein"
+                     android:textColor="#000000"
+                     android:textSize="16sp"/>-->
+                <!-- <TextView
+                     android:visibility="gone"
+                     android:layout_marginTop="20dp"
+                     android:layout_gravity="center"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Transaction is in engineering."
+                     android:textSize="16sp"/>-->
+
+                <!--<Button
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:id="@+id/balance"
                     android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_margin="20dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="70dp"
+                    android:text="@string/balance"
+                    android:textSize="18sp"
+                    android:textColor="#ffffff"
+                    android:textAllCaps="false"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/backgroud_color1" />-->
+                <!-- <Button
+                     android:layout_gravity="center"
+                     android:id="@+id/bounty"
+                     android:visibility="gone"
+                     android:textAllCaps="false"
+                     android:layout_width="200dp"
+                     android:layout_height="wrap_content"
+                     android:text="@string/bounty"
+                     android:textSize="18sp"
+                     android:textColor="#ffffff"
+                     android:layout_marginTop="25dp"
+                     android:background="@drawable/backgroud_color1" />-->
+                <!-- <Button
+                     android:visibility="gone"
+                     android:layout_gravity="center"
+                     android:id="@+id/buyCoins"
+                     android:textAllCaps="false"
+                     android:layout_width="200dp"
+                     android:layout_height="wrap_content"
+                     android:text="BuyCoins"
+                     android:textSize="18sp"
+                     android:textColor="#ffffff"
+                     android:layout_marginTop="25dp"
+                     android:background="@drawable/backgroud_color1" />-->
 
-                        <TextView
-                            android:visibility="gone"
-                            android:layout_marginTop="20dp"
-                            android:layout_gravity="center"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/laverdetstein"
-                            android:textColor="#000000"
-                            android:textSize="16sp"/>
-                        <TextView
-                            android:visibility="gone"
-                            android:layout_marginTop="20dp"
-                            android:layout_gravity="center"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Transaction is in engineering."
-                            android:textSize="16sp"/>
+                <Button
+                    android:layout_weight="1"
+                    android:enabled="true"
+                    android:layout_gravity="center"
+                    android:id="@+id/send_and_receive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:textAllCaps="false"
+                    android:text="Send"
+                    android:textSize="18sp"
+                    android:textColor="#ffffff"
+                    android:background="@drawable/backgroud_color1" />
+                <!--  <Button
+                      android:visibility="gone"
+                      android:textAllCaps="false"
+                      android:layout_gravity="center"
+                      android:id="@+id/harvest_club"
+                      android:layout_width="200dp"
+                      android:layout_height="wrap_content"
+                      android:text="@string/club"
+                      android:textSize="18sp"
+                      android:textColor="#ffffff"
+                      android:layout_marginTop="25dp"
+                      android:background="@drawable/backgroud_color1" />-->
 
-                        <Button
-                            android:visibility="gone"
-                            android:layout_gravity="center"
-                            android:id="@+id/balance"
-                            android:layout_width="match_parent"
-                            android:layout_height="70dp"
-                            android:text="@string/balance"
-                            android:textSize="18sp"
-                            android:textColor="#ffffff"
-                            android:textAllCaps="false"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/backgroud_color1" />
-                        <Button
-                            android:layout_gravity="center"
-                            android:id="@+id/bounty"
-                            android:visibility="gone"
-                            android:textAllCaps="false"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/bounty"
-                            android:textSize="18sp"
-                            android:textColor="#ffffff"
-                            android:layout_marginTop="25dp"
-                            android:background="@drawable/backgroud_color1" />
-                        <Button
-                            android:visibility="gone"
-                            android:layout_gravity="center"
-                            android:id="@+id/buyCoins"
-                            android:textAllCaps="false"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:text="BuyCoins"
-                            android:textSize="18sp"
-                            android:textColor="#ffffff"
-                            android:layout_marginTop="25dp"
-                            android:background="@drawable/backgroud_color1" />
+                <Button
+                    android:layout_marginLeft="1dp"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:layout_gravity="center"
+                    android:id="@+id/key_addresses"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:text="@string/addresses"
+                    android:textSize="18sp"
+                    android:textColor="#ffffff"
+                    android:background="@drawable/backgroud_color1" />
 
-                        <Button
-                            android:enabled="true"
-                            android:layout_gravity="center"
-                            android:id="@+id/send_and_receive"
-                            android:layout_width="match_parent"
-                            android:layout_height="70dp"
-                            android:textAllCaps="false"
-                            android:text="Send"
-                            android:textSize="18sp"
-                            android:textColor="#ffffff"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/backgroud_color1" />
-                        <Button
-                            android:visibility="gone"
-                            android:textAllCaps="false"
-                            android:layout_gravity="center"
-                            android:id="@+id/harvest_club"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/club"
-                            android:textSize="18sp"
-                            android:textColor="#ffffff"
-                            android:layout_marginTop="25dp"
-                            android:background="@drawable/backgroud_color1" />
-
-                        <Button
-                            android:textAllCaps="false"
-                            android:layout_gravity="center"
-                            android:id="@+id/key_addresses"
-                            android:layout_width="match_parent"
-                            android:layout_height="70dp"
-                            android:text="@string/addresses"
-                            android:textSize="18sp"
-                            android:textColor="#ffffff"
-                            android:layout_marginTop="25dp"
-                            android:background="@drawable/backgroud_color1" />
+                <Button
+                    android:layout_marginLeft="1dp"
+                    android:layout_weight="1"
+                    android:textAllCaps="false"
+                    android:layout_gravity="center"
+                    android:id="@+id/harvest_club"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:text="Manage"
+                    android:textSize="18sp"
+                    android:textColor="#ffffff"
+                    android:background="@drawable/backgroud_color1"/>
+        </LinearLayout>
 
 
 
-                        <Button
-                            android:enabled="true"
-                            android:layout_gravity="center"
-                            android:id="@+id/test"
-                            android:layout_width="match_parent"
-                            android:layout_height="70dp"
-                            android:textAllCaps="false"
-                            android:text="Test"
-                            android:textSize="18sp"
-                            android:textColor="#ffffff"
-                            android:layout_marginTop="25dp"
-                            android:background="@drawable/backgroud_color1" />
-
-                </LinearLayout>
-
-        </ScrollView>
-
-</LinearLayout>
+</RelativeLayout>

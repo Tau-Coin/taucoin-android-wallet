@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked="true" android:drawable="@drawable/down_gr" />
-    <item android:state_selected="true" android:drawable="@drawable/down_gr"/>
-    <item android:drawable="@drawable/down_b"/>
+    <item android:state_checked="true" android:drawable="@drawable/mdpi_receiveo" />
+    <item android:state_selected="true" android:drawable="@drawable/mdpi_receiveo"/>
+    <item android:drawable="@drawable/mdpi_receiveb"/>
 
 </selector>

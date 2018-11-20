@@ -1,6 +1,7 @@
 package com.mofei.tau.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,16 +15,26 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.mofei.tau.R;
+import com.mofei.tau.activity.BalanceActivity;
+import com.mofei.tau.activity.KeysAddressesActivity;
 import com.mofei.tau.adapter.HistoryEventRecycleAdapter;
 import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
+import com.mofei.tau.db.greendao.UTXORecordDaoUtils;
+import com.mofei.tau.info.SharedPreferencesHelper;
+import com.mofei.tau.transaction.TXChild;
+import com.mofei.tau.transaction.TXGroup;
 import com.mofei.tau.transaction.TransactionHistory;
+import com.mofei.tau.transaction.UTXORecord;
 import com.mofei.tau.util.L;
 import com.mofei.tau.view.CustomToolBar;
 import com.mofei.tau.view.SwipeRecyclerView;
+import com.mofei.tau.view.expanableLV.ExtendableListViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,17 +45,30 @@ import java.util.List;
  */
 public class ManageFragment extends Fragment {
 
-    private SwipeRefreshLayout swipeRefreshLayout;
+  //  private RelativeLayout coinsRL,transationsRL;
+
+    /*private SwipeRefreshLayout swipeRefreshLayout;
     // private RecyclerView historyRecyclerView;
     private SwipeRecyclerView swipeRecyclerView;
     private HistoryEventRecycleAdapter historyEventRecycleAdapter;
     private List<TransactionHistory> txList;
-
+    */
     private Toast mToast = null;
+
+
+    //ExpandableListView
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ExpandableListView txExpandableListView;
+   // private String gs[]={"1","2","3","4"};
+   // private String cs[][]={{"11","12","13"},{"21","22","23"},{"31","32","33"},{"41","42","43"}};
+
+    private List<TXGroup> groupArray;
+    private List<List<TXChild>> childArray;
+    private List<TXChild> txChildList;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -57,12 +81,82 @@ public class ManageFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initEvent(view);
+        //initEvent(view);
+
+        initView(view);
 
     }
 
-    private void initEvent(View view) {
+    private void initView(View view) {
+        txExpandableListView=view.findViewById(R.id.expend_list);
 
+        swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
+        //Set the background color of the drop-down progress bar, default white.
+        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(Color.WHITE);
+        //Set the color theme of the drop-down progress bar, the parameter is a variable parameter, and is the resource ID. Set up to four different colors, and each turn displays a color.
+        swipeRefreshLayout.setColorSchemeColors(Color.BLUE,Color.GREEN,Color.RED);
+        //To set up listeners, you need to override the onRefresh () method, which is called when the top drop-down occurs, which implements the logic of requesting data, sets the drop-down progress bar to disappear, and so on.
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                },2000);
+            }
+        });
+
+        List<UTXORecord> txUTXORecordList=UTXORecordDaoUtils.getInstance().queryAllData();
+        groupArray=new ArrayList<>();
+        childArray=new ArrayList<>();
+        if (!txUTXORecordList.isEmpty()){
+            groupArray.clear();
+            childArray.clear();
+            for (int i=0;i<txUTXORecordList.size();i++){
+                TXGroup txGroup=new TXGroup();
+                txGroup.setAmount(String.valueOf(txUTXORecordList.get(i).getValue()));
+                txGroup.setTime(String.valueOf(txUTXORecordList.get(i).getBlocktime()));
+                groupArray.add(txGroup);
+
+                TXChild txChild=new TXChild();
+                txChild.setAddress(SharedPreferencesHelper.getInstance(getActivity()).getString("Address",""));
+                txChild.setTxId(txUTXORecordList.get(i).getTxId());
+                txChild.setTxFee("0.11");
+                txChild.setTxBlockHeight(String.valueOf(txUTXORecordList.get(i).getBlockheight()));
+                txChildList=new ArrayList<>();
+                txChildList.add(txChild);
+
+                childArray.add(txChildList);
+            }
+
+        }
+
+
+        ExtendableListViewAdapter extendableListViewAdapter=new ExtendableListViewAdapter(getActivity(),groupArray,childArray);
+        txExpandableListView.setAdapter(extendableListViewAdapter);
+        //设置分组的监听
+        txExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                // showToast(gs[groupPosition]);
+                 return false;
+            }
+        });
+        //设置子项布局监听
+        txExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+               // showToast(cs[groupPosition][childPosition]);
+                return true;
+            }
+        });
+
+    }
+
+
+   /* private void initEvent(View view) {
         txList=new ArrayList<>();
         List<TransactionHistory> tempTXHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
         if (!tempTXHistoryList.isEmpty()){
@@ -97,33 +191,33 @@ public class ManageFragment extends Fragment {
 
        // List<TransactionHistory> transactionHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
         historyEventRecycleAdapter=new HistoryEventRecycleAdapter(getActivity(),txList);
-        /**
+         *//**
          * 设置布局方向
          * Setting layout direction
-         */
+         *//*
         LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayout.VERTICAL);
         swipeRecyclerView.setLayoutManager(layoutManager);
-        /**
+        *//**
          * 设置间隔线
          * Setting intervals
-         */
+         *//*
         swipeRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
-        //
-        /**
+
+        *//**
          * 设置删除动画
          * Set delete animation
-         */
+         *//*
         swipeRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        /**
+        *//**
          * 设置适配器
          * Setup adapter
-         */
+         *//*
         swipeRecyclerView.setAdapter(historyEventRecycleAdapter);
-        /**
+         *//**
          * 设置右删除监听
          * Set right delete listen.
-         */
+         *//*
         swipeRecyclerView.setRightClickListener(new SwipeRecyclerView.OnRightClickListener() {
             @Override
             public void onRightClick(int position, String id) {
@@ -135,7 +229,7 @@ public class ManageFragment extends Fragment {
 
             }
         });
-    }
+    }*/
 
 
     public void showToast(String text) {

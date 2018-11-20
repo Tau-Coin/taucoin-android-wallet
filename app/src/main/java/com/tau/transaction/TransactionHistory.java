@@ -32,7 +32,8 @@ public class TransactionHistory {
 
     private String toAddress;
 
-    private long time;
+    //private long time;
+    private String time;
 
     private int confirmations;
 
@@ -42,9 +43,9 @@ public class TransactionHistory {
 
     private String message;
 
-    @Generated(hash = 785203878)
+    @Generated(hash = 1123960615)
     public TransactionHistory(Long id, String txId, String sentOrReceived,
-            String fromAddress, String toAddress, long time, int confirmations,
+            String fromAddress, String toAddress, String time, int confirmations,
             String value, boolean result, String message) {
         this.id = id;
         this.txId = txId;
@@ -102,11 +103,11 @@ public class TransactionHistory {
         this.toAddress = toAddress;
     }
 
-    public long getTime() {
+    public String getTime() {
         return this.time;
     }
 
-    public void setTime(long time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

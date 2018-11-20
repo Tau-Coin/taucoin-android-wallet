@@ -29,7 +29,7 @@ public class TransactionHistoryDao extends AbstractDao<TransactionHistory, Long>
         public final static Property SentOrReceived = new Property(2, String.class, "sentOrReceived", false, "SENT_OR_RECEIVED");
         public final static Property FromAddress = new Property(3, String.class, "fromAddress", false, "FROM_ADDRESS");
         public final static Property ToAddress = new Property(4, String.class, "toAddress", false, "TO_ADDRESS");
-        public final static Property Time = new Property(5, long.class, "time", false, "TIME");
+        public final static Property Time = new Property(5, String.class, "time", false, "TIME");
         public final static Property Confirmations = new Property(6, int.class, "confirmations", false, "CONFIRMATIONS");
         public final static Property Value = new Property(7, String.class, "value", false, "VALUE");
         public final static Property Result = new Property(8, boolean.class, "result", false, "RESULT");
@@ -54,7 +54,7 @@ public class TransactionHistoryDao extends AbstractDao<TransactionHistory, Long>
                 "\"SENT_OR_RECEIVED\" TEXT," + // 2: sentOrReceived
                 "\"FROM_ADDRESS\" TEXT," + // 3: fromAddress
                 "\"TO_ADDRESS\" TEXT," + // 4: toAddress
-                "\"TIME\" INTEGER NOT NULL ," + // 5: time
+                "\"TIME\" TEXT," + // 5: time
                 "\"CONFIRMATIONS\" INTEGER NOT NULL ," + // 6: confirmations
                 "\"VALUE\" TEXT," + // 7: value
                 "\"RESULT\" INTEGER NOT NULL ," + // 8: result
@@ -95,7 +95,11 @@ public class TransactionHistoryDao extends AbstractDao<TransactionHistory, Long>
         if (toAddress != null) {
             stmt.bindString(5, toAddress);
         }
-        stmt.bindLong(6, entity.getTime());
+ 
+        String time = entity.getTime();
+        if (time != null) {
+            stmt.bindString(6, time);
+        }
         stmt.bindLong(7, entity.getConfirmations());
  
         String value = entity.getValue();
@@ -138,7 +142,11 @@ public class TransactionHistoryDao extends AbstractDao<TransactionHistory, Long>
         if (toAddress != null) {
             stmt.bindString(5, toAddress);
         }
-        stmt.bindLong(6, entity.getTime());
+ 
+        String time = entity.getTime();
+        if (time != null) {
+            stmt.bindString(6, time);
+        }
         stmt.bindLong(7, entity.getConfirmations());
  
         String value = entity.getValue();
@@ -166,7 +174,7 @@ public class TransactionHistoryDao extends AbstractDao<TransactionHistory, Long>
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // sentOrReceived
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // fromAddress
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // toAddress
-            cursor.getLong(offset + 5), // time
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // time
             cursor.getInt(offset + 6), // confirmations
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // value
             cursor.getShort(offset + 8) != 0, // result
@@ -182,7 +190,7 @@ public class TransactionHistoryDao extends AbstractDao<TransactionHistory, Long>
         entity.setSentOrReceived(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setFromAddress(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setToAddress(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setTime(cursor.getLong(offset + 5));
+        entity.setTime(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setConfirmations(cursor.getInt(offset + 6));
         entity.setValue(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setResult(cursor.getShort(offset + 8) != 0);

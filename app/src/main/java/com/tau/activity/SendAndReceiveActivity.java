@@ -3,6 +3,7 @@ package com.mofei.tau.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,6 +37,7 @@ import com.mofei.tau.entity.req_parameter.Logout;
 import com.mofei.tau.entity.res_post.Balance;
 import com.mofei.tau.entity.res_post.BalanceRet;
 import com.mofei.tau.entity.res_post.UTXOList;
+import com.mofei.tau.fragment.HomeFragment;
 import com.mofei.tau.fragment.ManageFragment;
 import com.mofei.tau.fragment.ReceiveFragment;
 import com.mofei.tau.fragment.SendFragment;
@@ -71,13 +73,14 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
     private RelativeLayout layout;
     private int status;
     //声明四个Tab分别对应的Fragment
+    private HomeFragment homeFragment;
     private SendFragment sendFragment;
     private ManageFragment manageFragment;
     private ReceiveFragment receiveFragment;
 
     private FrameLayout frameLayoutFragment;
     private RadioGroup radioGroup;
-    private RadioButton sendRadioButton,manageRadioButton,receiveRadioButton;
+    private RadioButton homeRadioButton,sendRadioButton,manageRadioButton,receiveRadioButton;
 
    // private ViewPager viewPager;
     public static final int[] image={R.drawable.aa,R.drawable.ab,R.drawable.ac};
@@ -132,12 +135,12 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
         mMainCustomToolBar.getTitleTextView().setText("Transactions");
         mMainCustomToolBar.getTitleTextView().setTextColor(Color.WHITE);
         mMainCustomToolBar.getTitleTextView().setTextSize(22);
-        mMainCustomToolBar.disableLeftTextView();
-        //mMainCustomToolBar.disableRightView();
-        mMainCustomToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+        mMainCustomToolBar.getLeftTextView().setText("");
+        mMainCustomToolBar.getLeftTextView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                L.i("点击菜单栏");
+                mDrawerLayout.openDrawer(layout);
             }
         });
     }
@@ -145,6 +148,7 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
     private void initViews() {
         frameLayoutFragment=findViewById(R.id.fragment);
         radioGroup=findViewById(R.id.tab_radiogroup);
+        homeRadioButton=findViewById(R.id.home);
         sendRadioButton=findViewById(R.id.send);
         manageRadioButton=findViewById(R.id.manage);
         receiveRadioButton=findViewById(R.id.receive);
@@ -157,10 +161,38 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
         help=findViewById(R.id.help);
         logoutButton=findViewById(R.id.logout);
 
+        initIcon();
 
         userNameTV.setText(SharedPreferencesHelper.getInstance(SendAndReceiveActivity.this).getString("user_nane",""));
 
     }
+
+    private void initIcon() {
+        //定义底部标签图片大小和位置
+        Drawable drawable_news = getResources().getDrawable(R.drawable.selector_tab_home);
+        //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形
+        drawable_news.setBounds(0, 0, 60, 60);
+        //设置图片在文字的哪个方向
+        homeRadioButton.setCompoundDrawables(null, drawable_news, null, null);
+        //定义底部标签图片大小和位置
+        Drawable drawable_live = getResources().getDrawable(R.drawable.selector_tab_send);
+        //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形
+        drawable_live.setBounds(0, 0, 60, 60);
+        //设置图片在文字的哪个方向
+        sendRadioButton.setCompoundDrawables(null, drawable_live, null, null);
+        //定义底部标签图片大小和位置
+        Drawable drawable_tuijian = getResources().getDrawable(R.drawable.selector_tab_receive);
+        //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形
+        drawable_tuijian.setBounds(0, 0, 60, 60);
+        //设置图片在文字的哪个方向
+        receiveRadioButton.setCompoundDrawables(null, drawable_tuijian, null, null);
+        //定义底部标签图片大小和位置
+        Drawable drawable_me = getResources().getDrawable(R.drawable.selector_tab_manage);
+        //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形
+        drawable_me.setBounds(0, 0, 60, 60);
+        //设置图片在文字的哪个方向
+        manageRadioButton.setCompoundDrawables(null, drawable_me, null, null); }
+
 
     private void initData() {
 
@@ -198,6 +230,7 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
     }
     private void initEvents() {
         //初始化四个Tab的点击事件
+        homeRadioButton.setOnClickListener(this);
         sendRadioButton.setOnClickListener(this);
         manageRadioButton.setOnClickListener(this);
         receiveRadioButton.setOnClickListener(this);
@@ -218,15 +251,17 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-
-            case R.id.send:
+            case R.id.home:
                 selectTab(0);
                 break;
-            case R.id.manage:
+            case R.id.send:
                 selectTab(1);
                 break;
-            case R.id.receive:
+            case R.id.manage:
                 selectTab(2);
+                break;
+            case R.id.receive:
+                selectTab(3);
                 break;
             case R.id.about_us:
                 Intent aboutUsIntent = new Intent();
@@ -273,9 +308,17 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
         //先隐藏所有的Fragment
         hideFragments(transaction);
         switch (i) {
-            //当选中点击的是微信的Tab时
             case 0:
-                //如果微信对应的Fragment没有实例化，则进行实例化，并显示出来
+                if (homeFragment == null) {
+                    homeFragment = new HomeFragment();
+                    transaction.add(R.id.fragment, homeFragment);
+                } else {
+                    //如果微信对应的Fragment已经实例化，则直接显示出来
+                    transaction.show(homeFragment);
+                }
+                break;
+            case 1:
+
                 if (sendFragment == null) {
                     sendFragment = new SendFragment();
                     transaction.add(R.id.fragment, sendFragment);
@@ -284,7 +327,7 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
                     transaction.show(sendFragment);
                 }
                 break;
-            case 1:
+            case 2:
                 if (manageFragment == null) {
                     manageFragment = new ManageFragment();
                     transaction.add(R.id.fragment, manageFragment);
@@ -292,7 +335,7 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
                     transaction.show(manageFragment);
                 }
                 break;
-            case 2:
+            case 3:
 
                 if (receiveFragment == null) {
                     receiveFragment = new ReceiveFragment();
@@ -309,6 +352,9 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
 
     //将san个的Fragment隐藏
     private void hideFragments(FragmentTransaction transaction) {
+        if (homeFragment != null) {
+            transaction.hide(homeFragment);
+        }
         if (sendFragment != null) {
             transaction.hide(sendFragment);
         }
@@ -509,6 +555,4 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
                     }
                 });
     }
-
-
 }

@@ -250,7 +250,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
                         L.e(list.get(0).getValue());
                         transactionHistory.setValue(list.get(0).getValue());
                         L.e(""+list.get(0).getBlocktime());
-                        transactionHistory.setTime(list.get(0).getBlocktime());
+                        transactionHistory.setTime("");
 
                         TransactionHistoryDaoUtils.getInstance().insertTransactionHistoryData(transactionHistory);
 

@@ -55,7 +55,7 @@ public class LoginActivity2 extends BaseActivity implements View.OnClickListener
                 case 0x12:
                     L.e("handler");
                     if(status.equals("0")){
-                        Intent intent=new Intent(LoginActivity2.this,MainActivity.class);
+                        Intent intent=new Intent(LoginActivity2.this,SendAndReceiveActivity.class);
                         intent.putExtra("user_name",user_nane);
                         startActivity(intent);
                         showToast("login successful");

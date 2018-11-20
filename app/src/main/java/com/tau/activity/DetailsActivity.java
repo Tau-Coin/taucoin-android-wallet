@@ -75,6 +75,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         mMainCustomToolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(DetailsActivity.this,SendAndReceiveActivity.class));
                 finish();
             }
         });

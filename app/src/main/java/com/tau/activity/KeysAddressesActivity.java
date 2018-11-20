@@ -29,10 +29,11 @@ import com.mofei.tau.view.CustomToolBar;
 
 public class KeysAddressesActivity extends BaseActivity implements View.OnClickListener {
 
-    private TextView mWalletAddressTV;
+
     private static KeyGenerator instance;
     private Button mWalletHomeBt,mWalletLogoutBt;
     private TextView mDetailsTV;
+    private TextView mWalletAddressTV;
     private ImageView mAddressTwoDimensionCodeIV;
 
     private CustomToolBar mMainCustomToolBar;

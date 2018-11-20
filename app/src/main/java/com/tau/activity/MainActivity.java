@@ -121,13 +121,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void initView() {
-        balanceButton=findViewById(R.id.balance);
+       // balanceButton=findViewById(R.id.balance);
         harvestClubButton=findViewById(R.id.harvest_club);
         keyAddressesButton=findViewById(R.id.key_addresses);
-        bountyButton=findViewById(R.id.bounty);
+       // bountyButton=findViewById(R.id.bounty);
         sendReceiveButton=findViewById(R.id.send_and_receive);
         logoutButton=findViewById(R.id.logout);
-        buyCoinsButton=findViewById(R.id.buyCoins);
+       // buyCoinsButton=findViewById(R.id.buyCoins);
         abourtUs=findViewById(R.id.about_us);
         userNameTV=findViewById(R.id.username);
         about=findViewById(R.id.about);
@@ -168,13 +168,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void initData() {
-        balanceButton.setOnClickListener(this);
+       // balanceButton.setOnClickListener(this);
         harvestClubButton.setOnClickListener( this);
         keyAddressesButton.setOnClickListener( this);
-        bountyButton.setOnClickListener(this);
+      //  bountyButton.setOnClickListener(this);
         sendReceiveButton.setOnClickListener(this);
         logoutButton.setOnClickListener(this);
-        buyCoinsButton.setOnClickListener(this);
+       // buyCoinsButton.setOnClickListener(this);
         abourtUs. setOnClickListener(this);
         about.setOnClickListener(this);
         help.setOnClickListener(this);
@@ -216,7 +216,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             imageViewsList.add(imageView);
         }
 
-        viewPager=findViewById(R.id.ad_paper);
+       /* viewPager=findViewById(R.id.ad_paper);
         viewPager.setAdapter(new ADAdapter());
         viewPager.setCurrentItem(Integer.MAX_VALUE/2);
 
@@ -249,11 +249,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             public void onPageScrollStateChanged(int i) {
 
             }
-        });
+        });*/
 
     }
 
-    class ADRunble implements  Runnable{
+   /* class ADRunble implements  Runnable{
         @Override
         public void run() {
             int position=viewPager.getCurrentItem();
@@ -265,9 +265,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             handler.postDelayed(new ADRunble(),3000);
 
         }
-    }
+    }*/
     //广告适配器
-    class ADAdapter extends PagerAdapter {
+   /* class ADAdapter extends PagerAdapter {
         @Override
         public int getCount() {
             // return imageViewsList.size();
@@ -296,7 +296,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             container.addView(view);
             return view;
         }
-    }
+    }*/
 
     public static KeyGenerator getInstance(){
         if (instance == null) {
@@ -308,18 +308,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.balance:
+            /*case R.id.balance:
                 startActivity(new Intent(MainActivity.this,BalanceActivity.class));
-                break;
+                break;*/
             case R.id.harvest_club:
                 startActivity(new Intent(MainActivity.this,HarvestClubActivity.class));
                 break;
             case R.id.key_addresses:
                 startActivity(new Intent(MainActivity.this,KeysAddressesActivity.class));
                 break;
-            case R.id.bounty:
+            /*case R.id.bounty:
                 startActivity(new Intent(MainActivity.this,BountyActivity.class));
-                break;
+                break;*/
             case R.id.send_and_receive:
                 startActivity(new Intent(MainActivity.this,SendAndReceiveActivity.class));
                 break;

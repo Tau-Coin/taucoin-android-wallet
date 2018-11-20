@@ -3,62 +3,85 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingRight="30dp"
+    android:paddingLeft="30dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.SendFragment"
-    android:background="#E0E0E0"
-    android:gravity="center">
+    tools:context=".fragment.SendFragment">
 
 
-    <LinearLayout
-        android:id="@+id/amount_ll"
-        android:background="#ffffff"
+    <!--<LinearLayout
+        android:id="@+id/balance_ll"
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:paddingRight="10dp">
-
-        <EditText
-            android:id="@+id/amount"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:hint="input amount"
-            android:inputType="text"
-            android:textColor="#000000"
-            android:singleLine="true"
-            android:textColorHint=" #A3A3A3"
-            android:textSize="14sp"/>
+        android:layout_height="80dp"
+        android:orientation="horizontal">
 
         <TextView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="Balance: "
+            android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/balance_tau_fs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#0000ff"
+            android:textSize="20sp"
+            android:text=""
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_marginLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
             android:text="TAU"
-            android:textSize="18sp"
-            android:layout_marginRight="20dp"/>
+            android:layout_gravity="center"/>
 
-    </LinearLayout>
+    </LinearLayout>-->
 
-    <RelativeLayout
-        android:paddingLeft="20dp"
-        android:id="@+id/address_rl"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/amount_ll"
+    <EditText
+        android:layout_marginTop="60dp"
+        android:singleLine="true"
+        android:id="@+id/address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff">
-        <EditText
-            android:singleLine="true"
-            android:id="@+id/address"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="input address"
-            android:textColor="#000000"
-            android:textColorHint=" #A3A3A3"
-            android:textSize="14sp"/>
-    </RelativeLayout>
+        android:hint="Receive's Address"
+        android:textColor="#000000"
+        android:textColorHint=" #A3A3A3"
+        android:textSize="14sp"/>
+
+
+    <EditText
+        android:layout_below="@id/address"
+        android:layout_marginTop="30dp"
+        android:id="@+id/amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Amount"
+        android:inputType="text"
+        android:textColor="#000000"
+        android:singleLine="true"
+        android:textColorHint=" #A3A3A3"
+        android:textSize="14sp"/>
+
+
+
+    <EditText
+        android:layout_below="@id/amount"
+        android:layout_marginTop="30dp"
+        android:singleLine="true"
+        android:id="@+id/memot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Memo"
+        android:layout_marginBottom="80dp"
+        android:textColor="#000000"
+        android:textColorHint=" #A3A3A3"
+        android:textSize="14sp"/>
+
 
     <!--<android.support.v7.widget.CardView
         android:id="@+id/send_tau"
@@ -84,21 +107,20 @@
     </android.support.v7.widget.CardView>-->
 
     <Button
-       android:layout_marginLeft="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/address_rl"
+        android:layout_marginBottom="60dp"
+        android:layout_alignParentBottom="true"
         android:id="@+id/send_tau"
         android:layout_width="match_parent"
         android:textAllCaps="false"
         android:layout_height="60dp"
-        android:text="Submit"
+        android:text="Send"
         android:textSize="18sp"
-        android:textColor="#6D6D6D"
+        android:textColor="#ffffff"
         android:background="@drawable/backgroud_send_tau" />
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:visibility="gone"
         android:id="@+id/balance_rl"
         android:layout_marginTop="20dp"
@@ -109,7 +131,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
         <TextView
-             android:gravity="center"
+            android:gravity="center"
             android:singleLine="true"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
@@ -124,9 +146,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/icon_arrow"/>
-    </RelativeLayout>
+    </RelativeLayout>-->
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:visibility="gone"
         android:id="@+id/to_address__rl"
         android:layout_marginTop="10dp"
@@ -153,8 +175,8 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/icon_arrow"/>
     </RelativeLayout>
-
-    <RelativeLayout
+-->
+    <!--<RelativeLayout
         android:visibility="invisible"
         android:id="@+id/history"
         android:layout_below="@id/send_tau"
@@ -175,8 +197,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@mipmap/icon_arrow"/>
-    </RelativeLayout>
-
-
+    </RelativeLayout>-->
 
 </RelativeLayout>

@@ -1,81 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E0E0E0"
-     android:gravity="center"
+    android:background="#ffffff"
+    android:orientation="vertical"
     tools:context=".fragment.ReceiveFragment">
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="30dp"
+        android:text="Wallet details"
+        android:layout_gravity="center"/>
+    <TextView
+        android:layout_marginTop="20dp"
+        android:paddingLeft="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textColor="#000000"
+        android:text="Address"
+        />
     <LinearLayout
-        android:id="@+id/amount_ll"
-        android:background="#ffffff"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:paddingRight="10dp">
-
-        <EditText
-            android:id="@+id/amount"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:hint="input amount"
-            android:inputType="text"
-            android:textColor="#000000"
-            android:singleLine="true"
-            android:textColorHint=" #A3A3A3"
-            android:textSize="14sp"/>
+        android:gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
 
         <TextView
+            android:id="@+id/wallet_address_"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TAU"
-            android:textSize="18sp"
-            android:layout_marginRight="20dp"/>
+            android:textSize="16sp"
+            android:text=""
+            android:textIsSelectable="true"
+            />
+        <ImageView
+            android:visibility="gone"
+            android:layout_marginLeft="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/copy"/>
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:paddingLeft="20dp"
-        android:id="@+id/address_rl"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/amount_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff">
-        <EditText
-            android:singleLine="true"
-            android:id="@+id/address"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="input address"
-            android:textColor="#000000"
-            android:textColorHint=" #A3A3A3"
-            android:textSize="14sp"/>
-    </RelativeLayout>
-
-    <TextView
-        android:layout_marginTop="60dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/address_rl"
-        android:id="@+id/generate_code"
-        android:text="Generate two-dimensional code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <ImageView
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/generate_code"
-        android:id="@+id/payment_info"
+        android:id="@+id/address_two_dimension_code_img_"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"/>
+        />
+   <!-- <TextView
+        android:id="@+id/to_details_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="Details >>>"
+        android:textColor="#0000ff"
+        android:layout_gravity="center"/>-->
 
-</RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/to_details_"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#DBDBDB"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+        <TextView
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:hint="details"
+            android:textColor="#000000"
+            android:textSize="18sp"/>
+
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_arrow"/>
+    </RelativeLayout>
+
+</LinearLayout>

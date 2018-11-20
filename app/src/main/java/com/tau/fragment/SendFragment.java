@@ -63,6 +63,7 @@ import org.json.JSONObject;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,14 +89,16 @@ public class SendFragment extends Fragment{
     private DialogWaitting mWaitDialog = null;
     private Toast mToast = null;
     private String to_address;
-
-    private RelativeLayout blannceRL,addressRL;
+    //private TextView mBalanceTauTV;
     private List<UTXORecord> utxoRecordList;
     private List<UTXOList.UtxosBean> list;
     private String txid_from_tx;
     private String errorMessg;
     private String get_txid_after_sendTX;
     private String amount;
+    private double double_coins;
+    private double reward;
+    private int status;
     AlertDialog dialog;
 
 
@@ -161,6 +164,21 @@ public class SendFragment extends Fragment{
                     transactionHistory.setMessage(errorMessg);
                     TransactionHistoryDaoUtils.getInstance().insertOrReplaceData(transactionHistory);
                     break;
+
+                case 0x20:
+                    if(status==401){
+                        showToast("Email does not exist");
+                    }else if(status==402){
+                        showToast("Fail to get balance");
+                    }
+                    break;
+/*
+                case 0x21:
+                    Double double_8=new Double("100000000");
+                    Double coin_double=new Double(double_coins);
+                    L.e("转换后的数据：　"+coin_double/double_8);
+                    mBalanceTauTV.setText(""+coin_double/double_8);
+                    break;*/
             }
         }
     };
@@ -191,23 +209,18 @@ public class SendFragment extends Fragment{
                 .create();
     }
 
+   /* @Override
+    public void onResume() {
+        super.onResume();
+        showWaitDialog();
+        getBalanceData(SharedPreferencesHelper.getInstance(getActivity()).getString("email",""));
+    }*/
+
     private void intiEvent(View view) {
         amountET=view.findViewById(R.id.amount);
         addressET=view.findViewById(R.id.address);
-        blannceRL=view.findViewById(R.id.balance_rl);
-        blannceRL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(),BalanceActivity.class));
-            }
-        });
-        addressRL=view.findViewById(R.id.to_address__rl);
-        addressRL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(),KeysAddressesActivity.class));
-            }
-        });
+       // mBalanceTauTV=view.findViewById(R.id.balance_tau_fs);
+
         sendBT=view.findViewById(R.id.send_tau);
         sendBT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,13 +231,13 @@ public class SendFragment extends Fragment{
             }
         });
 
-        historyRl=view.findViewById(R.id.history);
+       /* historyRl=view.findViewById(R.id.history);
         historyRl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), HistoryTransationActivity.class));
             }
-        });
+        });*/
     }
 
     private void createTransation() {
@@ -240,7 +253,7 @@ public class SendFragment extends Fragment{
             return;
         }
 
-        to_address="TCL1Kbz47VUoZB55JNgZdSoYKS3RtwMHKB";
+        //to_address="TTLUavJdzySpS6omCfmpyoNHKozXvB5xYq";
         //amount="2000000";
         Double amount_conv = new Double( Double.valueOf(amount) * Math.pow(10,8));
         L.e("double"+amount_conv);
@@ -423,7 +436,6 @@ public class SendFragment extends Fragment{
                         UTXORecordDaoUtils.getInstance().deleteAllData();
                         UTXORecordDaoUtils.getInstance().insertOrReplaceMultiData(utxoRecordList);
                         hideWaitDialog();
-
                     }
                 });
     }
@@ -435,7 +447,6 @@ public class SendFragment extends Fragment{
      nf.setGroupingUsed(false);
      return nf.format(d);
     }
-
 
 
     private void sendRawTransation(String tx_hex) {
@@ -476,7 +487,6 @@ public class SendFragment extends Fragment{
                         handler_.sendEmptyMessage(0x33);
                     }
                 });
-
     }
 
 
@@ -510,7 +520,19 @@ public class SendFragment extends Fragment{
 
                         transactionHistoryList.get(0).setConfirmations(rawTX.getRet().getConfirmations());
                         transactionHistoryList.get(0).setValue(amount);
-                        transactionHistoryList.get(0).setTime(rawTX.getRet().getBlocktime());
+
+
+                        Calendar calendar=Calendar.getInstance();
+                        int year=calendar.get(Calendar.YEAR);
+                        int month=calendar.get(Calendar.MONTH)+1;
+                        int day=calendar.get(Calendar.DAY_OF_MONTH);
+                        int hour= calendar.get(Calendar.HOUR_OF_DAY);
+                        int minute=calendar.get(Calendar.MINUTE);
+                        int second=calendar.get(Calendar.SECOND);
+
+                        String time=month+", "+day+", "+year+", "+hour+":"+minute+":"+second;
+                        L.e("time"+time);
+                        transactionHistoryList.get(0).setTime(time);
                         transactionHistoryList.get(0).setResult(true);
                         //transactionHistory.setTxId(txid_from_tx);
                         //transactionHistory.setToAddress(to_address);
@@ -539,6 +561,57 @@ public class SendFragment extends Fragment{
     }
 
 
+    /*public void getBalanceData(String email) {
+        Map<String,String> emailMap=new HashMap<>();
+        emailMap.put("email",email);
+        ApiService apiService=NetWorkManager.getApiService();
+        Observable<Balance<BalanceRet>> observable=apiService.getBalance2(emailMap);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Balance<BalanceRet>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Balance<BalanceRet> balanceRetBalance) {
+
+                        L.e(balanceRetBalance.getStatus()+"");
+                        L.e(balanceRetBalance.getMessage());
+                        status=balanceRetBalance.getStatus();
+                        double_coins=balanceRetBalance.getRet().getCoins();
+                        reward= balanceRetBalance.getRet().getRewards();
+
+                        SharedPreferencesHelper.getInstance(getActivity()).putString("balance",""+double_coins);
+                        SharedPreferencesHelper.getInstance(getActivity()).putString("reward",""+reward);
+                        SharedPreferencesHelper.getInstance(getActivity()).putString("utxo",""+balanceRetBalance.getRet().getUtxo());
+
+                        L.e("Coins"+balanceRetBalance.getRet().getCoins());
+                        L.e(balanceRetBalance.getRet().getPubkey());
+                        L.e(balanceRetBalance.getRet().getUtxo()+"");
+                        L.e(balanceRetBalance.getRet().getRewards()+"");
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideWaitDialog();
+                        L.e("error");
+                        e.printStackTrace();
+                        handler_.sendEmptyMessage(0x20);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        handler_.sendEmptyMessage(0x21);
+                        hideWaitDialog();
+                        L.e("complete");
+                    }
+                });
+    }*/
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -548,7 +621,6 @@ public class SendFragment extends Fragment{
     @Override
     public void onDetach() {
         super.onDetach();
-
     }
 
     public DialogWaitting showWaitDialog() {

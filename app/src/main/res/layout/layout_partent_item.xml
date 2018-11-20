@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#EFEEEC"
+    android:padding="20dp">
+
+    <!--<ImageView
+        android:layout_marginRight="20dp"
+        android:id="@+id/tx_img"
+        android:src="@drawable/eye"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />-->
+
+    <TextView
+        android:textSize="16sp"
+        android:id="@+id/tx_num"
+        android:text="+200"
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="16sp"
+        android:id="@+id/tx_time"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2018-11-13"/>
+
+</RelativeLayout>

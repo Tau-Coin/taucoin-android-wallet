@@ -169,7 +169,6 @@ public class TransactionHistoryDaoUtils {
     }*/
 
 
-
     /**
      * 根据名称查询 以年龄降序排列
      *
@@ -177,12 +176,12 @@ public class TransactionHistoryDaoUtils {
      * @return
      */
 
-
     public List<TransactionHistory> queryTransactionByName(String name) {
         Query<TransactionHistory> build = null;
         try {
             build = getTransactionHistoryDao().queryBuilder()
                     .where(TransactionHistoryDao.Properties.TxId.eq(name))
+                    .orderDesc(TransactionHistoryDao.Properties.Time)
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

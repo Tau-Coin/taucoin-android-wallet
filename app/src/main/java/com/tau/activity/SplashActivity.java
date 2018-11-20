@@ -77,7 +77,7 @@ public class SplashActivity extends BaseActivity {
     private void splashJump() {
         boolean isLogin= SharedPreferencesHelper.getInstance(this).getBoolean("isLogin",false);
         if (isLogin==true){
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, SendAndReceiveActivity.class);
             startActivity(intent);
             L.i("SendAndReceiveActivity");
         }else {

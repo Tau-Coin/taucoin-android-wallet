@@ -1,65 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     tools:context=".activity.BalanceActivity">
-
-    <com.mofei.tau.view.CustomToolBar
-        android:id="@+id/send_receive_titlebar"
+<com.mofei.tau.view.CustomToolBar
+    android:id="@+id/send_receive_titlebar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+</com.mofei.tau.view.CustomToolBar>
+<FrameLayout
+    android:id="@+id/fragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"/>
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </com.mofei.tau.view.CustomToolBar>
+        android:layout_height="0.8dp"
+        android:background="#6d6d6d"/>
+<RadioGroup
+    android:id="@+id/tab_radiogroup"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal"
+    android:background="#F2F1F0"
+    android:gravity="center">
 
-    <FrameLayout
-        android:id="@+id/fragment"
-        android:layout_width="match_parent"
+    <RadioButton
+        android:id="@+id/home"
+        android:checked="true"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
-
-
-    <RadioGroup
-        android:id="@+id/tab_radiogroup"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:background="@color/write"
-        android:gravity="center">
-
-        <RadioButton
-            android:id="@+id/send"
-            android:checked="true"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/selector_tab_send"
-            android:button="@null"
-            android:gravity="center"
-            android:text="Send"
-            android:textColor="@drawable/selector_tab_text_color"/>
-        <RadioButton
-            android:id="@+id/receive"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/selector_tab_receive"
-            android:button="@null"
-            android:gravity="center"
-            android:text="Receive"
-            android:textColor="@drawable/selector_tab_text_color"/>
-        <RadioButton
-            android:id="@+id/manage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/selector_tab_manage"
-            android:button="@null"
-            android:gravity="center"
-            android:text="Manage"
-            android:textColor="@drawable/selector_tab_text_color"/>
-
-
-    </RadioGroup>
-
+        android:layout_weight="1"
+        android:button="@null"
+        android:gravity="center"
+        android:text="Home"
+        android:textColor="@drawable/selector_tab_text_color"/>
+    <RadioButton
+        android:id="@+id/send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:button="@null"
+        android:gravity="center"
+        android:text="Send"
+        android:textColor="@drawable/selector_tab_text_color"/>
+    <RadioButton
+        android:id="@+id/receive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:button="@null"
+        android:gravity="center"
+        android:text="Receive"
+        android:textColor="@drawable/selector_tab_text_color"/>
+    <RadioButton
+        android:id="@+id/manage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:button="@null"
+        android:gravity="center"
+        android:text="Manage"
+        android:textColor="@drawable/selector_tab_text_color"/>
+</RadioGroup>
 </LinearLayout>
