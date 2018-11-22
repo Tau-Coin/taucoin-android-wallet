@@ -5,26 +5,18 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical"
+    android:gravity="center_vertical"
     tools:context=".fragment.ReceiveFragment">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="30dp"
-        android:text="Wallet details"
-        android:layout_gravity="center"/>
-    <TextView
-        android:layout_marginTop="20dp"
         android:paddingLeft="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
-        android:textColor="#000000"
         android:text="Address"
         />
     <LinearLayout
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -38,6 +30,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:text=""
+            android:textColor="#000000"
             android:textIsSelectable="true"
             />
         <ImageView
@@ -55,21 +48,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
-   <!-- <TextView
+    <TextView
         android:id="@+id/to_details_"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:text="Details >>>"
-        android:textColor="#0000ff"
-        android:layout_gravity="center"/>-->
+        android:layout_gravity="center"/>
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/to_details_"
         android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#DBDBDB"
+        android:background="#EDEDED"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
         <TextView
@@ -77,7 +69,7 @@
             android:singleLine="true"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:hint="details"
+            android:text="details"
             android:textColor="#000000"
             android:textSize="18sp"/>
 
@@ -87,6 +79,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/icon_arrow"/>
-    </RelativeLayout>
+    </RelativeLayout>-->
 
 </LinearLayout>

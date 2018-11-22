@@ -13,6 +13,7 @@
         android:layout_height="wrap_content" />-->
 
     <TextView
+        android:textColor="#000000"
         android:textSize="16sp"
         android:id="@+id/tx_num"
         android:text="+200"
@@ -21,6 +22,7 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:textColor="#000000"
         android:textSize="16sp"
         android:id="@+id/tx_time"
         android:layout_alignParentRight="true"

@@ -124,7 +124,7 @@ public class ExtendableListViewAdapter extends BaseExpandableListAdapter{
             childViewHolder.txAddress = (TextView)convertView.findViewById(R.id.tx_address);
             childViewHolder.txId=convertView.findViewById(R.id.tx_id);
             childViewHolder.txFee=convertView.findViewById(R.id.tx_fee);
-            childViewHolder.txBlockHeight=convertView.findViewById(R.id.tx_block_height);
+           // childViewHolder.txBlockHeight=convertView.findViewById(R.id.tx_block_height);
             convertView.setTag(childViewHolder);
         }else {
             childViewHolder = (ChildViewHolder) convertView.getTag();
@@ -132,7 +132,7 @@ public class ExtendableListViewAdapter extends BaseExpandableListAdapter{
         childViewHolder.txAddress.setText(childArray.get(groupPosition).get(childPosition).getAddress());
         childViewHolder.txId.setText(childArray.get(groupPosition).get(childPosition).getTxId());
         childViewHolder.txFee.setText(childArray.get(groupPosition).get(childPosition).getTxFee());
-        childViewHolder.txBlockHeight.setText(childArray.get(groupPosition).get(childPosition).getTxBlockHeight());
+       // childViewHolder.txBlockHeight.setText(childArray.get(groupPosition).get(childPosition).getTxBlockHeight());
         return convertView;
 
     }
@@ -153,7 +153,7 @@ public class ExtendableListViewAdapter extends BaseExpandableListAdapter{
         TextView txAddress;
         TextView txId;
         TextView txFee;
-        TextView txBlockHeight;
+       // TextView txBlockHeight;
 
     }
 }

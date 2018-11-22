@@ -240,7 +240,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
                         if(isUserExist.equals("fail")){
 
-                            EventBus.getDefault().post(new MessageEvent(true,""));
+//                            EventBus.getDefault().post(new MessageEvent(true,""));
                             L.e("新用户");
                          //   login_0();
                         }else {

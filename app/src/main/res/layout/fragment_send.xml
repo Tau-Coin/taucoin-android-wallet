@@ -5,45 +5,48 @@
     android:layout_height="match_parent"
     android:paddingRight="30dp"
     android:paddingLeft="30dp"
+    android:background="#E0E0E0"
+    android:gravity="center"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.SendFragment">
 
 
-    <!--<LinearLayout
-        android:id="@+id/balance_ll"
+    <LinearLayout
+        android:id="@+id/balance_send_ll"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="horizontal">
 
-        <TextView
+        <!--<TextView
             android:layout_centerHorizontal="true"
             android:id="@+id/user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:text="Balance: "
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"/>-->
         <TextView
-            android:id="@+id/balance_tau_fs"
+            android:id="@+id/balance_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#0000ff"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:text=""
             android:layout_gravity="center"/>
         <TextView
             android:layout_marginLeft="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:text="TAU"
             android:layout_gravity="center"/>
 
-    </LinearLayout>-->
+    </LinearLayout>
 
     <EditText
-        android:layout_marginTop="60dp"
+        android:layout_below="@id/balance_send_ll"
+        android:layout_marginTop="40dp"
         android:singleLine="true"
         android:id="@+id/address"
         android:layout_width="match_parent"

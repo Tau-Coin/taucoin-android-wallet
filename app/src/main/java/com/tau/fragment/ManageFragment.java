@@ -36,7 +36,9 @@ import com.mofei.tau.view.CustomToolBar;
 import com.mofei.tau.view.SwipeRecyclerView;
 import com.mofei.tau.view.expanableLV.ExtendableListViewAdapter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,12 +61,14 @@ public class ManageFragment extends Fragment {
     //ExpandableListView
     private SwipeRefreshLayout swipeRefreshLayout;
     private ExpandableListView txExpandableListView;
-   // private String gs[]={"1","2","3","4"};
-   // private String cs[][]={{"11","12","13"},{"21","22","23"},{"31","32","33"},{"41","42","43"}};
-
     private List<TXGroup> groupArray;
     private List<List<TXChild>> childArray;
     private List<TXChild> txChildList;
+    private ExtendableListViewAdapter extendableListViewAdapter;
+
+    private TXGroup txGroup;
+    private TXChild txChild;
+    private String date;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,43 +92,36 @@ public class ManageFragment extends Fragment {
     }
 
     private void initView(View view) {
+
         txExpandableListView=view.findViewById(R.id.expend_list);
 
-        swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
-        //Set the background color of the drop-down progress bar, default white.
-        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(Color.WHITE);
-        //Set the color theme of the drop-down progress bar, the parameter is a variable parameter, and is the resource ID. Set up to four different colors, and each turn displays a color.
-        swipeRefreshLayout.setColorSchemeColors(Color.BLUE,Color.GREEN,Color.RED);
-        //To set up listeners, you need to override the onRefresh () method, which is called when the top drop-down occurs, which implements the logic of requesting data, sets the drop-down progress bar to disappear, and so on.
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                },2000);
-            }
-        });
-
-        List<UTXORecord> txUTXORecordList=UTXORecordDaoUtils.getInstance().queryAllData();
+        //List<UTXORecord> txUTXORecordList=UTXORecordDaoUtils.getInstance().queryAllData();
+        List<TransactionHistory> tempTXHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
         groupArray=new ArrayList<>();
         childArray=new ArrayList<>();
-        if (!txUTXORecordList.isEmpty()){
+        if (!tempTXHistoryList.isEmpty()){
             groupArray.clear();
             childArray.clear();
-            for (int i=0;i<txUTXORecordList.size();i++){
-                TXGroup txGroup=new TXGroup();
-                txGroup.setAmount(String.valueOf(txUTXORecordList.get(i).getValue()));
-                txGroup.setTime(String.valueOf(txUTXORecordList.get(i).getBlocktime()));
+            for (int i=0;i<tempTXHistoryList.size();i++){
+                txGroup=new TXGroup();
+
+                Double double_8=new Double("100000000");
+                String s=String.valueOf(tempTXHistoryList.get(i).getValue());
+                if(s!=null){
+                    Double coin_double=new Double(s);
+                    L.e("转换后的数据：　"+coin_double/double_8);
+                    txGroup.setAmount(digitalConversionTool(s));
+                }
+                date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(tempTXHistoryList.get(i).getBlocktime() * 1000));
+                L.e("date"+date);
+                txGroup.setTime(String.valueOf(date));
                 groupArray.add(txGroup);
 
-                TXChild txChild=new TXChild();
-                txChild.setAddress(SharedPreferencesHelper.getInstance(getActivity()).getString("Address",""));
-                txChild.setTxId(txUTXORecordList.get(i).getTxId());
+                txChild=new TXChild();
+                txChild.setAddress(tempTXHistoryList.get(i).getToAddress());
+                txChild.setTxId(tempTXHistoryList.get(i).getTxId());
                 txChild.setTxFee("0.11");
-                txChild.setTxBlockHeight(String.valueOf(txUTXORecordList.get(i).getBlockheight()));
+                //txChild.setTxBlockHeight(String.valueOf(tempTXHistoryList.get(i).getBlockheight()));
                 txChildList=new ArrayList<>();
                 txChildList.add(txChild);
 
@@ -134,7 +131,7 @@ public class ManageFragment extends Fragment {
         }
 
 
-        ExtendableListViewAdapter extendableListViewAdapter=new ExtendableListViewAdapter(getActivity(),groupArray,childArray);
+        extendableListViewAdapter=new ExtendableListViewAdapter(getActivity(),groupArray,childArray);
         txExpandableListView.setAdapter(extendableListViewAdapter);
         //设置分组的监听
         txExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -153,6 +150,72 @@ public class ManageFragment extends Fragment {
             }
         });
 
+
+        swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
+        //Set the background color of the drop-down progress bar, default white.
+        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(Color.WHITE);
+        //Set the color theme of the drop-down progress bar, the parameter is a variable parameter, and is the resource ID. Set up to four different colors, and each turn displays a color.
+        swipeRefreshLayout.setColorSchemeColors(Color.BLUE,Color.GREEN,Color.RED);
+        //To set up listeners, you need to override the onRefresh () method, which is called when the top drop-down occurs, which implements the logic of requesting data, sets the drop-down progress bar to disappear, and so on.
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                L.e("进刷新");
+                List<TransactionHistory> tempTXHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
+                //groupArray=new ArrayList<>();
+               // childArray=new ArrayList<>();
+                if (!tempTXHistoryList.isEmpty()){
+                    groupArray.clear();
+                    childArray.clear();
+                    for (int i=0;i<tempTXHistoryList.size();i++){
+                        TXGroup txGroup=new TXGroup();
+
+                        // Double double_8=new Double("100000000");
+                        // Double coin_double=new Double(String.valueOf(tempTXHistoryList.get(i).getValue()));
+                        // L.e("转换后的数据：　"+coin_double/double_8);
+                        String amount=digitalConversionTool(String.valueOf(tempTXHistoryList.get(i).getValue()));
+                        L.e("amount "+amount);
+                        txGroup.setAmount(amount);
+
+                        String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(tempTXHistoryList.get(i).getBlocktime() * 1000));
+                        L.e("date"+date);
+                        txGroup.setTime(String.valueOf(date));
+                        groupArray.add(txGroup);
+
+                        TXChild txChild=new TXChild();
+                        txChild.setAddress(SharedPreferencesHelper.getInstance(getActivity()).getString("Address",""));
+                        txChild.setTxId(tempTXHistoryList.get(i).getTxId());
+                        txChild.setTxFee("0.11");
+                        txChild.setTxBlockHeight(String.valueOf(tempTXHistoryList.get(i).getBlockheight()));
+                        txChildList=new ArrayList<>();
+                        txChildList.add(txChild);
+
+                        childArray.add(txChildList);
+                    }
+
+                }
+
+                extendableListViewAdapter.notifyDataSetChanged();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                },2000);
+            }
+        });
+
+    }
+
+    public String digitalConversionTool(String string){
+        //把5.00000000转化成50000000
+        Double d = new Double(string);
+        L.e("double"+d);
+        java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
+        nf.setGroupingUsed(false);
+        L.e("转化后　"+nf.format(d));
+        return nf.format(d);
+
     }
 
 
@@ -163,6 +226,7 @@ public class ManageFragment extends Fragment {
             txList.clear();
             txList.addAll(tempTXHistoryList);
         }
+
 
         swipeRecyclerView=view.findViewById(R.id.history_recycleView);
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);

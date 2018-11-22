@@ -1,7 +1,7 @@
 package com.mofei.tau.transaction;
 
 import com.mofei.tau.db.GreenDaoManager;
-import com.mofei.tau.db.greendao.KeyDaoUtils;
+
 import com.mofei.tau.src.io.taucoin.android.wallet.Wallet;
 
 /**

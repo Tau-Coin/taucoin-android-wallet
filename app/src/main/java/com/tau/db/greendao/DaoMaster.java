@@ -22,17 +22,17 @@ public class DaoMaster extends AbstractDaoMaster {
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(Database db, boolean ifNotExists) {
         UTXORecordDao.createTable(db, ifNotExists);
-        KeyDao.createTable(db, ifNotExists);
         TransactionHistoryDao.createTable(db, ifNotExists);
         UserDao.createTable(db, ifNotExists);
+        KeyValueDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
         UTXORecordDao.dropTable(db, ifExists);
-        KeyDao.dropTable(db, ifExists);
         TransactionHistoryDao.dropTable(db, ifExists);
         UserDao.dropTable(db, ifExists);
+        KeyValueDao.dropTable(db, ifExists);
     }
 
     /**
@@ -52,9 +52,9 @@ public class DaoMaster extends AbstractDaoMaster {
     public DaoMaster(Database db) {
         super(db, SCHEMA_VERSION);
         registerDaoClass(UTXORecordDao.class);
-        registerDaoClass(KeyDao.class);
         registerDaoClass(TransactionHistoryDao.class);
         registerDaoClass(UserDao.class);
+        registerDaoClass(KeyValueDao.class);
     }
 
     public DaoSession newSession() {

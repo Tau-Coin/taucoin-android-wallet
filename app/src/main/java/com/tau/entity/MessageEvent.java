@@ -7,12 +7,11 @@ package com.mofei.tau.entity;
 public class MessageEvent {
 
     private boolean isSuccess;
-
     private String tag;
+    private String mMsg;
 
-    public MessageEvent(boolean isSuccess, String tag) {
-        this.isSuccess = isSuccess;
-        this.tag = tag;
+    public MessageEvent(String msg) {
+
     }
 
     public boolean isSuccess() {
@@ -29,5 +28,13 @@ public class MessageEvent {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public String getmMsg() {
+        return mMsg;
+    }
+
+    public void setmMsg(String mMsg) {
+        this.mMsg = mMsg;
     }
 }

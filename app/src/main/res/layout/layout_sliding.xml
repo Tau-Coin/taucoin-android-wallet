@@ -44,6 +44,7 @@
             android:text="Please re register the new account"/>
 
         <TextView
+            android:visibility="invisible"
             android:id="@+id/help"
             android:textSize="16sp"
             android:textStyle="italic"
@@ -52,7 +53,46 @@
             android:layout_height="wrap_content"
             android:text="Help"
             android:textColor="@drawable/text_color"/>
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="13dp"
+            android:paddingTop="13dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ver"
+                android:layout_marginRight="10dp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/version_information"
+                android:textColor="#000"
+                android:textSize="@dimen/normal_text_size"
+                />
+
+            <TextView
+                android:id="@+id/tvVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.1.1"
+                android:textColor="#000000"
+                android:textSize="@dimen/normal_text_size"
+                />
+        </LinearLayout>
         <TextView
+            android:visibility="gone"
+            android:clickable="false"
             android:id="@+id/about"
             android:textSize="16sp"
             android:textStyle="italic"
@@ -61,6 +101,7 @@
             android:layout_height="wrap_content"
             android:text="About" />
         <Button
+            android:visibility="invisible"
             android:id="@+id/about_us"
             android:gravity="center"
             android:textAllCaps="false"

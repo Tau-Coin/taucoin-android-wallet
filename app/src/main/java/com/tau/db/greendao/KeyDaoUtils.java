@@ -1,8 +1,7 @@
 package com.mofei.tau.db.greendao;
 
 import com.mofei.tau.db.GreenDaoManager;
-import com.mofei.tau.transaction.Key;
-import com.mofei.tau.transaction.TransactionHistory;
+import com.mofei.tau.transaction.KeyValue;
 
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class KeyDaoUtils {
      * @param key
      * @return
      */
-    public boolean insertKeyStoreData(Key key) {
+    public boolean insertKeyStoreData(KeyValue key) {
         boolean flag = false;
 
         flag = getKeyDao().insert(key) == -1 ? false : true;
@@ -47,7 +46,7 @@ public class KeyDaoUtils {
      * @param key
      * @return
      */
-    public boolean insertOrReplaceData(Key key) {
+    public boolean insertOrReplaceData(KeyValue key) {
         boolean flag = false;
         try {
             flag = getKeyDao().insertOrReplace(key) == -1 ? false : true;
@@ -63,13 +62,13 @@ public class KeyDaoUtils {
      * @param list
      * @return
      */
-    public boolean insertOrReplaceMultiData(final List<Key> list) {
+    public boolean insertOrReplaceMultiData(final List<KeyValue> list) {
         boolean flag = false;
         try {
             getKeyDao().getSession().runInTx(new Runnable() {
                 @Override
                 public void run() {
-                    for (Key key : list) {
+                    for (KeyValue key : list) {
                         daoManager.getDaoSession().insertOrReplace(key);
                     }
                 }
@@ -87,7 +86,7 @@ public class KeyDaoUtils {
      * @param key
      * @return
      */
-    public boolean updateTransactionHistoryData(Key key) {
+    public boolean updateTransactionHistoryData(KeyValue key) {
         boolean flag = false;
         try {
             getKeyDao().update(key);
@@ -99,7 +98,7 @@ public class KeyDaoUtils {
     }
 
 
-    public boolean deleteTransactionHistoryData(Key key) {
+    public boolean deleteTransactionHistoryData(KeyValue key) {
         boolean flag = false;
         try {
             getKeyDao().delete(key);
@@ -149,7 +148,7 @@ public class KeyDaoUtils {
      * @param key
      * @return
      */
-    public Key queryKeyStoreDataById(long key) {
+    public KeyValue queryKeyStoreDataById(long key) {
         return getKeyDao().load(key);
     }
 
@@ -158,7 +157,7 @@ public class KeyDaoUtils {
      *　Query all data
      * @return
      */
-    public List<Key> queryAllData() {
+    public List<KeyValue> queryAllData() {
         return getKeyDao().loadAll();
     }
 
@@ -190,12 +189,12 @@ public class KeyDaoUtils {
      * @param param
      * @return
      */
-    public List<Key> queryKeyStoreByParams(String where, String... param) {
+    public List<KeyValue> queryKeyStoreByParams(String where, String... param) {
         return getKeyDao().queryRaw(where, param);
     }
 
-    public KeyDao getKeyDao() {
-        return daoManager.getDaoSession().getKeyDao();
+    public KeyValueDao getKeyDao() {
+        return daoManager.getDaoSession().getKeyValueDao();
     }
 
 }

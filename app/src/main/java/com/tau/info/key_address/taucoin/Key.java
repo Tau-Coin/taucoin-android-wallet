@@ -2,9 +2,6 @@ package com.mofei.tau.info.key_address.taucoin;
 
 public class Key {
     private String privkey;
-
-
-
     private String pubkey;
     private String address;
 

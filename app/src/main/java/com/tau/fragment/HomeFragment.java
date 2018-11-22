@@ -1,6 +1,7 @@
 package com.mofei.tau.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,8 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mofei.tau.R;
+import com.mofei.tau.activity.DetailsActivity;
+import com.mofei.tau.activity.SendAndReceiveActivity;
 import com.mofei.tau.adapter.HistoryEventRecycleAdapter;
 import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
+import com.mofei.tau.entity.FirstEvent;
+import com.mofei.tau.entity.MessageEvent;
 import com.mofei.tau.entity.res_post.Balance;
 import com.mofei.tau.entity.res_post.BalanceRet;
 import com.mofei.tau.info.SharedPreferencesHelper;
@@ -31,6 +36,8 @@ import com.mofei.tau.transaction.TransactionHistory;
 import com.mofei.tau.util.L;
 import com.mofei.tau.view.DialogWaitting;
 import com.mofei.tau.view.SwipeRecyclerView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +65,7 @@ public class HomeFragment extends Fragment {
     private int status;
     private DialogWaitting mWaitDialog = null;
     private Toast mToast = null;
-
+    private LinearLayout watchOutLL;
 
     private SwipeRefreshLayout swipeRefreshLayout;
     // private RecyclerView historyRecyclerView;
@@ -75,7 +82,10 @@ public class HomeFragment extends Fragment {
                     Double double_8=new Double("100000000");
                     Double coin_double=new Double(double_coins);
                     L.e("转换后的数据：　"+coin_double/double_8);
-                    mBalanceTauTV.setText(""+coin_double/double_8);
+                    double balance=coin_double/double_8;
+                    mBalanceTauTV.setText(""+balance);
+                    //向sendFragment传递数据
+                    EventBus.getDefault().postSticky(new FirstEvent(balance+""));
                     break;
             }
         }
@@ -88,10 +98,23 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_home, container, false);
+
+        /*view.findViewById(R.id.balance_home_ll).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               *//* getFragmentManager().beginTransaction().addToBackStack(null)  //将当前fragment加入到返回栈中
+                        .replace(R.id.fragment, new SendFragment())
+                        .commit();*//*
+
+               new SendAndReceiveActivity().selectTab(1);
+
+
+            }
+        });*/
+        return view;
     }
 
     @Override
@@ -107,6 +130,13 @@ public class HomeFragment extends Fragment {
         mAddressTV=view.findViewById(R.id.address_text);
         mAddressTV.setText(SharedPreferencesHelper.getInstance(getActivity()).getString("Address",""));
         mBalanceTauTV=view.findViewById(R.id.balance_tau_fs);
+        watchOutLL=view.findViewById(R.id.watch_at);
+        watchOutLL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), DetailsActivity.class));
+            }
+        });
     }
 
     private void initEvent(View view) {

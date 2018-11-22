@@ -18,13 +18,13 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.8dp"
-        android:background="#6d6d6d"/>
+        android:background="#BEBEBE"/>
 <RadioGroup
     android:id="@+id/tab_radiogroup"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:orientation="horizontal"
-    android:background="#F2F1F0"
+    android:background="#EDEDED"
     android:gravity="center">
 
     <RadioButton

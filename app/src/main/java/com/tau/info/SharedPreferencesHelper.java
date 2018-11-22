@@ -125,7 +125,7 @@ public class SharedPreferencesHelper {
 
     //获得SharedPreferences对象
     private SharedPreferences getSP() {
-        return context.getSharedPreferences("sp", Context.MODE_PRIVATE);
+        return context.getSharedPreferences("sp", Context.MODE_MULTI_PROCESS);
     }
 
     private SharedPreferences getSP(String name) {

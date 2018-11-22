@@ -8,9 +8,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Received Address"
+        android:text="To Address"
         android:textSize="16sp"/>
     <TextView
+        android:textIsSelectable="true"
+        android:textColor="#F09225"
         android:id="@+id/tx_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,32 +24,36 @@
         android:text="Transation ID"
         android:textSize="16sp"/>
     <TextView
+        android:textColor="#000000"
         android:id="@+id/tx_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
         android:textSize="14sp"/>
     <TextView
+        android:textIsSelectable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Transation fee"
+        android:text="Transation Fee"
         android:textSize="16sp"/>
     <TextView
+        android:textColor="#000000"
         android:id="@+id/tx_fee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
         android:textSize="14sp"/>
-    <TextView
+    <!--<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Block Height"
         android:textSize="16sp"/>
     <TextView
+        android:textColor="#000000"
         android:id="@+id/tx_block_height"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="14sp"/>
+        android:textSize="14sp"/>-->
 
 </LinearLayout>

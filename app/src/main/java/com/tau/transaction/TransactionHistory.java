@@ -43,10 +43,17 @@ public class TransactionHistory {
 
     private String message;
 
-    @Generated(hash = 1123960615)
+    // blockheight
+    public long blockheight;
+
+    // blocktime
+    public long blocktime;
+
+    @Generated(hash = 1807211582)
     public TransactionHistory(Long id, String txId, String sentOrReceived,
             String fromAddress, String toAddress, String time, int confirmations,
-            String value, boolean result, String message) {
+            String value, boolean result, String message, long blockheight,
+            long blocktime) {
         this.id = id;
         this.txId = txId;
         this.sentOrReceived = sentOrReceived;
@@ -57,6 +64,8 @@ public class TransactionHistory {
         this.value = value;
         this.result = result;
         this.message = message;
+        this.blockheight = blockheight;
+        this.blocktime = blocktime;
     }
 
     @Generated(hash = 63079048)
@@ -143,6 +152,21 @@ public class TransactionHistory {
         this.message = message;
     }
 
+    public long getBlockheight() {
+        return this.blockheight;
+    }
+
+    public void setBlockheight(long blockheight) {
+        this.blockheight = blockheight;
+    }
+
+    public long getBlocktime() {
+        return this.blocktime;
+    }
+
+    public void setBlocktime(long blocktime) {
+        this.blocktime = blocktime;
+    }
 
     
     

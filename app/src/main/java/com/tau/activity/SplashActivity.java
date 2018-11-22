@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.view.WindowManager;
 
 import com.mofei.tau.R;
-import com.mofei.tau.db.greendao.KeyDaoUtils;
 import com.mofei.tau.db.greendao.UTXORecordDaoUtils;
 import com.mofei.tau.entity.res_post.Balance;
 import com.mofei.tau.entity.res_post.BalanceRet;
@@ -14,7 +13,6 @@ import com.mofei.tau.entity.res_post.UTXOList;
 import com.mofei.tau.info.SharedPreferencesHelper;
 import com.mofei.tau.net.ApiService;
 import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.transaction.Key;
 import com.mofei.tau.transaction.ScriptPubkey;
 import com.mofei.tau.transaction.UTXORecord;
 import com.mofei.tau.util.L;
@@ -89,7 +87,7 @@ public class SplashActivity extends BaseActivity {
        // finish();
     }
 
-    public void getBalanceData(String email) {
+    /*public void getBalanceData(String email) {
         Map<String,String> emailMap=new HashMap<>();
         emailMap.put("email",email);
         ApiService apiService=NetWorkManager.getApiService();
@@ -115,7 +113,7 @@ public class SplashActivity extends BaseActivity {
                         SharedPreferencesHelper.getInstance(SplashActivity.this).putString("utxo",""+balanceRetBalance.getRet().getUtxo());
 
                         //balance,reward,utxo插入KeyBD
-                        Key key=new Key();
+                        KeyValue key=new KeyValue();
                         key.setPubkey(SharedPreferencesHelper.getInstance(SplashActivity.this).getString("Pubkey","Pubkey"));
                         key.setPrivkey(SharedPreferencesHelper.getInstance(SplashActivity.this).getString("Privkey","Privkey"));
                         key.setPubkey(SharedPreferencesHelper.getInstance(SplashActivity.this).getString("Address","Address"));
@@ -149,9 +147,9 @@ public class SplashActivity extends BaseActivity {
                         L.e("complete");
                     }
                 });
-    }
+    }*/
 
-    private void getUTXOList() {
+    /*private void getUTXOList() {
         Map<String,String> address=new HashMap<>();
         String addre=SharedPreferencesHelper.getInstance(this).getString("Address","Address");
         L.e("getUTXOList_Address: "+addre);
@@ -236,6 +234,6 @@ public class SplashActivity extends BaseActivity {
                        // hideWaitDialog();
                     }
                 });
-    }
+    }*/
 
 }

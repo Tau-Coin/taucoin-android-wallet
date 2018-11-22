@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.mofei.tau.R;
 import com.mofei.tau.transaction.TransactionHistory;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,7 +77,8 @@ public class HistoryEventRecycleAdapter extends RecyclerView.Adapter<HistoryEven
         holder.txidTextView.setText(transactionHistory.getTxId());
         holder.addressTextView.setText(transactionHistory.getToAddress());
         holder.amountTextView.setText(transactionHistory.getValue());
-        holder.dateTextView.setText(transactionHistory.getTime()+"");
+        String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(transactionHistory.getBlocktime() * 1000));
+        holder.dateTextView.setText(date);
 
     }
 

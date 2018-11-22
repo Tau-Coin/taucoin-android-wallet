@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.mofei.tau.R;
 import com.mofei.tau.info.SharedPreferencesHelper;
 import com.mofei.tau.net.NetWorkManager;
+import com.mofei.tau.util.L;
 import com.mofei.tau.view.DialogWaitting;
 import com.mofei.tau.view.SmartDialog;
 
@@ -102,4 +103,16 @@ public class BaseActivity extends AppCompatActivity {
         String regex = "^[a-zA-Z0-9_.%+-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
         return email.matches(regex);
     }
+
+    public String digitalConversionTool(String string){
+        //把5.00000000转化成50000000
+        Double d = new Double(string)*Math.pow(10,8);
+        L.e("double"+d);
+        java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
+        nf.setGroupingUsed(false);
+        L.e("转化后　"+nf.format(d));
+        return nf.format(d);
+
+    }
+
 }

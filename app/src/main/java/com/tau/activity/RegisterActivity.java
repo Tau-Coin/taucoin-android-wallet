@@ -1,12 +1,10 @@
 package com.mofei.tau.activity;
 
-import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
-import com.mofei.tau.constant.TAU_BaseURL;
 import com.mofei.tau.entity.res_post.StatusMessage;
 import com.mofei.tau.entity.res_put.Register;
 import com.mofei.tau.info.SharedPreferencesHelper;
@@ -22,13 +19,9 @@ import com.mofei.tau.info.key_address.taucoin.Key;
 import com.mofei.tau.info.key_address.taucoin.KeyGenerator;
 import com.mofei.tau.net.ApiService;
 import com.mofei.tau.net.NetWorkManager;
+import com.mofei.tau.transaction.KeyValue;
 import com.mofei.tau.util.L;
-import com.mofei.tau.util.ZXingUtils;
 
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,13 +30,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class RegisterActivity extends BaseActivity implements View.OnClickListener{
     private TextView backTV;
@@ -294,6 +280,15 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             SharedPreferencesHelper.getInstance(RegisterActivity.this).putString("Pubkey",key.getPubkey());
             SharedPreferencesHelper.getInstance(RegisterActivity.this).putString("Privkey",key.getPrivkey());
             SharedPreferencesHelper.getInstance(RegisterActivity.this).putString("Address",key.getAddress());
+            //保存公私钥和地址
+            KeyValue keyValue=new KeyValue();
+            keyValue.setPubkey(key.getPubkey());
+            keyValue.setPrivkey(key.getPrivkey());
+            keyValue.setAddress(key.getAddress());
+            //keyValue.setUtxo(new BigInteger(SharedPreferencesHelper.getInstance(this).getString("utxo","utxo")));
+            //keyValue.setBalance(new BigInteger(SharedPreferencesHelper.getInstance(this).getString("balance","balance")));
+            //keyValue.setReward(new BigInteger(SharedPreferencesHelper.getInstance(this).getString("reward","reward")));
+          //  KeyDaoUtils.getInstance().insertKeyStoreData(keyValue);
         } else {
             L.e("333");
             L.i("Generate key error...");

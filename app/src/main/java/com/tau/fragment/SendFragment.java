@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,10 +31,12 @@ import com.mofei.tau.activity.KeysAddressesActivity;
 import com.mofei.tau.activity.MainActivity;
 import com.mofei.tau.activity.SendAndReceiveActivity;
 import com.mofei.tau.activity.TextActivity;
-import com.mofei.tau.db.greendao.KeyDaoUtils;
+
 import com.mofei.tau.db.greendao.TransactionHistoryDao;
 import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
 import com.mofei.tau.db.greendao.UTXORecordDaoUtils;
+import com.mofei.tau.entity.FirstEvent;
+import com.mofei.tau.entity.MessageEvent;
 import com.mofei.tau.entity.res_post.Balance;
 import com.mofei.tau.entity.res_post.BalanceRet;
 import com.mofei.tau.entity.res_post.HexRet;
@@ -58,6 +61,9 @@ import com.mofei.tau.util.L;
 import com.mofei.tau.util.MD5_BASE64Util;
 import com.mofei.tau.view.DialogWaitting;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -89,7 +95,7 @@ public class SendFragment extends Fragment{
     private DialogWaitting mWaitDialog = null;
     private Toast mToast = null;
     private String to_address;
-    //private TextView mBalanceTauTV;
+    private TextView mBalanceTauTV;
     private List<UTXORecord> utxoRecordList;
     private List<UTXOList.UtxosBean> list;
     private String txid_from_tx;
@@ -100,6 +106,8 @@ public class SendFragment extends Fragment{
     private double reward;
     private int status;
     AlertDialog dialog;
+    private TransactionHistory transactionHistory;
+    private LinearLayout balanceHoneLL;
 
 
     Handler handler_ = new Handler() {
@@ -108,7 +116,8 @@ public class SendFragment extends Fragment{
             switch (msg.what) {
                 case 0x33:
                     if(get_txid_after_sendTX.equals(SharedPreferencesHelper.getInstance(getActivity()).getString("txid","txid"))){
-                        showToast("the transaction has reached the trading pool, waiting for the result.");
+                        //showToast("the transaction has reached the trading pool, waiting for the result.");
+                        showToast("success");
                     }
                     L.e("进入定时器　链端正在确认　片刻后得到结果");
                     dialog.show();
@@ -141,7 +150,7 @@ public class SendFragment extends Fragment{
                     };
                     Timer timer = new Timer();
                     //60s以后getRawTransation();
-                    timer.schedule(task, 10000);
+                    timer.schedule(task, 120000);
 
                     break;
                 case 0x34:
@@ -195,6 +204,9 @@ public class SendFragment extends Fragment{
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_send, container, false);
 
+        mBalanceTauTV=view.findViewById(R.id.balance_text);
+        EventBus.getDefault().register(this);
+
         return view;
     }
 
@@ -209,18 +221,32 @@ public class SendFragment extends Fragment{
                 .create();
     }
 
-   /* @Override
+
+    //接收homeFragment 传来的数据
+    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
+    public void onEventMainThread(FirstEvent data){
+        L.e("onEvent:"+data.getMsg());
+        mBalanceTauTV.setText(data.getMsg());
+    }
+
+
+    @Override
     public void onResume() {
         super.onResume();
-        showWaitDialog();
-        getBalanceData(SharedPreferencesHelper.getInstance(getActivity()).getString("email",""));
-    }*/
+
+        //showWaitDialog();
+       // getBalanceData(SharedPreferencesHelper.getInstance(getActivity()).getString("email",""));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     private void intiEvent(View view) {
         amountET=view.findViewById(R.id.amount);
         addressET=view.findViewById(R.id.address);
-       // mBalanceTauTV=view.findViewById(R.id.balance_tau_fs);
-
         sendBT=view.findViewById(R.id.send_tau);
         sendBT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,18 +269,17 @@ public class SendFragment extends Fragment{
     private void createTransation() {
         amount=amountET.getText().toString().trim();
         to_address=addressET.getText().toString().trim();
-        if (amount == null || amount.length() == 0) {
-            showToast("amount is empty");
-            return;
-        }
 
         if (to_address == null || to_address.length() == 0) {
-            showToast("address is empty");
+            showToast("please enter your address");
+            return;
+        }
+        if (amount == null || amount.length() == 0) {
+            showToast("please enter your amount");
             return;
         }
 
-        //to_address="TTLUavJdzySpS6omCfmpyoNHKozXvB5xYq";
-        //amount="2000000";
+        to_address="TTLUavJdzySpS6omCfmpyoNHKozXvB5xYq";
         Double amount_conv = new Double( Double.valueOf(amount) * Math.pow(10,8));
         L.e("double"+amount_conv);
         java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
@@ -264,6 +289,9 @@ public class SendFragment extends Fragment{
 
         String PrivKey= SharedPreferencesHelper.getInstance(getActivity()).getString("Privkey","私钥为空");
         Log.e("PrivKey",PrivKey);
+        if(PrivKey==null){
+            return;
+        }
         String newPrivKeyStr = null;
         try {
             newPrivKeyStr = Utils.convertWIFPrivkeyIntoPrivkey(PrivKey);
@@ -278,7 +306,6 @@ public class SendFragment extends Fragment{
         receipts.put(to_address, new BigInteger(amount_, 10));
         Wallet wallet = Wallet.getInstance();
         Transaction tx = new Transaction(NetworkParameters.mainNet());
-
         CreateTransactionResult result = wallet.createTransaction(receipts, false, null, tx);
         if (result.failReason == TransactionFailReason.NO_ERROR) {
 
@@ -289,12 +316,15 @@ public class SendFragment extends Fragment{
             SharedPreferencesHelper.getInstance(getActivity()).putString("txid",txid_from_tx);
             //插入数据到TransactionHistoryDB
             list=SendAndReceiveActivity.utxo_list;
-            TransactionHistory transactionHistory=new TransactionHistory();
+
+            transactionHistory=new TransactionHistory();
             transactionHistory.setTxId(txid_from_tx);
             transactionHistory.setConfirmations(0);
-           // transactionHistory.setResult(false);
+            // transactionHistory.setResult(false);
             transactionHistory.setToAddress(to_address);
-            transactionHistory.setValue(amount);
+           // transactionHistory.setValue(amount);
+            //transactionHistory.setBlockheight(list.get(0).getBlockheight());
+           // transactionHistory.setBlocktime(list.get(0).getBlocktime());
             TransactionHistoryDaoUtils.getInstance().insertTransactionHistoryData(transactionHistory);
 
             L.e("txid="+ txid_from_tx);
@@ -514,15 +544,19 @@ public class SendFragment extends Fragment{
                         L.e("Status: "+rawTX.getStatus());
                         L.e("getConfirmations: "+rawTX.getRet().getConfirmations());
 
-                        list=SendAndReceiveActivity.utxo_list;
+                        //list=SendAndReceiveActivity.utxo_list;
                        // TransactionHistory transactionHistory=new TransactionHistory();
                         List<TransactionHistory> transactionHistoryList=TransactionHistoryDaoUtils.getInstance().queryTransactionByName(txid_from_tx);
 
                         transactionHistoryList.get(0).setConfirmations(rawTX.getRet().getConfirmations());
                         transactionHistoryList.get(0).setValue(amount);
 
+                        int blockTime=rawTX.getRet().getBlocktime();
+                        L.e("blockTime:"+blockTime);
+                        transactionHistoryList.get(0).setBlocktime(blockTime);
 
-                        Calendar calendar=Calendar.getInstance();
+
+                       /* Calendar calendar=Calendar.getInstance();
                         int year=calendar.get(Calendar.YEAR);
                         int month=calendar.get(Calendar.MONTH)+1;
                         int day=calendar.get(Calendar.DAY_OF_MONTH);
@@ -532,7 +566,7 @@ public class SendFragment extends Fragment{
 
                         String time=month+", "+day+", "+year+", "+hour+":"+minute+":"+second;
                         L.e("time"+time);
-                        transactionHistoryList.get(0).setTime(time);
+                        transactionHistoryList.get(0).setTime(time);*/
                         transactionHistoryList.get(0).setResult(true);
                         //transactionHistory.setTxId(txid_from_tx);
                         //transactionHistory.setToAddress(to_address);

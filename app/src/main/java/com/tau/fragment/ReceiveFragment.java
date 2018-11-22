@@ -34,8 +34,8 @@ import com.mofei.tau.view.DialogWaitting;
 public class ReceiveFragment extends Fragment {
     private DialogWaitting mWaitDialog = null;
     private Toast mToast = null;
-    //private TextView mDetailsTV;
-    private RelativeLayout mDetailsRL;
+    private TextView mDetailsTV;
+   // private RelativeLayout mDetailsRL;
     private TextView mWalletAddressTV;
     private ImageView mAddressTwoDimensionCodeIV;
 
@@ -64,12 +64,10 @@ public class ReceiveFragment extends Fragment {
     }
 
     private void initData(View view) {
-
-       // mDetailsTV=view.findViewById(R.id.to_details_);
-        mDetailsRL=view.findViewById(R.id.to_details_);
+        mDetailsTV=view.findViewById(R.id.to_details_);
+      //  mDetailsRL=view.findViewById(R.id.to_details_);
         mWalletAddressTV=view.findViewById(R.id.wallet_address_);
         mAddressTwoDimensionCodeIV=view.findViewById(R.id.address_two_dimension_code_img_);
-
     }
 
     private void initEvent() {
@@ -77,18 +75,7 @@ public class ReceiveFragment extends Fragment {
         String address= SharedPreferencesHelper.getInstance(getActivity()).getString("Address","Address");
         mWalletAddressTV.setText(address);
 
-       /* mDetailsTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent( getActivity(),DetailsActivity.class);
-               *//* intent.putExtra("Pubkey",key.getPubkey());
-                intent.putExtra("Privkey",key.getPrivkey());
-                intent.putExtra("Address",key.getAddress());*//*
-                startActivity(intent);
-            }
-        });*/
-
-        mDetailsRL.setOnClickListener(new View.OnClickListener() {
+        mDetailsTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent( getActivity(),DetailsActivity.class);
@@ -96,9 +83,20 @@ public class ReceiveFragment extends Fragment {
                 intent.putExtra("Privkey",key.getPrivkey());
                 intent.putExtra("Address",key.getAddress());*/
                 startActivity(intent);
-
             }
         });
+
+       /* mDetailsRL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent( getActivity(),DetailsActivity.class);
+               *//* intent.putExtra("Pubkey",key.getPubkey());
+                intent.putExtra("Privkey",key.getPrivkey());
+                intent.putExtra("Address",key.getAddress());*//*
+                startActivity(intent);
+
+            }
+        });*/
         //生成二维码
         Bitmap qrImage= ZXingUtils.createQRImage(address,400,400);
         mAddressTwoDimensionCodeIV.setImageBitmap(qrImage);
@@ -114,7 +112,6 @@ public class ReceiveFragment extends Fragment {
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
                                 dialog.dismiss();
                             }
                         })
@@ -131,8 +128,6 @@ public class ReceiveFragment extends Fragment {
                 return false;
             }
         });
-
-
     }
 
     private void saveImage(ImageView imageView){
@@ -165,8 +160,7 @@ public class ReceiveFragment extends Fragment {
         }
     }*/
 
-    public static Bitmap convertViewToBitmap(View view)
-    {
+    public static Bitmap convertViewToBitmap(View view) {
         view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
         view.buildDrawingCache();

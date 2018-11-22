@@ -1,6 +1,5 @@
 package com.mofei.tau.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -9,16 +8,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -28,10 +22,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.facebook.login.LoginManager;
-
 import com.mofei.tau.R;
-import com.mofei.tau.db.greendao.KeyDaoUtils;
 import com.mofei.tau.db.greendao.UTXORecordDaoUtils;
 import com.mofei.tau.entity.req_parameter.Logout;
 import com.mofei.tau.entity.res_post.Balance;
@@ -44,7 +35,7 @@ import com.mofei.tau.fragment.SendFragment;
 import com.mofei.tau.info.SharedPreferencesHelper;
 import com.mofei.tau.net.ApiService;
 import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.transaction.Key;
+import com.mofei.tau.transaction.KeyValue;
 import com.mofei.tau.transaction.ScriptPubkey;
 import com.mofei.tau.transaction.UTXORecord;
 import com.mofei.tau.util.L;
@@ -132,7 +123,7 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
     private void titleBar() {
         //标题栏
         mMainCustomToolBar = findViewById(R.id.send_receive_titlebar);
-        mMainCustomToolBar.getTitleTextView().setText("Transactions");
+        mMainCustomToolBar.getTitleTextView().setText("TAUcoin");
         mMainCustomToolBar.getTitleTextView().setTextColor(Color.WHITE);
         mMainCustomToolBar.getTitleTextView().setTextSize(22);
         mMainCustomToolBar.getLeftTextView().setText("");
@@ -171,32 +162,30 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
         //定义底部标签图片大小和位置
         Drawable drawable_news = getResources().getDrawable(R.drawable.selector_tab_home);
         //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形
-        drawable_news.setBounds(0, 0, 60, 60);
+        drawable_news.setBounds(0, 0, 70, 50);
         //设置图片在文字的哪个方向
         homeRadioButton.setCompoundDrawables(null, drawable_news, null, null);
         //定义底部标签图片大小和位置
         Drawable drawable_live = getResources().getDrawable(R.drawable.selector_tab_send);
         //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形
-        drawable_live.setBounds(0, 0, 60, 60);
+        drawable_live.setBounds(0, 0, 70, 50);
         //设置图片在文字的哪个方向
         sendRadioButton.setCompoundDrawables(null, drawable_live, null, null);
         //定义底部标签图片大小和位置
         Drawable drawable_tuijian = getResources().getDrawable(R.drawable.selector_tab_receive);
         //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形
-        drawable_tuijian.setBounds(0, 0, 60, 60);
+        drawable_tuijian.setBounds(0, 0, 70, 50);
         //设置图片在文字的哪个方向
         receiveRadioButton.setCompoundDrawables(null, drawable_tuijian, null, null);
         //定义底部标签图片大小和位置
         Drawable drawable_me = getResources().getDrawable(R.drawable.selector_tab_manage);
         //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形
-        drawable_me.setBounds(0, 0, 60, 60);
+        drawable_me.setBounds(0, 0, 70, 50);
         //设置图片在文字的哪个方向
         manageRadioButton.setCompoundDrawables(null, drawable_me, null, null); }
 
 
     private void initData() {
-
-
         mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View view, float v) {
@@ -300,7 +289,7 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
     }
 
     //进行选中Tab的处理
-    private void selectTab(int i) {
+    public void selectTab(int i) {
         //获取FragmentManager对象
         FragmentManager manager = getSupportFragmentManager();
         //获取FragmentTransaction对象
@@ -394,7 +383,7 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
                         SharedPreferencesHelper.getInstance(SendAndReceiveActivity.this).putString("utxo",""+balanceRetBalance.getRet().getUtxo());
 
                         //balance,reward,utxo插入KeyBD
-                        Key key=new Key();
+                        KeyValue key=new KeyValue();
                         key.setPubkey(SharedPreferencesHelper.getInstance(SendAndReceiveActivity.this).getString("Pubkey","Pubkey"));
                         key.setPrivkey(SharedPreferencesHelper.getInstance(SendAndReceiveActivity.this).getString("Privkey","Privkey"));
                         key.setPubkey(SharedPreferencesHelper.getInstance(SendAndReceiveActivity.this).getString("Address","Address"));
@@ -402,8 +391,8 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
                         key.setBalance((long) balanceRetBalance.getRet().getCoins());
                         key.setReward((long) balanceRetBalance.getRet().getRewards());
 
-                        KeyDaoUtils.getInstance().deleteAllData();
-                        KeyDaoUtils.getInstance().insertKeyStoreData(key);
+                      //  KeyDaoUtils.getInstance().deleteAllData();
+                      //  KeyDaoUtils.getInstance().insertKeyStoreData(key);
 
                         L.e("Coins"+balanceRetBalance.getRet().getCoins());
                         L.e(balanceRetBalance.getRet().getPubkey());

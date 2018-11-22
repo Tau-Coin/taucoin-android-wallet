@@ -4,10 +4,10 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:id="@+id/ll_item"
-    android:background="#ffffff"
     android:gravity="center">
 
     <LinearLayout
+        android:background="#EDEDED"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
