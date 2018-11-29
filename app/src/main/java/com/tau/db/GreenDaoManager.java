@@ -12,7 +12,7 @@ import org.greenrobot.greendao.database.Database;
  * Create and manage database in GreenDaoManager:
  */
 public class GreenDaoManager {
-    private static final String DB_NAME = "greendao";
+    private static final String DB_NAME = "taucoin_db";
     private static GreenDaoManager mInstance;
     private DaoMaster daoMaster;
     private DaoSession daoSession;

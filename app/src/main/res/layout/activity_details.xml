@@ -14,7 +14,7 @@
     </com.mofei.tau.view.CustomToolBar>
 
     <TextView
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
@@ -24,7 +24,7 @@
         android:textStyle="bold"/>
 
     <TextView
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_marginTop="10dp"
         android:textColor="#000000"
         android:layout_alignParentLeft="true"
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:text="PublicKey"
         android:layout_marginLeft="20dp"
          android:textStyle="bold"/>
@@ -53,6 +53,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:layout_alignParentLeft="true"
             android:textColor="#000000"
             android:layout_centerVertical="true"
             android:password="true"
@@ -61,12 +62,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:layout_marginTop="10dp"
             android:text=""
-            android:layout_marginRight="40dp"
+            android:layout_marginRight="50dp"
             android:layout_marginLeft="20dp"
             />
         <CheckBox
+            android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:checked="false"
             android:id="@+id/cbDisplayPublkey"
@@ -89,6 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+            android:layout_centerVertical="true"
             android:textColor="#000000"
             android:id="@+id/private_key"
             android:textIsSelectable="true"
@@ -98,10 +100,22 @@
             android:text=""
             android:layout_alignParentLeft="true"
             android:password="true"
-            android:layout_marginRight="40dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginRight="80dp"
+            />
+
+        <ImageView
+
+            android:layout_centerVertical="true"
+            android:id="@+id/copy_"
+            android:layout_toLeftOf="@id/cbDisplayPrivatekey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/copy_"
             />
         <CheckBox
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:checked="false"
             android:id="@+id/cbDisplayPrivatekey"
@@ -124,7 +138,7 @@
             android:id="@+id/private_key_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="please enter your private key"
+            android:hint="Please enter your private key"
             android:textColorHint=" #A3A3A3"
             android:textSize="14sp"/>
 
@@ -132,13 +146,15 @@
             android:id="@+id/sava_private_key_bt"
             android:layout_marginTop="20dp"
             android:enabled="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_gravity="center"
-            android:layout_width="160dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textAllCaps="false"
-            android:text="Save Private Key"
+            android:text="Import Private Key"
             android:textSize="18sp"
-            android:textColor="#000000"
+            android:textColor="#ffffff"
             android:background="@drawable/backgroud_color1" />
     </LinearLayout>
 
@@ -183,7 +199,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
-        android:visibility="invisible"
+        android:visibility="gone"
         android:id="@+id/to_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

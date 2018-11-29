@@ -17,21 +17,7 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
-            tools:replace="android:theme" />
-
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-
-        <activity
-            android:name=".activity.LoginActivity"
-            android:exported="true" />
+       　
         <activity
             android:name=".activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
@@ -44,51 +30,26 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.BalanceActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity
-            android:name=".activity.HarvestClubActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity
-            android:name=".activity.KeysAddressesActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity
-            android:name=".activity.BountyActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+       　
         <activity
             android:name=".activity.SendAndReceiveActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
             android:name=".activity.DetailsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity
-            android:name=".activity.VisitActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity
-            android:name=".activity.ReferringActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity
-            android:name=".activity.TalkingActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity
-            android:name=".activity.BuildingActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+
         <activity android:name=".activity.BaseActivity" />
-        <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.TextActivity" />
-        <activity android:name=".activity.BuyCoinsActivity" />
-        <activity android:name=".activity.BuyCoinsAddressActivity" />
-        <activity android:name=".activity.AirdropActivity" />
-        <activity android:name=".activity.VisitVerfiActivity" />
-        <activity android:name=".activity.VisitEmailBindActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.LoginActivity2" />
         <activity
             android:name=".activity.ChangePasswActivity"
             android:label="@string/title_activity_change_passw"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activity.AboutActivity"></activity>
+        <activity android:name=".activity.AboutActivity" />
+        <activity android:name=".activity.HistoryTransationActivity" />
+        <activity android:name=".activity.ExhibitTXActivity" />
+        <activity android:name=".activity.ExhibitUTXOActivity"></activity>
     </application>
 
 </manifest>

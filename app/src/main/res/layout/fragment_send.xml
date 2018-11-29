@@ -18,21 +18,21 @@
         android:layout_height="80dp"
         android:orientation="horizontal">
 
-        <!--<TextView
+       <!-- <TextView
             android:layout_centerHorizontal="true"
             android:id="@+id/user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Balance: "
+            android:textSize="16sp"
+            android:text="Balance:"
             android:layout_gravity="center"/>-->
         <TextView
             android:id="@+id/balance_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#0000ff"
+            android:textColor="#2196F3"
             android:textSize="16sp"
-            android:text=""
+            android:text="0.0"
             android:layout_gravity="center"/>
         <TextView
             android:layout_marginLeft="8dp"

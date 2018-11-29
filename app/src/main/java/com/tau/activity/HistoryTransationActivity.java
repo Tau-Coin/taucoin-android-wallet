@@ -67,11 +67,6 @@ public class HistoryTransationActivity extends BaseActivity {
             }
         });
 
-       /* List<String> list=new ArrayList<>();
-        for (int i=0;i<50;i++){
-            list.add("data" +i);
-        }*/
-
        List<TransactionHistory> transactionHistoryList=TransactionHistoryDaoUtils.getInstance().queryAllData();
 
         historyEventRecycleAdapter=new HistoryEventRecycleAdapter(this,transactionHistoryList);

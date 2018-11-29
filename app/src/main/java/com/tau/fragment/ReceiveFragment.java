@@ -24,6 +24,7 @@ import com.mofei.tau.R;
 import com.mofei.tau.activity.DetailsActivity;
 import com.mofei.tau.activity.KeysAddressesActivity;
 import com.mofei.tau.info.SharedPreferencesHelper;
+import com.mofei.tau.util.UserInfoUtils;
 import com.mofei.tau.util.ZXingUtils;
 import com.mofei.tau.view.DialogWaitting;
 
@@ -43,7 +44,6 @@ public class ReceiveFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -60,7 +60,6 @@ public class ReceiveFragment extends Fragment {
         initData(view);
 
         initEvent();
-
     }
 
     private void initData(View view) {
@@ -73,30 +72,16 @@ public class ReceiveFragment extends Fragment {
     private void initEvent() {
 
         String address= SharedPreferencesHelper.getInstance(getActivity()).getString("Address","Address");
-        mWalletAddressTV.setText(address);
+        mWalletAddressTV.setText(UserInfoUtils.getAddress(getActivity()));
 
         mDetailsTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent( getActivity(),DetailsActivity.class);
-               /* intent.putExtra("Pubkey",key.getPubkey());
-                intent.putExtra("Privkey",key.getPrivkey());
-                intent.putExtra("Address",key.getAddress());*/
                 startActivity(intent);
             }
         });
 
-       /* mDetailsRL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent( getActivity(),DetailsActivity.class);
-               *//* intent.putExtra("Pubkey",key.getPubkey());
-                intent.putExtra("Privkey",key.getPrivkey());
-                intent.putExtra("Address",key.getAddress());*//*
-                startActivity(intent);
-
-            }
-        });*/
         //生成二维码
         Bitmap qrImage= ZXingUtils.createQRImage(address,400,400);
         mAddressTwoDimensionCodeIV.setImageBitmap(qrImage);
@@ -104,7 +89,7 @@ public class ReceiveFragment extends Fragment {
             @Override
             public boolean onLongClick(View v) {
                 // SaveImageToSysAlbum();  //保存到相册
-                AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                /*AlertDialog dialog = new AlertDialog.Builder(getActivity())
                         // .setIcon(R.mipmap.icon)//设置标题的图片
                         .setTitle("Save address two-dimensional code?")//设置对话框的标题
                         .setMessage("If you want to save, please click OK or click Cancel.")//设置对话框的内容
@@ -123,7 +108,10 @@ public class ReceiveFragment extends Fragment {
                             }
                         }).create();
 
-                dialog.show();
+                dialog.show();*/
+
+                saveImage(mAddressTwoDimensionCodeIV);
+                showToast("Two-dimensional code saved to album");
 
                 return false;
             }

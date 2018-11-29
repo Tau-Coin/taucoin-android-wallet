@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.facebook.login.LoginManager;
 import com.mofei.tau.R;
 import com.mofei.tau.info.SharedPreferencesHelper;
 import com.mofei.tau.info.key_address.taucoin.Key;
@@ -87,9 +86,6 @@ public class KeysAddressesActivity extends BaseActivity implements View.OnClickL
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent( KeysAddressesActivity.this,DetailsActivity.class);
-               /* intent.putExtra("Pubkey",key.getPubkey());
-                intent.putExtra("Privkey",key.getPrivkey());
-                intent.putExtra("Address",key.getAddress());*/
                 startActivity(intent);
             }
         });
@@ -100,37 +96,13 @@ public class KeysAddressesActivity extends BaseActivity implements View.OnClickL
         mAddressTwoDimensionCodeIV.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-               // SaveImageToSysAlbum();  //保存到相册
-                AlertDialog dialog = new AlertDialog.Builder(KeysAddressesActivity.this)
-                        // .setIcon(R.mipmap.icon)//设置标题的图片
-                        .setTitle("Save address two-dimensional code?")//设置对话框的标题
-                        .setMessage("If you want to save, please click OK or click Cancel.")//设置对话框的内容
-                        //设置对话框的按钮
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                dialog.dismiss();
-                            }
-                        })
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                saveImage(mAddressTwoDimensionCodeIV);
-                                dialog.dismiss();
-                            }
-                        }).create();
-
-                dialog.show();
-
+                saveImage(mAddressTwoDimensionCodeIV);
+                showToast("Two-dimensional code saved to album");
                 return false;
             }
         });
 
-
     }
-
-
 
 
     public static KeyGenerator getInstance(){
@@ -140,7 +112,6 @@ public class KeysAddressesActivity extends BaseActivity implements View.OnClickL
         return instance;
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -148,17 +119,14 @@ public class KeysAddressesActivity extends BaseActivity implements View.OnClickL
             case R.id.address_back_wallet_home:
                 finish();
                 break;
-            case R.id.walletLogout:
-                logout();
-                break;
             case R.id.to_details:
                 break;
         }
     }
 
     private void saveImage(ImageView imageView){
-        imageView.setDrawingCacheEnabled(true);//开启catch，开启之后才能获取ImageView中的bitmap
-        Bitmap bitmap = imageView.getDrawingCache();//获取imageview中的图像
+        imageView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = imageView.getDrawingCache();
         MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "这是title", "这是description");
         showToast("save success");
         imageView.setDrawingCacheEnabled(false);//关闭catch
@@ -195,10 +163,5 @@ public class KeysAddressesActivity extends BaseActivity implements View.OnClickL
         return bitmap;
     }
 
-    private void logout() {
-        LoginManager.getInstance().logOut();
-        SharedPreferencesHelper.getInstance(KeysAddressesActivity.this).putBoolean("isLogin",false);
-        L.i("logOut");
-        startActivity(new Intent(KeysAddressesActivity.this,LoginActivity.class));
-    }
+
 }

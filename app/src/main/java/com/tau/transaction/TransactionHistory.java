@@ -39,7 +39,7 @@ public class TransactionHistory {
 
     private String  value;
 
-    private boolean result;
+    private String result;
 
     private String message;
 
@@ -49,10 +49,10 @@ public class TransactionHistory {
     // blocktime
     public long blocktime;
 
-    @Generated(hash = 1807211582)
+    @Generated(hash = 1525617385)
     public TransactionHistory(Long id, String txId, String sentOrReceived,
             String fromAddress, String toAddress, String time, int confirmations,
-            String value, boolean result, String message, long blockheight,
+            String value, String result, String message, long blockheight,
             long blocktime) {
         this.id = id;
         this.txId = txId;
@@ -136,11 +136,11 @@ public class TransactionHistory {
         this.value = value;
     }
 
-    public boolean getResult() {
+    public String getResult() {
         return this.result;
     }
 
-    public void setResult(boolean result) {
+    public void setResult(String result) {
         this.result = result;
     }
 
@@ -168,6 +168,7 @@ public class TransactionHistory {
         this.blocktime = blocktime;
     }
 
+     
     
     
 }

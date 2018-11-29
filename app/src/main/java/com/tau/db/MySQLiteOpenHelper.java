@@ -6,6 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.mofei.tau.db.greendao.DaoMaster;
+import com.mofei.tau.db.greendao.KeyValueDao;
+import com.mofei.tau.db.greendao.MigrationHelper;
+import com.mofei.tau.db.greendao.MigrationHelper2;
+import com.mofei.tau.db.greendao.TransactionHistoryDao;
+import com.mofei.tau.db.greendao.UTXORecordDao;
 
 import org.greenrobot.greendao.database.Database;
 
@@ -19,6 +24,8 @@ public class MySQLiteOpenHelper extends DaoMaster.OpenHelper {
         super(context, name, factory);
     }
 
+
+
     public MySQLiteOpenHelper(Context context, String name) {
         super(context, name);
     }
@@ -26,7 +33,7 @@ public class MySQLiteOpenHelper extends DaoMaster.OpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         super.onUpgrade(db, oldVersion, newVersion);
-        //----------------------------使用sql实现升级逻辑
+      /*  //----------------------------使用sql实现升级逻辑
         if (oldVersion == newVersion) {
             Log.e("onUpgrade", "数据库是最新版本,无需升级");
             return;
@@ -39,19 +46,23 @@ public class MySQLiteOpenHelper extends DaoMaster.OpenHelper {
             case 2:
             default:
                 break;
-        }
+        }*/
 
-       /* //把需要管理的数据库表DAO作为最后一个参数传入到方法中
-        MigrationHelper.migrate(db, new MigrationHelper.ReCreateAllTableListener() {
+        //把需要管理的数据库表DAO作为最后一个参数传入到方法中
+        /*MigrationHelper.migrate(db, new MigrationHelper.ReCreateAllTableListener() {
             @Override public void onCreateAllTables(Database db, boolean ifNotExists) {
                 DaoMaster.createAllTables(db, ifNotExists);
             }
             @Override public void onDropAllTables(Database db, boolean ifExists) {
                 DaoMaster.dropAllTables(db, ifExists);
             }
-            }, MovieCollectDao.class);
-*/
-
+            }, MovieCollectDao.class);*/
+        //操作数据库的更新 有几个表升级都可以传入到下面
+        //MigrationHelper2.getInstance().migrate(db,TransactionHistoryDao.class,UTXORecordDao.class);
+       // MigrationHelper.migrate(db,TransactionHistoryDao.class, UTXORecordDao.class, KeyValueDao.class);
 
     }
+
+
+
 }

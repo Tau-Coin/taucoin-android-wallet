@@ -9,6 +9,15 @@ package com.mofei.tau.transaction;
 public class TXGroup {
     private String amount;
     private String time;
+    public int getConfoirmation() {
+        return confoirmation;
+    }
+
+    public void setConfoirmation(int confoirmation) {
+        this.confoirmation = confoirmation;
+    }
+
+    private int confoirmation;
 
     public String getAmount() {
         return amount;

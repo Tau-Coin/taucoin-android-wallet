@@ -181,7 +181,9 @@ public class SwipeRecyclerView extends RecyclerView {
 
                     //这里将删除按钮的宽度设为可以移动的距离
                     //Here we delete the width of the button as the remotable distance.
-                    mHiddenWidth = mLlHidden.getWidth();
+                  //mHiddenWidth = mLlHidden.getWidth();
+                    //禁止左移删除
+                    mHiddenWidth = 0;
                 }
                 break;
 

@@ -2,7 +2,7 @@ package com.mofei.tau.transaction;
 
 import com.mofei.tau.db.GreenDaoManager;
 
-import com.mofei.tau.src.io.taucoin.android.wallet.Wallet;
+import io.taucoin.android.wallet.Wallet;
 
 /**
  * Created by ly on 18-11-6

@@ -1,6 +1,7 @@
 package com.mofei.tau.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,19 +77,30 @@ public class HistoryEventRecycleAdapter extends RecyclerView.Adapter<HistoryEven
         holder.resultTextView.setText(transactionHistory.getResult()+"");
         holder.txidTextView.setText(transactionHistory.getTxId());
         holder.addressTextView.setText(transactionHistory.getToAddress());
-        holder.amountTextView.setText(transactionHistory.getValue());
-        String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(transactionHistory.getBlocktime() * 1000));
-        holder.dateTextView.setText(date);
-
+        holder.amountTextView.setText("- "+transactionHistory.getValue());
+        long blocktime=transactionHistory.getBlocktime();
+        int conformation=transactionHistory.getConfirmations();
+        if (conformation <2){
+            holder.dateTextView.setText("");
+            holder.resultTextView.setTextColor(Color.RED);
+        }else {
+            String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(transactionHistory.getBlocktime() * 1000));
+            holder.dateTextView.setText(date);
+            int color = Color.parseColor("#2196F3");
+            holder.resultTextView.setTextColor(color);
+        }
+       /* if (blocktime==0){
+           // String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(transactionHistory.getBlocktime() * 1000));
+            holder.dateTextView.setText("");
+            holder.resultTextView.setTextColor(Color.RED);
+        }else {
+            String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(transactionHistory.getBlocktime() * 1000));
+            holder.dateTextView.setText(date);
+        }*/
     }
 
     @Override
     public int getItemCount() {
-
         return list.size();
     }
-
-
-
-
 }

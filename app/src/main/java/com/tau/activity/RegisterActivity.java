@@ -1,5 +1,6 @@
 package com.mofei.tau.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Bundle;
 import android.os.Message;
@@ -21,6 +22,7 @@ import com.mofei.tau.net.ApiService;
 import com.mofei.tau.net.NetWorkManager;
 import com.mofei.tau.transaction.KeyValue;
 import com.mofei.tau.util.L;
+import com.mofei.tau.util.UserInfoUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,11 +44,15 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
    // private String email;
     private static KeyGenerator instance;
     private int status;
-    private int verfiCodeStatus;
     private  String email;
     private  String password;
 
+    private int verfiCodeStatus;
 
+    // Cache Key
+    final Key key = new Key();
+
+    @SuppressLint("HandlerLeak")
     Handler handle = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -54,8 +60,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 case 0x11:
                     if(status==0){
                         showToast("register successful");
-                        SharedPreferencesHelper.getInstance(RegisterActivity.this).putString("email",email);
                         SharedPreferencesHelper.getInstance(RegisterActivity.this).putString("password",password);
+                        UserInfoUtils.setCurrentEmail(RegisterActivity.this, email);
+                        UserInfoUtils.setPublicKey(RegisterActivity.this, key.getPubkey());
+                        UserInfoUtils.setPrivateKey(RegisterActivity.this, key.getPrivkey());
+                        UserInfoUtils.setAddress(RegisterActivity.this, key.getAddress());
+
                         finish();
                     }else if(status==401){
                         showToast("Fail to get real_code");
@@ -128,7 +138,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             case R.id.sendVerifyCodeTV:
                 String email_=edEmail.getText().toString().trim();
                 if (TextUtils.isEmpty(email_)) {
-                    showToast("mailbox is empty");
+                    showToast("Please enter your email");
                     return;
                 }
                 if(!isEmailValid(email_)){
@@ -148,7 +158,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 password=edPassword.getText().toString().trim();
 
                 if (email == null || email.length() == 0) {
-                     showToast("mailbox is empty");
+                     showToast("Please enter your email");
                     return;
                 }
                 if(!isEmailValid(email)){
@@ -157,16 +167,15 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     return;
                 }
                 if(verifcode==null||verifcode.length()==0){
-                    showToast("verification code is empty.");
+                    showToast("Please enter your verification code");
                     return;
                 }
                 if (password == null || password.length() == 0) {
-                    showToast("password is empty");
+                    showToast("Please enter your password ");
                     return;
                 }
-                showWaitDialog("register...");
+                showWaitDialog("Register...");
                 register(email,verifcode,password);
-              // register("1@qq.com","1234","123");
                 break;
         }
     }
@@ -213,16 +222,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 });
     }
 
-    private void register(String email,String verficode,String password) {
-        L.e("generatekeyAddress上");
+    private void register(String email,String verifcode,String password) {
         generatekeyAddress();
-        L.e("generatekeyAddress下");
         Register register=new Register();
         register.setEmail(email);
-        register.setEmail_code(verficode);
+        register.setEmail_code(verifcode);
         register.setPassword(password);
-        register.setAddress(SharedPreferencesHelper.getInstance(RegisterActivity.this).getString("Address","null"));
-        register.setPubkey(SharedPreferencesHelper.getInstance(this).getString("Pubkey","null"));
+        register.setAddress(key.getAddress());
+        register.setPubkey(key.getPubkey());
 
         ApiService apiService= NetWorkManager.getApiService();
         Observable<StatusMessage> observable=apiService.register(register);
@@ -240,7 +247,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                         L.i("Status: "+statusMessage.getStatus());
                         L.i("Message: "+statusMessage.getMessage());
                         status=statusMessage.getStatus();
-
                     }
 
                     @Override
@@ -253,13 +259,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     @Override
                     public void onComplete() {
                         hideWaitDialog();
-
-                       // SharedPreferencesHelper.getInstance(RegisterActivity.this).putString("email",email);
-                       // SharedPreferencesHelper.getInstance(RegisterActivity.this).putString("password",password);
                         handle.sendEmptyMessage(0x11);
-
                         L.i("onComplete");
-
                     }
                 });
 
@@ -267,30 +268,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void generatekeyAddress() {
-        //生成公私钥及地址
-        final Key key = new Key();
-        L.e("111");
         key.Reset();
-        L.e("222");
         if (getInstance().GenerateKey(key)) {
-            L.e("Privkey :"+key.getPrivkey());
-            L.e("Public: "+key.getPubkey());
-            L.e("Address: "+key.getAddress());
-            //保存公私钥及地址
-            SharedPreferencesHelper.getInstance(RegisterActivity.this).putString("Pubkey",key.getPubkey());
-            SharedPreferencesHelper.getInstance(RegisterActivity.this).putString("Privkey",key.getPrivkey());
-            SharedPreferencesHelper.getInstance(RegisterActivity.this).putString("Address",key.getAddress());
-            //保存公私钥和地址
-            KeyValue keyValue=new KeyValue();
-            keyValue.setPubkey(key.getPubkey());
-            keyValue.setPrivkey(key.getPrivkey());
-            keyValue.setAddress(key.getAddress());
-            //keyValue.setUtxo(new BigInteger(SharedPreferencesHelper.getInstance(this).getString("utxo","utxo")));
-            //keyValue.setBalance(new BigInteger(SharedPreferencesHelper.getInstance(this).getString("balance","balance")));
-            //keyValue.setReward(new BigInteger(SharedPreferencesHelper.getInstance(this).getString("reward","reward")));
-          //  KeyDaoUtils.getInstance().insertKeyStoreData(keyValue);
+            L.e("Privkey :" + key.getPrivkey());
+            L.e("Public: " + key.getPubkey());
+            L.e("Address: " + key.getAddress());
         } else {
-            L.e("333");
             L.i("Generate key error...");
         }
     }

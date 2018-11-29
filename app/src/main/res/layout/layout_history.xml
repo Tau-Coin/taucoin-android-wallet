@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="result"
-                android:textColor="#0000ff"
+                android:textColor="#2196F3"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="txid"
-                android:textColor="#0000ff"
+                android:textColor="#2196F3"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="address"
-                android:textColor="#0000ff"
+                android:textColor="#2196F3"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -89,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="amount"
-                android:textColor="#0000ff"
+                android:textColor="#2196F3"
                 android:textSize="16sp" />
 
            <!-- <LinearLayout
@@ -133,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="date"
-                android:textColor="#0000ff"
+                android:textColor="#2196F3"
                 android:textSize="16sp" />
 
         </LinearLayout>

@@ -21,7 +21,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.mofei.tau.R;
-import com.mofei.tau.activity.BalanceActivity;
 import com.mofei.tau.activity.KeysAddressesActivity;
 import com.mofei.tau.adapter.HistoryEventRecycleAdapter;
 import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
@@ -88,7 +87,6 @@ public class ManageFragment extends Fragment {
         //initEvent(view);
 
         initView(view);
-
     }
 
     private void initView(View view) {
@@ -97,6 +95,7 @@ public class ManageFragment extends Fragment {
 
         //List<UTXORecord> txUTXORecordList=UTXORecordDaoUtils.getInstance().queryAllData();
         List<TransactionHistory> tempTXHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
+        L.e("tempTXHistoryList"+tempTXHistoryList.size());
         groupArray=new ArrayList<>();
         childArray=new ArrayList<>();
         if (!tempTXHistoryList.isEmpty()){
@@ -105,31 +104,44 @@ public class ManageFragment extends Fragment {
             for (int i=0;i<tempTXHistoryList.size();i++){
                 txGroup=new TXGroup();
 
-                Double double_8=new Double("100000000");
+               // Double double_8=new Double("100000000");
                 String s=String.valueOf(tempTXHistoryList.get(i).getValue());
-                if(s!=null){
-                    Double coin_double=new Double(s);
-                    L.e("转换后的数据：　"+coin_double/double_8);
+                L.e("s="+s);
+                if(!s.equals("null")){
+                    L.e("TXHistory的值不为空");
+                    //Double coin_double=new Double(s);
+                   // L.e("转换后的数据：　"+coin_double/double_8);
                     txGroup.setAmount(digitalConversionTool(s));
                 }
-                date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(tempTXHistoryList.get(i).getBlocktime() * 1000));
-                L.e("date"+date);
-                txGroup.setTime(String.valueOf(date));
-                groupArray.add(txGroup);
+                long blocktime=tempTXHistoryList.get(i).getBlocktime();
+                /*if (blocktime==0){
+                    //date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(blocktime * 1000));
+                   // L.e("date"+date);
+                    txGroup.setTime("0");
+                }else {
+                    date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(blocktime * 1000));
+                    L.e("date"+date);
+                    txGroup.setTime(String.valueOf(date));
+                }*/
+               // date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(blocktime * 1000));
+               // L.e("date"+date);
+
+                txGroup.setTime(""+blocktime);
+                txGroup.setConfoirmation(tempTXHistoryList.get(i).getConfirmations());
+                groupArray.add(0,txGroup);
 
                 txChild=new TXChild();
+                txChild.setStatus(tempTXHistoryList.get(i).getResult());
                 txChild.setAddress(tempTXHistoryList.get(i).getToAddress());
                 txChild.setTxId(tempTXHistoryList.get(i).getTxId());
-                txChild.setTxFee("0.11");
+                //txChild.setTxFee("0.11");
                 //txChild.setTxBlockHeight(String.valueOf(tempTXHistoryList.get(i).getBlockheight()));
                 txChildList=new ArrayList<>();
                 txChildList.add(txChild);
 
-                childArray.add(txChildList);
+                childArray.add(0,txChildList);
             }
-
         }
-
 
         extendableListViewAdapter=new ExtendableListViewAdapter(getActivity(),groupArray,childArray);
         txExpandableListView.setAdapter(extendableListViewAdapter);
@@ -155,7 +167,7 @@ public class ManageFragment extends Fragment {
         //Set the background color of the drop-down progress bar, default white.
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(Color.WHITE);
         //Set the color theme of the drop-down progress bar, the parameter is a variable parameter, and is the resource ID. Set up to four different colors, and each turn displays a color.
-        swipeRefreshLayout.setColorSchemeColors(Color.BLUE,Color.GREEN,Color.RED);
+        swipeRefreshLayout.setColorSchemeColors(Color.RED,Color.GREEN,Color.BLUE);
         //To set up listeners, you need to override the onRefresh () method, which is called when the top drop-down occurs, which implements the logic of requesting data, sets the drop-down progress bar to disappear, and so on.
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -164,33 +176,51 @@ public class ManageFragment extends Fragment {
                 List<TransactionHistory> tempTXHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
                 //groupArray=new ArrayList<>();
                // childArray=new ArrayList<>();
+                groupArray.clear();
+                childArray.clear();
                 if (!tempTXHistoryList.isEmpty()){
-                    groupArray.clear();
-                    childArray.clear();
+                  //  groupArray.clear();
+                   // childArray.clear();
                     for (int i=0;i<tempTXHistoryList.size();i++){
                         TXGroup txGroup=new TXGroup();
 
                         // Double double_8=new Double("100000000");
                         // Double coin_double=new Double(String.valueOf(tempTXHistoryList.get(i).getValue()));
                         // L.e("转换后的数据：　"+coin_double/double_8);
-                        String amount=digitalConversionTool(String.valueOf(tempTXHistoryList.get(i).getValue()));
-                        L.e("amount "+amount);
-                        txGroup.setAmount(amount);
 
-                        String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(tempTXHistoryList.get(i).getBlocktime() * 1000));
-                        L.e("date"+date);
-                        txGroup.setTime(String.valueOf(date));
-                        groupArray.add(txGroup);
+                       String value= String.valueOf(tempTXHistoryList.get(i).getValue());
+                        if(!value.equals("null")){
+                            L.e("66");
+                            String amount=digitalConversionTool(value);
+                            L.e("amount "+amount);
+                            txGroup.setAmount(amount);
+                        }
+                       long time= tempTXHistoryList.get(i).getBlocktime();
+                       /*if (time==0){
+                           //String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(time * 1000));
+                          // L.e("date"+date);
+                           txGroup.setTime("0");
+                       }else {
+                           String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(time * 1000));
+                           L.e("date"+date);
+                           txGroup.setTime(String.valueOf(date));
+                       }*/
+                       // String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(time * 1000));
+                       // L.e("date"+date);
+                        txGroup.setTime(""+time);
+                        txGroup.setConfoirmation(tempTXHistoryList.get(i).getConfirmations());
+                        groupArray.add(0,txGroup);
 
                         TXChild txChild=new TXChild();
                         txChild.setAddress(SharedPreferencesHelper.getInstance(getActivity()).getString("Address",""));
                         txChild.setTxId(tempTXHistoryList.get(i).getTxId());
-                        txChild.setTxFee("0.11");
-                        txChild.setTxBlockHeight(String.valueOf(tempTXHistoryList.get(i).getBlockheight()));
+                        txChild.setStatus(tempTXHistoryList.get(i).getResult());
+                       // txChild.setTxFee("0.11");
+                       // txChild.setTxBlockHeight(String.valueOf(tempTXHistoryList.get(i).getBlockheight()));
                         txChildList=new ArrayList<>();
                         txChildList.add(txChild);
 
-                        childArray.add(txChildList);
+                        childArray.add(0,txChildList);
                     }
 
                 }

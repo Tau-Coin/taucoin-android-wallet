@@ -219,6 +219,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
+
     private void sendRawTransation() {
 
     }
@@ -245,7 +246,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
                         L.e(list.get(0).getTxid());
                         transactionHistory.setTxId(list.get(0).getTxid());
                         transactionHistory.setConfirmations(rawTX.getRet().getConfirmations());
-                        transactionHistory.setResult(true);
+                        transactionHistory.setResult("Successful");
                         transactionHistory.setToAddress("sdsddfageaggeag");
                         L.e(list.get(0).getValue());
                         transactionHistory.setValue(list.get(0).getValue());

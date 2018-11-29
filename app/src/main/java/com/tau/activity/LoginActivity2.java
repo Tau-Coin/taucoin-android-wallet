@@ -1,5 +1,6 @@
 package com.mofei.tau.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -25,6 +26,7 @@ import com.mofei.tau.info.SharedPreferencesHelper;
 import com.mofei.tau.net.ApiService;
 import com.mofei.tau.net.NetWorkManager;
 import com.mofei.tau.util.L;
+import com.mofei.tau.util.UserInfoUtils;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -48,29 +50,37 @@ public class LoginActivity2 extends BaseActivity implements View.OnClickListener
 
     private String user_nane;
 
+    private String loginedEmail;
+
+    private String user_Pubkey;
+
+    private String user_address;
+
+    @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0x12:
                     L.e("handler");
-                    if(status.equals("0")){
+                    if(status.equals("0")) {
+                        UserInfoUtils.setCurrentEmail(LoginActivity2.this, user_nane);
+                        UserInfoUtils.setPublicKey(LoginActivity2.this,user_Pubkey);
+                        UserInfoUtils.setAddress(LoginActivity2.this, user_address);
+
                         Intent intent=new Intent(LoginActivity2.this,SendAndReceiveActivity.class);
                         intent.putExtra("user_name",user_nane);
                         startActivity(intent);
+
                         showToast("login successful");
                        // finish();
                     }
 
                     break;
                 case 0x15:
-                    if(status=="401"){
+                    if(status.equals("401")){
                         showToast("email or password is wrong");
                     }
-
-                    /*if(status.equals("401")){
-                        showToast("email or password is wrong");
-                    }*/
                     break;
             }
         }
@@ -146,15 +156,15 @@ public class LoginActivity2 extends BaseActivity implements View.OnClickListener
                 String email=emailEditText.getText().toString().trim();
                 String password=passwordEditText.getText().toString().trim();
                 if (email == null || email.length() == 0) {
-                    showToast("mailbox is empty");
+                    showToast("Please enter your email");
                     return;
                 }
                 if (!isEmailValid(email)){
-                    showToast("invalid email");
+                    showToast("Incorrect email");
                     return;
                 }
                 if (password == null || password.length() == 0) {
-                    showToast("password is empty");
+                    showToast("Please enter your password ");
                     return;
                 }
 
@@ -168,7 +178,6 @@ public class LoginActivity2 extends BaseActivity implements View.OnClickListener
                 login(email,password);
                 break;
         }
-
     }
 
     private void login(String email,String password) {
@@ -191,15 +200,11 @@ public class LoginActivity2 extends BaseActivity implements View.OnClickListener
                         status=loginRes.getStatus();
                         L.e(status);
                         L.e(loginRes.getMessage());
-                        L.e(loginRes.getEmail());
-                        SharedPreferencesHelper.getInstance(LoginActivity2.this).putString("email",loginRes.getEmail());
+                        loginedEmail=loginRes.getEmail();
+                        L.e(loginedEmail);
                         user_nane=loginRes.getEmail();
-                        SharedPreferencesHelper.getInstance(LoginActivity2.this).putString("user_nane",user_nane);
-                        L.e("getAddress:"+loginRes.getAddress());
-                        L.e("getPubkey: "+loginRes.getPubkey());
-
-                        SharedPreferencesHelper.getInstance(LoginActivity2.this).putString("Pubkey", loginRes.getPubkey());
-                        SharedPreferencesHelper.getInstance(LoginActivity2.this).putString("Address",loginRes.getAddress());
+                        user_Pubkey=loginRes.getPubkey();
+                        user_address=loginRes.getAddress();
                     }
 
                     @Override

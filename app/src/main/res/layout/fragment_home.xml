@@ -7,23 +7,38 @@
     android:background="#E0E0E0"
     tools:context=".fragment.HomeFragment">
 
-
-    <TextView
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+    <LinearLayout
         android:layout_marginTop="20dp"
-        android:id="@+id/address_text"
-        android:gravity="center"
-        android:textIsSelectable="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="address" />
+        android:layout_gravity="center"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_centerVertical="true"
+            android:id="@+id/address_text"
+            android:textIsSelectable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="address" />
+
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/copy_"
+            android:layout_alignParentRight="true"/>
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/balance_home_ll"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:orientation="horizontal">
 
         <TextView
@@ -38,9 +53,9 @@
             android:id="@+id/balance_tau_fs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#0000ff"
+            android:textColor="#2196F3"
             android:textSize="20sp"
-            android:text=""
+            android:text="0.0"
             android:layout_gravity="center"/>
         <TextView
             android:layout_marginLeft="8dp"
@@ -72,7 +87,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Please save your private key offline,in case of losing tokens"
+            android:text="Please copy and save your private key offline,in case of losing tokens"
             android:textSize="18sp"
             android:textColor="#ffffff"/>
     </LinearLayout>
@@ -84,14 +99,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:text="Transaction log"
+        android:text="Transaction history"
         android:layout_marginBottom="10dp"
         />
 
-    <com.mofei.tau.view.SwipeRecyclerView
-        android:id="@+id/history_recycleView"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/historyRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent">
 
+       <!-- <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:background="#fff" />-->
+
+        <com.mofei.tau.view.SwipeRecyclerView
+            android:id="@+id/history_recycleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

@@ -86,7 +86,7 @@ public class KeyDaoUtils {
      * @param key
      * @return
      */
-    public boolean updateTransactionHistoryData(KeyValue key) {
+    public boolean updateKeyValueData(KeyValue key) {
         boolean flag = false;
         try {
             getKeyDao().update(key);
@@ -98,7 +98,7 @@ public class KeyDaoUtils {
     }
 
 
-    public boolean deleteTransactionHistoryData(KeyValue key) {
+    public boolean deleteKeyValueData(KeyValue key) {
         boolean flag = false;
         try {
             getKeyDao().delete(key);
@@ -115,7 +115,7 @@ public class KeyDaoUtils {
      * @param l
      * @return
      */
-    public boolean deleteTransactionHistoryByKey(Long l) {
+    public boolean deleteKeyValueByKey(Long l) {
         boolean flag = false;
         try {
             getKeyDao().deleteByKey(l);

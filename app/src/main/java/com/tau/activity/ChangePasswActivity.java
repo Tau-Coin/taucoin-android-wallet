@@ -150,21 +150,20 @@ public class ChangePasswActivity extends BaseActivity implements View.OnClickLis
                 String confirm_pass=mConfirmPass.getText().toString().trim();
 
                 if (email == null || email.length() == 0) {
-                    showToast("mailbox is empty");
+                    showToast("Please enter your email");
                     return;
                 }
-                if (pass == null || pass.length() == 0) {
-                    showToast("password is empty");
-                    return;
-                }
+
                 if (confirm_pass == null || confirm_pass.length() == 0) {
-                    showToast("safety code is empty");
+                    showToast("Please enter your safety code");
                     return;
                 }
-               /* if(!pass.equals(confirm_pass)){
-                    showToast("the two input password is inconsistent.");
+
+                if (pass == null || pass.length() == 0) {
+                    showToast("Please enter your password");
                     return;
-                }*/
+                }
+
                 showWaitDialog();
                 changePassword(email,pass,confirm_pass);
                 break;
@@ -172,7 +171,7 @@ public class ChangePasswActivity extends BaseActivity implements View.OnClickLis
             case R.id.send_save_code:
                 String email_=mEmail.getText().toString().trim();
                 if (email_ == null || email_.length() == 0) {
-                    showToast("mailbox is empty");
+                    showToast("Please enter your password");
                     return;
                 }
                 showWaitDialog();

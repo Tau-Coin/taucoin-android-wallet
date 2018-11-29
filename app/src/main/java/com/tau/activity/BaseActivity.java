@@ -1,8 +1,10 @@
 package com.mofei.tau.activity;
 
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mofei.tau.R;
@@ -16,12 +18,6 @@ public class BaseActivity extends AppCompatActivity {
 
     private DialogWaitting mWaitDialog = null;
     private Toast mToast = null;
-    protected static String TAG = "FacebookLoginDemo";
-
-    protected String userId;
-    protected String address;
-    protected String privkey;
-    protected String pubkey;
 
     private Context context;
     @Override
@@ -30,14 +26,6 @@ public class BaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_base);
 
         NetWorkManager.getInstance(this).init();
-
-        userId= SharedPreferencesHelper.getInstance(BaseActivity.this).getString("userId","userId");
-
-        address=SharedPreferencesHelper.getInstance(BaseActivity.this).getString("Address","Address");
-
-        privkey=SharedPreferencesHelper.getInstance(BaseActivity.this).getString("Privkey","null");
-
-        pubkey= SharedPreferencesHelper.getInstance(BaseActivity.this).getString("Pubkey","null");
     }
 
 
@@ -95,24 +83,9 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * 验证邮箱格式是否正确
-     */
     public boolean isEmailValid(String email) {
         // String regex = "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
         String regex = "^[a-zA-Z0-9_.%+-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
         return email.matches(regex);
     }
-
-    public String digitalConversionTool(String string){
-        //把5.00000000转化成50000000
-        Double d = new Double(string)*Math.pow(10,8);
-        L.e("double"+d);
-        java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
-        nf.setGroupingUsed(false);
-        L.e("转化后　"+nf.format(d));
-        return nf.format(d);
-
-    }
-
 }

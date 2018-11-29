@@ -1,5 +1,8 @@
 package com.mofei.tau.fragment;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,6 +19,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,8 +38,12 @@ import com.mofei.tau.net.ApiService;
 import com.mofei.tau.net.NetWorkManager;
 import com.mofei.tau.transaction.TransactionHistory;
 import com.mofei.tau.util.L;
+import com.mofei.tau.util.UserInfoUtils;
 import com.mofei.tau.view.DialogWaitting;
 import com.mofei.tau.view.SwipeRecyclerView;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,26 +74,26 @@ public class HomeFragment extends Fragment {
     private DialogWaitting mWaitDialog = null;
     private Toast mToast = null;
     private LinearLayout watchOutLL;
+    private ImageView copyIV;
 
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout homeSwipeRefreshLayout;
     // private RecyclerView historyRecyclerView;
     private SwipeRecyclerView swipeRecyclerView;
     private HistoryEventRecycleAdapter historyEventRecycleAdapter;
     private List<TransactionHistory> txList;
 
+    private RefreshLayout refreshLayout;
 
-    Handler handler_ = new Handler() {
+    private Activity activity;
+
+
+    @SuppressLint("HandlerLeak")
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case 0x21:
-                    Double double_8=new Double("100000000");
-                    Double coin_double=new Double(double_coins);
-                    L.e("转换后的数据：　"+coin_double/double_8);
-                    double balance=coin_double/double_8;
-                    mBalanceTauTV.setText(""+balance);
-                    //向sendFragment传递数据
-                    EventBus.getDefault().postSticky(new FirstEvent(balance+""));
+                case SendAndReceiveActivity.BALANCE_CHANGED:
+                    updateBalance();
                     break;
             }
         }
@@ -102,24 +110,24 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_home, container, false);
 
-        /*view.findViewById(R.id.balance_home_ll).setOnClickListener(new View.OnClickListener() {
+        watchOutLL=view.findViewById(R.id.watch_at);
+        watchOutLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               *//* getFragmentManager().beginTransaction().addToBackStack(null)  //将当前fragment加入到返回栈中
-                        .replace(R.id.fragment, new SendFragment())
-                        .commit();*//*
-
-               new SendAndReceiveActivity().selectTab(1);
-
-
+                startActivity(new Intent(getActivity(), DetailsActivity.class));
+                watchOutLL.setVisibility(View.GONE);
             }
-        });*/
+        });
+        L.d("onCreateView");
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        activity = this.getActivity();
+
+        L.d("onViewCreated");
 
         initView(view);
 
@@ -128,51 +136,48 @@ public class HomeFragment extends Fragment {
 
     private void initView(View view) {
         mAddressTV=view.findViewById(R.id.address_text);
-        mAddressTV.setText(SharedPreferencesHelper.getInstance(getActivity()).getString("Address",""));
+        mAddressTV.setText(UserInfoUtils.getAddress(getActivity()));
         mBalanceTauTV=view.findViewById(R.id.balance_tau_fs);
-        watchOutLL=view.findViewById(R.id.watch_at);
-        watchOutLL.setOnClickListener(new View.OnClickListener() {
+        copyIV=view.findViewById(R.id.copy);
+        copyIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), DetailsActivity.class));
+                onClickCopy();
             }
         });
+
+        //homeSwipeRefreshLayout=view.findViewById(R.id.homeSwipeRefreshLayout);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        L.d("updateBalance");
+        updateBalance();
+    }
+
+    private void updateBalance() {
+        String b= SharedPreferencesHelper.getInstance(getActivity()).getString("balance","");
+        L.e("balance :"+b);
+        if(!b.equals("")){
+            L.e("TXHistory的值不为空");
+            Double double_8=new Double("100000000");
+            Double coin_double=new Double(b);
+            L.e("转换后的数据：　"+coin_double/double_8);
+            double balance=coin_double/double_8;
+            mBalanceTauTV.setText(""+balance);
+            //向sendFragment传递数据
+            EventBus.getDefault().postSticky(new FirstEvent(balance+""));
+        }
     }
 
     private void initEvent(View view) {
+        ((SendAndReceiveActivity)this.activity).registerBalanceChangeListener(handler);
         txList=new ArrayList<>();
-        List<TransactionHistory> tempTXHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
-        if (!tempTXHistoryList.isEmpty()){
-            txList.clear();
-            txList.addAll(tempTXHistoryList);
-        }
-
+        loadData();
+        updateBalance();
        swipeRecyclerView=view.findViewById(R.id.history_recycleView);
-         /*swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
-        //Set the background color of the drop-down progress bar, default white.
-
-        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(Color.WHITE);
-        //Set the color theme of the drop-down progress bar, the parameter is a variable parameter, and is the resource ID. Set up to four different colors, and each turn displays a color.
-        swipeRefreshLayout.setColorSchemeColors(Color.BLUE,Color.GREEN,Color.RED);
-        //To set up listeners, you need to override the onRefresh () method, which is called when the top drop-down occurs, which implements the logic of requesting data, sets the drop-down progress bar to disappear, and so on.
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                List<TransactionHistory> tempTXHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
-                if (!tempTXHistoryList.isEmpty()){
-                    txList.clear();
-                    txList.addAll(tempTXHistoryList);
-                }
-                historyEventRecycleAdapter.notifyDataSetChanged();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                },2000);
-            }
-        });*/
-
         // List<TransactionHistory> transactionHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
         historyEventRecycleAdapter=new HistoryEventRecycleAdapter(getActivity(),txList);
         /**
@@ -210,16 +215,50 @@ public class HomeFragment extends Fragment {
                 txList.remove(position);
                 historyEventRecycleAdapter.notifyDataSetChanged();
                 showToast("delete successfully");
+            }
+        });
 
+        refreshLayout = view.findViewById(R.id.historyRefreshLayout);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+
+                loadData();
+                historyEventRecycleAdapter.notifyDataSetChanged();
+                refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                refreshlayout.finishLoadMore(2000);//传入false表示加载失败
             }
         });
     }
 
+    private void loadData() {
+        List<TransactionHistory> tempTXHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
+        if (!tempTXHistoryList.isEmpty()){
+            txList.clear();
+            for (int i=0;i<tempTXHistoryList.size();i++){
+                txList.add(0,tempTXHistoryList.get(i));
+            }
+            // txList.addAll(tempTXHistoryList);
+        }
+    }
+
     @Override
-    public void onResume() {
-        super.onResume();
-        showWaitDialog();
-        getBalanceData(SharedPreferencesHelper.getInstance(getActivity()).getString("email",""));
+    public void onHiddenChanged(boolean hidden) {
+        // TODO Auto-generated method stub
+        super.onHiddenChanged(hidden);
+        L.d("fragment 之间的切换刷新数据");
+        //historyEventRecycleAdapter.notifyDataSetChanged();
+    }
+
+    public void onClickCopy() {
+        ClipboardManager cm = (ClipboardManager)getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        cm.setText(mAddressTV.getText());
+        showToast("copy successfully");
     }
 
     public void getBalanceData(String email) {
@@ -260,12 +299,12 @@ public class HomeFragment extends Fragment {
                         hideWaitDialog();
                         L.e("error");
                         e.printStackTrace();
-                        handler_.sendEmptyMessage(0x20);
+                        //handler_.sendEmptyMessage(0x20);
                     }
 
                     @Override
                     public void onComplete() {
-                        handler_.sendEmptyMessage(0x21);
+                       // handler_.sendEmptyMessage(0x21);
                         hideWaitDialog();
                         L.e("complete");
                     }

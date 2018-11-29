@@ -7,6 +7,7 @@ package com.mofei.tau.transaction;
  * @description:
  */
 public class TXChild {
+    private String status;
     private String address;
     private String txId;
     private String txFee;
@@ -14,6 +15,14 @@ public class TXChild {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public void setAddress(String address) {

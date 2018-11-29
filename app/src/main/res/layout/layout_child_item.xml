@@ -5,6 +5,21 @@
     android:orientation="vertical"
     android:background="#FFFFFF"
     android:padding="10dp">
+
+    <!--<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        android:textSize="16sp"/>-->
+    <TextView
+        android:textIsSelectable="true"
+        android:textColor="#000000"
+        android:id="@+id/tx_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" "
+        android:textSize="14sp"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,12 +46,14 @@
         android:text=""
         android:textSize="14sp"/>
     <TextView
+        android:visibility="gone"
         android:textIsSelectable="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Transation Fee"
         android:textSize="16sp"/>
     <TextView
+        android:visibility="gone"
         android:textColor="#000000"
         android:id="@+id/tx_fee"
         android:layout_width="wrap_content"

@@ -199,6 +199,13 @@ public class TransactionHistoryDaoUtils {
         return getTransactionHistoryDao().queryRaw(where, param);
     }
 
+    public List<TransactionHistory>  queryTransactionHistoryByCondition(){
+
+        return getTransactionHistoryDao().queryBuilder().where(TransactionHistoryDao.Properties.Confirmations.lt(2),TransactionHistoryDao.Properties.Result.notEq("Failed")).list();
+    }
+
+
+
     public TransactionHistoryDao getTransactionHistoryDao() {
         return daoManager.getDaoSession().getTransactionHistoryDao();
     }
