@@ -7,93 +7,106 @@
     android:background="#E0E0E0"
     tools:context=".fragment.HomeFragment">
 
-    <LinearLayout
-        android:layout_marginTop="20dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:orientation="horizontal"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshBalanceLayout"
         android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_centerVertical="true"
-            android:id="@+id/address_text"
-            android:textIsSelectable="true"
-            android:layout_width="wrap_content"
+        android:background="#E0E0E0"
+        android:layout_height="190dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="address" />
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_marginLeft="10dp"
-            android:layout_centerVertical="true"
-            android:id="@+id/copy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/copy_"
-            android:layout_alignParentRight="true"/>
-    </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/address_text"
+                    android:textIsSelectable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="address" />
 
+                <ImageView
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/copy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/copy_"
+                    android:layout_alignParentRight="true"/>
+            </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/balance_home_ll"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/balance_home_ll"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
 
-        <TextView
-            android:layout_centerHorizontal="true"
-            android:id="@+id/user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Balance: "
-            android:layout_gravity="center"/>
-        <TextView
-            android:id="@+id/balance_tau_fs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#2196F3"
-            android:textSize="20sp"
-            android:text="0.0"
-            android:layout_gravity="center"/>
-        <TextView
-            android:layout_marginLeft="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="TAU"
-            android:layout_gravity="center"/>
+                <TextView
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="Balance: "
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:id="@+id/balance_tau_fs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#2196F3"
+                    android:textSize="20sp"
+                    android:text="0.0"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_marginLeft="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="TAU"
+                    android:layout_gravity="center"/>
 
-    </LinearLayout>
+            </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/watch_at"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="10dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:background="#F09225">
+            <LinearLayout
+                android:id="@+id/watch_at"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="10dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:background="#F09225">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/watch_out"
-            android:layout_marginRight="10dp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/watch_out"
+                    android:layout_marginRight="10dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Please copy and save your private key offline,in case of losing tokens"
-            android:textSize="18sp"
-            android:textColor="#ffffff"/>
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Please copy and save your private key offline,in case of losing tokens"
+                    android:textSize="18sp"
+                    android:textColor="#ffffff"/>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:layout_width="wrap_content"
@@ -102,11 +115,10 @@
         android:text="Transaction history"
         android:layout_marginBottom="10dp"
         />
-
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/historyRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
        <!-- <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"

@@ -71,7 +71,8 @@ public class ReceiveFragment extends Fragment {
 
     private void initEvent() {
 
-        String address= SharedPreferencesHelper.getInstance(getActivity()).getString("Address","Address");
+       // String address= SharedPreferencesHelper.getInstance(getActivity()).getString("Address","Address");
+        String address= UserInfoUtils.getAddress(getActivity());
         mWalletAddressTV.setText(UserInfoUtils.getAddress(getActivity()));
 
         mDetailsTV.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +84,7 @@ public class ReceiveFragment extends Fragment {
         });
 
         //生成二维码
-        Bitmap qrImage= ZXingUtils.createQRImage(address,400,400);
+        Bitmap qrImage= ZXingUtils.createQRImage("taucoin: "+address,400,400);
         mAddressTwoDimensionCodeIV.setImageBitmap(qrImage);
         mAddressTwoDimensionCodeIV.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -111,7 +112,7 @@ public class ReceiveFragment extends Fragment {
                 dialog.show();*/
 
                 saveImage(mAddressTwoDimensionCodeIV);
-                showToast("Two-dimensional code saved to album");
+                showToast("QR code saved to album");
 
                 return false;
             }

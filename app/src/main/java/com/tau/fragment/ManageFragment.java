@@ -114,17 +114,6 @@ public class ManageFragment extends Fragment {
                     txGroup.setAmount(digitalConversionTool(s));
                 }
                 long blocktime=tempTXHistoryList.get(i).getBlocktime();
-                /*if (blocktime==0){
-                    //date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(blocktime * 1000));
-                   // L.e("date"+date);
-                    txGroup.setTime("0");
-                }else {
-                    date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(blocktime * 1000));
-                    L.e("date"+date);
-                    txGroup.setTime(String.valueOf(date));
-                }*/
-               // date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(blocktime * 1000));
-               // L.e("date"+date);
 
                 txGroup.setTime(""+blocktime);
                 txGroup.setConfoirmation(tempTXHistoryList.get(i).getConfirmations());
@@ -184,10 +173,6 @@ public class ManageFragment extends Fragment {
                     for (int i=0;i<tempTXHistoryList.size();i++){
                         TXGroup txGroup=new TXGroup();
 
-                        // Double double_8=new Double("100000000");
-                        // Double coin_double=new Double(String.valueOf(tempTXHistoryList.get(i).getValue()));
-                        // L.e("转换后的数据：　"+coin_double/double_8);
-
                        String value= String.valueOf(tempTXHistoryList.get(i).getValue());
                         if(!value.equals("null")){
                             L.e("66");
@@ -196,17 +181,6 @@ public class ManageFragment extends Fragment {
                             txGroup.setAmount(amount);
                         }
                        long time= tempTXHistoryList.get(i).getBlocktime();
-                       /*if (time==0){
-                           //String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(time * 1000));
-                          // L.e("date"+date);
-                           txGroup.setTime("0");
-                       }else {
-                           String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(time * 1000));
-                           L.e("date"+date);
-                           txGroup.setTime(String.valueOf(date));
-                       }*/
-                       // String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(time * 1000));
-                       // L.e("date"+date);
                         txGroup.setTime(""+time);
                         txGroup.setConfoirmation(tempTXHistoryList.get(i).getConfirmations());
                         groupArray.add(0,txGroup);
@@ -247,84 +221,6 @@ public class ManageFragment extends Fragment {
         return nf.format(d);
 
     }
-
-
-   /* private void initEvent(View view) {
-        txList=new ArrayList<>();
-        List<TransactionHistory> tempTXHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
-        if (!tempTXHistoryList.isEmpty()){
-            txList.clear();
-            txList.addAll(tempTXHistoryList);
-        }
-
-
-        swipeRecyclerView=view.findViewById(R.id.history_recycleView);
-        swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
-        //Set the background color of the drop-down progress bar, default white.
-        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(Color.WHITE);
-        //Set the color theme of the drop-down progress bar, the parameter is a variable parameter, and is the resource ID. Set up to four different colors, and each turn displays a color.
-        swipeRefreshLayout.setColorSchemeColors(Color.BLUE,Color.GREEN,Color.RED);
-        //To set up listeners, you need to override the onRefresh () method, which is called when the top drop-down occurs, which implements the logic of requesting data, sets the drop-down progress bar to disappear, and so on.
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                List<TransactionHistory> tempTXHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
-                if (!tempTXHistoryList.isEmpty()){
-                    txList.clear();
-                    txList.addAll(tempTXHistoryList);
-                }
-                historyEventRecycleAdapter.notifyDataSetChanged();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                },2000);
-            }
-        });
-
-       // List<TransactionHistory> transactionHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
-        historyEventRecycleAdapter=new HistoryEventRecycleAdapter(getActivity(),txList);
-         *//**
-         * 设置布局方向
-         * Setting layout direction
-         *//*
-        LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayout.VERTICAL);
-        swipeRecyclerView.setLayoutManager(layoutManager);
-        *//**
-         * 设置间隔线
-         * Setting intervals
-         *//*
-        swipeRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
-
-        *//**
-         * 设置删除动画
-         * Set delete animation
-         *//*
-        swipeRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        *//**
-         * 设置适配器
-         * Setup adapter
-         *//*
-        swipeRecyclerView.setAdapter(historyEventRecycleAdapter);
-         *//**
-         * 设置右删除监听
-         * Set right delete listen.
-         *//*
-        swipeRecyclerView.setRightClickListener(new SwipeRecyclerView.OnRightClickListener() {
-            @Override
-            public void onRightClick(int position, String id) {
-                L.e("删除数据"+position);
-                TransactionHistoryDaoUtils.getInstance().deleteTransactionHistoryData(txList.get(position));
-                txList.remove(position);
-                historyEventRecycleAdapter.notifyDataSetChanged();
-                showToast("delete successfully");
-
-            }
-        });
-    }*/
-
 
     public void showToast(String text) {
         if (null != text) {

@@ -128,6 +128,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
         switch (v.getId()){
             case R.id.Balance:
              //   getData();
+
                 break;
             case R.id.login0:
                 getData0();

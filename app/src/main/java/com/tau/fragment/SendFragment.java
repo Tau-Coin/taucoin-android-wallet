@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +60,7 @@ import com.mofei.tau.transaction.BlockChainConnector;
 import com.mofei.tau.transaction.ScriptPubkey;
 import com.mofei.tau.transaction.TransactionHistory;
 import com.mofei.tau.transaction.UTXORecord;
+import com.mofei.tau.util.EditTextJudgeNumberWatcher;
 import com.mofei.tau.util.L;
 import com.mofei.tau.util.MD5_BASE64Util;
 import com.mofei.tau.util.UserInfoUtils;
@@ -72,6 +74,7 @@ import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -195,7 +198,6 @@ public class SendFragment extends Fragment{
         mBalanceTauTV.setText(data.getMsg());
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -209,6 +211,8 @@ public class SendFragment extends Fragment{
 
     private void intiEvent(View view) {
         amountET=view.findViewById(R.id.amount);
+        amountET.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        amountET.addTextChangedListener(new EditTextJudgeNumberWatcher(amountET));
         addressET=view.findViewById(R.id.address);
         sendBT=view.findViewById(R.id.send_tau);
         sendBT.setOnClickListener(new View.OnClickListener() {
@@ -229,7 +233,6 @@ public class SendFragment extends Fragment{
     private void onSubmitTransaction() {
 
         if (Wallet.getInstance().isAnyTxPending()) {
-            // TODO:
             showToast("Previous transaction is under confirmation");
             return;
         }
@@ -252,7 +255,11 @@ public class SendFragment extends Fragment{
             return;
         }
 
-        //to_address="TTLUavJdzySpS6omCfmpyoNHKozXvB5xYq";
+        /*if (!isNumeric(amount)) {
+            showToast("Illegal amount");
+            return;
+        }*/
+
         Double amount_conv = new Double( Double.valueOf(amount) * Math.pow(10,8));
         L.e("double"+amount_conv);
         NumberFormat nf = NumberFormat.getInstance();
@@ -263,7 +270,7 @@ public class SendFragment extends Fragment{
         String balanceStr = SharedPreferencesHelper.getInstance(this.activity).getString("balance","");
         double totalBalance = Double.valueOf(balanceStr);
         L.d("balanceStr :"+balanceStr);
-        if (Double.valueOf(amount_) > totalBalance) {
+        if (Double.valueOf(amount_) >= totalBalance) {
             L.d("balanceStr=====");
             showToast("Balance is not enough");
             return;
@@ -278,9 +285,17 @@ public class SendFragment extends Fragment{
         createTransation(amount_);
         amountET.setText("");
         addressET.setText("");
-        showToast("send successfully");
+
     }
 
+    public static boolean isNumeric(String str){
+           for (int i = str.length();--i>=0;){
+               if (!Character.isDigit(str.charAt(i))){
+                   return false;
+               }
+           }
+            return true;
+    }
     //第二步构建交易
     private void createTransation(String amount_) {
         String PrivKey= UserInfoUtils.getPrivateKey(activity);
@@ -332,6 +347,7 @@ public class SendFragment extends Fragment{
             showWaitDialog("create a transaction...");
             //sendTransation
             BlockChainConnector.getInstance().sendRawTransation(hex_after_base64, handler_.obtainMessage(BlockChainConnector.SEND_RAW_TX_COMPLETED));
+            showToast("send successfully");
         } else {
             L.e("Create tx failed");
             L.e("error code:" + result.failReason.getCode() + ", " + result.failReason.getMsg());

@@ -76,7 +76,7 @@ public class HomeFragment extends Fragment {
     private LinearLayout watchOutLL;
     private ImageView copyIV;
 
-    private SwipeRefreshLayout homeSwipeRefreshLayout;
+    private SwipeRefreshLayout homeBalabceSwipeRefreshLayout;
     // private RecyclerView historyRecyclerView;
     private SwipeRecyclerView swipeRecyclerView;
     private HistoryEventRecycleAdapter historyEventRecycleAdapter;
@@ -115,7 +115,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), DetailsActivity.class));
-                watchOutLL.setVisibility(View.GONE);
+               // watchOutLL.setVisibility(View.GONE);
             }
         });
         L.d("onCreateView");
@@ -145,16 +145,13 @@ public class HomeFragment extends Fragment {
                 onClickCopy();
             }
         });
-
-        //homeSwipeRefreshLayout=view.findViewById(R.id.homeSwipeRefreshLayout);
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
         L.d("updateBalance");
-        updateBalance();
+       // updateBalance();
     }
 
     private void updateBalance() {
@@ -173,11 +170,31 @@ public class HomeFragment extends Fragment {
     }
 
     private void initEvent(View view) {
+        homeBalabceSwipeRefreshLayout=view.findViewById(R.id.refreshBalanceLayout);
+        int ProgressBackgroundColor=Color.parseColor("#F19322");
+        homeBalabceSwipeRefreshLayout.setProgressBackgroundColorSchemeColor(Color.WHITE);
+        homeBalabceSwipeRefreshLayout.setColorSchemeColors(ProgressBackgroundColor);
+        homeBalabceSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            public Object activity;
+            @Override
+            public void onRefresh() {
+
+                ((SendAndReceiveActivity)HomeFragment.this.activity).getBalance();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        homeBalabceSwipeRefreshLayout.setRefreshing(false);
+                    }
+                },2000);
+            }
+        });
+
         ((SendAndReceiveActivity)this.activity).registerBalanceChangeListener(handler);
+
         txList=new ArrayList<>();
         loadData();
         updateBalance();
-       swipeRecyclerView=view.findViewById(R.id.history_recycleView);
+        swipeRecyclerView=view.findViewById(R.id.history_recycleView);
         // List<TransactionHistory> transactionHistoryList= TransactionHistoryDaoUtils.getInstance().queryAllData();
         historyEventRecycleAdapter=new HistoryEventRecycleAdapter(getActivity(),txList);
         /**
@@ -247,13 +264,6 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        // TODO Auto-generated method stub
-        super.onHiddenChanged(hidden);
-        L.d("fragment 之间的切换刷新数据");
-        //historyEventRecycleAdapter.notifyDataSetChanged();
-    }
 
     public void onClickCopy() {
         ClipboardManager cm = (ClipboardManager)getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -299,12 +309,10 @@ public class HomeFragment extends Fragment {
                         hideWaitDialog();
                         L.e("error");
                         e.printStackTrace();
-                        //handler_.sendEmptyMessage(0x20);
                     }
 
                     @Override
                     public void onComplete() {
-                       // handler_.sendEmptyMessage(0x21);
                         hideWaitDialog();
                         L.e("complete");
                     }
@@ -320,7 +328,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-
     }
 
     public DialogWaitting showWaitDialog() {

@@ -97,7 +97,7 @@ public class KeysAddressesActivity extends BaseActivity implements View.OnClickL
             @Override
             public boolean onLongClick(View v) {
                 saveImage(mAddressTwoDimensionCodeIV);
-                showToast("Two-dimensional code saved to album");
+                showToast("QR code saved to album");
                 return false;
             }
         });

@@ -80,7 +80,8 @@ public class HistoryEventRecycleAdapter extends RecyclerView.Adapter<HistoryEven
         holder.amountTextView.setText("- "+transactionHistory.getValue());
         long blocktime=transactionHistory.getBlocktime();
         int conformation=transactionHistory.getConfirmations();
-        if (conformation <2){
+        String result=transactionHistory.getResult();
+        if (!result.equals("Successful")){
             holder.dateTextView.setText("");
             holder.resultTextView.setTextColor(Color.RED);
         }else {

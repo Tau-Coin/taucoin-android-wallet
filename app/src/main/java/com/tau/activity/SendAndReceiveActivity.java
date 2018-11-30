@@ -136,7 +136,6 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
 
         setContentView(R.layout.activity_send_and_receive);
 
-
         initViews();
         initEvents();
 

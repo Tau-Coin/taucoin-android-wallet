@@ -65,7 +65,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                         UserInfoUtils.setPublicKey(RegisterActivity.this, key.getPubkey());
                         UserInfoUtils.setPrivateKey(RegisterActivity.this, key.getPrivkey());
                         UserInfoUtils.setAddress(RegisterActivity.this, key.getAddress());
-
                         finish();
                     }else if(status==401){
                         showToast("Fail to get real_code");
@@ -76,11 +75,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     }else if(status==405){
                         showToast("Email is already exists");
                     }
-
                     break;
-
                 case 0x14:
-                    showToast("send successful");
+                    showToast("get successful");
                     startCountdown();
                     break;
             }
@@ -98,7 +95,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
         initEvent();
     }
-
     private void initView() {
         backTV=findViewById(R.id.imgBack);
         clearImEmail=findViewById(R.id.img_email2);
