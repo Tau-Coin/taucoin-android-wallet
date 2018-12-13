@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -7,17 +7,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
-import com.mofei.tau.entity.req_parameter.FBAddressEmlVeri;
-import com.mofei.tau.entity.res_post.StatusMessage;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.util.L;
-import com.mofei.tau.view.CustomToolBar;
+import com.tau.entity.req_parameter.FBAddressEmlVeri;
+import com.tau.entity.res_post.StatusMessage;
+import com.tau.info.SharedPreferencesHelper;
+import io.taucoin.android.wallet.net.service.ApiService;
+import io.taucoin.foundation.net.NetWorkManager;
+import com.tau.util.L;
+import com.tau.view.CustomToolBar;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -125,7 +124,7 @@ public class VisitVerfiActivity extends BaseActivity implements View.OnClickList
         fbAddressEmlVeri.setAddress(address);
         fbAddressEmlVeri.setVerification(confirmation);
 
-        ApiService apiService= NetWorkManager.getApiService();
+        ApiService apiService= NetWorkManager.createApiService(ApiService.class);
         Observable<StatusMessage> observable=apiService.getConfirmEmail(fbAddressEmlVeri);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

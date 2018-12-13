@@ -1,4 +1,4 @@
-package com.mofei.tau.entity;
+package com.tau.entity;
 
 public class VisitTAU {
     /**

@@ -7,11 +7,11 @@
     android:background="#E0E0E0"
     android:id="@+id/content">
 
-        <com.mofei.tau.view.CustomToolBar
+        <com.tau.view.CustomToolBar
             android:id="@+id/main_titlebar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        </com.mofei.tau.view.CustomToolBar>
+        </com.tau.view.CustomToolBar>
 
        <!-- <RelativeLayout
             android:visibility="gone"

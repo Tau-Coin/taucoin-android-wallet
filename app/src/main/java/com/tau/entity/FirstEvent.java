@@ -1,4 +1,4 @@
-package com.mofei.tau.entity;
+package com.tau.entity;
 
 /**
  * Created by ly on 18-11-22

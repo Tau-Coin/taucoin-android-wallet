@@ -1,4 +1,4 @@
-package com.mofei.tau.fragment;
+package com.tau.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -6,7 +6,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,25 +24,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mofei.tau.R;
-import com.mofei.tau.activity.DetailsActivity;
-import com.mofei.tau.activity.SendAndReceiveActivity;
-import com.mofei.tau.adapter.HistoryEventRecycleAdapter;
-import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
-import com.mofei.tau.entity.FirstEvent;
-import com.mofei.tau.entity.MessageEvent;
-import com.mofei.tau.entity.res_post.Balance;
-import com.mofei.tau.entity.res_post.BalanceRet;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.transaction.TransactionHistory;
-import com.mofei.tau.util.L;
-import com.mofei.tau.util.UserInfoUtils;
-import com.mofei.tau.view.DialogWaitting;
-import com.mofei.tau.view.SwipeRecyclerView;
+import com.tau.activity.DetailsActivity;
+import com.tau.activity.SendAndReceiveActivity;
+import com.tau.adapter.HistoryEventRecycleAdapter;
+import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
+import com.tau.entity.FirstEvent;
+import com.tau.entity.res_post.Balance;
+import com.tau.entity.res_post.BalanceRet;
+import com.tau.info.SharedPreferencesHelper;
+import io.taucoin.android.wallet.net.service.ApiService;
+import io.taucoin.foundation.net.NetWorkManager;
+import io.taucoin.android.wallet.db.entity.TransactionHistory;
+import com.tau.util.L;
+import com.tau.util.UserInfoUtils;
+import com.tau.view.DialogWaitting;
+import com.tau.view.SwipeRecyclerView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -51,8 +49,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -245,10 +241,10 @@ public class HomeFragment extends Fragment {
                 refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
             }
         });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
-            public void onLoadMore(RefreshLayout refreshlayout) {
-                refreshlayout.finishLoadMore(2000);//传入false表示加载失败
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                refreshlayout.finishLoadmore(2000);//传入false表示加载失败
             }
         });
     }
@@ -274,7 +270,7 @@ public class HomeFragment extends Fragment {
     public void getBalanceData(String email) {
         Map<String,String> emailMap=new HashMap<>();
         emailMap.put("email",email);
-        ApiService apiService= NetWorkManager.getApiService();
+        ApiService apiService= NetWorkManager.createApiService(ApiService.class);
         Observable<Balance<BalanceRet>> observable=apiService.getBalance2(emailMap);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

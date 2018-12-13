@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.content.ContentResolver;
 import android.content.DialogInterface;
@@ -19,12 +19,12 @@ import android.widget.Toast;
 
 
 import com.mofei.tau.R;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.info.key_address.taucoin.Key;
-import com.mofei.tau.info.key_address.taucoin.KeyGenerator;
-import com.mofei.tau.util.L;
-import com.mofei.tau.util.ZXingUtils;
-import com.mofei.tau.view.CustomToolBar;
+import com.tau.info.SharedPreferencesHelper;
+import com.tau.info.key_address.taucoin.Key;
+import com.tau.info.key_address.taucoin.KeyGenerator;
+import com.tau.util.L;
+import com.tau.util.ZXingUtils;
+import com.tau.view.CustomToolBar;
 
 public class KeysAddressesActivity extends BaseActivity implements View.OnClickListener {
 

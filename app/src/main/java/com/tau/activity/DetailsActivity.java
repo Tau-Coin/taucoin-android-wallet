@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -21,15 +21,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.info.key_address.taucoin.KeyGenerator;
+import com.tau.info.SharedPreferencesHelper;
+import com.tau.info.key_address.taucoin.KeyGenerator;
 import com.google.bitcoin.core.AddressFormatException;
 import com.google.bitcoin.core.ECKey;
 import com.google.bitcoin.core.Utils;
-import com.mofei.tau.util.L;
-import com.mofei.tau.util.UserInfoUtils;
-import com.mofei.tau.util.ZXingUtils;
-import com.mofei.tau.view.CustomToolBar;
+import com.tau.util.L;
+import com.tau.util.UserInfoUtils;
+import com.tau.util.ZXingUtils;
+import com.tau.view.CustomToolBar;
 
 import java.math.BigInteger;
 

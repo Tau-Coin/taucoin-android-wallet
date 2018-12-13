@@ -5,11 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     tools:context=".activity.BalanceActivity">
-<com.mofei.tau.view.CustomToolBar
+<com.tau.view.CustomToolBar
     android:id="@+id/send_receive_titlebar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-</com.mofei.tau.view.CustomToolBar>
+</com.tau.view.CustomToolBar>
 <FrameLayout
     android:id="@+id/fragment"
     android:layout_width="match_parent"

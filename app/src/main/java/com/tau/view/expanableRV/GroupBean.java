@@ -1,4 +1,4 @@
-package com.mofei.tau.view.expanableRV;
+package com.tau.view.expanableRV;
 
 import com.hgdendi.expandablerecycleradapter.BaseExpandableRecyclerViewAdapter;
 

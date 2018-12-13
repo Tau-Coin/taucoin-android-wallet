@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".activity.AboutActivity">
 
-    <com.mofei.tau.view.CustomToolBar
+    <com.tau.view.CustomToolBar
         android:id="@+id/about_titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </com.mofei.tau.view.CustomToolBar>
+    </com.tau.view.CustomToolBar>
 
     <LinearLayout
         android:gravity="center"

@@ -1,11 +1,10 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,15 +13,14 @@ import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 import com.mofei.tau.R;
-import com.mofei.tau.entity.HarvestClub;
-import com.mofei.tau.entity.req_parameter.FBAddress;
-import com.mofei.tau.entity.res_post.Club;
-import com.mofei.tau.entity.res_post.ClubRet;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.util.L;
-import com.mofei.tau.view.CustomToolBar;
+import com.tau.entity.req_parameter.FBAddress;
+import com.tau.entity.res_post.Club;
+import com.tau.entity.res_post.ClubRet;
+import com.tau.info.SharedPreferencesHelper;
+import io.taucoin.android.wallet.net.service.ApiService;
+import io.taucoin.foundation.net.NetWorkManager;
+import com.tau.util.L;
+import com.tau.view.CustomToolBar;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -122,7 +120,7 @@ public class HarvestClubActivity extends BaseActivity implements View.OnClickLis
         fbAddress.setAddress(SharedPreferencesHelper.getInstance(HarvestClubActivity.this).getString("Address","Address"));
 
 
-        ApiService apiService= NetWorkManager.getApiService();
+        ApiService apiService= NetWorkManager.createApiService(ApiService.class);
         Observable<Club<ClubRet>> observable=apiService.getClub(fbAddress);
 
         observable.subscribeOn(Schedulers.io())

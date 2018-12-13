@@ -1,4 +1,4 @@
-package com.mofei.tau.entity.res_post;
+package com.tau.entity.res_post;
 
 public class ClubRet {
     /**

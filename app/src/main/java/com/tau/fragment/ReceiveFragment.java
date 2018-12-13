@@ -1,4 +1,4 @@
-package com.mofei.tau.fragment;
+package com.tau.fragment;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -21,12 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mofei.tau.R;
-import com.mofei.tau.activity.DetailsActivity;
-import com.mofei.tau.activity.KeysAddressesActivity;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.util.UserInfoUtils;
-import com.mofei.tau.util.ZXingUtils;
-import com.mofei.tau.view.DialogWaitting;
+import com.tau.activity.DetailsActivity;
+import com.tau.activity.KeysAddressesActivity;
+import com.tau.info.SharedPreferencesHelper;
+import com.tau.util.UserInfoUtils;
+import com.tau.util.ZXingUtils;
+import com.tau.view.DialogWaitting;
 
 /**
  *

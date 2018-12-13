@@ -1,4 +1,4 @@
-package com.mofei.tau.util;
+package com.tau.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

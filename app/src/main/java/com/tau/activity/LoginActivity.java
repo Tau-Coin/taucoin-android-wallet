@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,21 +20,21 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.gson.JsonObject;
 import com.mofei.tau.R;
-import com.mofei.tau.constant.TAU_BaseURL;
-import com.mofei.tau.entity.MessageEvent;
-import com.mofei.tau.entity.req_parameter.FBAddress;
-import com.mofei.tau.entity.req_parameter.FBAddressPubKey;
-import com.mofei.tau.entity.res_post.Login1;
-import com.mofei.tau.entity.res_post.Login1Ret;
-import com.mofei.tau.entity.res_post.Login1RetSerializer;
-import com.mofei.tau.entity.res_put.Login0;
-import com.mofei.tau.entity.res_put.Login0Ret;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.info.key_address.taucoin.Key;
-import com.mofei.tau.info.key_address.taucoin.KeyGenerator;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.util.L;
+import com.tau.constant.TAU_BaseURL;
+import com.tau.entity.MessageEvent;
+import com.tau.entity.req_parameter.FBAddress;
+import com.tau.entity.req_parameter.FBAddressPubKey;
+import com.tau.entity.res_post.Login1;
+import com.tau.entity.res_post.Login1Ret;
+import com.tau.entity.res_post.Login1RetSerializer;
+import com.tau.entity.res_put.Login0;
+import com.tau.entity.res_put.Login0Ret;
+import com.tau.info.SharedPreferencesHelper;
+import com.tau.info.key_address.taucoin.Key;
+import com.tau.info.key_address.taucoin.KeyGenerator;
+import io.taucoin.android.wallet.net.service.ApiService;
+import io.taucoin.foundation.net.NetWorkManager;
+import com.tau.util.L;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -216,7 +216,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         FBAddress fbAddress=new FBAddress();
         fbAddress.setFacebookid(facebookid);
 
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<Login1<Login1Ret<Login1RetSerializer>>> observable=apiService.getLogin1(fbAddress);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -248,7 +248,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                             address= login1RetLogin1.getRet().getSerializer_account().getAddress();
                             L.e("第二次登录返回address： " + address);
                             L.e( "第二次登录返回pubkey： " + pubkey);
-                            L.e("第二次登录返回privkey："+privkey);
                             //保存公私钥及地址
                             SharedPreferencesHelper.getInstance(LoginActivity.this).putString("Pubkey",pubkey);
                             SharedPreferencesHelper.getInstance(LoginActivity.this).putString("Address",address);
@@ -297,7 +296,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         fbAddressPubKey.setAddress(SharedPreferencesHelper.getInstance(LoginActivity.this).getString("Address","Address"));
         fbAddressPubKey.setPubkey(SharedPreferencesHelper.getInstance(LoginActivity.this).getString("Pubkey","Pubkey"));
 
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<Login0<Login0Ret>> observable=apiService.getLogin0(fbAddressPubKey);
 
         observable.subscribeOn(Schedulers.io()) // 在子线程中进行Http访问

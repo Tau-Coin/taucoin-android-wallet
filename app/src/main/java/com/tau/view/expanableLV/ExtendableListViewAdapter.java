@@ -1,4 +1,4 @@
-package com.mofei.tau.view.expanableLV;
+package com.tau.view.expanableLV;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -6,16 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.transaction.TXChild;
-import com.mofei.tau.transaction.TXGroup;
-import com.mofei.tau.transaction.TransactionHistory;
-import com.mofei.tau.transaction.UTXORecord;
-import com.mofei.tau.util.L;
+import com.tau.info.SharedPreferencesHelper;
+import com.tau.transaction.TXChild;
+import com.tau.transaction.TXGroup;
+import com.tau.util.L;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

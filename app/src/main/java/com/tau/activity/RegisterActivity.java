@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Handler;
@@ -13,16 +13,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
-import com.mofei.tau.entity.res_post.StatusMessage;
-import com.mofei.tau.entity.res_put.Register;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.info.key_address.taucoin.Key;
-import com.mofei.tau.info.key_address.taucoin.KeyGenerator;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.transaction.KeyValue;
-import com.mofei.tau.util.L;
-import com.mofei.tau.util.UserInfoUtils;
+import com.tau.entity.res_post.StatusMessage;
+import com.tau.entity.res_put.Register;
+import com.tau.info.SharedPreferencesHelper;
+import com.tau.info.key_address.taucoin.Key;
+import com.tau.info.key_address.taucoin.KeyGenerator;
+import io.taucoin.android.wallet.net.service.ApiService;
+import io.taucoin.foundation.net.NetWorkManager;
+
+import com.tau.util.L;
+import com.tau.util.UserInfoUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -181,7 +181,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
         Map<String,String> email=new HashMap<>();
         email.put("email",str);
-        ApiService apiService= NetWorkManager.getApiService();
+        ApiService apiService= NetWorkManager.createApiService(ApiService.class);
         Observable<StatusMessage> observable=apiService.verifyCode(email);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -227,7 +227,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         register.setAddress(key.getAddress());
         register.setPubkey(key.getPubkey());
 
-        ApiService apiService= NetWorkManager.getApiService();
+        ApiService apiService= NetWorkManager.createApiService(ApiService.class);
         Observable<StatusMessage> observable=apiService.register(register);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())

@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,53 +6,40 @@ import android.util.Log;
 import android.view.View;
 
 import com.mofei.tau.R;
-import com.mofei.tau.constant.TAU_BaseURL;
-import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
-import com.mofei.tau.db.greendao.UTXORecordDaoUtils;
-import com.mofei.tau.entity.req_parameter.FBAddressEmail;
-import com.mofei.tau.entity.req_parameter.FBAddressEmlVeri;
-import com.mofei.tau.entity.req_parameter.FBAddressPubKey;
-import com.mofei.tau.entity.res_post.Balance;
-import com.mofei.tau.entity.res_post.BalanceRet;
-import com.mofei.tau.entity.req_parameter.FBAddress;
-import com.mofei.tau.entity.res_post.Club;
-import com.mofei.tau.entity.res_post.ClubRet;
-import com.mofei.tau.entity.res_post.Height;
-import com.mofei.tau.entity.res_post.Login1;
-import com.mofei.tau.entity.res_post.Login1Ret;
-import com.mofei.tau.entity.res_post.Login1RetSerializer;
-import com.mofei.tau.entity.res_post.RawTX;
-import com.mofei.tau.entity.res_post.RawTXRet;
-import com.mofei.tau.entity.res_post.RawTXRetVin;
-import com.mofei.tau.entity.res_post.RawTXRetVinScriptSig;
-import com.mofei.tau.entity.res_post.RawTXRetVout;
-import com.mofei.tau.entity.res_post.RawTXRetVoutScriptPubKey;
-import com.mofei.tau.entity.res_post.ReferralURL;
-import com.mofei.tau.entity.res_post.StatusMessage;
-import com.mofei.tau.entity.res_post.TalkUpdateRet;
-import com.mofei.tau.entity.res_post.UTXOBean;
-import com.mofei.tau.entity.res_post.UTXOList;
-import com.mofei.tau.entity.res_post.UTXOListRet;
-import com.mofei.tau.entity.res_post.UTXOListRetScriptPubkey;
-import com.mofei.tau.entity.res_put.BuyCoins;
-import com.mofei.tau.entity.res_put.BuyCoinsRet;
-import com.mofei.tau.entity.res_put.Login0;
-import com.mofei.tau.entity.res_put.Login0Ret;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.transaction.ScriptPubkey;
-import com.mofei.tau.transaction.TransactionHistory;
-import com.mofei.tau.transaction.UTXORecord;
-import com.mofei.tau.util.L;
-import com.mofei.tau.util.MD5_BASE64Util;
-
-import org.json.JSONObject;
+import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
+import io.taucoin.android.wallet.db.util.UTXORecordDaoUtils;
+import com.tau.entity.req_parameter.FBAddressEmail;
+import com.tau.entity.req_parameter.FBAddressEmlVeri;
+import com.tau.entity.req_parameter.FBAddressPubKey;
+import com.tau.entity.res_post.Balance;
+import com.tau.entity.res_post.BalanceRet;
+import com.tau.entity.req_parameter.FBAddress;
+import com.tau.entity.res_post.Club;
+import com.tau.entity.res_post.ClubRet;
+import com.tau.entity.res_post.Height;
+import com.tau.entity.res_post.Login1;
+import com.tau.entity.res_post.Login1Ret;
+import com.tau.entity.res_post.Login1RetSerializer;
+import com.tau.entity.res_post.RawTX;
+import com.tau.entity.res_post.ReferralURL;
+import com.tau.entity.res_post.StatusMessage;
+import com.tau.entity.res_post.TalkUpdateRet;
+import com.tau.entity.res_post.UTXOList;
+import com.tau.entity.res_put.BuyCoins;
+import com.tau.entity.res_put.BuyCoinsRet;
+import com.tau.entity.res_put.Login0;
+import com.tau.entity.res_put.Login0Ret;
+import com.tau.info.SharedPreferencesHelper;
+import io.taucoin.android.wallet.net.service.ApiService;
+import io.taucoin.foundation.net.NetWorkManager;
+import com.tau.transaction.ScriptPubkey;
+import io.taucoin.android.wallet.db.entity.TransactionHistory;
+import io.taucoin.android.wallet.db.entity.UTXORecord;
+import com.tau.util.L;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.net.URL;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.security.cert.CertificateFactory;
@@ -73,13 +60,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class TextActivity extends BaseActivity implements View.OnClickListener{
 
@@ -230,7 +211,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
         Map<String,String> txid=new HashMap<>();
 
         txid.put("txid","28b15b032a6e0bc3f2a43ba8d7ec5d2b8377c5898f1dfbbe6b4bac0e90657bd7");
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<RawTX> observable=apiService.getRawTransation(txid);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -286,7 +267,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
         L.e("Privkey: "+Priv);
 
         address.put("address",addre);
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<UTXOList> observable=apiService.getUTXOList(address);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -392,7 +373,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
 
     private void getHeight() {
 
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<Height> observable=apiService.getHeight();
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -434,7 +415,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
         fbAddress.setAddress(Address );
         Log.i(TAG,"userId"+userId+"  Address  "+Address);
 
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<ReferralURL> observable=apiService.getreferralURL(fbAddress);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -474,7 +455,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
        // fbAddress.setAddress(Address );
         Log.i(TAG,"userId"+userId+"  Address  "+Address);
 
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<Login1<Login1Ret<Login1RetSerializer>>> observable=apiService.getLogin1(fbAddress);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -519,7 +500,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
         fbAddress.setAddress(Address );
         Log.i(TAG,"userId"+userId+"  Address  "+Address);
 
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
          Observable<BuyCoins<BuyCoinsRet>> observable=apiService.getBuyCoins(fbAddress);
          observable.subscribeOn(Schedulers.io())
                  .subscribeOn(AndroidSchedulers.mainThread())
@@ -557,7 +538,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
 
         Log.i(TAG,"userId"+userId+"  Address  "+Address);
 
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<Balance<TalkUpdateRet>> observable=apiService.getTalkUpdate(fbAddress);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -600,7 +581,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
         fbAddressEmlVeri.setAddress(Address);
         fbAddressEmlVeri.setVerification("127351");
 
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<StatusMessage> observable=apiService.getConfirmEmail(fbAddressEmlVeri);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -635,7 +616,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
 
         Log.i(TAG,"userId"+SharedPreferencesHelper.getInstance(TextActivity.this).getString("userId  ","userId")+"  Address  "+SharedPreferencesHelper.getInstance(TextActivity.this).getString("Address","Address"));
 
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<Balance<BalanceRet>> observable=apiService.getBalance(fbAddress);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -673,7 +654,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
         fbAddressPubKey.setAddress(SharedPreferencesHelper.getInstance(TextActivity.this).getString("Address","Address"));
         fbAddressPubKey.setPubkey(SharedPreferencesHelper.getInstance(TextActivity.this).getString("Pubkey","Pubkey"));
 
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<Login0<Login0Ret>> observable=apiService.getLogin0(fbAddressPubKey);
 
         observable.subscribeOn(Schedulers.io()) // 在子线程中进行Http访问
@@ -790,7 +771,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
 
         Log.i(TAG,"userId"+SharedPreferencesHelper.getInstance(TextActivity.this).getString("userId  ","userId")+"  Address  "+SharedPreferencesHelper.getInstance(TextActivity.this).getString("Address","Address"));
 
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<Club<ClubRet>> observable=apiService.getClub(fbAddress);
 
         observable.subscribeOn(Schedulers.io())
@@ -825,7 +806,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
         fbAddressEmail.setAddress(SharedPreferencesHelper.getInstance(TextActivity.this).getString("Address","Address"));
         fbAddressEmail.setEmail("1095815930@qq.com");
 
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<StatusMessage> observable= apiService.getEmailVerification(fbAddressEmail);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -861,7 +842,7 @@ public class TextActivity extends BaseActivity implements View.OnClickListener{
 
         Log.i(TAG,"userId"+userId+"  Address  "+Address);
 
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<StatusMessage> observable=apiService.getTalkUpload(fbAddress,null);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -1,18 +1,14 @@
-package com.mofei.tau.fragment;
+package com.tau.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,72 +21,44 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.google.bitcoin.core.Sha256Hash;
-import com.google.gson.JsonObject;
 import com.mofei.tau.R;
 
-import com.mofei.tau.activity.SendAndReceiveActivity;
-import com.mofei.tau.activity.TextActivity;
+import com.tau.activity.SendAndReceiveActivity;
 
-import com.mofei.tau.db.greendao.TransactionHistoryDao;
-import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
-import com.mofei.tau.db.greendao.UTXORecordDaoUtils;
-import com.mofei.tau.entity.FirstEvent;
-import com.mofei.tau.entity.MessageEvent;
-import com.mofei.tau.entity.res_post.Balance;
-import com.mofei.tau.entity.res_post.BalanceRet;
-import com.mofei.tau.entity.res_post.HexRet;
-import com.mofei.tau.entity.res_post.RawTX;
-import com.mofei.tau.entity.res_post.UTXOList;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
+import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
+import com.tau.entity.FirstEvent;
+import com.tau.entity.res_post.UTXOList;
+import com.tau.info.SharedPreferencesHelper;
 import com.google.bitcoin.core.AddressFormatException;
 import com.google.bitcoin.core.ECKey;
 import com.google.bitcoin.core.NetworkParameters;
 import com.google.bitcoin.core.Utils;
-import io.taucoin.android.wallet.Wallet;
-import io.taucoin.android.wallet.keystore.KeyStore;
-import io.taucoin.android.wallet.transactions.CreateTransactionResult;
-import io.taucoin.android.wallet.transactions.Transaction;
-import io.taucoin.android.wallet.transactions.TransactionFailReason;
+import com.tau.wallet.Wallet;
+import com.tau.wallet.keystore.KeyStore;
+import com.tau.wallet.transactions.CreateTransactionResult;
+import com.tau.wallet.transactions.Transaction;
+import com.tau.wallet.transactions.TransactionFailReason;
 
-import com.mofei.tau.transaction.BlockChainConnector;
-import com.mofei.tau.transaction.ScriptPubkey;
-import com.mofei.tau.transaction.TransactionHistory;
-import com.mofei.tau.transaction.UTXORecord;
-import com.mofei.tau.util.EditTextJudgeNumberWatcher;
-import com.mofei.tau.util.L;
-import com.mofei.tau.util.MD5_BASE64Util;
-import com.mofei.tau.util.UserInfoUtils;
-import com.mofei.tau.view.DialogWaitting;
+import com.tau.transaction.BlockChainConnector;
+import io.taucoin.android.wallet.db.entity.TransactionHistory;
+import io.taucoin.android.wallet.db.entity.UTXORecord;
+import com.tau.util.EditTextJudgeNumberWatcher;
+import com.tau.util.L;
+import com.tau.util.MD5_BASE64Util;
+import com.tau.util.UserInfoUtils;
+import com.tau.view.DialogWaitting;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  *

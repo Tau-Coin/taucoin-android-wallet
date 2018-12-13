@@ -1,0 +1,56 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.sourceCompatibilityVersion
+        targetCompatibility rootProject.ext.targetCompatibilityVersion
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':lib_foundation')
+    api rootProject.ext.kotlin
+    api rootProject.ext.constraint
+    api rootProject.ext.supportv4
+    api rootProject.ext.design
+    api rootProject.ext.zxing
+    api rootProject.ext.facebook
+    api rootProject.ext.greendao
+    api rootProject.ext.eventbus
+    api rootProject.ext.circleimageview
+    api rootProject.ext.smartrefreshlayout
+    api rootProject.ext.smartrefreshheader
+    api rootProject.ext.expandable
+    api rootProject.ext.butterknife
+    api rootProject.ext.butterknifecompiler
+    api rootProject.ext.stetho
+    api rootProject.ext.stethookhttp3
+    api rootProject.ext.crashlytics
+    debugApi rootProject.ext.leakcanarydebug
+    releaseApi rootProject.ext.leakcanaryrelease
+
+    api files('libs/BASE64.jar')
+    api files('libs/bcprov-jdk15on-160.jar')
+    api files('libs/core-1.58.0.0.jar')
+    api files('libs/prov-1.58.0.0.jar')
+}

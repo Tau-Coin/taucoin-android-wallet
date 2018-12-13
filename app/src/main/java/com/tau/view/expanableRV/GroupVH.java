@@ -1,4 +1,4 @@
-package com.mofei.tau.view.expanableRV;
+package com.tau.view.expanableRV;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

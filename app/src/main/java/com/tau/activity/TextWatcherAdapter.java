@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.text.Editable;
 import android.text.TextWatcher;

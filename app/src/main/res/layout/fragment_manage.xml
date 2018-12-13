@@ -17,7 +17,7 @@
             android:layout_height="match_parent">
         </ExpandableListView>
 
-        <com.mofei.tau.view.SwipeRecyclerView
+        <com.tau.view.SwipeRecyclerView
             android:visibility="invisible"
             android:id="@+id/history_recycleView"
             android:layout_width="match_parent"

@@ -12,7 +12,7 @@
         android:background="#E0E0E0"
         android:layout_height="match_parent">
 
-        <com.mofei.tau.view.SwipeRecyclerView
+        <com.tau.view.SwipeRecyclerView
             android:id="@+id/history_recycleView_"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -43,7 +43,7 @@
         android:background="#E0E0E0"
         android:layout_height="match_parent">
 
-        <com.mofei.tau.view.SwipeRecyclerView
+        <com.tau.view.SwipeRecyclerView
             android:id="@+id/history_recycleView_"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -6,15 +6,11 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,19 +18,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
 import com.mofei.tau.R;
-import com.mofei.tau.entity.req_parameter.Logout;
-import com.mofei.tau.entity.res_post.Balance;
-import com.mofei.tau.entity.res_post.BalanceRet;
-import com.mofei.tau.entity.res_post.LoginRes;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.info.key_address.taucoin.Key;
-import com.mofei.tau.info.key_address.taucoin.KeyGenerator;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.util.L;
-import com.mofei.tau.view.CustomToolBar;
+import com.tau.entity.req_parameter.Logout;
+import com.tau.entity.res_post.Balance;
+import com.tau.entity.res_post.BalanceRet;
+import com.tau.info.SharedPreferencesHelper;
+import com.tau.info.key_address.taucoin.KeyGenerator;
+
+import io.taucoin.android.wallet.net.callBack.TAUObserver;
+import io.taucoin.android.wallet.net.service.ApiService;
+import io.taucoin.foundation.net.NetWorkManager;
+import com.tau.util.L;
+import com.tau.view.CustomToolBar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,9 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
@@ -361,39 +354,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private void logout() {
        // LoginManager.getInstance().logOut();
-        ApiService apiService= NetWorkManager.getApiService();
-        Observable<Logout> observable=apiService.logout();
+        ApiService apiService = NetWorkManager.createApiService(ApiService.class);
+        Observable<Logout> observable = apiService.logout();
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Logout>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
+                .subscribe(new TAUObserver<Logout>() {
 
                     @Override
-                    public void onNext(Logout logout) {
+                    public void handleData(Logout logout) {
+                        super.handleData(logout);
 
-                        L.i(logout.getStatus());
-                        L.i(logout.getMessage());
-                        L.e("onNext");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                        L.e("onError");
-                        e.printStackTrace();
-                        hideWaitDialog();
-                    }
-
-                    @Override
-                    public void onComplete() {
                         hideWaitDialog();
                         h.sendEmptyMessage(0x13);
                         startActivity(new Intent(MainActivity.this,LoginActivity2.class));
-                        //  showToast("login successful");
-                        L.i("onComplete");
+                    }
+
+                    @Override
+                    public void handleError(String msg, int msgCode) {
+                        super.handleError(msg, msgCode);
+                        hideWaitDialog();
                     }
                 });
     }
@@ -416,18 +395,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     public void getBalanceData(String email) {
         Map<String,String> emailMap=new HashMap<>();
         emailMap.put("email",email);
-        ApiService apiService=NetWorkManager.getApiService();
-        Observable<Balance<BalanceRet>> observable=apiService.getBalance2(emailMap);
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Balance<BalanceRet>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        NetWorkManager.createApiService(ApiService.class)
+            .getBalance2(emailMap)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new TAUObserver<Balance<BalanceRet>>() {
 
-                    }
-
-                    @Override
-                    public void onNext(Balance<BalanceRet> balanceRetBalance) {
+                        @Override
+                        public void handleData(Balance<BalanceRet> balanceRetBalance) {
+                            super.handleData(balanceRetBalance);
 
                         L.e(balanceRetBalance.getStatus()+"");
                         L.e(balanceRetBalance.getMessage());
@@ -444,21 +420,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                         L.e(balanceRetBalance.getRet().getUtxo()+"");
                         L.e(balanceRetBalance.getRet().getRewards()+"");
 
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        hideWaitDialog();
-                        L.e("error");
-                        e.printStackTrace();
-                        h.sendEmptyMessage(0x20);
-                    }
-
-                    @Override
-                    public void onComplete() {
                         h.sendEmptyMessage(0x21);
                         hideWaitDialog();
                         L.e("complete");
+
+                    }
+
+                    @Override
+                    public void handleError(String msg, int msgCode) {
+                        super.handleError(msg, msgCode);
+                        hideWaitDialog();
+                        L.e("error");
+                        h.sendEmptyMessage(0x20);
                     }
                 });
     }

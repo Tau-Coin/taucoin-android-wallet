@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mofei.tau.transaction;
+package com.tau.transaction;
 
 public enum TransactionStatus {
     PENDING,

@@ -1,11 +1,10 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,21 +12,17 @@ import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 import com.mofei.tau.R;
-import com.mofei.tau.constant.TAU_BaseURL;
-import com.mofei.tau.entity.req_parameter.FBAddress;
-import com.mofei.tau.entity.res_post.Balance;
-import com.mofei.tau.entity.res_post.BalanceRet;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.util.IgnoreCertificateUtil;
-import com.mofei.tau.util.L;
-import com.mofei.tau.view.CustomToolBar;
+import com.tau.entity.res_post.Balance;
+import com.tau.entity.res_post.BalanceRet;
+import com.tau.info.SharedPreferencesHelper;
+import io.taucoin.android.wallet.net.service.ApiService;
+import io.taucoin.foundation.net.NetWorkManager;
+
+import com.tau.util.L;
+import com.tau.view.CustomToolBar;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.security.cert.CertificateFactory;
@@ -47,10 +42,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BalanceActivity extends BaseActivity implements View.OnClickListener {
 
@@ -160,7 +151,7 @@ public class BalanceActivity extends BaseActivity implements View.OnClickListene
     public void getBalanceData(String email) {
         Map<String,String> emailMap=new HashMap<>();
         emailMap.put("email",email);
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<Balance<BalanceRet>> observable=apiService.getBalance2(emailMap);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

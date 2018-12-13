@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -24,29 +24,32 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
-import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
-import com.mofei.tau.db.greendao.UTXORecordDaoUtils;
-import com.mofei.tau.entity.req_parameter.Logout;
-import com.mofei.tau.entity.res_post.Balance;
-import com.mofei.tau.entity.res_post.BalanceRet;
-import com.mofei.tau.entity.res_post.UTXOList;
-import com.mofei.tau.fragment.HomeFragment;
-import com.mofei.tau.fragment.ManageFragment;
-import com.mofei.tau.fragment.ReceiveFragment;
-import com.mofei.tau.fragment.SendFragment;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.transaction.BlockChainConnector;
-import com.mofei.tau.transaction.KeyValue;
-import com.mofei.tau.transaction.ScriptPubkey;
-import com.mofei.tau.transaction.TransactionHistory;
-import com.mofei.tau.transaction.UTXORecord;
-import com.mofei.tau.util.L;
-import com.mofei.tau.util.UserInfoUtils;
-import com.mofei.tau.view.CustomToolBar;
 
-import java.math.BigInteger;
+import io.reactivex.functions.Function;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
+import io.taucoin.foundation.net.callback.ResResult;
+import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
+import io.taucoin.android.wallet.db.util.UTXORecordDaoUtils;
+import com.tau.entity.req_parameter.Logout;
+import com.tau.entity.res_post.BalanceRet;
+import com.tau.entity.res_post.UTXOList;
+import com.tau.fragment.HomeFragment;
+import com.tau.fragment.ManageFragment;
+import com.tau.fragment.ReceiveFragment;
+import com.tau.fragment.SendFragment;
+import com.tau.info.SharedPreferencesHelper;
+
+import io.taucoin.android.wallet.net.callBack.TAUObserver;
+import io.taucoin.android.wallet.net.service.ApiService;
+import io.taucoin.foundation.net.NetWorkManager;
+import com.tau.transaction.BlockChainConnector;
+import io.taucoin.android.wallet.db.entity.TransactionHistory;
+import io.taucoin.android.wallet.db.entity.UTXORecord;
+import com.tau.util.L;
+import com.tau.util.UserInfoUtils;
+import com.tau.view.CustomToolBar;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,12 +57,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import io.taucoin.android.wallet.util.ToastUtils;
 
 
 public class SendAndReceiveActivity extends BaseActivity implements View.OnClickListener {
@@ -144,6 +149,29 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
 
         titleBar();
 
+        test();
+        exitApp();
+    }
+
+    private void test() {
+        Map<String,String> emailMap=new HashMap<>();
+        emailMap.put("email",  "asd");
+        NetWorkManager.createApiService(ApiService.class)
+                .getBalanceTest(emailMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new TAUObserver<ResResult<BalanceRet>>() {
+                    @Override
+                    public void handleError(String msg, int msgCode) {
+                        super.handleError(msg, msgCode);
+                    }
+
+                    @Override
+                    public void handleData(ResResult<BalanceRet> balanceRetBalance) {
+                        super.handleData(balanceRetBalance);
+                        ToastUtils.showLongToast("success");
+                    }
+                });
     }
 
     private void titleBar() {
@@ -295,6 +323,7 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
 
 
     public void selectTab(int i) {
+        test();
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         hideFragments(transaction);
@@ -304,7 +333,6 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
                     homeFragment = new HomeFragment();
                     transaction.add(R.id.fragment, homeFragment);
                 } else {
-
                     transaction.show(homeFragment);
                 }
 
@@ -356,7 +384,7 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
     }
 
     private void logout() {
-        ApiService apiService= NetWorkManager.getApiService();
+        ApiService apiService= NetWorkManager.createApiService(ApiService.class);
         Observable<Logout> observable=apiService.logout();
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -550,4 +578,49 @@ public class SendAndReceiveActivity extends BaseActivity implements View.OnClick
             message.sendToTarget();
         }
     }
+
+    // 返回事件流
+    private Subject<Integer> mBackClick = PublishSubject.create();
+
+    @Override
+    public void onBackPressed() {
+        mBackClick.onNext(1);
+    }
+
+    private void exitApp() {
+        // 返回事件流(1 -> 1 -> 1 -> 1 -> 1 -> 1)与两次点击返回间隔大于2s的事件流(0 -> 0)合并
+        // 变成 (1 -> 0 -> 1 -> 0 -> 1 -> 1 -> 1 -> ...)
+//        mBackClick.mergeWith(mBackClick.debounce(2000, TimeUnit.MILLISECONDS)
+//                .map(new Function<Integer, Integer>() {
+//                    @Override
+//                    public Integer apply(Integer i) throws Exception {
+//                        // 两次点击返回间隔大于2s的事件, 用0表示, 区分正常的点击
+//                        return 0;
+//                    }
+//                }))
+//                // 这一步转化是关键
+//                // 使用一个scan转换符去做处理, 如何当前事件是0, 则返回0
+//                // 否则则是上一个事件加一(这个就可以将所有前后间隔小于2s的事件标上序号, 方便后序订阅处理,
+//                // 拿到序号1的事件弹出提示, 拿到序号2的序列做返回, 甚至于可以处理3号, 4号),
+//                // 这样也就可以毫不费力地解决上诉说的要求2秒内点击三次才退出
+//                // 变成 (1 -> 0 -> 1 -> 0 -> 1 -> 2 -> 3 -> ...)
+//                .scan((prev, cur) -> {
+//                    if (cur == 0) return 0;
+//                    return prev + 1;
+//                })
+//                // 过滤掉0, 后面我们只关心拿到的是几号的时间
+//                .filter(v -> v > 0)
+//                .subscribe(v -> {
+//                    if (v == 1) {
+//                        // 弹出提示
+//                        ToastUtils.showLongToast("test");
+//                    } else if (v == 2) {
+//                        // 返回
+//                        finish();
+//                    } else if (v == 3) {
+//                    }
+//                });
+    }
+
+
 }

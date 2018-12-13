@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.mofei.tau.R;
-import com.mofei.tau.util.L;
-import com.mofei.tau.view.CustomToolBar;
+import com.tau.util.L;
+import com.tau.view.CustomToolBar;
 
 public class AboutActivity extends BaseActivity implements View.OnClickListener {
 

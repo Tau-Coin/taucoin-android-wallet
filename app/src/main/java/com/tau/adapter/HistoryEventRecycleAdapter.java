@@ -1,4 +1,4 @@
-package com.mofei.tau.adapter;
+package com.tau.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
-import com.mofei.tau.transaction.TransactionHistory;
+import io.taucoin.android.wallet.db.entity.TransactionHistory;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

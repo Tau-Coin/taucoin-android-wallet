@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.graphics.Color;
 import android.os.Handler;
@@ -7,15 +7,14 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import com.mofei.tau.R;
-import com.mofei.tau.adapter.HistoryEventRecycleAdapter;
-import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
-import com.mofei.tau.transaction.TransactionHistory;
-import com.mofei.tau.util.L;
-import com.mofei.tau.view.SwipeRecyclerView;
+import com.tau.adapter.HistoryEventRecycleAdapter;
+import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
+import io.taucoin.android.wallet.db.entity.TransactionHistory;
+import com.tau.util.L;
+import com.tau.view.SwipeRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;

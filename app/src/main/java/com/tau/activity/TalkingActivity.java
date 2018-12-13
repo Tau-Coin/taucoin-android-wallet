@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,8 +9,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,16 +16,15 @@ import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 import com.mofei.tau.R;
-import com.mofei.tau.entity.req_parameter.FBAddress;
-import com.mofei.tau.entity.res_post.Balance;
-import com.mofei.tau.entity.res_post.BalanceRet;
-import com.mofei.tau.entity.res_post.StatusMessage;
-import com.mofei.tau.entity.res_post.TalkUpdateRet;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.util.L;
-import com.mofei.tau.view.CustomToolBar;
+import com.tau.entity.req_parameter.FBAddress;
+import com.tau.entity.res_post.Balance;
+import com.tau.entity.res_post.StatusMessage;
+import com.tau.entity.res_post.TalkUpdateRet;
+import com.tau.info.SharedPreferencesHelper;
+import io.taucoin.android.wallet.net.service.ApiService;
+import io.taucoin.foundation.net.NetWorkManager;
+import com.tau.util.L;
+import com.tau.view.CustomToolBar;
 
 import java.io.File;
 
@@ -150,7 +147,7 @@ public class TalkingActivity extends BaseActivity implements View.OnClickListene
 
       //  Log.i(TAG,"userId"+userId+"  Address  "+Address);
 
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<Balance<TalkUpdateRet>> observable=apiService.getTalkUpdate(fbAddress);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -241,7 +238,7 @@ public class TalkingActivity extends BaseActivity implements View.OnClickListene
         MultipartBody.Part requestImgPart =
                 MultipartBody.Part.createFormData("image", file.getName(), requestImgFile);
 
-        ApiService apiService= NetWorkManager.getApiService();
+        ApiService apiService= NetWorkManager.createApiService(ApiService.class);
         Observable<StatusMessage> observable=apiService.getTalkUpload(requestFacebookid,requestAddress,requestImgPart);
 
         observable.subscribeOn(Schedulers.io())

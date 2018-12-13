@@ -1,23 +1,63 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.2.50'
     repositories {
+        maven { url 'https://maven.fabric.io/public' }
         google()
-
         jcenter()
-
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.71"
 
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin
+        classpath 'io.fabric.tools:gradle:1.27.0'
 
-        // NOTE: Do not place your application dependencies here; they belong
+        // NOTE= Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+}
+
+ext {
+    compileSdkVersion = 28
+    minSdkVersion = 19
+    targetSdkVersion = 28
+    sourceCompatibilityVersion = JavaVersion.VERSION_1_8
+    targetCompatibilityVersion = JavaVersion.VERSION_1_8
+    
+    //lib
+    kotlin = project.property('DEP_KOTLIN')
+    appcompatv7 = project.property('DEP_APPCOMPATV7')
+    constraint = project.property('DEP_CONSTRAINT')
+    supportv4 = project.property('DEP_SUPPORTV4')
+    design = project.property('DEP_DESIGN')
+    junit = project.property('DEP_JUNIT')
+    test = project.property('DEP_TEST')
+    espresso = project.property('DEP_ESPRESSO')
+    zxing = project.property('DEP_ZXING')
+    facebook = project.property('DEP_FACEBOOK')
+    greendao = project.property('DEP_GREENDAO')
+    retrofit = project.property('DEP_RETROFIT')
+    okhttp3 = project.property('DEP_OKHTTP3')
+    convertergson = project.property('DEP_CONVERTERGSON')
+    adapter = project.property('DEP_ADAPTER')
+    interceptor = project.property('DEP_INTERCEPTOR')
+    rxjava = project.property('DEP_RXJAVA')
+    rxandroid = project.property('DEP_RXANDROID')
+    eventbus = project.property('DEP_EVENTBUS')
+    circleimageview = project.property('DEP_CIRCLEIMAGEVIEW')
+    smartrefreshlayout = project.property('DEP_SMARTREFRESHLAYOUT')
+    smartrefreshheader = project.property('DEP_SMARTREFRESHHEADER')
+    expandable = project.property('DEP_EXPANDABLE')
+    butterknife = project.property('DEP_BUTTERKNIFE')
+    butterknifecompiler = project.property('DEP_BUTTERKNIFECOMPILER')
+    logger = project.property('DEP_LOGGER')
+    stetho = project.property('DEP_STETHO')
+    stethookhttp3 = project.property('DEP_STETHOOKHTTP3')
+    crashlytics = project.property('DEP_CRASHLYTICS')
+    leakcanarydebug = project.property('DEP_LEAKCANARYDEBUG')
+    leakcanaryrelease = project.property('DEP_LEAKCANARYRELEASE')
 }
 
 allprojects {
@@ -27,6 +67,6 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
+task clean(type : Delete) {
     delete rootProject.buildDir
 }

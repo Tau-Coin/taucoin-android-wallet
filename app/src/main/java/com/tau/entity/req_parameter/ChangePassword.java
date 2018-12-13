@@ -1,4 +1,4 @@
-package com.mofei.tau.entity.req_parameter;
+package com.tau.entity.req_parameter;
 
 public class ChangePassword {
     /**

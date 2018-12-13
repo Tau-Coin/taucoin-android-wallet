@@ -1,10 +1,9 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -19,14 +18,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
-import com.mofei.tau.entity.req_parameter.Login;
-import com.mofei.tau.entity.res_post.LoginRes;
-import com.mofei.tau.entity.res_post.StatusMessage;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.util.L;
-import com.mofei.tau.util.UserInfoUtils;
+import com.tau.entity.req_parameter.Login;
+import com.tau.entity.res_post.LoginRes;
+import com.tau.info.SharedPreferencesHelper;
+import io.taucoin.android.wallet.net.service.ApiService;
+import io.taucoin.foundation.net.NetWorkManager;
+import com.tau.util.L;
+import com.tau.util.UserInfoUtils;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -184,7 +182,7 @@ public class LoginActivity2 extends BaseActivity implements View.OnClickListener
         Login login=new Login();
         login.setEmail(email);
         login.setPassword(password);
-        ApiService apiService= NetWorkManager.getApiService();
+        ApiService apiService= NetWorkManager.createApiService(ApiService.class);
         Observable<LoginRes> observable=apiService.login(login);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())

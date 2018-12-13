@@ -1,9 +1,9 @@
-package com.mofei.tau.info.key_address.taucoin;
+package com.tau.info.key_address.taucoin;
 
 
 
-import com.mofei.tau.info.key_address.core.Base58;
-import com.mofei.tau.util.L;
+import com.tau.info.key_address.core.Base58;
+import com.tau.util.L;
 
 import org.bouncycastle.crypto.digests.RIPEMD160Digest;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;

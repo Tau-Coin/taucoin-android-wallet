@@ -7,11 +7,11 @@
     android:background="#ffffff"
     tools:context=".activity.BalanceActivity">
 
-    <com.mofei.tau.view.CustomToolBar
+    <com.tau.view.CustomToolBar
         android:id="@+id/details_titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </com.mofei.tau.view.CustomToolBar>
+    </com.tau.view.CustomToolBar>
 
     <TextView
         android:visibility="gone"

@@ -1,25 +1,23 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
-import com.mofei.tau.entity.req_parameter.FBAddress;
-import com.mofei.tau.entity.res_put.BuyCoins;
-import com.mofei.tau.entity.res_put.BuyCoinsRet;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.util.L;
-import com.mofei.tau.util.ZXingUtils;
+import com.tau.entity.req_parameter.FBAddress;
+import com.tau.entity.res_put.BuyCoins;
+import com.tau.entity.res_put.BuyCoinsRet;
+import com.tau.info.SharedPreferencesHelper;
+import io.taucoin.android.wallet.net.service.ApiService;
+import io.taucoin.foundation.net.NetWorkManager;
+import com.tau.util.L;
+import com.tau.util.ZXingUtils;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -105,7 +103,7 @@ public class BuyCoinsAddressActivity extends BaseActivity implements View.OnClic
         fbAddress.setAddress(Address );
         L.i("userId  "+userId+"  Address  "+Address);
 
-        ApiService apiService= NetWorkManager.getApiService();
+        ApiService apiService= NetWorkManager.createApiService(ApiService.class);
         Observable<BuyCoins<BuyCoinsRet>> observable=apiService.getBuyCoins(fbAddress);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())

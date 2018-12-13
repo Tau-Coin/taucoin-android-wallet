@@ -1,4 +1,4 @@
-package com.mofei.tau.view;
+package com.tau.view;
 
 import android.app.Dialog;
 import android.content.Context;

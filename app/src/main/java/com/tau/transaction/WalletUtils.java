@@ -1,8 +1,6 @@
-package com.mofei.tau.transaction;
+package com.tau.transaction;
 
-import com.mofei.tau.db.GreenDaoManager;
-
-import io.taucoin.android.wallet.Wallet;
+import com.tau.wallet.Wallet;
 
 /**
  * Created by ly on 18-11-6

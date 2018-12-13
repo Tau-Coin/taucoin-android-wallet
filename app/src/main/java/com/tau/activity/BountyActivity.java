@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,9 +10,9 @@ import android.widget.Button;
 
 import com.facebook.login.LoginManager;
 import com.mofei.tau.R;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.util.L;
-import com.mofei.tau.view.CustomToolBar;
+import com.tau.info.SharedPreferencesHelper;
+import com.tau.util.L;
+import com.tau.view.CustomToolBar;
 
 public class BountyActivity extends BaseActivity implements View.OnClickListener {
 

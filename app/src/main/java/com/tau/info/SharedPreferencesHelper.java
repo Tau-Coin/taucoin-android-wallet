@@ -1,4 +1,4 @@
-package com.mofei.tau.info;
+package com.tau.info;
 
 import android.content.Context;
 import android.content.SharedPreferences;

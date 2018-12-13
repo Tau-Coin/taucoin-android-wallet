@@ -1,4 +1,4 @@
-package com.mofei.tau.view;
+package com.tau.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

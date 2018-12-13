@@ -1,4 +1,4 @@
-package com.mofei.tau.constant;
+package com.tau.constant;
 
 public class TAU_BaseURL {
     public static final String BASE_URL0="https://www.taucoin.io/";

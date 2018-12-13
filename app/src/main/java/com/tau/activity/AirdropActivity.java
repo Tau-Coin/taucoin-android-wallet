@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.mofei.tau.R;
-import com.mofei.tau.view.CustomToolBar;
+import com.tau.view.CustomToolBar;
 
 public class AirdropActivity extends BaseActivity implements View.OnClickListener {
 

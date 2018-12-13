@@ -1,29 +1,19 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.mofei.tau.R;
-import com.mofei.tau.entity.req_parameter.FBAddress;
-import com.mofei.tau.entity.res_post.ReferralURL;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.util.L;
-import com.mofei.tau.view.CustomToolBar;
+import com.tau.info.SharedPreferencesHelper;
+import com.tau.util.L;
+import com.tau.view.CustomToolBar;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 /**
  * @author ly
  * @version 1.0
@@ -107,59 +97,59 @@ public class ReferringActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void referralURL() {
-
-        FBAddress fbAddress=new FBAddress();
-        fbAddress.setFacebookid(userId );
-        fbAddress.setAddress( address);
-        L.i("userId"+userId+"  Address  "+address);
-
-        ApiService apiService= NetWorkManager.getApiService();
-        Observable<ReferralURL> observable=apiService.getreferralURL(fbAddress);
-        observable.subscribeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ReferralURL>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(ReferralURL referralURL) {
-                        L.i("Message: "+referralURL.getMessage());
-                        L.i("Status: "+referralURL.getStatus());
-                        L.i("Referral_url: "+referralURL.getReferral_url());
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(referralURL.getMessage().equals("success")){
-                                    mGenerateReferralURLBt.setVisibility(View.VISIBLE);
-                                }else {
-                                    mReferralURLTV.setText( referralURL.getReferral_url().toString());
-                                    mReferralURLTV.setBackgroundColor(Color.parseColor("#4C4C4C"));
-                                    mReferralURLTV.setTextColor(Color.WHITE);
-                                    mGenerateReferralURLBt.setVisibility(View.GONE);
-                                }
-
-                            }
-                        });
-
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        L.i("onError");
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        L.i(""+"onComplete");
-                        hideWaitDialog();
-
-                    }
-                });
+        Toast.makeText(this, "test", Toast.LENGTH_LONG).show();
+//        FBAddress fbAddress=new FBAddress();
+//        fbAddress.setFacebookid(userId );
+//        fbAddress.setAddress( address);
+//        L.i("userId"+userId+"  Address  "+address);
+//
+//        ApiService apiService= NetWorkManager.createApiService(ApiService.class);
+//        Observable<ReferralURL> observable=apiService.getreferralURL(fbAddress);
+//        observable.subscribeOn(Schedulers.io())
+//                .subscribeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<ReferralURL>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(ReferralURL referralURL) {
+//                        L.i("Message: "+referralURL.getMessage());
+//                        L.i("Status: "+referralURL.getStatus());
+//                        L.i("Referral_url: "+referralURL.getReferral_url());
+//
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if(referralURL.getMessage().equals("success")){
+//                                    mGenerateReferralURLBt.setVisibility(View.VISIBLE);
+//                                }else {
+//                                    mReferralURLTV.setText( referralURL.getReferral_url().toString());
+//                                    mReferralURLTV.setBackgroundColor(Color.parseColor("#4C4C4C"));
+//                                    mReferralURLTV.setTextColor(Color.WHITE);
+//                                    mGenerateReferralURLBt.setVisibility(View.GONE);
+//                                }
+//
+//                            }
+//                        });
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        L.i("onError");
+//                        e.printStackTrace();
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        L.i(""+"onComplete");
+//                        hideWaitDialog();
+//
+//                    }
+//                });
     }
 
     private void logout() {

@@ -10,46 +10,49 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".activity.MyApplication"
-        android:allowBackup="true"
+        android:name="io.taucoin.android.wallet.MyApplication"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/logo"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/AppTheme"
+        android:allowBackup="false"
+        android:supportsRtl="false"
+        tools:replace="android:allowBackup, android:supportsRtl"
+        tools:ignore="GoogleAppIndexingWarning">
        　
         <activity
-            android:name=".activity.SplashActivity"
+            android:name="io.taucoin.android.wallet.module.view.SplashActivity"
+            android:theme="@style/SplashTheme"
             android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
        　
         <activity
-            android:name=".activity.SendAndReceiveActivity"
+            android:name="com.tau.activity.SendAndReceiveActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
-            android:name=".activity.DetailsActivity"
+            android:name="com.tau.activity.DetailsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
-        <activity android:name=".activity.BaseActivity" />
-        <activity android:name=".activity.TextActivity" />
-        <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.LoginActivity2" />
+        <activity android:name="com.tau.activity.BaseActivity" />
+        <activity android:name="com.tau.activity.TextActivity" />
+        <activity android:name="com.tau.activity.RegisterActivity" />
+        <activity android:name="com.tau.activity.LoginActivity2" />
         <activity
-            android:name=".activity.ChangePasswActivity"
+            android:name="com.tau.activity.ChangePasswActivity"
             android:label="@string/title_activity_change_passw"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activity.AboutActivity" />
-        <activity android:name=".activity.HistoryTransationActivity" />
-        <activity android:name=".activity.ExhibitTXActivity" />
-        <activity android:name=".activity.ExhibitUTXOActivity"></activity>
+        <activity android:name="com.tau.activity.AboutActivity" />
+        <activity android:name="com.tau.activity.HistoryTransationActivity" />
+        <activity android:name="com.tau.activity.ExhibitTXActivity" />
+        <activity android:name="com.tau.activity.ExhibitUTXOActivity"/>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="9f48df0306d5e440ef9e9386600379da6134f3a0" />
     </application>
 
 </manifest>

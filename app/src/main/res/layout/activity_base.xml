@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".activity.BaseActivity">
 
-    <com.mofei.tau.view.CustomToolBar
+    <com.tau.view.CustomToolBar
         android:id="@+id/customtool"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -20,6 +20,6 @@
         app:enableGoBackEvent="true"
         app:enableLeftTextView="true">
 
-    </com.mofei.tau.view.CustomToolBar>
+    </com.tau.view.CustomToolBar>
 
 </android.support.constraint.ConstraintLayout>

@@ -1,18 +1,16 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mofei.tau.R;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.util.L;
-import com.mofei.tau.view.DialogWaitting;
-import com.mofei.tau.view.SmartDialog;
+
+import com.tau.view.DialogWaitting;
+import com.tau.view.SmartDialog;
+
+import io.taucoin.foundation.net.NetWorkManager;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -20,12 +18,14 @@ public class BaseActivity extends AppCompatActivity {
     private Toast mToast = null;
 
     private Context context;
+    protected String TAG;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
         NetWorkManager.getInstance(this).init();
+        TAG =this.getClass().getSimpleName();
     }
 
 

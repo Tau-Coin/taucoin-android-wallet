@@ -127,7 +127,7 @@
             android:overScrollMode="never"
             android:background="#fff" />-->
 
-        <com.mofei.tau.view.SwipeRecyclerView
+        <com.tau.view.SwipeRecyclerView
             android:id="@+id/history_recycleView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

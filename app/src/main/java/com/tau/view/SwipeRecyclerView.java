@@ -1,4 +1,4 @@
-package com.mofei.tau.view;
+package com.tau.view;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -14,7 +14,7 @@ import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
-import com.mofei.tau.adapter.HistoryEventRecycleAdapter;
+import com.tau.adapter.HistoryEventRecycleAdapter;
 
 /**
  * Created by ly on 18-11-2

@@ -1,29 +1,22 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.mofei.tau.R;
-import com.mofei.tau.adapter.HistoryEventRecycleAdapter;
-import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
-import com.mofei.tau.transaction.TransactionHistory;
-import com.mofei.tau.util.L;
-import com.mofei.tau.view.CustomToolBar;
-import com.mofei.tau.view.SmartDialog;
-import com.mofei.tau.view.SwipeRecyclerView;
+import com.tau.adapter.HistoryEventRecycleAdapter;
+import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
+import io.taucoin.android.wallet.db.entity.TransactionHistory;
+import com.tau.view.CustomToolBar;
+import com.tau.view.SwipeRecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HistoryTransationActivity extends BaseActivity {

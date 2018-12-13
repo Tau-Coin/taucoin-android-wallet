@@ -1,43 +1,30 @@
-package com.mofei.tau.fragment;
+package com.tau.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.mofei.tau.R;
-import com.mofei.tau.activity.KeysAddressesActivity;
-import com.mofei.tau.adapter.HistoryEventRecycleAdapter;
-import com.mofei.tau.db.greendao.TransactionHistoryDaoUtils;
-import com.mofei.tau.db.greendao.UTXORecordDaoUtils;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.transaction.TXChild;
-import com.mofei.tau.transaction.TXGroup;
-import com.mofei.tau.transaction.TransactionHistory;
-import com.mofei.tau.transaction.UTXORecord;
-import com.mofei.tau.util.L;
-import com.mofei.tau.view.CustomToolBar;
-import com.mofei.tau.view.SwipeRecyclerView;
-import com.mofei.tau.view.expanableLV.ExtendableListViewAdapter;
 
-import java.text.SimpleDateFormat;
+import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
+
+import com.tau.info.SharedPreferencesHelper;
+import com.tau.transaction.TXChild;
+import com.tau.transaction.TXGroup;
+import io.taucoin.android.wallet.db.entity.TransactionHistory;
+import com.tau.util.L;
+import com.tau.view.expanableLV.ExtendableListViewAdapter;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**

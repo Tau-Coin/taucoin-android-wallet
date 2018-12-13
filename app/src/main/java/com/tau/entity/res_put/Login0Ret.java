@@ -1,4 +1,4 @@
-package com.mofei.tau.entity.res_put;
+package com.tau.entity.res_put;
 
 public class Login0Ret {
 

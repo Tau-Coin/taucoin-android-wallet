@@ -1,26 +1,20 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
-import com.mofei.tau.entity.req_parameter.ChangePassword;
-import com.mofei.tau.entity.req_parameter.Logout;
-import com.mofei.tau.entity.res_post.StatusMessage;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.util.L;
+import com.tau.entity.req_parameter.ChangePassword;
+import com.tau.entity.res_post.StatusMessage;
+import com.tau.info.SharedPreferencesHelper;
+import io.taucoin.android.wallet.net.service.ApiService;
+import io.taucoin.foundation.net.NetWorkManager;
+import com.tau.util.L;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -98,7 +92,7 @@ public class ChangePasswActivity extends BaseActivity implements View.OnClickLis
         changePassword.setEmail(email);
         changePassword.setNew_password(password);
         changePassword.setSafety_code(safetycode);
-        ApiService apiService= NetWorkManager.getApiService();
+        ApiService apiService= NetWorkManager.createApiService(ApiService.class);
         Observable<StatusMessage> observable=apiService.changePassword(changePassword);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -186,7 +180,7 @@ public class ChangePasswActivity extends BaseActivity implements View.OnClickLis
 
         Map<String,String> email=new HashMap<>();
         email.put("email",str);
-        ApiService apiService= NetWorkManager.getApiService();
+        ApiService apiService= NetWorkManager.createApiService(ApiService.class);
         Observable<StatusMessage> observable=apiService.verifyCode(email);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())

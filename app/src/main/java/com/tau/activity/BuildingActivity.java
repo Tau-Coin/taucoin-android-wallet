@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.view.CustomToolBar;
+import com.tau.info.SharedPreferencesHelper;
+import com.tau.view.CustomToolBar;
 
 
 public class BuildingActivity extends BaseActivity implements View.OnClickListener {

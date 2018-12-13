@@ -1,6 +1,4 @@
-package com.mofei.tau.entity.res_post;
-
-import java.io.Serializable;
+package com.tau.entity.res_post;
 
 public class Balance<T>  {
 

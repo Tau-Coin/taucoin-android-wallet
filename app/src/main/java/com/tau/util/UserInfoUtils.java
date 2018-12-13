@@ -1,9 +1,9 @@
-package com.mofei.tau.util;
+package com.tau.util;
 
 import android.content.Context;
 
-import com.mofei.tau.activity.LoginActivity2;
-import com.mofei.tau.info.SharedPreferencesHelper;
+import com.tau.activity.LoginActivity2;
+import com.tau.info.SharedPreferencesHelper;
 
 /**
  * Created by ly on 18-11-28

@@ -1,4 +1,4 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

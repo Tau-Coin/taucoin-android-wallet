@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.mofei.tau.info.key_address.core;
+package com.tau.info.key_address.core;
 
 @SuppressWarnings("serial")
 public class AddressFormatException extends IllegalArgumentException {

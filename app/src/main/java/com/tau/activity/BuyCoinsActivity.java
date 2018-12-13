@@ -1,27 +1,11 @@
-package com.mofei.tau.activity;
+package com.tau.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.mofei.tau.R;
-import com.mofei.tau.entity.req_parameter.FBAddress;
-import com.mofei.tau.entity.res_put.BuyCoins;
-import com.mofei.tau.entity.res_put.BuyCoinsRet;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.util.ZXingUtils;
-
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class BuyCoinsActivity extends BaseActivity implements View.OnClickListener {
     private Button mBuyTauCoinsBt,mBackWalletHome;

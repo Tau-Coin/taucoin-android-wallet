@@ -1,21 +1,23 @@
-package com.mofei.tau.transaction;
+package com.tau.transaction;
 
 import android.os.Message;
 
-import com.mofei.tau.activity.BaseActivity;
-import com.mofei.tau.activity.SendAndReceiveActivity;
-import com.mofei.tau.db.greendao.KeyDaoUtils;
-import com.mofei.tau.db.greendao.UTXORecordDaoUtils;
-import com.mofei.tau.entity.res_post.Balance;
-import com.mofei.tau.entity.res_post.BalanceRet;
-import com.mofei.tau.entity.res_post.HexRet;
-import com.mofei.tau.entity.res_post.RawTX;
-import com.mofei.tau.entity.res_post.UTXOList;
-import com.mofei.tau.info.SharedPreferencesHelper;
-import com.mofei.tau.net.ApiService;
-import com.mofei.tau.net.NetWorkManager;
-import com.mofei.tau.util.L;
-import com.mofei.tau.util.UserInfoUtils;
+import com.tau.activity.BaseActivity;
+
+import io.taucoin.android.wallet.db.entity.KeyValue;
+import io.taucoin.android.wallet.db.entity.UTXORecord;
+import io.taucoin.android.wallet.db.util.KeyDaoUtils;
+import io.taucoin.android.wallet.db.util.UTXORecordDaoUtils;
+import com.tau.entity.res_post.Balance;
+import com.tau.entity.res_post.BalanceRet;
+import com.tau.entity.res_post.HexRet;
+import com.tau.entity.res_post.RawTX;
+import com.tau.entity.res_post.UTXOList;
+import com.tau.info.SharedPreferencesHelper;
+import io.taucoin.android.wallet.net.service.ApiService;
+import io.taucoin.foundation.net.NetWorkManager;
+import com.tau.util.L;
+import com.tau.util.UserInfoUtils;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -97,11 +99,11 @@ public class BlockChainConnector extends BaseActivity{
     private Message getBalanceMessage;
 
     public void getBalanceData(String email, Message message) {
-        //getBalanceMessage = message;
-        //message.sendToTarget();
+//        getBalanceMessage = message;
+//        message.sendToTarget();
         Map<String,String> emailMap=new HashMap<>();
         emailMap.put("email",email);
-        ApiService apiService= NetWorkManager.getApiService();
+        ApiService apiService= NetWorkManager.createApiService(ApiService.class);
         Observable<Balance<BalanceRet>> observable=apiService.getBalance2(emailMap);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -113,9 +115,12 @@ public class BlockChainConnector extends BaseActivity{
 
                     @Override
                     public void onNext(Balance<BalanceRet> balanceRetBalance) {
-
+                        if(balanceRetBalance == null){
+                            return;
+                        }
                         L.e(balanceRetBalance.getStatus()+"");
                         L.e(balanceRetBalance.getMessage());
+
 
                         balance=balanceRetBalance.getRet().getCoins();
                         utxo=balanceRetBalance.getRet().getUtxo();
@@ -176,7 +181,7 @@ public class BlockChainConnector extends BaseActivity{
         L.e("getUTXOList_Privkey: "+Priv);
 
         address.put("address",addre);
-        ApiService apiService= NetWorkManager.getApiService();
+        ApiService apiService= NetWorkManager.createApiService(ApiService.class);
         Observable<UTXOList> observable=apiService.getUTXOList(address);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -266,7 +271,7 @@ public class BlockChainConnector extends BaseActivity{
     public void sendRawTransation(String tx_hex, Message message) {
         Map<String,String> tx_hex_map=new HashMap<>();
         tx_hex_map.put("tx_hex", tx_hex);
-        ApiService apiService= NetWorkManager.getApiService();
+        ApiService apiService= NetWorkManager.createApiService(ApiService.class);
         Observable<HexRet> observable=apiService.sendRawTransation(tx_hex_map);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -316,7 +321,7 @@ public class BlockChainConnector extends BaseActivity{
 
 
     public void getRawTransation(Map<String, String> txid, Message message) {
-        ApiService apiService=NetWorkManager.getApiService();
+        ApiService apiService=NetWorkManager.createApiService(ApiService.class);
         Observable<RawTX> observable=apiService.getRawTransation(txid);
         observable.subscribeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
