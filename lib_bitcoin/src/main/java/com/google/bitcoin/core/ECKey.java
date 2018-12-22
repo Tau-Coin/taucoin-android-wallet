@@ -306,4 +306,8 @@ public class ECKey implements Serializable {
             throw new RuntimeException(e);  // Cannot happen, reading from memory stream.
         }
     }
+
+    public ECDomainParameters getEcParams() {
+        return ecParams;
+    }
 }

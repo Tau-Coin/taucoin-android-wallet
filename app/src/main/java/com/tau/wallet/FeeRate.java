@@ -46,4 +46,8 @@ public class FeeRate {
 
         return fee;
     }
+
+    public BigInteger getFee() {
+        return nITauPerK;
+    }
 }

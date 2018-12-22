@@ -20,9 +20,12 @@ public class KeyValue {
     private long utxo;
     private long reward;
     private long balance;
-    @Generated(hash = 1410993070)
+    private String headerImage;
+    private String nickName;
+    @Generated(hash = 461750094)
     public KeyValue(Long id, String pubkey, String privkey, String address,
-            long utxo, long reward, long balance) {
+            long utxo, long reward, long balance, String headerImage,
+            String nickName) {
         this.id = id;
         this.pubkey = pubkey;
         this.privkey = privkey;
@@ -30,6 +33,8 @@ public class KeyValue {
         this.utxo = utxo;
         this.reward = reward;
         this.balance = balance;
+        this.headerImage = headerImage;
+        this.nickName = nickName;
     }
     @Generated(hash = 92014137)
     public KeyValue() {
@@ -76,5 +81,16 @@ public class KeyValue {
     public void setBalance(long balance) {
         this.balance = balance;
     }
-    
+    public String getHeaderImage() {
+        return this.headerImage;
+    }
+    public void setHeaderImage(String headerImage) {
+        this.headerImage = headerImage;
+    }
+    public String getNickName() {
+        return this.nickName;
+    }
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 }

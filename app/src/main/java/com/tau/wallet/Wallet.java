@@ -36,7 +36,12 @@ import com.tau.wallet.transactions.TransactionFailReason;
 import com.tau.wallet.transactions.CreateTransactionResult;
 import com.tau.wallet.utxo.CoinsSelector;
 import com.tau.wallet.utxo.UTXOManager;
+
+import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.db.entity.UTXORecord;
+import io.taucoin.android.wallet.util.ToastUtils;
+import io.taucoin.foundation.util.StringUtil;
+import io.taucoin.platform.adress.KeyManager;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -95,7 +100,7 @@ public class Wallet implements Serializable {
         return !pendingTxList.isEmpty();
     }
 
-    public synchronized CreateTransactionResult createTransaction(Map<String, BigInteger> receipts, boolean bSubtractFeeFromReceipts,FeeRate userFeeRate, Transaction tx) {
+    public synchronized CreateTransactionResult createTransaction(Map<String, BigInteger> receipts, boolean bSubtractFeeFromReceipts, FeeRate userFeeRate, Transaction tx) {
 
         CreateTransactionResult result = new CreateTransactionResult();
 
@@ -106,7 +111,7 @@ public class Wallet implements Serializable {
         }
 
         BigInteger nTotal = BigInteger.ZERO;
-        ArrayList<Recipient> arrSendTo = new ArrayList<Recipient>();
+        ArrayList<Recipient> arrSendTo = new ArrayList<>();
         for (Map.Entry<String, BigInteger> entry : receipts.entrySet()) {
             Recipient r;
             try {
@@ -115,7 +120,7 @@ public class Wallet implements Serializable {
                     System.out.println("Address " + entry.getKey() + " value " + v.toString() + " invalid!");
                     continue;
                 }
-                Address to = new Address(params,Utils.hexStringToBytes(Utils.getHash160FromTauAddress(entry.getKey())));
+                Address to = new Address(params, Utils.hexStringToBytes(Utils.getHash160FromTauAddress(entry.getKey())));
                 r = new Recipient(Script.createOutputScript(to), v, bSubtractFeeFromReceipts);
                 arrSendTo.add(r);
                 nTotal = nTotal.add(v);
@@ -131,7 +136,7 @@ public class Wallet implements Serializable {
         }
 
         // Step2: get available coins.
-        ArrayList<UTXORecord> availableCoins = new ArrayList<UTXORecord>();
+        ArrayList<UTXORecord> availableCoins = new ArrayList<>();
         availableCoins.clear();
         coinsManager.getAvailableCoins(null, availableCoins);
         if (availableCoins.isEmpty()) {
@@ -181,7 +186,7 @@ public class Wallet implements Serializable {
             }
 
             // select coins
-            ArrayList<UTXORecord> selectedCoins = new ArrayList<UTXORecord>();
+            ArrayList<UTXORecord> selectedCoins = new ArrayList<>();
             selectedCoins.clear();
             BigInteger selectedValue = CoinsSelector.SelectCoins(availableCoins, nValueToSelect, selectedCoins);
             if (nValueToSelect.compareTo(selectedValue) > 0 || selectedCoins.isEmpty()) {
@@ -221,7 +226,7 @@ public class Wallet implements Serializable {
                     // To keep simple, just get the first input as the change scriptPubkey
                     Address changeAddress;
                     try {
-                        changeAddress = new Address(params, 
+                        changeAddress = new Address(params,
                                 Utils.hexStringToBytes(Utils.getHash160FromTauAddress(selectedCoins.get(0).address)));
                     } catch (AddressFormatException e) {
                         System.out.println(e.toString());
@@ -271,18 +276,23 @@ public class Wallet implements Serializable {
                 return result;
             }
 
-            BigInteger needFee = new FeeRate(Constants.DEFAULT_MIN_RELAY_TX_FEE).getFee(nBytes);
-            BigInteger userFee = BigInteger.ZERO;
+//            BigInteger needFee = new FeeRate(Constants.DEFAULT_MIN_RELAY_TX_FEE).getFee(nBytes);
+//            BigInteger userFee = BigInteger.ZERO;
+//            if (userFeeRate != null) {
+//                userFee = userFeeRate.getFee(nBytes);
+//            }
+//
+//            if (userFee.compareTo(needFee) > 0) {
+//                needFee = userFee;
+//            }
+//
+//            if (needFee.compareTo(Constants.DEFAULT_TRANSACTION_MAXFEE) > 0) {
+//                needFee = Constants.DEFAULT_TRANSACTION_MAXFEE;
+//            }
+
+            BigInteger needFee = BigInteger.ZERO;
             if (userFeeRate != null) {
-                userFee = userFeeRate.getFee(nBytes);
-            }
-
-            if (userFee.compareTo(needFee) > 0) {
-                needFee = userFee;
-            }
-
-            if (needFee.compareTo(Constants.DEFAULT_TRANSACTION_MAXFEE) > 0) {
-                needFee = Constants.DEFAULT_TRANSACTION_MAXFEE;
+                needFee = userFeeRate.getFee();
             }
 
             if (result.feeRet.compareTo(needFee) >= 0) {
@@ -303,6 +313,29 @@ public class Wallet implements Serializable {
         }
 
         // TODO: HTTP POST request
+        return true;
+    }
+
+    public synchronized boolean validateTxParamer(TransactionHistory tx) {
+        if (tx == null) {
+            return false;
+        }
+        if (StringUtil.isEmpty(tx.getToAddress())) {
+            ToastUtils.showShortToast("Please enter address");
+            return false;
+        }
+        if (!KeyManager.validateAddress(tx.getToAddress())) {
+            ToastUtils.showShortToast("Incorrect address");
+            return false;
+        }
+        if (StringUtil.isEmpty(tx.getValue())) {
+            ToastUtils.showShortToast("Please enter amount");
+            return false;
+        }
+        if (StringUtil.isEmpty(tx.getFee())) {
+            ToastUtils.showShortToast("Please enter transaction fee");
+            return false;
+        }
         return true;
     }
 }

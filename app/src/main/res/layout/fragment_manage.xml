@@ -1,42 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ManageFragment">
+    android:background="@color/color_main_bg"
+    android:orientation="vertical">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
+    <io.taucoin.android.wallet.widget.ToolbarView
         android:layout_width="match_parent"
-        android:background="#E0E0E0"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:titleText="@string/main_manager" />
 
-        <ExpandableListView
-            android:id="@+id/expend_list"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_header_pic"
+            android:layout_width="@dimen/dimen_size_60"
+            android:layout_height="@dimen/dimen_size_60"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_size_32"
+            android:src="@mipmap/logo"
+            app:civ_border_color="@color/color_main_line"
+            app:civ_border_width="0.6dp" />
+
+        <TextView
+            android:id="@+id/tv_nick"
+            style="@style/style_normal_grey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_header_pic"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textColorHint="@color/color_grey"
+            android:hint="@string/common_no_login" />
+
+        <TextView
+            android:id="@+id/tv_version"
+            style="@style/style_normal_grey"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:layout_below="@id/tv_nick"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:background="@drawable/shape_corner_white_border"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:background="@color/color_main_line"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:layout_height="wrap_content">
+
+        <io.taucoin.android.wallet.widget.ItemLineView
+            android:id="@+id/item_keys"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ExpandableListView>
+            android:layout_height="50dp"
+            app:leftImage="@mipmap/logo"
+            app:rightText="@string/manager_keys"
+            app:rightTextColor="@color/color_yellow" />
 
-        <com.tau.view.SwipeRecyclerView
-            android:visibility="invisible"
-            android:id="@+id/history_recycleView"
+        <io.taucoin.android.wallet.widget.ItemLineView
+            android:visibility="gone"
+            android:id="@+id/item_address_note"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            app:leftImage="@mipmap/logo"
+            app:rightText="@string/manager_address_note"
+            app:rightTextColor="@color/color_black" />
 
-        <!-- <android.support.v7.widget.RecyclerView
-             android:id="@+id/history_recycleView"
-             android:layout_width="match_parent"
-             android:paddingRight="10dp"
-             android:paddingLeft="10dp"
-             android:layout_height="wrap_content"/>-->
+        <io.taucoin.android.wallet.widget.ItemLineView
+            android:id="@+id/item_help"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            app:leftImage="@mipmap/logo"
+            app:rightText="@string/manager_help"
+            app:rightTextColor="@color/color_black" />
 
-
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-
-
-
-
-
-</FrameLayout>
+    </LinearLayout>
+</LinearLayout>

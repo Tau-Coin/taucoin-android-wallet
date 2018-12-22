@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/color_white"
+    android:layout_height="40dp">
+
+    <TextView
+        android:id="@+id/tv_amount"
+        style="@style/style_big_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dimen_size_30"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        style="@style/style_big_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/dimen_size_50"
+        android:text="" />
+
+    <ImageView
+        android:id="@+id/iv_right"
+        android:layout_width="@dimen/dimen_size_22"
+        android:contentDescription="@null"
+        android:layout_alignParentEnd="true"
+        android:src="@mipmap/copy"
+        android:layout_marginEnd="15dp"
+        android:layout_centerVertical="true"
+        android:layout_height="@dimen/dimen_size_22" />
+
+    <View
+        android:id="@+id/view_line_bottom"
+        android:background="@color/color_main_line"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <View
+        android:id="@+id/view_line_top"
+        android:background="@color/color_main_line"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+</RelativeLayout>

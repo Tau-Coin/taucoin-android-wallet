@@ -29,7 +29,8 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':lib_foundation')
-    api rootProject.ext.kotlin
+    implementation project(':lib_bitcoin')
+//    api rootProject.ext.kotlin
     api rootProject.ext.constraint
     api rootProject.ext.supportv4
     api rootProject.ext.design

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <paths>
+        <!--
+        <files-path/>： Context.getFilesDir()
+        <cache-path/>: getCacheDir()
+        <external-path/>: Environment.getExternalStorageDirectory()
+        <external-files-path/>: Context.getExternalFilesDir(String) Context.getExternalFilesDir(null).
+        <external-cache-path />: Context.getExternalCacheDir().
+        <root-path />new File("/");
+        -->
+        <!-- path=""代表根目录，也可以指定特定目录，name="camera_picture"是虚拟目录camera_picture -->
+        <root-path name="root" path="" />
+        <files-path name="files" path="com.mofei.tau" />
+        <cache-path name="cache" path="" />
+        <external-path name="external" path="" />
+        <external-files-path name="external_files" path="" />
+        <external-cache-path name="external_cache" path="" />
+    </paths>
+</resources>

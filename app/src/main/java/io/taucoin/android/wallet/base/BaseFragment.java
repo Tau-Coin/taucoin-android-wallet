@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public abstract class BaseFragment extends Fragment {
     private View mRootView;
@@ -30,13 +31,15 @@ public abstract class BaseFragment extends Fragment {
             }
             return mRootView;
         }
-
         mRootView = getViewLayout(inflater, container, savedInstanceState);
-
         return mRootView;
     }
 
-    abstract View getViewLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
+    @Subscribe
+    public void onEvent(Object object){
+    }
+
+    public abstract View getViewLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
 
     @Override
     public void onDestroyView() {

@@ -16,8 +16,8 @@ android {
         applicationId "com.mofei.tau"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 12
-        versionName "1.0"
+        versionCode 13
+        versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
@@ -43,6 +43,12 @@ android {
         }
     }
 
+    greendao {
+        schemaVersion 9
+        daoPackage 'io.taucoin.android.wallet.db.greendao'
+        targetGenDir 'src/main/java'
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -53,15 +59,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-
-    greendao {
-        // 数据库的版本，用于升级时候进行更改
-        schemaVersion 2
-        //这个是生成DAOs、DaoMaster、DaoSession代码保存的包名,默认为entities所在包名
-        daoPackage 'io.taucoin.android.wallet.db.greendao'
-        //自定义生成数据库文件的目录，可以将生成的文件放到我们的java目录中，而不是build中，这样就不用额外的设置资源目录了。
-        targetGenDir 'src/main/java'
     }
 
     compileOptions {

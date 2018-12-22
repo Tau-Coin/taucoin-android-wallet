@@ -1,15 +1,9 @@
 package io.taucoin.android.wallet.db.entity;
 
-import com.google.gson.Gson;
-
-import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 
-import java.math.BigInteger;
 import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.Property;
-import org.greenrobot.greendao.converter.PropertyConverter;
 
 /**
  * Created by ly on 18-10-30
@@ -49,11 +43,19 @@ public class TransactionHistory {
     // blocktime
     public long blocktime;
 
-    @Generated(hash = 1525617385)
+    public String memo;
+
+    public String fee;
+
+    @Generated(hash = 63079048)
+    public TransactionHistory() {
+    }
+
+    @Generated(hash = 1660871670)
     public TransactionHistory(Long id, String txId, String sentOrReceived,
             String fromAddress, String toAddress, String time, int confirmations,
             String value, String result, String message, long blockheight,
-            long blocktime) {
+            long blocktime, String memo, String fee) {
         this.id = id;
         this.txId = txId;
         this.sentOrReceived = sentOrReceived;
@@ -66,10 +68,8 @@ public class TransactionHistory {
         this.message = message;
         this.blockheight = blockheight;
         this.blocktime = blocktime;
-    }
-
-    @Generated(hash = 63079048)
-    public TransactionHistory() {
+        this.memo = memo;
+        this.fee = fee;
     }
 
     public Long getId() {
@@ -168,7 +168,20 @@ public class TransactionHistory {
         this.blocktime = blocktime;
     }
 
-     
-    
-    
+    public String getMemo() {
+        return this.memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    public String getFee() {
+        return this.fee;
+    }
+
+    public void setFee(String fee) {
+        this.fee = fee;
+    }
+
 }

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_main_bg"
+    android:orientation="vertical">
+
+    <io.taucoin.android.wallet.widget.ToolbarView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleText="@string/main_send_receive" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/color_white">
+
+        <TextView
+            android:id="@+id/balance_text"
+            style="@style/style_tau_black"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:gravity="center_vertical" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_send"
+            style="@style/style_normal_white"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/color_blue"
+            android:text="@string/tx_send"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_receive"
+            style="@style/style_normal_white"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/color_violet"
+            android:text="@string/tx_receive"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/style_normal_grey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="@string/tx_log" />
+
+        <ImageView
+            android:id="@+id/iv_tx_log_tips"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="5dp"
+            android:contentDescription="@null"
+            android:src="@mipmap/ver" />
+
+    </LinearLayout>
+
+    <ExpandableListView
+        android:background="@color/color_main_line"
+        android:id="@+id/list_view_log"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:groupIndicator="@null"
+        android:dividerHeight="0dp"
+        android:scrollbars="none" />
+
+    <io.taucoin.android.wallet.widget.EmptyLayout
+        android:visibility="gone"
+        android:id="@+id/empty_layout"
+        android:layout_width="match_parent"
+        app:empty_tip="@string/tx_log_empty"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

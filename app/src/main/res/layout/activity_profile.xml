@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:orientation="vertical">
+
+    <io.taucoin.android.wallet.widget.ToolbarView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftBackImage="@mipmap/icon_back_back"
+        app:titleBackground="@color/color_tool_bar_child"
+        app:titleText="@string/profile_title" />
+
+    <RelativeLayout
+        android:id="@+id/rl_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            style="@style/style_normal_black"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/dimen_size_30"
+            android:text="@string/profile_avatar" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_avatar"
+            style="@style/style_normal_black"
+            android:layout_width="@dimen/dimen_size_50"
+            android:layout_height="@dimen/dimen_size_50"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="30dp"
+            android:contentDescription="@null"
+            android:src="@mipmap/logo"
+            app:civ_border_color="@color/color_main_line"
+            app:civ_border_width="0.6dp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_main_line" />
+
+    <RelativeLayout
+        android:id="@+id/rl_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp">
+
+        <TextView
+            android:id="@+id/tv_name_title"
+            style="@style/style_normal_black"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_size_30"
+            android:text="@string/profile_name" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            style="@style/style_normal_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="30dp"
+            android:layout_toEndOf="@+id/tv_name_title"
+            android:ellipsize="end"
+            android:gravity="right"
+            android:maxLines="1" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_main_line" />
+
+</LinearLayout>

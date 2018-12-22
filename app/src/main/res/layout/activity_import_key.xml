@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:orientation="vertical">
+
+    <io.taucoin.android.wallet.widget.ToolbarView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftBackImage="@mipmap/icon_back_back"
+        app:titleBackground="@color/color_tool_bar_child"
+        app:titleText="@string/manager_keys" />
+
+
+    <EditText
+        android:id="@+id/et_private_key"
+        style="@style/style_normal_black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="center"
+        android:hint="@string/keys_paste_tip"
+        android:text=""
+        android:textColorHint="@color/color_grey" />
+
+    <Button
+        android:id="@+id/btn_import"
+        style="@style/style_big_white"
+        android:layout_width="@dimen/dimen_size_250"
+        android:layout_height="50dp"
+        android:layout_marginTop="35dp"
+        android:layout_gravity="center"
+        android:textAllCaps="false"
+        android:text="@string/keys_import"
+        android:background="@drawable/yellow_rect_round_bg" />
+
+
+    <TextView
+        android:id="@+id/tv_how_import"
+        style="@style/style_normal_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/dimen_size_30"
+        android:layout_marginEnd="@dimen/dimen_size_30"
+        android:text="@string/keys_how_import" />
+
+
+    <Button
+        android:id="@+id/btn_generate"
+        style="@style/style_big_white"
+        android:layout_width="@dimen/dimen_size_250"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center"
+        android:textAllCaps="false"
+        android:text="@string/keys_generate"
+        android:background="@drawable/black_rect_round_bg" />
+</LinearLayout>

@@ -17,9 +17,7 @@
 
 package com.google.bitcoin.core;
 
-import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
-import java.math.BigInteger;
 
 /**
  * NetworkParameters contains the data needed for working with an instantiation of a TauCoin chain.

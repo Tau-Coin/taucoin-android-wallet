@@ -30,7 +30,7 @@ public enum TransactionFailReason {
     private int code;
     private String msg;
 
-    private TransactionFailReason(int code, String msg) {
+    TransactionFailReason(int code, String msg) {
         this.code = code;
         this.msg  = msg;
     }

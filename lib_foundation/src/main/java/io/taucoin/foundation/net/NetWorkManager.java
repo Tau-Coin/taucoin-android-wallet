@@ -58,7 +58,7 @@ public class NetWorkManager {
         okHttpClientBuilder.readTimeout(10, TimeUnit.SECONDS);
         okHttpClientBuilder.writeTimeout(10, TimeUnit.SECONDS);
         //设置请求超时时长
-        okHttpClientBuilder.connectTimeout(3, TimeUnit.SECONDS);
+        okHttpClientBuilder.connectTimeout(10, TimeUnit.SECONDS);
         if (BuildConfig.DEBUG) {
             //启用Log日志
             okHttpClientBuilder.addInterceptor(logging);

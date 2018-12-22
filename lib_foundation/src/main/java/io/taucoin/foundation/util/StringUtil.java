@@ -175,4 +175,8 @@ public class StringUtil {
         }
         return photo;
     }
+    public static boolean isAddressValid(String address) {
+        String regex = "^T[a-zA-Z0-9_]{33,}$";
+        return address.matches(regex);
+    }
 }

@@ -16,11 +16,16 @@
 
 package com.tau.wallet.utxo;
 
+import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.db.util.UTXORecordDaoUtils;
 
 import io.taucoin.android.wallet.db.entity.UTXORecord;
-import com.tau.util.L;
+import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 
+import com.github.naturs.logger.Logger;
+import com.mofei.tau.BuildConfig;
+
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,24 +58,30 @@ public class UTXOManager {
             return false;
         }
         */
+        String formAddress = SharedPreferencesHelper.getInstance().getString(TransmitKey.ADDRESS, "");
+        List<UTXORecord> utxoRecordList= UTXORecordDaoUtils.getInstance().queryByAddress(formAddress);
 
-        List<UTXORecord> utxoRecordList= UTXORecordDaoUtils.getInstance().queryAllData();
-
-        L.e( "数据库里的数据："+utxoRecordList.size());
         for (int i=0;i<utxoRecordList.size();i++){
 
             UTXORecord utxoRecord=utxoRecordList.get(i);
-            L.e(utxoRecord.getTxId()+" getTxId");
-            L.e(utxoRecord.getAddress()+" getAddress");
-            L.e(utxoRecord.getVout()+" getVout");
-            L.e(utxoRecord.getValue()+" getValue");
-            L.e(utxoRecord.getConfirmations()+" getConfirmations");
-            L.e(utxoRecord.getScriptPubKey().getAsm()+" getScriptPubKey_getAsm");
-            L.e(utxoRecord.getScriptPubKey().getHex()+" getScriptPubKey_getHex");
+            Logger.e(utxoRecord.getTxId()+" getTxId");
+            Logger.e(utxoRecord.getAddress()+" getAddress");
+            Logger.e(utxoRecord.getVout()+" getVout");
+            Logger.e(utxoRecord.getValue()+" getValue");
+            Logger.e(utxoRecord.getConfirmations()+" getConfirmations");
+            Logger.e(utxoRecord.getScriptPubKey().getAsm()+" getScriptPubKey_getAsm");
+            Logger.e(utxoRecord.getScriptPubKey().getHex()+" getScriptPubKey_getHex");
 
-            L.e("---------------");
+            Logger.e("---------------");
             vCoins.add(utxoRecord);
+            // test
+            if(BuildConfig.DEBUG){
+                if(utxoRecord.getValue().compareTo(new BigInteger("599096000")) == 0){
+                 vCoins.remove(utxoRecord);
+                }
+            }
         }
+
 
         return true;
     }

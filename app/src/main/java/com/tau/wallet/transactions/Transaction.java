@@ -17,7 +17,6 @@
 
 package com.tau.wallet.transactions;
 
-import com.google.bitcoin.core.Address;
 import com.google.bitcoin.core.ECKey;
 import com.google.bitcoin.core.NetworkParameters;
 import com.google.bitcoin.core.ProtocolException;
@@ -35,7 +34,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.*;
 
 import static com.google.bitcoin.core.Utils.*;

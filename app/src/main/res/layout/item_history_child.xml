@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical"
+    android:paddingTop="10dp">
+
+    <TextView
+        style="@style/style_normal_grey"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="@dimen/dimen_size_30"
+        android:layout_marginEnd="@dimen/dimen_size_30"
+        android:text="@string/tx_received_address" />
+
+    <TextView
+        android:id="@+id/tv_received_address"
+        style="@style/style_normal_yellow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_size_30"
+        android:layout_marginEnd="@dimen/dimen_size_30"
+        android:gravity="center_vertical"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="" />
+
+    <TextView
+        style="@style/style_normal_grey"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="@dimen/dimen_size_30"
+        android:layout_marginEnd="@dimen/dimen_size_30"
+        android:text="@string/tx_transaction_id" />
+
+    <TextView
+        android:id="@+id/tv_transaction_id"
+        style="@style/style_normal_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_size_30"
+        android:layout_marginEnd="@dimen/dimen_size_30"
+        android:gravity="center_vertical"
+        android:minHeight="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="" />
+
+    <TextView
+        style="@style/style_normal_light_grey"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginStart="@dimen/dimen_size_30"
+        android:layout_marginEnd="@dimen/dimen_size_30"
+        android:text="@string/tx_transaction_fee" />
+
+    <TextView
+        android:id="@+id/tv_tx_fee"
+        style="@style/style_normal_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_size_30"
+        android:layout_marginEnd="@dimen/dimen_size_30"
+        android:gravity="center_vertical"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/color_main_line" />
+</LinearLayout>

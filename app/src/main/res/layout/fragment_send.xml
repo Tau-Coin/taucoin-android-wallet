@@ -6,9 +6,7 @@
     android:paddingRight="30dp"
     android:paddingLeft="30dp"
     android:background="#E0E0E0"
-    android:gravity="center"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.SendFragment">
+    android:gravity="center">
 
 
     <LinearLayout
@@ -122,6 +120,6 @@
         android:text="Send"
         android:textSize="18sp"
         android:textColor="#ffffff"
-        android:background="@drawable/backgroud_send_tau" />
+        android:background="@drawable/background_send_tau" />
 
 </RelativeLayout>

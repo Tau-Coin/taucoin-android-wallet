@@ -1,12 +1,12 @@
 package io.taucoin.android.wallet.base;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.inputmethod.InputMethodManager;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
+import io.taucoin.android.wallet.util.KeyboardUtils;
 import io.taucoin.foundation.util.ActivityManager;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -20,24 +20,22 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    @Subscribe
+    public void onEvent(String event){
+
+    }
+
     @Override
     protected void onDestroy() {
+        try {
+            KeyboardUtils.hideSoftInput(this);
+        }catch (Exception ignore){
+
+        }
         ActivityManager.removeActivity(this);
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
         super.onDestroy();
-    }
-
-    /**
-     * 隐藏软键盘
-     */
-    protected void hidekeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm.isActive() && getCurrentFocus() != null) {
-            if (getCurrentFocus().getWindowToken() != null) {
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            }
-        }
     }
 }

@@ -13,8 +13,8 @@ import java.text.ParseException;
 import retrofit2.HttpException;
 
 public class FactoryException {
-    private static final String HttpException_MSG = "network error";
-    private static final String ConnectException_MSG = "connection failed";
+    private static final String HttpException_MSG = "Network error";
+    private static final String ConnectException_MSG = "Connection failed";
     private static final String JSONException_MSG = "Data parsing failure";
     private static final String UnknownHostException_MSG = "Unable to resolve the domain name";
 

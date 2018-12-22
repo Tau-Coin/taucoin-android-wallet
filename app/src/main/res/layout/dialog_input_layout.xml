@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingStart="10dp"
+    android:paddingTop="25dp"
+    android:paddingEnd="10dp"
+    android:paddingBottom="35dp">
+
+    <EditText
+        style="@style/style_normal_black"
+        android:layout_marginTop="20dp"
+        android:singleLine="true"
+        android:id="@+id/etInput"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="@string/profile_dialog_name"
+        android:gravity="center"
+        android:textColorHint="#A3A3A3"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dimen_size_34"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/negativeButton"
+            style="@style/style_big_white"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/black_rect_round_bg"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/common_cancel"
+            android:minWidth="@dimen/dimen_size_120"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/positiveButton"
+            style="@style/style_big_white"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/yellow_rect_round_bg"
+            android:ellipsize="end"
+            android:text="@string/common_confirm"
+            android:layout_marginStart="25dp"
+            android:maxLines="1"
+            android:minWidth="@dimen/dimen_size_120"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -2,17 +2,32 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="normal_text_size">16sp</dimen>
 
-   <!-- <dimen name="tiny_text_size">12sp</dimen>
-    <dimen name="small_text_size">14sp</dimen>
+    <dimen name="dimen_size_10">10dip</dimen>
+    <dimen name="dimen_size_11">11dip</dimen>
+    <dimen name="dimen_size_12">12dip</dimen>
+    <dimen name="dimen_size_13">13dip</dimen>
+    <dimen name="dimen_size_14">14dip</dimen>
+    <dimen name="dimen_size_15">15dip</dimen>
+    <dimen name="dimen_size_16">16dip</dimen>
+    <dimen name="dimen_size_17">17dip</dimen>
+    <dimen name="dimen_size_18">18dip</dimen>
+    <dimen name="dimen_size_19">19dip</dimen>
+    <dimen name="dimen_size_20">20dip</dimen>
+    <dimen name="dimen_size_22">22dip</dimen>
+    <dimen name="dimen_size_24">24dip</dimen>
+    <dimen name="dimen_size_26">26dip</dimen>
+    <dimen name="dimen_size_28">28dip</dimen>
+    <dimen name="dimen_size_30">30dip</dimen>
+    <dimen name="dimen_size_32">32dip</dimen>
+    <dimen name="dimen_size_34">34dip</dimen>
+    <dimen name="dimen_size_36">36dip</dimen>
+    <dimen name="dimen_size_50">50dip</dimen>
+    <dimen name="dimen_size_60">60dip</dimen>
 
-    <dimen name="medium_text_size">18sp</dimen>
-    <dimen name="large_text_size">20sp</dimen>
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-
-    <dimen name="card_padding">40dp</dimen>
-    <dimen name="music_text_size">20sp</dimen>
-    <dimen name="paint_StrokeWidth">35dp</dimen>
-    <dimen name="music_radius">250dp</dimen>-->
+    <dimen name="dimen_size_120">120dip</dimen>
+    <dimen name="dimen_size_150">150dip</dimen>
+    <dimen name="dimen_size_180">180dip</dimen>
+    <dimen name="dimen_size_220">220dip</dimen>
+    <dimen name="dimen_size_250">250dip</dimen>
 
 </resources>

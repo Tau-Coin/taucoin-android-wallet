@@ -40,8 +40,27 @@
     <color name="text_dark">#ffffff</color>
 
     <!-- New version color value  -->
-    <color name="color_main_bg">#1e55b7</color>
+    <color name="color_main_bg">#ffffff</color>
+    <color name="color_main_line">#E0E0E0</color>
     <color name="color_main_Tone">#ffffff</color>
-    <color name="color_yellow">#FFAB00</color>
-    <color name="color_yellow_dark">#FB9500</color>
+    <color name="color_transparent">#00000000</color>
+    <color name="color_tool_bar">#43455e</color>
+    <color name="color_tool_bar_child">#3f3f3f</color>
+    <color name="color_select">#d0d3dc</color>
+
+    <color name="color_yellow">#f19322</color>
+    <color name="color_yellow_light">#FB9500</color>
+    <color name="color_black">#000000</color>
+    <color name="color_black_light">#454545</color>
+    <color name="color_white">#ffffff</color>
+    <color name="color_white_light">#c2c4ca</color>
+    <color name="color_red">#fa0105</color>
+    <color name="color_red_light">#ffa5a5</color>
+    <color name="color_blue">#477df9</color>
+    <color name="color_blue_light">#0E88EF</color>
+    <color name="color_grey">#a9a9a9</color>
+    <color name="color_grey_light">#808080</color>
+    <color name="color_violet">#7A00FF</color>
+    <color name="color_violet_light">#9376C5</color>
+
 </resources>

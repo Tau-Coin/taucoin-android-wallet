@@ -50,4 +50,83 @@
 
     <string name="version_information">Software version</string>
 
+
+    <string name="common_loading">loading...</string>
+    <string name="common_empty">~~~</string>
+    <string name="common_no_login">Visitor</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_confirm">Confirm</string>
+    <string name="common_balance" formatted="false"><Data><![CDATA[<font color="#477df9">%s</font> TAU]]> </Data></string>
+
+    <string name="splash_title">The Decentralized Coin</string>
+    <string name="splash_describe">Being a block chain miner\nunder daily 1.2Mb data consumption</string>
+
+    <string name="main_home">Home</string>
+    <string name="main_send_receive">Send&#38;Receive</string>
+    <string name="main_manager">Manager</string>
+    <string name="main_home_title">TAUcoin.io</string>
+    <string name="main_exit">Click again to exit the application!</string>
+    <string name="main_mining_tips">Mobile mining function\nis in development</string>
+
+
+    <string name="tx_send">Send</string>
+    <string name="tx_receive">Receive</string>
+    <string name="tx_log">Transaction log</string>
+    <string name="tx_log_empty">No records</string>
+    <string name="tx_received_address">Received Address</string>
+    <string name="tx_transaction_id">Transaction ID</string>
+    <string name="tx_transaction_fee">Transaction Fee</string>
+    <string name="tx_block_height">Block Height</string>
+    <string name="tx_log_tips">Red fails, black succeeds. + for receive, - for send</string>
+    <string name="tx_address_copy">Received address is copied</string>
+    <string name="tx_id_copy">Transaction id is copied</string>
+
+    <string name="manager_version">Version %s</string>
+    <string name="manager_keys">Keys</string>
+    <string name="manager_address_note">Address Note</string>
+    <string name="manager_help">Help</string>
+
+    <string name="send_receiver_address">Receive\'s Address</string>
+    <string name="send_amount">Amount</string>
+    <string name="send_memo">Memo</string>
+    <string name="send_priority">priority</string>
+    <string name="send_normal">normal</string>
+    <string name="send_customize">customize</string>
+    <string name="send_choose_fee_title">Choose Transaction Fee</string>
+    <string name="send_choose_fee_tips">The higher transaction fee,the faster transaction speed</string>
+    <string name="send_priority_vice">(≈0.015 TAU)</string>
+    <string name="send_normal_vice">(≈0.0025 TAU)</string>
+    <string name="send_priority_value">0.015</string>
+    <string name="send_normal_value">0.0025</string>
+    <string name="send_to">To</string>
+    <string name="send_dialog_yes">Proceed</string>
+    <string name="send_dialog_no">Back</string>
+    <string name="send_has_pending">Previous transaction is under confirmation</string>
+    <string name="send_tx_success">Transactions have been sent.</string>
+
+    <string name="keys_dialog_title">Please make sure your\nprivate key has been saved</string>
+    <string name="keys_dialog_tips">Ignore this message for the first generate or import</string>
+    <string name="keys_dialog_yes">Yes.Go on Import/Generate</string>
+    <string name="keys_dialog_no">No.Go to save key</string>
+    <string name="keys_address">Address</string>
+    <string name="keys_public_key">Public Key</string>
+    <string name="keys_private_key">Private Key</string>
+    <string name="keys_import_key">Import New Key</string>
+    <string name="keys_import">Import</string>
+    <string name="keys_generate">Generate New Private Key</string>
+    <string name="keys_how_import">How to import my private key?</string>
+    <string name="keys_paste_tip">Paste private key here</string>
+    <string name="keys_address_copy">Address is copied</string>
+    <string name="keys_public_copy">Public key is copied</string>
+    <string name="keys_private_copy">Private key is copied</string>
+    <string name="keys_private_empty">Private key cannot be empty</string>
+    <string name="keys_private_error">Invalid private key</string>
+
+    <string name="profile_avatar">Avatar</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_title">Profile</string>
+    <string name="profile_select_photo">Select from the photo</string>
+    <string name="profile_take_photo">Take Photo</string>
+    <string name="profile_dialog_name">Please enter the name</string>
+
 </resources>

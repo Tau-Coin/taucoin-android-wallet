@@ -9,4 +9,31 @@
         <attr name="enableGoBackEvent" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="UserInfoLayout">
+        <attr name="viewBackground" format="integer|reference" />
+        <attr name="viewHeaderSrc" format="integer|reference" />
+        <attr name="viewNickName" format="string" />
+        <attr name="viewBalance" format="integer" />
+        <attr name="viewBalance1" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="ItemLineView">
+        <attr name="leftImage" format="reference" />
+        <attr name="rightText" format="string" />
+        <attr name="rightTextColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="ToolbarView">
+        <attr name="leftBackImage" format="reference" />
+        <attr name="titleText" format="string" />
+        <attr name="titleBackground" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="EmptyLayout">
+        <attr name="empty_text" format="string" />
+        <attr name="empty_textColor" format="color|reference" />
+        <attr name="empty_tip" format="string" />
+        <attr name="empty_textSize" format="dimension" />
+    </declare-styleable>
+
 </resources>

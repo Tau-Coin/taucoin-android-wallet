@@ -2,13 +2,26 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
+         <!--Customize your theme here.-->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowDisablePreview">true</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+
+    <style name="ActivityTheme.Trans" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="colorPrimary">@color/color_grey</item>
+        <item name="colorPrimaryDark">@color/color_grey</item>
+        <item name="colorAccent">@color/color_blue</item>
+    </style>
+
+    <style name="ActivityTheme.Full" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="dialog_animation" mce_bogus="1" parent="android:Animation">
@@ -24,14 +37,20 @@
         <item name="android:windowBackground">@android:color/transparent</item><!-- 背景透明 -->
         <item name="android:backgroundDimEnabled">true</item><!-- 模糊 -->
         <item name="android:windowContentOverlay">@null</item><!-- 对话框是否有遮盖 -->
-        <item name="android:windowAnimationStyle">@style/dialog_animation
-        </item><!-- 弹出或者进入时的动画效果 -->
+        <!--<item name="android:windowAnimationStyle">@style/dialog_animation</item>&lt;!&ndash; 弹出或者进入时的动画效果 &ndash;&gt;-->
         <item name="android:colorBackgroundCacheHint">@null</item><!-- 背景缓存颜色 -->
     </style>
 
     <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="CommonDialog" parent="android:style/Theme.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
 
     <!--<style name="leftMenuItemStyle">
         <item name="android:layout_width">match_parent</item>
@@ -45,6 +64,243 @@
     <!-- application start theme. -->
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowDisablePreview">true</item>
+    </style>
+
+    <style name="ActionSheetDialogStyle" parent="@android:style/Theme.Dialog">
+
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/ActionSheetDialogAnimation</item>
+    </style>
+
+    <!-- ActionSheet进出动画 -->
+    <style name="ActionSheetDialogAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/actionsheet_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/actionsheet_dialog_out</item>
+    </style>
+
+
+    <style name="style_little_small_white">
+        <item name="android:textSize">@dimen/dimen_size_10</item>
+        <item name="android:textColor">@color/color_white</item>
+    </style>
+
+    <style name="style_small_white">
+        <item name="android:textSize">@dimen/dimen_size_12</item>
+        <item name="android:textColor">@color/color_white</item>
+    </style>
+
+    <style name="style_middle_white">
+        <item name="android:textSize">@dimen/dimen_size_14</item>
+        <item name="android:textColor">@color/color_white</item>
+    </style>
+
+    <style name="style_normal_white">
+        <item name="android:textSize">@dimen/dimen_size_16</item>
+        <item name="android:textColor">@color/color_white</item>
+    </style>
+
+    <style name="style_big_white">
+        <item name="android:textSize">@dimen/dimen_size_18</item>
+        <item name="android:textColor">@color/color_white</item>
+    </style>
+
+    <style name="style_little_small_black">
+        <item name="android:textSize">@dimen/dimen_size_10</item>
+        <item name="android:textColor">@color/color_black</item>
+    </style>
+
+    <style name="style_small_black">
+        <item name="android:textSize">@dimen/dimen_size_12</item>
+        <item name="android:textColor">@color/color_black</item>
+    </style>
+
+    <style name="style_middle_black">
+        <item name="android:textSize">@dimen/dimen_size_14</item>
+        <item name="android:textColor">@color/color_black</item>
+    </style>
+
+    <style name="style_normal_black">
+        <item name="android:textSize">@dimen/dimen_size_16</item>
+        <item name="android:textColor">@color/color_black</item>
+    </style>
+
+    <style name="style_big_black">
+        <item name="android:textSize">@dimen/dimen_size_18</item>
+        <item name="android:textColor">@color/color_black</item>
+    </style>
+
+    <style name="style_little_small_light_black">
+        <item name="android:textSize">@dimen/dimen_size_10</item>
+        <item name="android:textColor">@color/color_black_light</item>
+    </style>
+
+    <style name="style_small_light_black">
+        <item name="android:textSize">@dimen/dimen_size_12</item>
+        <item name="android:textColor">@color/color_black_light</item>
+    </style>
+
+    <style name="style_middle_light_black">
+        <item name="android:textSize">@dimen/dimen_size_14</item>
+        <item name="android:textColor">@color/color_black_light</item>
+    </style>
+
+    <style name="style_normal_light_black">
+        <item name="android:textSize">@dimen/dimen_size_16</item>
+        <item name="android:textColor">@color/color_black_light</item>
+    </style>
+
+    <style name="style_big_light_black">
+        <item name="android:textSize">@dimen/dimen_size_18</item>
+        <item name="android:textColor">@color/color_black_light</item>
+    </style>
+
+    <style name="style_little_small_blue">
+        <item name="android:textSize">@dimen/dimen_size_10</item>
+        <item name="android:textColor">@color/color_blue</item>
+    </style>
+
+    <style name="style_small_blue">
+        <item name="android:textSize">@dimen/dimen_size_12</item>
+        <item name="android:textColor">@color/color_blue</item>
+    </style>
+
+    <style name="style_middle_blue">
+        <item name="android:textSize">@dimen/dimen_size_14</item>
+        <item name="android:textColor">@color/color_blue</item>
+    </style>
+
+    <style name="style_normal_blue">
+        <item name="android:textSize">@dimen/dimen_size_16</item>
+        <item name="android:textColor">@color/color_blue</item>
+    </style>
+
+    <style name="style_big_blue">
+        <item name="android:textSize">@dimen/dimen_size_18</item>
+        <item name="android:textColor">@color/color_blue</item>
+    </style>
+
+    <style name="style_little_small_grey">
+        <item name="android:textSize">@dimen/dimen_size_10</item>
+        <item name="android:textColor">@color/color_grey</item>
+    </style>
+
+    <style name="style_small_grey">
+        <item name="android:textSize">@dimen/dimen_size_12</item>
+        <item name="android:textColor">@color/color_grey</item>
+    </style>
+
+    <style name="style_middle_grey">
+        <item name="android:textSize">@dimen/dimen_size_14</item>
+        <item name="android:textColor">@color/color_grey</item>
+    </style>
+
+    <style name="style_normal_grey">
+        <item name="android:textSize">@dimen/dimen_size_16</item>
+        <item name="android:textColor">@color/color_grey</item>
+    </style>
+
+    <style name="style_big_grey">
+        <item name="android:textSize">@dimen/dimen_size_18</item>
+        <item name="android:textColor">@color/color_grey</item>
+    </style>
+    <style name="style_little_small_light_grey">
+        <item name="android:textSize">@dimen/dimen_size_10</item>
+        <item name="android:textColor">@color/color_grey_light</item>
+    </style>
+
+    <style name="style_small_light_grey">
+        <item name="android:textSize">@dimen/dimen_size_12</item>
+        <item name="android:textColor">@color/color_grey_light</item>
+    </style>
+
+    <style name="style_middle_light_grey">
+        <item name="android:textSize">@dimen/dimen_size_14</item>
+        <item name="android:textColor">@color/color_grey_light</item>
+    </style>
+
+    <style name="style_normal_light_grey">
+        <item name="android:textSize">@dimen/dimen_size_16</item>
+        <item name="android:textColor">@color/color_grey_light</item>
+    </style>
+
+    <style name="style_big_light_grey">
+        <item name="android:textSize">@dimen/dimen_size_18</item>
+        <item name="android:textColor">@color/color_grey_light</item>
+    </style>
+    <style name="style_little_small_red">
+        <item name="android:textSize">@dimen/dimen_size_10</item>
+        <item name="android:textColor">@color/color_red</item>
+    </style>
+
+    <style name="style_small_red">
+        <item name="android:textSize">@dimen/dimen_size_12</item>
+        <item name="android:textColor">@color/color_red</item>
+    </style>
+
+    <style name="style_middle_red">
+        <item name="android:textSize">@dimen/dimen_size_14</item>
+        <item name="android:textColor">@color/color_red</item>
+    </style>
+
+    <style name="style_normal_red">
+        <item name="android:textSize">@dimen/dimen_size_16</item>
+        <item name="android:textColor">@color/color_red</item>
+    </style>
+
+    <style name="style_big_red">
+        <item name="android:textSize">@dimen/dimen_size_18</item>
+        <item name="android:textColor">@color/color_red</item>
+    </style>
+
+    <style name="style_super_red">
+        <item name="android:textSize">@dimen/dimen_size_22</item>
+        <item name="android:textColor">@color/color_red</item>
+    </style>
+
+    <style name="style_little_small_yellow">
+        <item name="android:textSize">@dimen/dimen_size_10</item>
+        <item name="android:textColor">@color/color_yellow</item>
+    </style>
+
+    <style name="style_small_yellow">
+        <item name="android:textSize">@dimen/dimen_size_12</item>
+        <item name="android:textColor">@color/color_yellow</item>
+    </style>
+
+    <style name="style_middle_yellow">
+        <item name="android:textSize">@dimen/dimen_size_14</item>
+        <item name="android:textColor">@color/color_yellow</item>
+    </style>
+
+    <style name="style_normal_yellow">
+        <item name="android:textSize">@dimen/dimen_size_16</item>
+        <item name="android:textColor">@color/color_yellow</item>
+    </style>
+
+    <style name="style_big_yellow">
+        <item name="android:textSize">@dimen/dimen_size_18</item>
+        <item name="android:textColor">@color/color_yellow</item>
+    </style>
+
+    <style name="style_tau_white">
+        <item name="android:textSize">@dimen/dimen_size_30</item>
+        <item name="android:textColor">@color/color_white</item>
+    </style>
+
+    <style name="style_tau_black">
+        <item name="android:textSize">@dimen/dimen_size_30</item>
+        <item name="android:textColor">@color/color_black</item>
+    </style>
+
+    <style name="style_tau_blue">
+        <item name="android:textSize">@dimen/dimen_size_30</item>
+        <item name="android:textColor">@color/color_blue</item>
     </style>
 
 </resources>

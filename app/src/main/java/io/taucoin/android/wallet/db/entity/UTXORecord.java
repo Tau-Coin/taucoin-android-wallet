@@ -19,8 +19,6 @@ package io.taucoin.android.wallet.db.entity;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
-import com.tau.transaction.ScriptPubkey;
-
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
@@ -154,6 +152,7 @@ public class UTXORecord implements Comparable<UTXORecord> {
     @Generated(hash = 1366505595)
     public UTXORecord() {
     }
+
 
     public static class ScriptPubkeyConverter implements PropertyConverter<ScriptPubkey,String>{
 
@@ -306,6 +305,5 @@ public class UTXORecord implements Comparable<UTXORecord> {
     public void setScriptPubKey(ScriptPubkey scriptPubKey) {
         this.scriptPubKey = scriptPubKey;
     }
-
 
 }

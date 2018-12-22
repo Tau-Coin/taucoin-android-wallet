@@ -31,6 +31,8 @@ public class KeyValueDao extends AbstractDao<KeyValue, Long> {
         public final static Property Utxo = new Property(4, long.class, "utxo", false, "UTXO");
         public final static Property Reward = new Property(5, long.class, "reward", false, "REWARD");
         public final static Property Balance = new Property(6, long.class, "balance", false, "BALANCE");
+        public final static Property HeaderImage = new Property(7, String.class, "headerImage", false, "HEADER_IMAGE");
+        public final static Property NickName = new Property(8, String.class, "nickName", false, "NICK_NAME");
     }
 
 
@@ -52,7 +54,9 @@ public class KeyValueDao extends AbstractDao<KeyValue, Long> {
                 "\"ADDRESS\" TEXT," + // 3: address
                 "\"UTXO\" INTEGER NOT NULL ," + // 4: utxo
                 "\"REWARD\" INTEGER NOT NULL ," + // 5: reward
-                "\"BALANCE\" INTEGER NOT NULL );"); // 6: balance
+                "\"BALANCE\" INTEGER NOT NULL ," + // 6: balance
+                "\"HEADER_IMAGE\" TEXT," + // 7: headerImage
+                "\"NICK_NAME\" TEXT);"); // 8: nickName
     }
 
     /** Drops the underlying database table. */
@@ -87,6 +91,16 @@ public class KeyValueDao extends AbstractDao<KeyValue, Long> {
         stmt.bindLong(5, entity.getUtxo());
         stmt.bindLong(6, entity.getReward());
         stmt.bindLong(7, entity.getBalance());
+ 
+        String headerImage = entity.getHeaderImage();
+        if (headerImage != null) {
+            stmt.bindString(8, headerImage);
+        }
+ 
+        String nickName = entity.getNickName();
+        if (nickName != null) {
+            stmt.bindString(9, nickName);
+        }
     }
 
     @Override
@@ -115,6 +129,16 @@ public class KeyValueDao extends AbstractDao<KeyValue, Long> {
         stmt.bindLong(5, entity.getUtxo());
         stmt.bindLong(6, entity.getReward());
         stmt.bindLong(7, entity.getBalance());
+ 
+        String headerImage = entity.getHeaderImage();
+        if (headerImage != null) {
+            stmt.bindString(8, headerImage);
+        }
+ 
+        String nickName = entity.getNickName();
+        if (nickName != null) {
+            stmt.bindString(9, nickName);
+        }
     }
 
     @Override
@@ -131,7 +155,9 @@ public class KeyValueDao extends AbstractDao<KeyValue, Long> {
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // address
             cursor.getLong(offset + 4), // utxo
             cursor.getLong(offset + 5), // reward
-            cursor.getLong(offset + 6) // balance
+            cursor.getLong(offset + 6), // balance
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // headerImage
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // nickName
         );
         return entity;
     }
@@ -145,6 +171,8 @@ public class KeyValueDao extends AbstractDao<KeyValue, Long> {
         entity.setUtxo(cursor.getLong(offset + 4));
         entity.setReward(cursor.getLong(offset + 5));
         entity.setBalance(cursor.getLong(offset + 6));
+        entity.setHeaderImage(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setNickName(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
      }
     
     @Override

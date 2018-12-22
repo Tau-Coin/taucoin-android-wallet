@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white">
+
+    <FrameLayout
+        android:layout_above="@+id/ll_bottom_tab"
+        android:id="@+id/tab_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_bottom_tab"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_white"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/color_transparent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_home"
+                style="@style/style_normal_black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/color_transparent"
+                android:button="@null"
+                android:checked="true"
+                android:clickable="true"
+                android:drawablePadding="2dp"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="@string/main_home"
+                android:textColor="@drawable/bottom_tab_color" />
+
+            <RadioButton
+                android:id="@+id/rb_send_receive"
+                style="@style/style_normal_black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/color_transparent"
+                android:button="@null"
+                android:clickable="true"
+                android:drawablePadding="2dp"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="@string/main_send_receive"
+                android:textColor="@drawable/bottom_tab_color" />
+
+            <RadioButton
+                android:id="@+id/rb_manager"
+                style="@style/style_normal_black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/color_transparent"
+                android:button="@null"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:text="@string/main_manager"
+                android:textColor="@drawable/bottom_tab_color" />
+
+        </RadioGroup>
+    </LinearLayout>
+</RelativeLayout>

@@ -9,7 +9,7 @@ import org.greenrobot.greendao.internal.DaoConfig;
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.database.DatabaseStatement;
 
-import com.tau.transaction.ScriptPubkey;
+import io.taucoin.android.wallet.db.entity.ScriptPubkey;
 import io.taucoin.android.wallet.db.entity.UTXORecord.BigIntegerConverter;
 import io.taucoin.android.wallet.db.entity.UTXORecord.ScriptPubkeyConverter;
 import java.math.BigInteger;
