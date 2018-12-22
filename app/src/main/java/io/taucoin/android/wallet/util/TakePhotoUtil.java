@@ -33,7 +33,7 @@ import io.taucoin.foundation.util.permission.EasyPermissions;
  * @author yang
  */
 
-public class TakePhoneUtil {
+public class TakePhotoUtil {
     /* Request Identification Code */
     private static final int CODE_GALLERY_REQUEST = 0xa0;
     private static final int CODE_CAMERA_REQUEST = 0xa1;
@@ -43,22 +43,22 @@ public class TakePhoneUtil {
     private static String imageName;
 
     public static void takePhotoForName(FragmentActivity context, String name){
-        TakePhoneUtil.imageName = name;
+        TakePhotoUtil.imageName = name;
         takePhoto(context, null);
     }
 
     public static void takePhoto(FragmentActivity context){
-        TakePhoneUtil.imageName = "image";
+        TakePhotoUtil.imageName = "image";
         takePhoto(context, null);
     }
 
     public static void takePhoto(BaseFragment fragment){
-        TakePhoneUtil.imageName = "image";
+        TakePhotoUtil.imageName = "image";
         takePhoto(null, fragment);
     }
 
     public static void setImageName(String imageName){
-        TakePhoneUtil.imageName = imageName;
+        TakePhotoUtil.imageName = imageName;
     }
 
     private static void takePhoto(FragmentActivity context, BaseFragment fragment){
@@ -74,9 +74,13 @@ public class TakePhoneUtil {
     }
 
     private static void choseHeadImageFromCapture(FragmentActivity context, BaseFragment fragment) {
-        if (!EasyPermissions.hasPermissions(context, android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (!EasyPermissions.hasPermissions(context, android.Manifest.permission.CAMERA,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE)) {
             EasyPermissions.requestPermissions(context, "Taucoin needs access to your camera and storage rights",
-                    PermisionUtils.REQUEST_PERMISSIONS_CAMERA, android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+                    PermisionUtils.REQUEST_PERMISSIONS_CAMERA, android.Manifest.permission.CAMERA,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE);
             return;
         }
 
@@ -90,9 +94,11 @@ public class TakePhoneUtil {
     }
 
     private static void choseHeadImageFromGallery(FragmentActivity context, BaseFragment fragment) {
-        if (!EasyPermissions.hasPermissions(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (!EasyPermissions.hasPermissions(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE)) {
             EasyPermissions.requestPermissions(context, "Taucoin needs access to storage rights",
-                    PermisionUtils.REQUEST_PERMISSIONS_RECORD_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    PermisionUtils.REQUEST_PERMISSIONS_RECORD_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE);
             return;
         }
         Logger.i("TakePhoneUtil.choseHeadImageFromGallery");
@@ -164,17 +170,17 @@ public class TakePhoneUtil {
         return uri;
     }
 
-    private static String getPath(){
+    private static String getExternalPath(){
         return "file://" + File.separator + Environment.getExternalStorageDirectory().getPath() +
-                File.separator;
+                File.separator + BuildConfig.APPLICATION_ID + File.separator;
     }
 
-    public static String getAllPath(){
-        return getPath() + getFileName();
+    private static String getAllPath(){
+        return getExternalPath() + getFileName();
     }
 
     public static String getFileName(){
-        return BuildConfig.APPLICATION_ID + File.separator + imageName.toLowerCase() + ".jpg";
+        return imageName.toLowerCase() + ".jpg";
     }
 
     public static Bitmap getPhotoZoom(){
@@ -248,23 +254,23 @@ public class TakePhoneUtil {
             return;
         }
         switch (requestCode) {
-            case TakePhoneUtil.CODE_GALLERY_REQUEST:
+            case TakePhotoUtil.CODE_GALLERY_REQUEST:
                 if (intent != null)
-                    TakePhoneUtil.startPhotoZoom(context, intent.getData());
+                    TakePhotoUtil.startPhotoZoom(context, intent.getData());
                 break;
-            case TakePhoneUtil.CODE_CAMERA_REQUEST:
+            case TakePhotoUtil.CODE_CAMERA_REQUEST:
                 if (Activity.RESULT_OK == resultCode && intent != null) {
-                    if (TakePhoneUtil.isHasSDCard()) {
+                    if (TakePhotoUtil.isHasSDCard()) {
                         Bundle bundle = intent.getExtras();
                         Bitmap bm = (Bitmap) bundle.get("data");
-                        String filepath = TakePhoneUtil.saveImage(bm);
-                        TakePhoneUtil.startPhotoZoom(context, filepath);
+                        String filepath = TakePhotoUtil.saveImage(bm);
+                        TakePhotoUtil.startPhotoZoom(context, filepath);
                     } else {
                         ToastUtils.showShortToast("No sdcard");
                     }
                 }
                 break;
-            case TakePhoneUtil.CODE_RESULT_REQUEST:
+            case TakePhotoUtil.CODE_RESULT_REQUEST:
                 break;
 
         }

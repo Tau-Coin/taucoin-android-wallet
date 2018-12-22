@@ -1,6 +1,7 @@
 package io.taucoin.android.wallet.util;
 
 import android.graphics.Bitmap;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,7 +52,7 @@ public class UserUtil {
     }
 
     public static void setBalance(TextView tvBalance, long balance) {
-        String balanceStr = tvBalance.getResources().getString(R.string.common_balance);
+        String balanceStr = MyApplication.getInstance().getResources().getString(R.string.common_balance);
         balanceStr = String.format(balanceStr, FmtMicrometer.fmtBalance(balance));
         tvBalance.setText(Html.fromHtml(balanceStr));
     }
@@ -60,7 +61,7 @@ public class UserUtil {
         KeyValue keyValue = MyApplication.getKeyValue();
         if(keyValue != null){
             Observable.create((ObservableOnSubscribe<Bitmap>) emitter -> {
-                Bitmap bitmap = FileUtil.getBitmap(keyValue.getHeaderImage());
+                Bitmap bitmap = FileUtil.getFilesDirBitmap(keyValue.getHeaderImage());
                 emitter.onNext(bitmap);
             }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -68,6 +69,7 @@ public class UserUtil {
                     @Override
                     public void handleData(Bitmap bitmap) {
                         ivAvatar.setImageBitmap(bitmap);
+                        bitmap.recycle();
                     }
                 });
         }

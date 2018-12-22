@@ -1,5 +1,7 @@
 package io.taucoin.android.wallet.module.model;
 
+import android.graphics.Bitmap;
+
 import com.github.naturs.logger.Logger;
 import com.google.bitcoin.core.AddressFormatException;
 import com.google.bitcoin.core.ECKey;
@@ -37,6 +39,7 @@ import io.taucoin.android.wallet.module.bean.UtxosBean;
 import io.taucoin.android.wallet.net.callBack.TAUObserver;
 import io.taucoin.android.wallet.net.service.ApiService;
 import io.taucoin.android.wallet.util.DateUtil;
+import io.taucoin.android.wallet.util.FileUtil;
 import io.taucoin.android.wallet.util.FmtMicrometer;
 import io.taucoin.android.wallet.util.MD5_BASE64Util;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
@@ -309,7 +312,7 @@ public class TxModel implements ITxModel {
                 .subscribe(observer);
     }
 
-    public void saveAvatar(String avatar, LogicObserver<KeyValue> observer) {
+    public void saveAvatar(String avatar, Bitmap bitmap, LogicObserver<KeyValue> observer) {
         KeyValue keyValue = MyApplication.getKeyValue();
         if(keyValue == null || StringUtil.isEmpty(keyValue.getAddress())){
             return;
@@ -317,6 +320,11 @@ public class TxModel implements ITxModel {
         Observable.create((ObservableOnSubscribe<KeyValue>) emitter -> {
             keyValue.setHeaderImage(avatar);
             KeyValueDaoUtils.getInstance().update(keyValue);
+            FileUtil.saveFilesDirBitmap(avatar, bitmap);
+            FileUtil.deleteExternalBitmap();
+            if(!bitmap.isRecycled()){
+                bitmap.recycle();
+            }
             emitter.onNext(keyValue);
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

@@ -1,5 +1,7 @@
 package io.taucoin.android.wallet.module.presenter;
 
+import android.graphics.Bitmap;
+
 import com.github.naturs.logger.Logger;
 import com.mofei.tau.R;
 
@@ -203,8 +205,8 @@ public class TxPresenter {
         });
     }
 
-    public void saveAvatar(String avatar) {
-        mTxModel.saveAvatar(avatar, new LogicObserver<KeyValue>() {
+    public void saveAvatar(String avatar, Bitmap bitmap) {
+        mTxModel.saveAvatar(avatar, bitmap, new LogicObserver<KeyValue>() {
             @Override
             public void handleData(KeyValue keyValue) {
                 EventBus.getDefault().postSticky(keyValue);

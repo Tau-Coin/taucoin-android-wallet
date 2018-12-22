@@ -1,6 +1,7 @@
 package io.taucoin.android.wallet.module.view.user;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,7 +15,7 @@ import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.base.BaseActivity;
 import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.module.presenter.TxPresenter;
-import io.taucoin.android.wallet.util.TakePhoneUtil;
+import io.taucoin.android.wallet.util.TakePhotoUtil;
 import io.taucoin.android.wallet.util.UserUtil;
 import io.taucoin.android.wallet.widget.InputDialog;
 
@@ -45,7 +46,7 @@ public class ProfileActivity extends BaseActivity {
     public void onAvatarClicked() {
         KeyValue keyValue = MyApplication.getKeyValue();
         if(keyValue != null){
-            TakePhoneUtil.takePhotoForName(this, keyValue.getAddress());
+            TakePhotoUtil.takePhotoForName(this, keyValue.getAddress());
         }
     }
 
@@ -63,10 +64,11 @@ public class ProfileActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        TakePhoneUtil.onActivityResult(this, requestCode, resultCode, data);
-        if(requestCode == TakePhoneUtil.CODE_RESULT_REQUEST){
-            ivAvatar.setImageBitmap(TakePhoneUtil.getPhotoZoom());
-            mTxPresenter.saveAvatar(TakePhoneUtil.getFileName());
+        TakePhotoUtil.onActivityResult(this, requestCode, resultCode, data);
+        if(requestCode == TakePhotoUtil.CODE_RESULT_REQUEST){
+            Bitmap bitmap = TakePhotoUtil.getPhotoZoom();
+            ivAvatar.setImageBitmap(bitmap);
+            mTxPresenter.saveAvatar(TakePhotoUtil.getFileName(), bitmap);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
