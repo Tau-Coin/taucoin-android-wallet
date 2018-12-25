@@ -6,7 +6,6 @@ import io.taucoin.android.wallet.db.GreenDaoManager;
 import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.db.greendao.KeyValueDao;
 import io.taucoin.android.wallet.module.bean.BalanceBean;
-import io.taucoin.foundation.util.StringUtil;
 
 /**
  * Created by ly on 18-10-31

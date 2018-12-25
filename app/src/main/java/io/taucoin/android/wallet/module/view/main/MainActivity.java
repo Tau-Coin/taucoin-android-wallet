@@ -37,7 +37,6 @@ public class MainActivity extends BaseActivity implements IMainView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.ac_main);
         ButterKnife.bind(this);
         initBottomTabView();
@@ -47,9 +46,9 @@ public class MainActivity extends BaseActivity implements IMainView {
 
     @Override
     public void initBottomTabView() {
-        DrawablesUtil.setTopDrawable(rbHome, R.drawable.selector_tab_home,35, 25);
-        DrawablesUtil.setTopDrawable(rbSendReceive, R.drawable.selector_tab_send, 35, 25);
-        DrawablesUtil.setTopDrawable(rbManager, R.drawable.selector_tab_manage, 35, 25);
+        DrawablesUtil.setTopDrawable(rbHome, R.drawable.selector_tab_home,25);
+        DrawablesUtil.setTopDrawable(rbSendReceive, R.drawable.selector_tab_send, 25);
+        DrawablesUtil.setTopDrawable(rbManager, R.drawable.selector_tab_manage, 25);
     }
 
     @Override
@@ -64,15 +63,26 @@ public class MainActivity extends BaseActivity implements IMainView {
             }else if(tabIndex == 2){
                 fragment = new ManageFragment();
             }
-            mFragments[tabIndex] = fragment;
+            if(fragment != null){
+                fragmentTransaction.add(R.id.tab_container, fragment);
+                mFragments[tabIndex] = fragment;
+            }
         }else{
             fragment = mFragments[tabIndex];
         }
         if(null != fragment){
-            fragmentTransaction.replace(R.id.tab_container, fragment);
+            hideFragment(fragmentTransaction);
             fragmentTransaction.show(fragment);
         }
         fragmentTransaction.commit();
+    }
+
+    private void hideFragment(FragmentTransaction fragmentTransaction) {
+        for (Fragment fragment : mFragments) {
+            if(fragment != null){
+                fragmentTransaction.hide(fragment);
+            }
+        }
     }
 
     @OnCheckedChanged({R.id.rb_home, R.id.rb_manager, R.id.rb_send_receive})

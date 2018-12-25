@@ -52,9 +52,9 @@ public class MyApplication extends Application {
         Logger.setLogConverter(new AndroidLogConverter());
 
         // Crashlytics
-        if(!BuildConfig.DEBUG){
+//        if(!BuildConfig.DEBUG){
             Fabric.with(this, new Crashlytics());
-        }
+//        }
 
         // Stetho DB Test
         if(BuildConfig.DEBUG){
@@ -76,10 +76,10 @@ public class MyApplication extends Application {
         return mInstance;
     }
 
-    public static KeyValue getKeyValue() {
+    public static synchronized KeyValue getKeyValue() {
         return mKeyValue;
     }
-    public static void setKeyValue(KeyValue entry) {
+    public static synchronized void setKeyValue(KeyValue entry) {
         mKeyValue = entry;
     }
 }

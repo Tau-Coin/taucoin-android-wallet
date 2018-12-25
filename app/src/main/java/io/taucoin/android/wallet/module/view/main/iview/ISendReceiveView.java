@@ -10,4 +10,6 @@ public interface ISendReceiveView {
     void initView();
     void initListener();
     void loadTransactionHistory(List<TransactionHistory> txHistories);
+    void finishRefresh();
+    void finishLoadMore();
 }

@@ -27,10 +27,18 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
     private List<TransactionHistory> historyList = new ArrayList<>();
 
     HistoryExpandableListAdapter() {
+
     }
 
-    void setHistoryList(List<TransactionHistory> historyList) {
-        this.historyList = historyList;
+    List<TransactionHistory> getData() {
+        return historyList;
+    }
+
+    void setHistoryList(List<TransactionHistory> historyList, boolean isAdd) {
+        if(!isAdd){
+            this.historyList.clear();
+        }
+        this.historyList.addAll(historyList);
         notifyDataSetChanged();
     }
 
@@ -79,9 +87,9 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         } else {
             groupViewHolder = (GroupViewHolder) convertView.getTag();
         }
-        groupViewHolder.ivRight.setVisibility(isExpanded ? View.INVISIBLE : View.VISIBLE);
         groupViewHolder.viewLineBottom.setVisibility(isExpanded ? View.INVISIBLE : View.VISIBLE);
         groupViewHolder.viewLineTop.setVisibility(groupPosition != 0 ? View.INVISIBLE : View.VISIBLE);
+        groupViewHolder.ivRight.setImageResource(isExpanded ? R.mipmap.icon_up : R.mipmap.icon_down);
 
         TransactionHistory tx = historyList.get(groupPosition);
         String amount = FmtMicrometer.fmtFormat(tx.getValue());
@@ -89,8 +97,11 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         groupViewHolder.tvAmount.setText(amount);
         groupViewHolder.tvTime.setText(tx.getTime());
         boolean isSuccess = StringUtil.isSame("Successful", tx.getResult());
+        boolean isConfirming = StringUtil.isSame("Confirming", tx.getResult());
         int color = R.color.color_red;
-        if(isSuccess){
+        if(isConfirming){
+            color = R.color.color_blue;
+        }else if(isSuccess){
             color = tx.getConfirmations() > 0 ? R.color.color_black : R.color.color_blue;
         }
         int textColor = ContextCompat.getColor(parent.getContext(), color);

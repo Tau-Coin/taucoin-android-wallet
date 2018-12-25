@@ -25,13 +25,13 @@
 
     <ImageView
         android:id="@+id/iv_right"
-        android:layout_width="@dimen/dimen_size_22"
+        android:layout_width="@dimen/dimen_size_20"
         android:contentDescription="@null"
         android:layout_alignParentEnd="true"
-        android:src="@mipmap/copy"
+        android:src="@mipmap/icon_down"
         android:layout_marginEnd="15dp"
         android:layout_centerVertical="true"
-        android:layout_height="@dimen/dimen_size_22" />
+        android:layout_height="@dimen/dimen_size_20" />
 
     <View
         android:id="@+id/view_line_bottom"

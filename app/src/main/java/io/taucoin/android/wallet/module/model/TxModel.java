@@ -48,7 +48,6 @@ import io.taucoin.foundation.net.NetWorkManager;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.net.callback.ResResult;
 import io.taucoin.foundation.util.StringUtil;
-import io.taucoin.platform.adress.Key;
 
 public class TxModel implements ITxModel {
 
@@ -276,13 +275,13 @@ public class TxModel implements ITxModel {
                 .subscribe();
     }
 
-    public void queryTransactionHistory(LogicObserver<List<TransactionHistory>> logicObserver) {
+    public void queryTransactionHistory(int pageNo, String time, LogicObserver<List<TransactionHistory>> logicObserver) {
         KeyValue keyValue = MyApplication.getKeyValue();
         if(keyValue == null || StringUtil.isEmpty(keyValue.getAddress())){
             return;
         }
         Observable.create((ObservableOnSubscribe<List<TransactionHistory>>) emitter -> {
-            List<TransactionHistory> result = TransactionHistoryDaoUtils.getInstance().queryAllData(keyValue.getAddress());
+            List<TransactionHistory> result = TransactionHistoryDaoUtils.getInstance().queryData(pageNo, time, keyValue.getAddress());
             emitter.onNext(result);
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

@@ -43,8 +43,7 @@
 
         <activity
             android:name="io.taucoin.android.wallet.module.view.main.MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/ActivityTheme.Trans" />
+            android:configChanges="orientation|keyboardHidden|screenSize" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
@@ -56,24 +55,25 @@
             android:exported="false" />
 
         <activity
-            android:name="io.taucoin.android.wallet.module.view.main.SendActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/ActivityTheme.Trans" />
+            android:name="io.taucoin.android.wallet.module.view.tx.SendActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
 
         <activity
             android:name="io.taucoin.android.wallet.module.view.user.KeysActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/ActivityTheme.Trans" />
+            android:configChanges="orientation|keyboardHidden|screenSize" />
 
         <activity
             android:name="io.taucoin.android.wallet.module.view.user.ImportKeyActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/ActivityTheme.Trans" />
-
+            android:configChanges="orientation|keyboardHidden|screenSize" />
 
         <activity android:name="io.taucoin.android.wallet.module.view.user.ProfileActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/ActivityTheme.Trans" />
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+
+        <activity android:name="io.taucoin.android.wallet.module.view.user.HelpActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+
+        <activity android:name="io.taucoin.android.wallet.module.view.user.WebViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
     </application>
 
 </manifest>

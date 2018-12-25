@@ -146,7 +146,7 @@ public class TxService extends Service {
                 KeyValue entry = KeyValueDaoUtils.getInstance().insertOrReplace(balance);
                 MyApplication.setKeyValue(entry);
                 if(entry != null){
-                    EventBus.getDefault().post(entry);
+                    EventBus.getDefault().postSticky(TransmitKey.ServiceType.GET_BALANCE);
                 }
             }
         });

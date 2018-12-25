@@ -2,7 +2,6 @@ package io.taucoin.android.wallet.module.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.WindowManager;
 
 import com.github.naturs.logger.Logger;
 import com.mofei.tau.R;
@@ -14,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableObserver;
 import io.taucoin.android.wallet.net.callBack.CommonObserver;
 
 public class SplashActivity extends BaseActivity {

@@ -1,11 +1,11 @@
 package io.taucoin.android.wallet.util;
 
 import android.graphics.Bitmap;
-import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.naturs.logger.Logger;
 import com.mofei.tau.R;
 
 import io.reactivex.Observable;
@@ -35,17 +35,25 @@ public class UserUtil {
     }
 
     public static void setNickName(TextView tvNick) {
+        if(tvNick == null){
+            return;
+        }
         KeyValue keyValue = MyApplication.getKeyValue();
         if(keyValue == null){
             return;
         }
         String nickName = parseNickName(keyValue);
         tvNick.setText(nickName);
+        Logger.d("UserUtil.setNickName=" + nickName);
     }
 
     public static void setBalance(TextView tvBalance) {
+        if(tvBalance == null){
+            return;
+        }
         KeyValue keyValue = MyApplication.getKeyValue();
         if(keyValue == null){
+            setBalance(tvBalance, 0L);
             return;
         }
         setBalance(tvBalance, keyValue.getBalance());
@@ -55,21 +63,27 @@ public class UserUtil {
         String balanceStr = MyApplication.getInstance().getResources().getString(R.string.common_balance);
         balanceStr = String.format(balanceStr, FmtMicrometer.fmtBalance(balance));
         tvBalance.setText(Html.fromHtml(balanceStr));
+        Logger.d("UserUtil.setBalance=" + balanceStr);
     }
 
     public static void setAvatar(ImageView ivAvatar) {
+        if(ivAvatar == null){
+            return;
+        }
         KeyValue keyValue = MyApplication.getKeyValue();
         if(keyValue != null){
             Observable.create((ObservableOnSubscribe<Bitmap>) emitter -> {
                 Bitmap bitmap = FileUtil.getFilesDirBitmap(keyValue.getHeaderImage());
-                emitter.onNext(bitmap);
+                if(bitmap != null){
+                    emitter.onNext(bitmap);
+                }
             }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new LogicObserver<Bitmap>() {
                     @Override
                     public void handleData(Bitmap bitmap) {
+                        Logger.d("UserUtil.setAvatar=" + bitmap.getByteCount());
                         ivAvatar.setImageBitmap(bitmap);
-                        bitmap.recycle();
                     }
                 });
         }

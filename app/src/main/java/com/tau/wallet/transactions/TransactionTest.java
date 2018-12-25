@@ -20,8 +20,6 @@ import com.google.bitcoin.core.ECKey;
 import com.google.bitcoin.core.AddressFormatException;
 import com.google.bitcoin.core.ScriptException;
 
-import com.tau.wallet.keystore.KeyStore;
-
 /**
 getrawtransaction 49670b86ee8b9ddbc0105c03bead1865353533f1a5ecc82d07542d975e415239 1
 {

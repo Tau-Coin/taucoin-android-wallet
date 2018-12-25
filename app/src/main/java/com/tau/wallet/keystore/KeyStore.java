@@ -17,7 +17,6 @@
 package com.tau.wallet.keystore;
 
 import com.google.bitcoin.core.ECKey;
-import com.google.bitcoin.core.Utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;

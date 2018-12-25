@@ -22,6 +22,7 @@ public class ToolbarView extends RelativeLayout {
     private String titleText;
     private int titleBackground;
     private int leftImage;
+    private ViewHolder viewHolder;
 
     public ToolbarView(Context context) {
         this(context, null);
@@ -48,7 +49,7 @@ public class ToolbarView extends RelativeLayout {
 
     private void loadView() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_toolbar, this, true);
-        ViewHolder viewHolder = new ViewHolder(view);
+        viewHolder = new ViewHolder(view);
         if (leftImage != -1) {
             viewHolder.ivLeftBack.setImageResource(leftImage);
         } else {
@@ -61,6 +62,11 @@ public class ToolbarView extends RelativeLayout {
             view.setBackgroundColor(titleBackground);
         }
     }
+
+    public void setTitle(String title) {
+        viewHolder.tvTitle.setText(title);
+    }
+
 
     class ViewHolder {
         @BindView(R.id.iv_left_back)

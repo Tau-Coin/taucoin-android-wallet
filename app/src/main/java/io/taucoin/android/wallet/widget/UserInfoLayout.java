@@ -16,11 +16,8 @@
 package io.taucoin.android.wallet.widget;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
-
-import com.mofei.tau.R;
 
 public class UserInfoLayout extends RelativeLayout {
     public UserInfoLayout(Context context) {

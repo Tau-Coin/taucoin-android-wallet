@@ -26,7 +26,6 @@ import com.google.bitcoin.core.NetworkParameters;
 
 import java.io.*;
 import java.math.BigInteger;
-import java.util.Arrays;
 
 /**
  * A Message is a data structure that can be serialized/deserialized using both the TauCoin proprietary serialization

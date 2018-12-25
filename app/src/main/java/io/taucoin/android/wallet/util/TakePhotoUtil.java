@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.FileProvider;
 
@@ -21,6 +23,8 @@ import com.mofei.tau.R;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.base.BaseFragment;
@@ -67,8 +71,8 @@ public class TakePhotoUtil {
                 .builder()
                 .setCancelable(true)
                 .setCanceledOnTouchOutside(true)
-                .addSheetItem(R.string.profile_select_photo, which -> choseHeadImageFromGallery(context, fragment))
                 .addSheetItem(R.string.profile_take_photo, which -> choseHeadImageFromCapture(context, fragment))
+                .addSheetItem(R.string.profile_select_photo, which -> choseHeadImageFromGallery(context, fragment))
                 .setCancel(R.string.common_cancel, which -> {})
                 .show();
     }
@@ -78,7 +82,7 @@ public class TakePhotoUtil {
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE)) {
             EasyPermissions.requestPermissions(context, "Taucoin needs access to your camera and storage rights",
-                    PermisionUtils.REQUEST_PERMISSIONS_CAMERA, android.Manifest.permission.CAMERA,
+                    PermissionUtils.REQUEST_PERMISSIONS_CAMERA, android.Manifest.permission.CAMERA,
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE);
             return;
@@ -97,7 +101,7 @@ public class TakePhotoUtil {
         if (!EasyPermissions.hasPermissions(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE)) {
             EasyPermissions.requestPermissions(context, "Taucoin needs access to storage rights",
-                    PermisionUtils.REQUEST_PERMISSIONS_RECORD_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    PermissionUtils.REQUEST_PERMISSIONS_RECORD_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE);
             return;
         }
@@ -118,12 +122,16 @@ public class TakePhotoUtil {
         File file = new File(filepath);
         Uri uri = getUriForFile(file);
         tempUri = uri;
-        startPhotoZoom(context, uri);
+        startPhotoZoom(context, uri, true);
+    }
+
+    private static void startPhotoZoom(FragmentActivity context, Uri uri) {
+        startPhotoZoom(context, uri, false);
     }
     /**
      * Cut pictures
      */
-    private static void startPhotoZoom(FragmentActivity context, Uri uri) {
+    private static void startPhotoZoom(FragmentActivity context, Uri uri, boolean isNeedPermissions) {
 
         try {
             if (uri == null) {
@@ -131,7 +139,7 @@ public class TakePhotoUtil {
             }
             Intent intent = new Intent("com.android.camera.action.CROP");
             intent.setDataAndType(uri, "image/*");
-            if (Build.VERSION.SDK_INT >= 24) {
+            if (Build.VERSION.SDK_INT >= 24 && isNeedPermissions) {
                 //Granting Temporary Permissions to a URI
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
@@ -274,5 +282,67 @@ public class TakePhotoUtil {
                 break;
 
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static void onRequestPermissionsResult(FragmentActivity activity, int requestCode, String[] permissions, int[] grantResults) {
+        onRequestPermissionsResult(activity, null, requestCode, permissions, grantResults);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static void onRequestPermissionsResult(BaseFragment fragment, int requestCode, String[] permissions, int[] grantResults) {
+        onRequestPermissionsResult(null, fragment, requestCode, permissions, grantResults);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private static void onRequestPermissionsResult(FragmentActivity activity, BaseFragment fragment, int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode != PermissionUtils.REQUEST_PERMISSIONS_CAMERA &&
+                requestCode != PermissionUtils.REQUEST_PERMISSIONS_RECORD_STORAGE) {
+            return;
+        }
+
+        if (grantResults.length > 0) {
+            List<String> deniedPermissionList = new ArrayList<>();
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    deniedPermissionList.add(permissions[i]);
+                }
+            }
+
+            if (deniedPermissionList.isEmpty()) {
+                permissionAllGranted(activity, fragment, requestCode);
+            } else {
+                for (String deniedPermission : deniedPermissionList) {
+                    boolean flag = activity.shouldShowRequestPermissionRationale(deniedPermission);
+                    if (!flag) {
+                        permissionShouldShowRationale();
+                        return;
+                    }
+                }
+                permissionHasDenied();
+            }
+        }
+    }
+
+    private static void permissionAllGranted(FragmentActivity activity, BaseFragment fragment, int requestCode) {
+
+        switch (requestCode){
+            case PermissionUtils.REQUEST_PERMISSIONS_CAMERA:
+                choseHeadImageFromCapture(activity, fragment);
+                break;
+            case PermissionUtils.REQUEST_PERMISSIONS_RECORD_STORAGE:
+                choseHeadImageFromGallery(activity, fragment);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private static void permissionHasDenied() {
+        ToastUtils.showShortToast("Camera and storage permissions have been denied and no further inquiries have been made.");
+    }
+
+    private static void permissionShouldShowRationale() {
+        ToastUtils.showShortToast("Camera and storage permissions have been denied.");
     }
 }

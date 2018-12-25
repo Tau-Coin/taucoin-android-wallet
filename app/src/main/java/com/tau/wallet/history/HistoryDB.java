@@ -16,7 +16,5 @@
 
 package com.tau.wallet.history;
 
-import java.math.BigInteger;
-
 public class HistoryDB {
 }

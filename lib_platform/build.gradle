@@ -34,8 +34,8 @@ dependencies {
     api rootProject.ext.constraint
     api rootProject.ext.supportv4
     api rootProject.ext.design
-    api rootProject.ext.zxing
-    api rootProject.ext.facebook
+//    api rootProject.ext.zxing
+//    api rootProject.ext.facebook
     api rootProject.ext.greendao
     api rootProject.ext.eventbus
     api rootProject.ext.circleimageview

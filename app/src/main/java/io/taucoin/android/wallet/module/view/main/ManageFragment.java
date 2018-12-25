@@ -20,6 +20,7 @@ import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.base.BaseFragment;
 import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.module.view.main.iview.IManageView;
+import io.taucoin.android.wallet.module.view.user.HelpActivity;
 import io.taucoin.android.wallet.module.view.user.ImportKeyActivity;
 import io.taucoin.android.wallet.module.view.user.KeysActivity;
 import io.taucoin.android.wallet.module.view.user.ProfileActivity;
@@ -74,7 +75,8 @@ public class ManageFragment extends BaseFragment implements IManageView {
                ToastUtils.showLongToast(R.string.manager_address_note);
                break;
            case R.id.item_help:
-               ToastUtils.showLongToast(R.string.manager_help);
+               intent = new Intent(getActivity(), HelpActivity.class);
+               startActivity(intent);
                break;
            default:
                break;
@@ -82,7 +84,7 @@ public class ManageFragment extends BaseFragment implements IManageView {
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onEvent(Object object){
         UserUtil.setNickName(tvNick);
         UserUtil.setAvatar(ivHeaderPic);

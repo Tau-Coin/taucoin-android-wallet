@@ -2,7 +2,9 @@ package io.taucoin.android.wallet.module.view.user;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,8 +40,8 @@ public class ProfileActivity extends BaseActivity {
     }
 
     private void loadData() {
-        UserUtil.setAvatar(ivAvatar);
         UserUtil.setNickName(tvName);
+        UserUtil.setAvatar(ivAvatar);
     }
 
     @OnClick(R.id.rl_avatar)
@@ -54,7 +56,7 @@ public class ProfileActivity extends BaseActivity {
     public void onNameClicked() {
         new InputDialog.Builder(this)
             .setNegativeButton(R.string.common_cancel, (InputDialog.InputDialogListener) (dialog, text) -> dialog.dismiss())
-            .setPositiveButton(R.string.common_confirm, (InputDialog.InputDialogListener) (dialog, text) -> {
+            .setPositiveButton(R.string.common_done, (InputDialog.InputDialogListener) (dialog, text) -> {
                 MyApplication.getKeyValue().setNickName(text);
                 mTxPresenter.saveName(text);
                 UserUtil.setNickName(tvName);
@@ -71,5 +73,13 @@ public class ProfileActivity extends BaseActivity {
             mTxPresenter.saveAvatar(TakePhotoUtil.getFileName(), bitmap);
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            TakePhotoUtil.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

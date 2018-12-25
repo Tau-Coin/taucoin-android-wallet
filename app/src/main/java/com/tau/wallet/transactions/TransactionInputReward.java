@@ -19,7 +19,6 @@ package com.tau.wallet.transactions;
 import com.google.bitcoin.core.Address;
 import com.google.bitcoin.core.NetworkParameters;
 import com.google.bitcoin.core.ProtocolException;
-import com.google.bitcoin.core.Sha256Hash;
 import com.google.bitcoin.core.Script;
 import com.google.bitcoin.core.ScriptException;
 import com.google.bitcoin.core.Utils;
@@ -29,7 +28,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Map;
 
 /**
  * A transfer of coins from one address to another creates a transaction in which the outputs

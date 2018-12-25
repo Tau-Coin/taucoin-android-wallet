@@ -2,36 +2,36 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_white">
+    android:background="@mipmap/ic_splash">
 
-    <ImageView
-        android:id="@+id/iv_logo"
-        android:layout_width="@dimen/dimen_size_150"
-        android:layout_height="@dimen/dimen_size_150"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dimen_size_180"
-        android:contentDescription="@null"
-        android:src="@mipmap/logo" />
+    <!--<ImageView-->
+        <!--android:id="@+id/iv_logo"-->
+        <!--android:layout_width="@dimen/dimen_size_150"-->
+        <!--android:layout_height="@dimen/dimen_size_150"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="@dimen/dimen_size_180"-->
+        <!--android:contentDescription="@null"-->
+        <!--android:src="@mipmap/logo" />-->
 
-    <TextView
-        style="@style/style_normal_yellow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_logo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="@string/splash_title"
-        android:textStyle="italic" />
+    <!--<TextView-->
+        <!--style="@style/style_normal_yellow"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/iv_logo"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:text="@string/splash_title"-->
+        <!--android:textStyle="italic" />-->
 
 
-    <TextView
-        style="@style/style_normal_light_grey"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/dimen_size_50"
-        android:gravity="center"
-        android:text="@string/splash_describe"
-        android:textStyle="italic" />
+    <!--<TextView-->
+        <!--style="@style/style_normal_light_grey"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="@dimen/dimen_size_50"-->
+        <!--android:gravity="center"-->
+        <!--android:text="@string/splash_describe"-->
+        <!--android:textStyle="italic" />-->
 </RelativeLayout>

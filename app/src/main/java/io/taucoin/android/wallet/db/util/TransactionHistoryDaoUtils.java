@@ -2,6 +2,7 @@ package io.taucoin.android.wallet.db.util;
 
 import com.mofei.tau.BuildConfig;
 
+import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.db.GreenDaoManager;
 import io.taucoin.android.wallet.db.greendao.TransactionHistoryDao;
 
@@ -22,7 +23,7 @@ public class TransactionHistoryDaoUtils {
     private final GreenDaoManager daoManager;
     private static TransactionHistoryDaoUtils mTransactionHistoryDaoUtils;
 
-    public TransactionHistoryDaoUtils() {
+    private TransactionHistoryDaoUtils() {
         daoManager = GreenDaoManager.getInstance();
     }
 
@@ -48,13 +49,12 @@ public class TransactionHistoryDaoUtils {
 
     public List<TransactionHistory> getTxPendingList(String formAddress) {
         QueryBuilder qb = getTransactionHistoryDao().queryBuilder();
-        List<TransactionHistory> list = getTransactionHistoryDao().queryBuilder()
+        return getTransactionHistoryDao().queryBuilder()
         .where(TransactionHistoryDao.Properties.Confirmations.lt(1),
                 TransactionHistoryDao.Properties.FromAddress.eq(formAddress),
                 qb.or(TransactionHistoryDao.Properties.Result.eq("Confirming"),
                     TransactionHistoryDao.Properties.Result.eq("Successful")))
         .list();
-        return list;
     }
 
     public TransactionHistory queryTransactionById(String txId) {
@@ -72,10 +72,12 @@ public class TransactionHistoryDaoUtils {
         return getTransactionHistoryDao().insertOrReplace(tx);
     }
 
-    public List<TransactionHistory> queryAllData(String address) {
+    public List<TransactionHistory> queryData(int pageNo, String time, String address) {
         return getTransactionHistoryDao().queryBuilder()
-                .where(TransactionHistoryDao.Properties.FromAddress.eq(address))
+                .where(TransactionHistoryDao.Properties.FromAddress.eq(address),
+                        TransactionHistoryDao.Properties.Time.lt(time))
                 .orderDesc(TransactionHistoryDao.Properties.Time)
+                .offset((pageNo - 1) * TransmitKey.PAGE_SIZE).limit(TransmitKey.PAGE_SIZE)
                 .list();
     }
 }

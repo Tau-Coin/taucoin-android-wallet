@@ -169,6 +169,15 @@ public class StringUtil {
             return "";
         }
     }
+
+    public static String getString(Object data) {
+        try{
+            return data.toString();
+        }catch (Exception e){
+            return "";
+        }
+    }
+
     public static String encryptPhone(String photo) {
         if(isNotEmpty(photo) && photo.length() > 7){
             photo = photo.substring(0, 3) + "****" + photo.substring(7);

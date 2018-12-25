@@ -11,50 +11,73 @@
         android:layout_height="wrap_content"
         app:titleText="@string/main_home_title" />
 
-
-    <RelativeLayout
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        app:srlAccentColor="#00000000"
+        app:srlPrimaryColor="#00000000"
+        app:srlEnablePreviewInEditMode="true">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_header_pic"
-            android:layout_width="@dimen/dimen_size_60"
-            android:layout_height="@dimen/dimen_size_60"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dimen_size_60"
-            android:src="@mipmap/logo"
-            app:civ_border_color="@color/color_main_line"
-            app:civ_border_width="0.6dp" />
+        <io.taucoin.android.wallet.widget.refresh.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-        <TextView
-            android:id="@+id/tv_nick"
-            style="@style/style_normal_grey"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/iv_header_pic"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:hint="@string/common_no_login"
-            android:textColorHint="@color/color_grey" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_balance"
-            style="@style/style_tau_black"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:layout_below="@id/tv_nick"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_vertical"
-            android:textColorHint="@color/color_black" />
-    </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <TextView
-        style="@style/style_big_yellow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:gravity="center_horizontal"
-        android:lineSpacingExtra="10dp"
-        android:text="@string/main_mining_tips" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_header_pic"
+                    android:layout_width="@dimen/dimen_size_50"
+                    android:layout_height="@dimen/dimen_size_50"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dimen_size_32"
+                    android:src="@mipmap/icon_avatar"
+                    app:civ_border_color="@color/color_main_line"
+                    app:civ_border_width="0.6dp" />
+
+                <TextView
+                    android:id="@+id/tv_nick"
+                    style="@style/style_normal_grey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/iv_header_pic"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/common_no_login"
+                    android:textColorHint="@color/color_grey" />
+
+                <TextView
+                    android:id="@+id/tv_balance"
+                    style="@style/style_tau_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_below="@id/tv_nick"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_vertical"
+                    android:textColorHint="@color/color_black" />
+            </RelativeLayout>
+
+            <TextView
+                style="@style/style_big_yellow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="center_horizontal"
+                android:lineSpacingExtra="10dp"
+                android:text="@string/main_mining_tips" />
+
+        </LinearLayout>
+
+        <io.taucoin.android.wallet.widget.refresh.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

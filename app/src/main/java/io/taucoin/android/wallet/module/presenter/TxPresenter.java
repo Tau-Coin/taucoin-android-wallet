@@ -25,7 +25,6 @@ import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.net.callback.ResResult;
-import io.taucoin.foundation.util.StringUtil;
 import io.taucoin.platform.adress.Key;
 import io.taucoin.platform.adress.KeyManager;
 
@@ -164,12 +163,14 @@ public class TxPresenter {
         TxService.startTxService(TransmitKey.ServiceType.GET_RAW_TX);
     }
 
-    public void queryTransactionHistory() {
-        mTxModel.queryTransactionHistory(new LogicObserver<List<TransactionHistory>>(){
+    public void queryTransactionHistory(int pageNo, String time) {
+        mTxModel.queryTransactionHistory(pageNo, time, new LogicObserver<List<TransactionHistory>>(){
 
             @Override
             public void handleData(List<TransactionHistory> transactionHistories) {
                 mSendReceiveView.loadTransactionHistory(transactionHistories);
+                mSendReceiveView.finishRefresh();
+                mSendReceiveView.finishLoadMore();
             }
         });
     }

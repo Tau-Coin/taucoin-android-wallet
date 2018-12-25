@@ -31,7 +31,6 @@ import com.tau.wallet.blockchain.Message;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * A transfer of coins from one address to another creates a transaction in which the outputs

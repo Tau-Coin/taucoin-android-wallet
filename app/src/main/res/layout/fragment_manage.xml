@@ -9,7 +9,7 @@
     <io.taucoin.android.wallet.widget.ToolbarView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:titleText="@string/main_manager" />
+        app:titleText="@string/main_manage" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,11 +17,11 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_header_pic"
-            android:layout_width="@dimen/dimen_size_60"
-            android:layout_height="@dimen/dimen_size_60"
+            android:layout_width="@dimen/dimen_size_50"
+            android:layout_height="@dimen/dimen_size_50"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dimen_size_32"
-            android:src="@mipmap/logo"
+            android:src="@mipmap/icon_avatar"
             app:civ_border_color="@color/color_main_line"
             app:civ_border_width="0.6dp" />
 
@@ -38,9 +38,9 @@
 
         <TextView
             android:id="@+id/tv_version"
-            style="@style/style_normal_grey"
+            style="@style/style_middle_grey"
             android:layout_width="wrap_content"
-            android:layout_height="26dp"
+            android:layout_height="22dp"
             android:layout_below="@id/tv_nick"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
@@ -63,7 +63,7 @@
             android:id="@+id/item_keys"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            app:leftImage="@mipmap/logo"
+            app:leftImage="@mipmap/icon_key"
             app:rightText="@string/manager_keys"
             app:rightTextColor="@color/color_yellow" />
 
@@ -82,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="1dp"
-            app:leftImage="@mipmap/logo"
+            app:leftImage="@mipmap/icon_help"
             app:rightText="@string/manager_help"
             app:rightTextColor="@color/color_black" />
 

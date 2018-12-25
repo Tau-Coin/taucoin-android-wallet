@@ -31,6 +31,7 @@ public class ActionSheetDialog {
     private List<SheetItem> sheetItemList = new ArrayList<>();
     private Display display;
     private ViewHolder mViewHolder;
+    private String mSelectValue;
 
     public ActionSheetDialog(Context context) {
         this.context = context;
@@ -76,6 +77,12 @@ public class ActionSheetDialog {
         mViewHolder.tvCancel.setText(cancel);
         mViewHolder.tvCancel.setVisibility(View.VISIBLE);
         mViewHolder.listener = listener;
+        return this;
+    }
+
+
+    public ActionSheetDialog setSelectValue(String value) {
+        mSelectValue = value;
         return this;
     }
 
@@ -135,9 +142,9 @@ public class ActionSheetDialog {
 
             if(StringUtil.isNotEmpty(sheetItem.viceName)){
                 itemViewHolder.tvRight.setText(sheetItem.viceName);
-            }else {
-                itemViewHolder.ivSelect.setVisibility(View.INVISIBLE);
             }
+            boolean isShow = StringUtil.isNotEmpty(mSelectValue) && StringUtil.isSame(mSelectValue, sheetItem.id);
+            itemViewHolder.ivSelect.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
 
             view.setOnClickListener(v -> {
                 listener.onClick(sheetItem);

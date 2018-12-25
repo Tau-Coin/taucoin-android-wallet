@@ -16,7 +16,7 @@
     <RelativeLayout
         android:id="@+id/rl_avatar"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="50dp">
 
         <TextView
             style="@style/style_normal_black"
@@ -30,13 +30,13 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_avatar"
             style="@style/style_normal_black"
-            android:layout_width="@dimen/dimen_size_50"
-            android:layout_height="@dimen/dimen_size_50"
+            android:layout_width="@dimen/dimen_size_40"
+            android:layout_height="@dimen/dimen_size_40"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="30dp"
             android:contentDescription="@null"
-            android:src="@mipmap/logo"
+            android:src="@mipmap/icon_avatar"
             app:civ_border_color="@color/color_main_line"
             app:civ_border_width="0.6dp" />
     </RelativeLayout>

@@ -16,7 +16,5 @@
 
 package com.tau.wallet.keystore;
 
-import com.google.bitcoin.core.ECKey;
-
 public class KeyStoreDB {
 }

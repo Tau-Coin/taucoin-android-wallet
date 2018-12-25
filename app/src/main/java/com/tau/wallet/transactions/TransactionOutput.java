@@ -20,7 +20,6 @@ package com.tau.wallet.transactions;
 import com.google.bitcoin.core.Address;
 import com.google.bitcoin.core.NetworkParameters;
 import com.google.bitcoin.core.ProtocolException;
-import com.google.bitcoin.core.Sha256Hash;
 import com.google.bitcoin.core.Script;
 import com.google.bitcoin.core.ScriptException;
 import com.google.bitcoin.core.Utils;
