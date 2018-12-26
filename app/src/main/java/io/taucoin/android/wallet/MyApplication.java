@@ -68,7 +68,7 @@ public class MyApplication extends Application {
     }
 
     private void initKeyValue() {
-        String publicKey = SharedPreferencesHelper.getInstance().getString(TransmitKey.PUBLIC_KEY, "0332BE723E222C0137917435EF6B128BD373CE9F8E0DCF65A9E9406EB240ED9D11");
+        String publicKey = SharedPreferencesHelper.getInstance().getString(TransmitKey.PUBLIC_KEY, "");
         mKeyValue = KeyValueDaoUtils.getInstance().queryByPubicKey(publicKey);
     }
 

@@ -9,6 +9,7 @@ public class TransmitKey {
         public static final String GET_BALANCE = "get_balance";
         public static final String GET_UTXO_LIST = "get_utxo_list";
         public static final String GET_RAW_TX = "get_raw_tx";
+        public static final String GET_INFO = "get_info";
     }
 
     public static final String PUBLIC_KEY = "Pubkey";
@@ -16,6 +17,7 @@ public class TransmitKey {
 
     public static final String TITLE = "title";
     public static final String URL = "url";
+    public static final String HOW_IMPORT_KEY_URL = "https://android.taucoin.io/static/help3.html";
 
     public static final int PAGE_SIZE = 20;
 }

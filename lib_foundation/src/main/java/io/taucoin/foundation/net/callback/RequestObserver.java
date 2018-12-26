@@ -29,8 +29,8 @@ public abstract class RequestObserver<T> implements Observer<T> {
     @Override
     public void onNext(T t) {
         if(null != t){
-            if(t instanceof ResResult){
-                ResResult response = (ResResult) t;
+            if(t instanceof RetResult){
+                RetResult response = (RetResult) t;
                 boolean isSuccess = response.getStatus() == NetResultCode.SUCCESS_CODE;
                 if(isSuccess){
                    handleData(t);

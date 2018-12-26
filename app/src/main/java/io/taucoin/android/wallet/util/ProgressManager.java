@@ -19,7 +19,6 @@ public class ProgressManager {
             mProgress.dismiss();
             mProgress = null;
         }
-
         if(activity != null && activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) != null){
 
             Dialog progress = new Dialog(activity, R.style.dialog_translucent);
@@ -38,6 +37,16 @@ public class ProgressManager {
         if(mProgress != null){
             mProgress.dismiss();
             mProgress = null;
+        }
+    }
+
+    public static void closeProgressDialog(FragmentActivity activity){
+        if(mProgress != null){
+            FragmentActivity activityDialog = (FragmentActivity) mProgress.getContext();
+            if(activityDialog.getClass().equals(activity.getClass())){
+                mProgress.dismiss();
+                mProgress = null;
+            }
         }
     }
 }

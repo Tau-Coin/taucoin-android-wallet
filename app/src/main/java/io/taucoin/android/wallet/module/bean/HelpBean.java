@@ -2,7 +2,7 @@ package io.taucoin.android.wallet.module.bean;
 
 public class HelpBean {
     private String title;
-    private String url;
+    private String link;
 
     public String getTitle() {
         return title;
@@ -12,11 +12,11 @@ public class HelpBean {
         this.title = title;
     }
 
-    public String getUrl() {
-        return url;
+    public String getLink() {
+        return link;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setLink(String link) {
+        this.link = link;
     }
 }

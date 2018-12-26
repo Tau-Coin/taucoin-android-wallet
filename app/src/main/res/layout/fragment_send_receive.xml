@@ -53,6 +53,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/ll_tip"
         android:layout_below="@+id/ll_send_receive"
         android:layout_width="match_parent"

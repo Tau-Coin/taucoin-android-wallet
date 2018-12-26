@@ -16,6 +16,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import io.taucoin.android.wallet.util.KeyboardUtils;
+import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.foundation.util.ActivityManager;
 
 public abstract class BaseActivity extends AppCompatActivity implements OnLoadmoreListener, OnRefreshListener {
@@ -38,6 +39,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnLoadmo
     @Override
     protected void onDestroy() {
         try {
+            ProgressManager.closeProgressDialog(this);
             KeyboardUtils.hideSoftInput(this);
         }catch (Exception ignore){
 

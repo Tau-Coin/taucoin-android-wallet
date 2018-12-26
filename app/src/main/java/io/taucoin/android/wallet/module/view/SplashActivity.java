@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.taucoin.android.wallet.net.callBack.CommonObserver;
+import io.taucoin.android.wallet.net.callback.CommonObserver;
 
 public class SplashActivity extends BaseActivity {
 

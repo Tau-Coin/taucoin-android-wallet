@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="60dp"
     android:background="@color/color_tool_bar"
-    android:paddingTop="25dp">
+    android:paddingTop="18dp">
 
     <ImageButton
         android:id="@+id/iv_left_back"

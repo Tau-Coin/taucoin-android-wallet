@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
@@ -30,7 +31,7 @@ import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.module.presenter.TxPresenter;
 import io.taucoin.android.wallet.module.view.main.iview.ISendReceiveView;
 import io.taucoin.android.wallet.module.view.tx.SendActivity;
-import io.taucoin.android.wallet.module.view.user.ImportKeyActivity;
+import io.taucoin.android.wallet.module.view.manage.ImportKeyActivity;
 import io.taucoin.android.wallet.util.CopyManager;
 import io.taucoin.android.wallet.util.DateUtil;
 import io.taucoin.android.wallet.util.ToastUtils;
@@ -53,6 +54,8 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
     EmptyLayout emptyLayout;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.ll_tip)
+    LinearLayout llTip;
 
     private TxPresenter mTxPresenter;
     private HistoryExpandableListAdapter mAdapter;
@@ -80,6 +83,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
     public void initView() {
         mAdapter = new HistoryExpandableListAdapter();
         listViewLog.setAdapter(mAdapter);
+        refreshLayout.setEnableLoadmore(false);
         refreshLayout.setEnableAutoLoadmore(false);
         refreshLayout.setEnableLoadmoreWhenContentNotFull(true);
     }
@@ -135,6 +139,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
         }
         mAdapter.setHistoryList(txHistories, mPageNo != 1);
         emptyLayout.setVisibility(mAdapter.getData().size() == 0 ? View.VISIBLE : View.GONE);
+        llTip.setVisibility(mAdapter.getData().size() != 0 ? View.VISIBLE : View.GONE);
         refreshLayout.setEnableLoadmore(txHistories.size() % TransmitKey.PAGE_SIZE == 0 && txHistories.size() > 0);
     }
 
@@ -155,6 +160,10 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
         mPageNo = 1;
         mTime = DateUtil.getCurrentTime(DateUtil.pattern6);
         mTxPresenter.queryTransactionHistory(mPageNo, mTime);
+
+        if(!UserUtil.isImportKey()){
+            refreshLayout.finishRefresh(1000);
+        }
     }
 
     @Override

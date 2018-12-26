@@ -88,4 +88,9 @@ public class UserUtil {
                 });
         }
     }
+
+    public static boolean isImportKey() {
+        KeyValue keyValue = MyApplication.getKeyValue();
+        return  keyValue != null;
+    }
 }

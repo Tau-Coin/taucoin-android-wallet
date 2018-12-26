@@ -46,9 +46,9 @@ public class MainActivity extends BaseActivity implements IMainView {
 
     @Override
     public void initBottomTabView() {
-        DrawablesUtil.setTopDrawable(rbHome, R.drawable.selector_tab_home,25);
-        DrawablesUtil.setTopDrawable(rbSendReceive, R.drawable.selector_tab_send, 25);
-        DrawablesUtil.setTopDrawable(rbManager, R.drawable.selector_tab_manage, 25);
+        DrawablesUtil.setTopDrawable(rbHome, R.drawable.selector_tab_home,24);
+        DrawablesUtil.setTopDrawable(rbSendReceive, R.drawable.selector_tab_send, 24);
+        DrawablesUtil.setTopDrawable(rbManager, R.drawable.selector_tab_manage, 24);
     }
 
     @Override

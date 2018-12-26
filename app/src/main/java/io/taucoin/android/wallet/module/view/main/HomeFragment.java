@@ -16,10 +16,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.base.BaseFragment;
 import io.taucoin.android.wallet.base.TransmitKey;
+import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.module.presenter.TxService;
-import io.taucoin.android.wallet.module.presenter.TxPresenter;
 import io.taucoin.android.wallet.module.view.main.iview.IHomeView;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.UserUtil;
@@ -36,16 +37,14 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
 
-    private TxPresenter mTxPresenter;
-
     @Override
     public View getViewLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
-        mTxPresenter = new TxPresenter(this);
         initView();
         ProgressManager.showProgressDialog(getActivity());
         TxService.startTxService(TransmitKey.ServiceType.GET_HOME_DATA);
+        TxService.startTxService(TransmitKey.ServiceType.GET_INFO);
         return view;
     }
 
@@ -71,5 +70,9 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         TxService.startTxService(TransmitKey.ServiceType.GET_BALANCE);
+
+        if(!UserUtil.isImportKey()){
+            refreshLayout.finishRefresh(1000);
+        }
     }
 }

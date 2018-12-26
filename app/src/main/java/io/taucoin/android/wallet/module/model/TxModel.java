@@ -1,18 +1,16 @@
 package io.taucoin.android.wallet.module.model;
 
-import android.graphics.Bitmap;
-
 import com.github.naturs.logger.Logger;
 import com.google.bitcoin.core.AddressFormatException;
 import com.google.bitcoin.core.ECKey;
 import com.google.bitcoin.core.NetworkParameters;
 import com.google.bitcoin.core.Utils;
-import com.tau.wallet.FeeRate;
-import com.tau.wallet.Wallet;
-import com.tau.wallet.keystore.KeyStore;
-import com.tau.wallet.transactions.CreateTransactionResult;
-import com.tau.wallet.transactions.Transaction;
-import com.tau.wallet.transactions.TransactionFailReason;
+import io.taucoin.android.wallet.core.FeeRate;
+import io.taucoin.android.wallet.core.Wallet;
+import io.taucoin.android.wallet.core.keystore.KeyStore;
+import io.taucoin.android.wallet.core.transactions.CreateTransactionResult;
+import io.taucoin.android.wallet.core.transactions.Transaction;
+import io.taucoin.android.wallet.core.transactions.TransactionFailReason;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -30,52 +28,40 @@ import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.db.entity.ScriptPubkey;
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.db.entity.UTXORecord;
-import io.taucoin.android.wallet.db.util.KeyValueDaoUtils;
 import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
 import io.taucoin.android.wallet.db.util.UTXORecordDaoUtils;
+import io.taucoin.android.wallet.module.bean.BalanceBean;
 import io.taucoin.android.wallet.module.bean.RawTxBean;
 import io.taucoin.android.wallet.module.bean.UTXOList;
 import io.taucoin.android.wallet.module.bean.UtxosBean;
-import io.taucoin.android.wallet.net.callBack.TAUObserver;
-import io.taucoin.android.wallet.net.service.ApiService;
+import io.taucoin.android.wallet.net.callback.TAUObserver;
+import io.taucoin.android.wallet.net.service.TxService;
 import io.taucoin.android.wallet.util.DateUtil;
-import io.taucoin.android.wallet.util.FileUtil;
 import io.taucoin.android.wallet.util.FmtMicrometer;
 import io.taucoin.android.wallet.util.MD5_BASE64Util;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.net.NetWorkManager;
 import io.taucoin.foundation.net.callback.LogicObserver;
-import io.taucoin.foundation.net.callback.ResResult;
+import io.taucoin.foundation.net.callback.RetResult;
 import io.taucoin.foundation.util.StringUtil;
 
 public class TxModel implements ITxModel {
 
     @Override
-    public void getBalance(TAUObserver observer) {
+    public void getBalance(TAUObserver<RetResult<BalanceBean>> observer) {
         String publicKey = SharedPreferencesHelper.getInstance().getString(TransmitKey.PUBLIC_KEY, "");
-        Map<String,String> emailMap=new HashMap<>();
-        emailMap.put("pubkey",  publicKey);
-        NetWorkManager.createApiService(ApiService.class)
-            .getBalance(emailMap)
+        Map<String,String> map=new HashMap<>();
+        map.put("pubkey",  publicKey);
+        NetWorkManager.createApiService(TxService.class)
+            .getBalance(map)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(observer);
     }
 
     @Override
-    public void getBalanceLocal(LogicObserver observer) {
-        String publicKey = SharedPreferencesHelper.getInstance().getString(TransmitKey.PUBLIC_KEY, "");
-        Observable.create((ObservableOnSubscribe<KeyValue>) emitter -> {
-            KeyValue entry = KeyValueDaoUtils.getInstance().queryByPubicKey(publicKey);
-            emitter.onNext(entry);
-        }).observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe(observer);
-    }
-
-    @Override
-    public void isAnyTxPending(LogicObserver observer) {
+    public void isAnyTxPending(LogicObserver<Boolean> observer) {
         String address = SharedPreferencesHelper.getInstance().getString(TransmitKey.ADDRESS, "");
         Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
             boolean isAnyTxPending = TransactionHistoryDaoUtils.getInstance().isAnyTxPending(address);
@@ -90,7 +76,7 @@ public class TxModel implements ITxModel {
         KeyValue keyValue = MyApplication.getKeyValue();
         Map<String,String> map = new HashMap<>();
         map.put("address",  keyValue.getAddress());
-        NetWorkManager.createApiService(ApiService.class)
+        NetWorkManager.createApiService(TxService.class)
             .getUTXOList(map)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -131,7 +117,6 @@ public class TxModel implements ITxModel {
                             }
                             UTXORecordDaoUtils.getInstance().deleteByAddress(keyValue.getAddress());
                             UTXORecordDaoUtils.getInstance().insertOrReplace(utxoRecordList);
-//                        emitter.onNext(true);
                         }
                     }).observeOn(AndroidSchedulers.mainThread())
                             .subscribeOn(Schedulers.io())
@@ -142,7 +127,7 @@ public class TxModel implements ITxModel {
     }
 
     @Override
-    public void getUTXOListLocal(LogicObserver observer) {
+    public void getUTXOListLocal(LogicObserver<List<UTXORecord>> observer) {
         KeyValue keyValue = MyApplication.getKeyValue();
         String address = "";
         if(keyValue != null){
@@ -173,12 +158,12 @@ public class TxModel implements ITxModel {
     public void checkRawTransaction(String txId, LogicObserver<Boolean> observer) {
         Map<String,String> map = new HashMap<>();
         map.put("txid", txId);
-        NetWorkManager.createApiService(ApiService.class)
+        NetWorkManager.createApiService(TxService.class)
             .getRawTransation(map)
             .subscribeOn(Schedulers.io())
-            .subscribe(new TAUObserver<ResResult<RawTxBean>>() {
+            .subscribe(new TAUObserver<RetResult<RawTxBean>>() {
                 @Override
-                public void handleData(ResResult<RawTxBean> rawTxBeanResResult) {
+                public void handleData(RetResult<RawTxBean> rawTxBeanResResult) {
                     super.handleData(rawTxBeanResResult);
                     RawTxBean rawTx = rawTxBeanResResult.getRet();
                     rawTx.setBlocktime(rawTx.getBlocktime());
@@ -196,6 +181,7 @@ public class TxModel implements ITxModel {
 
     }
 
+    @Override
     public void createTransaction(TransactionHistory txHistory, LogicObserver<String> observer) {
         KeyValue keyValue = MyApplication.getKeyValue();
 
@@ -244,15 +230,17 @@ public class TxModel implements ITxModel {
         }
     }
 
-    public void sendRawTransaction(String tx_hex, TAUObserver<ResResult<String>> observer) {
+    @Override
+    public void sendRawTransaction(String tx_hex, TAUObserver<RetResult<String>> observer) {
         Map<String,String> map = new HashMap<>();
         map.put("tx_hex", tx_hex);
-        NetWorkManager.createApiService(ApiService.class)
+        NetWorkManager.createApiService(TxService.class)
                 .sendRawTransation(map)
                 .subscribeOn(Schedulers.io())
                 .subscribe(observer);
     }
 
+    @Override
     public void updateTransactionHistory(TransactionHistory txHistory){
         Observable.create((ObservableOnSubscribe<Long>) emitter -> {
             TransactionHistory transactionHistory = TransactionHistoryDaoUtils.getInstance().queryTransactionById(txHistory.getTxId());
@@ -266,7 +254,8 @@ public class TxModel implements ITxModel {
                 .subscribe();
     }
 
-    private void insertTransactionHistory(TransactionHistory txHistory){
+    @Override
+    public void insertTransactionHistory(TransactionHistory txHistory){
         Observable.create((ObservableOnSubscribe<Long>) emitter -> {
             long result = TransactionHistoryDaoUtils.getInstance().insertOrReplace(txHistory);
             emitter.onNext(result);
@@ -275,6 +264,7 @@ public class TxModel implements ITxModel {
                 .subscribe();
     }
 
+    @Override
     public void queryTransactionHistory(int pageNo, String time, LogicObserver<List<TransactionHistory>> logicObserver) {
         KeyValue keyValue = MyApplication.getKeyValue();
         if(keyValue == null || StringUtil.isEmpty(keyValue.getAddress())){
@@ -286,47 +276,5 @@ public class TxModel implements ITxModel {
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(logicObserver);
-    }
-
-    public void saveKeyAndAddress(KeyValue keyValue, LogicObserver<KeyValue> observer) {
-        Observable.create((ObservableOnSubscribe<KeyValue>) emitter -> {
-            KeyValue result = KeyValueDaoUtils.getInstance().insertOrReplace(keyValue);
-            emitter.onNext(result);
-        }).observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(observer);
-    }
-
-    public void saveName(String name, LogicObserver<KeyValue> observer) {
-        KeyValue keyValue = MyApplication.getKeyValue();
-        if(keyValue == null || StringUtil.isEmpty(keyValue.getAddress())){
-            return;
-        }
-        Observable.create((ObservableOnSubscribe<KeyValue>) emitter -> {
-            keyValue.setNickName(name);
-            KeyValueDaoUtils.getInstance().update(keyValue);
-            emitter.onNext(keyValue);
-        }).observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(observer);
-    }
-
-    public void saveAvatar(String avatar, Bitmap bitmap, LogicObserver<KeyValue> observer) {
-        KeyValue keyValue = MyApplication.getKeyValue();
-        if(keyValue == null || StringUtil.isEmpty(keyValue.getAddress())){
-            return;
-        }
-        Observable.create((ObservableOnSubscribe<KeyValue>) emitter -> {
-            keyValue.setHeaderImage(avatar);
-            KeyValueDaoUtils.getInstance().update(keyValue);
-            FileUtil.saveFilesDirBitmap(avatar, bitmap);
-            FileUtil.deleteExternalBitmap();
-            if(!bitmap.isRecycled()){
-                bitmap.recycle();
-            }
-            emitter.onNext(keyValue);
-        }).observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(observer);
     }
 }

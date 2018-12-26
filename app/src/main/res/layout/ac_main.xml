@@ -13,7 +13,7 @@
     <LinearLayout
         android:id="@+id/ll_bottom_tab"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="@color/color_white"
         android:orientation="horizontal">
@@ -37,7 +37,6 @@
                 android:button="@null"
                 android:checked="true"
                 android:clickable="true"
-                android:drawablePadding="2dp"
                 android:focusable="true"
                 android:gravity="center"
                 android:text="@string/main_home"
@@ -53,7 +52,6 @@
                 android:background="@color/color_transparent"
                 android:button="@null"
                 android:clickable="true"
-                android:drawablePadding="2dp"
                 android:focusable="true"
                 android:gravity="center"
                 android:text="@string/main_send_receive"
@@ -68,7 +66,6 @@
                 android:layout_weight="1"
                 android:background="@color/color_transparent"
                 android:button="@null"
-                android:drawablePadding="2dp"
                 android:gravity="center"
                 android:text="@string/main_manage"
                 android:textColor="@drawable/bottom_tab_color" />

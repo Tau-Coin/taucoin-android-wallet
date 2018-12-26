@@ -20,16 +20,20 @@ import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.db.util.KeyValueDaoUtils;
 import io.taucoin.android.wallet.module.bean.BalanceBean;
+import io.taucoin.android.wallet.module.model.AppModel;
+import io.taucoin.android.wallet.module.model.IAppModel;
+import io.taucoin.android.wallet.module.model.ITxModel;
 import io.taucoin.android.wallet.module.model.TxModel;
-import io.taucoin.android.wallet.net.callBack.CommonObserver;
-import io.taucoin.android.wallet.net.callBack.TAUObserver;
+import io.taucoin.android.wallet.net.callback.CommonObserver;
+import io.taucoin.android.wallet.net.callback.TAUObserver;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.foundation.net.callback.LogicObserver;
-import io.taucoin.foundation.net.callback.ResResult;
+import io.taucoin.foundation.net.callback.RetResult;
 
 public class TxService extends Service {
 
-    private TxModel mTxModel;
+    private ITxModel mTxModel;
+    private IAppModel mAppModel;
     private boolean mIsChecked;
 
     public TxService() {
@@ -45,6 +49,7 @@ public class TxService extends Service {
     public void onCreate() {
         super.onCreate();
         mTxModel = new TxModel();
+        mAppModel = new AppModel();
         mIsChecked = false;
         Logger.i("TxService onCreate");
     }
@@ -77,12 +82,21 @@ public class TxService extends Service {
                         checkRawTransactionDelay();
                     }
                     break;
+                case TransmitKey.ServiceType.GET_INFO:
+                    getInfo();
+                    break;
                 default:
                     break;
             }
             Logger.i("TxService onStartCommand, ServiceType=" + serviceType);
+        }else{
+            ProgressManager.closeProgressDialog();
         }
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void getInfo() {
+        mAppModel.getInfo();
     }
 
     private void checkRawTransactionDelay() {
@@ -116,7 +130,7 @@ public class TxService extends Service {
                                 }
                             });
                             Thread.sleep(3000);
-                        } catch (InterruptedException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -130,7 +144,7 @@ public class TxService extends Service {
     }
 
     private void getBalance() {
-        mTxModel.getBalance( new TAUObserver<ResResult<BalanceBean>>() {
+        mTxModel.getBalance( new TAUObserver<RetResult<BalanceBean>>() {
             @Override
             public void handleError(String msg, int msgCode) {
                 super.handleError(msg, msgCode);
@@ -138,7 +152,7 @@ public class TxService extends Service {
             }
 
             @Override
-            public void handleData(ResResult<BalanceBean> balanceRetBalance) {
+            public void handleData(RetResult<BalanceBean> balanceRetBalance) {
                 super.handleData(balanceRetBalance);
                 BalanceBean balance = balanceRetBalance.getRet();
                 Logger.i("getBalance success");

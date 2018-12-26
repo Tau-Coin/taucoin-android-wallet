@@ -59,20 +59,20 @@
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
         <activity
-            android:name="io.taucoin.android.wallet.module.view.user.KeysActivity"
+            android:name="io.taucoin.android.wallet.module.view.manage.KeysActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
         <activity
-            android:name="io.taucoin.android.wallet.module.view.user.ImportKeyActivity"
+            android:name="io.taucoin.android.wallet.module.view.manage.ImportKeyActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
-        <activity android:name="io.taucoin.android.wallet.module.view.user.ProfileActivity"
+        <activity android:name="io.taucoin.android.wallet.module.view.manage.ProfileActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
-        <activity android:name="io.taucoin.android.wallet.module.view.user.HelpActivity"
+        <activity android:name="io.taucoin.android.wallet.module.view.manage.HelpActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
-        <activity android:name="io.taucoin.android.wallet.module.view.user.WebViewActivity"
+        <activity android:name="io.taucoin.android.wallet.module.view.manage.WebViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
     </application>
 
