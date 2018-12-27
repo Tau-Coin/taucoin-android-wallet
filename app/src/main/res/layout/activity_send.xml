@@ -24,7 +24,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="50dp"
         android:hint="@string/send_receiver_address"
-        android:text="TPUR3cL7Tp5ZbEE9EFkkuM9jgHqPncV87R"
+        android:text=""
         android:textColorHint="@color/color_grey" />
 
     <EditText
@@ -92,8 +92,7 @@
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
         android:inputType="number|numberDecimal"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
+        android:maxLength="7"
         android:text="@string/send_normal_value"
         android:drawablePadding="2dp" />
 

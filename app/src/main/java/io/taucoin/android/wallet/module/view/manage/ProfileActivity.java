@@ -69,8 +69,10 @@ public class ProfileActivity extends BaseActivity {
         TakePhotoUtil.onActivityResult(this, requestCode, resultCode, data);
         if(requestCode == TakePhotoUtil.CODE_RESULT_REQUEST){
             Bitmap bitmap = TakePhotoUtil.getPhotoZoom();
-            ivAvatar.setImageBitmap(bitmap);
-            mUserPresenter.saveAvatar(TakePhotoUtil.getFileName(), bitmap);
+            if(bitmap != null){
+                ivAvatar.setImageBitmap(bitmap);
+                mUserPresenter.saveAvatar(TakePhotoUtil.getFileName(), bitmap);
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

@@ -28,12 +28,14 @@ import io.taucoin.android.wallet.base.BaseFragment;
 import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
+import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.presenter.TxPresenter;
 import io.taucoin.android.wallet.module.view.main.iview.ISendReceiveView;
 import io.taucoin.android.wallet.module.view.tx.SendActivity;
 import io.taucoin.android.wallet.module.view.manage.ImportKeyActivity;
 import io.taucoin.android.wallet.util.CopyManager;
 import io.taucoin.android.wallet.util.DateUtil;
+import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.android.wallet.util.UserUtil;
 import io.taucoin.android.wallet.widget.EmptyLayout;
@@ -75,8 +77,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
 
     @Override
     public void initData() {
-        onRefresh(null);
-        onEvent(null);
+        onEvent(EventBusUtil.getMessageEvent(MessageEvent.EventCode.ALL));
     }
 
     @Override
@@ -144,9 +145,25 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void onEvent(Object object) {
-        UserUtil.setBalance(balanceText);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent object) {
+        if(object == null){
+            return;
+        }
+        switch (object.getCode()){
+            case ALL:
+                UserUtil.setBalance(balanceText);
+                onRefresh(null);
+                break;
+            case BALANCE:
+                UserUtil.setBalance(balanceText);
+                break;
+            case TRANSACTION:
+                onRefresh(null);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -159,7 +176,9 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
     public void onRefresh(RefreshLayout refreshlayout) {
         mPageNo = 1;
         mTime = DateUtil.getCurrentTime(DateUtil.pattern6);
-        mTxPresenter.queryTransactionHistory(mPageNo, mTime);
+        if(mTxPresenter != null){
+            mTxPresenter.queryTransactionHistory(mPageNo, mTime);
+        }
 
         if(!UserUtil.isImportKey()){
             refreshLayout.finishRefresh(1000);

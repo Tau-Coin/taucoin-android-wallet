@@ -16,15 +16,14 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.base.BaseFragment;
 import io.taucoin.android.wallet.base.TransmitKey;
-import io.taucoin.android.wallet.db.entity.KeyValue;
+import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.presenter.TxService;
 import io.taucoin.android.wallet.module.view.main.iview.IHomeView;
+import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.UserUtil;
-import io.taucoin.foundation.util.StringUtil;
 
 public class HomeFragment extends BaseFragment implements IHomeView {
 
@@ -49,22 +48,39 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void onEvent(Object object){
-        String tag = StringUtil.getString(object);
-        if(refreshLayout != null && StringUtil.isSame(tag, TransmitKey.ServiceType.GET_BALANCE)){
-            refreshLayout.finishRefresh();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent object) {
+        if(object == null){
+            return;
         }
-        UserUtil.setNickName(tvNick);
-        UserUtil.setAvatar(ivHeaderPic);
-        UserUtil.setBalance(tvBalance);
+        switch (object.getCode()){
+            case ALL:
+                UserUtil.setBalance(tvBalance);
+                UserUtil.setNickName(tvNick);
+                UserUtil.setAvatar(ivHeaderPic);
+                break;
+            case BALANCE:
+                if(refreshLayout != null && refreshLayout.isRefreshing()){
+                    refreshLayout.finishRefresh();
+                }
+                UserUtil.setBalance(tvBalance);
+                break;
+            case NICKNAME:
+                UserUtil.setNickName(tvNick);
+                break;
+            case AVATAR:
+                UserUtil.setAvatar(ivHeaderPic);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
     public void initView() {
         refreshLayout.setEnableLoadmore(false);
         refreshLayout.setOnRefreshListener(this);
-        onEvent(null);
+        onEvent(EventBusUtil.getMessageEvent(MessageEvent.EventCode.ALL));
     }
 
     @Override

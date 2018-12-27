@@ -12,4 +12,8 @@ public interface IUserModel {
     void saveName(String name, LogicObserver<KeyValue> observer);
 
     void saveAvatar(String avatar, Bitmap bitmap, LogicObserver<KeyValue> observer);
+
+    void getKeyAndAddress(String publicKey, LogicObserver<KeyValue> observer);
+
+    void updateOldTxHistory(String address);
 }

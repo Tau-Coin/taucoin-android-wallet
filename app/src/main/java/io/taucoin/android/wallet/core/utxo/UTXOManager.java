@@ -17,9 +17,6 @@
 package io.taucoin.android.wallet.core.utxo;
 
 import com.github.naturs.logger.Logger;
-import com.mofei.tau.BuildConfig;
-
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +29,7 @@ public class UTXOManager {
 
     private static UTXOManager sSingleton = null;
 
-    protected UTXOManager() {
+    private UTXOManager() {
     }
 
     public synchronized static UTXOManager getInstance() {
@@ -73,15 +70,7 @@ public class UTXOManager {
 
             Logger.e("---------------");
             vCoins.add(utxoRecord);
-            // test
-            if(BuildConfig.DEBUG){
-                if(utxoRecord.getValue().compareTo(new BigInteger("599096000")) == 0){
-                 vCoins.remove(utxoRecord);
-                }
-            }
         }
-
-
         return true;
     }
 

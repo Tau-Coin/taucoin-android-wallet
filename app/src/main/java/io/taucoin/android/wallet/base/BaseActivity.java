@@ -12,9 +12,10 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import io.taucoin.android.wallet.module.bean.MessageEvent;
+import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.KeyboardUtils;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.foundation.util.ActivityManager;
@@ -26,13 +27,13 @@ public abstract class BaseActivity extends AppCompatActivity implements OnLoadmo
         super.onCreate(savedInstanceState);
         fullScreen(this);
         ActivityManager.addActivity(this);
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
+        if (!EventBusUtil.isRegistered(this)) {
+            EventBusUtil.register(this);
         }
     }
 
     @Subscribe
-    public void onEvent(String event){
+    public void onEvent(MessageEvent event){
 
     }
 
@@ -45,8 +46,8 @@ public abstract class BaseActivity extends AppCompatActivity implements OnLoadmo
 
         }
         ActivityManager.removeActivity(this);
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
+        if (EventBusUtil.isRegistered(this)) {
+            EventBusUtil.unregister(this);
         }
         super.onDestroy();
     }

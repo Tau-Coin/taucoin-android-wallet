@@ -25,7 +25,7 @@ public class ProgressManager {
             progress.requestWindowFeature(Window.FEATURE_NO_TITLE);
             progress.setContentView(R.layout.dialog_waiting);
             progress.setCanceledOnTouchOutside(true);
-
+            progress.setOnCancelListener(dialog -> closeProgressDialog(activity));
             mProgress = progress;
             if(!activity.isFinishing()){
                 progress.show();
@@ -41,12 +41,15 @@ public class ProgressManager {
     }
 
     public static void closeProgressDialog(FragmentActivity activity){
-        if(mProgress != null){
-            FragmentActivity activityDialog = (FragmentActivity) mProgress.getContext();
-            if(activityDialog.getClass().equals(activity.getClass())){
-                mProgress.dismiss();
-                mProgress = null;
+        try {
+            if(mProgress != null){
+                FragmentActivity activityDialog = (FragmentActivity) mProgress.getContext();
+                if(activityDialog.getClass().equals(activity.getClass())){
+                    mProgress.dismiss();
+                    mProgress = null;
+                }
             }
-        }
+        }catch (Exception ignore){}
+
     }
 }

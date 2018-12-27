@@ -1,12 +1,12 @@
 /**
  * Copyright 2018 TauCoin Core Developers.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,20 +18,18 @@ package io.taucoin.android.wallet.core;
 
 import com.google.bitcoin.core.Address;
 import com.google.bitcoin.core.AddressFormatException;
-import com.google.bitcoin.core.ECKey;
 import com.google.bitcoin.core.NetworkParameters;
 import com.google.bitcoin.core.ProtocolException;
 import com.google.bitcoin.core.Script;
 import com.google.bitcoin.core.ScriptException;
-import com.google.bitcoin.core.Sha256Hash;
 import com.google.bitcoin.core.Utils;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
+import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.core.blockchain.Constants;
 import io.taucoin.android.wallet.core.keystore.KeyStore;
 import io.taucoin.android.wallet.core.transactions.CreateTransactionResult;
@@ -42,8 +40,10 @@ import io.taucoin.android.wallet.core.transactions.TransactionOutPoint;
 import io.taucoin.android.wallet.core.transactions.TransactionOutput;
 import io.taucoin.android.wallet.core.utxo.CoinsSelector;
 import io.taucoin.android.wallet.core.utxo.UTXOManager;
+import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.db.entity.UTXORecord;
+import io.taucoin.android.wallet.util.FmtMicrometer;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.util.StringUtil;
 import io.taucoin.platform.adress.KeyManager;
@@ -54,21 +54,16 @@ public class Wallet implements Serializable {
 
     private static Wallet sSingleton = null;
 
-    private Map<Sha256Hash, Transaction> pendingTxList;
-
     private final NetworkParameters params;
 
     private final KeyStore keyStore;
 
     private final UTXOManager coinsManager;
 
-    protected Wallet() {
-
+    private Wallet() {
         params = NetworkParameters.mainNet();
         keyStore = KeyStore.getInstance();
         coinsManager = UTXOManager.getInstance();
-
-        pendingTxList = new HashMap<Sha256Hash, Transaction>();
     }
 
     public synchronized static Wallet getInstance() {
@@ -77,32 +72,11 @@ public class Wallet implements Serializable {
                 sSingleton = new Wallet();
             }
         }
-
         return sSingleton;
     }
 
-    public synchronized void addKey(ECKey key) {
-        keyStore.addKey(key);
-    }
-
-    public synchronized void addPendingTx(Transaction tx) {
-        pendingTxList.put(tx.getHash(), tx);
-    }
-
-    public synchronized  void removePendingTx(Sha256Hash hash) {
-        pendingTxList.remove(hash);
-    }
-
-    public synchronized boolean isTxWaitingForConfirmation(Transaction tx) {
-        return pendingTxList.containsKey(tx.getHash());
-    }
-
-    public synchronized boolean isAnyTxPending() {
-        return !pendingTxList.isEmpty();
-    }
-
-    public synchronized CreateTransactionResult createTransaction(Map<String, BigInteger> receipts, boolean bSubtractFeeFromReceipts, FeeRate userFeeRate, Transaction tx) {
-
+    public synchronized CreateTransactionResult createTransaction(Map<String, BigInteger> receipts, String txFee, Transaction tx) {
+        boolean bSubtractFeeFromReceipts = false;
         CreateTransactionResult result = new CreateTransactionResult();
 
         // Step1: validate address
@@ -117,15 +91,15 @@ public class Wallet implements Serializable {
             Recipient r;
             try {
                 BigInteger v = entry.getValue();
-                if (!Constants.duringMoneyRange(v)) {
-                    System.out.println("Address " + entry.getKey() + " value " + v.toString() + " invalid!");
-                    continue;
-                }
+//                if (!Constants.duringMoneyRange(v)) {
+//                    System.out.println("Address " + entry.getKey() + " value " + v.toString() + " invalid!");
+//                    continue;
+//                }
                 Address to = new Address(params, Utils.hexStringToBytes(Utils.getHash160FromTauAddress(entry.getKey())));
                 r = new Recipient(Script.createOutputScript(to), v, bSubtractFeeFromReceipts);
                 arrSendTo.add(r);
                 nTotal = nTotal.add(v);
-            } catch(AddressFormatException e) {
+            } catch (AddressFormatException e) {
                 result.failReason = TransactionFailReason.INVALID_RECIPIENT_OR_ADDRESS;
                 return result;
             }
@@ -170,19 +144,19 @@ public class Wallet implements Serializable {
 
                 if (recipient.fSubtractFeeFromAmount) {
                     // Subtract fee equally from each selected recipient
-                    txout.value = txout.value.subtract(result.feeRet.divide(BigInteger.valueOf((long)nSubtractFeeFromAmount)));
+                    txout.value = txout.value.subtract(result.feeRet.divide(BigInteger.valueOf((long) nSubtractFeeFromAmount)));
 
                     // first receiver pays the remainder not divisible by output count
                     if (fFirst) {
                         fFirst = false;
-                        txout.value = txout.value.subtract(result.feeRet.mod(BigInteger.valueOf((long)nSubtractFeeFromAmount)));
+                        txout.value = txout.value.subtract(result.feeRet.mod(BigInteger.valueOf((long) nSubtractFeeFromAmount)));
                     }
                 }
 
-                if (txout.value.compareTo(Constants.DEFAULT_MIN_RELAY_TX_FEE) < 0) {
-                    result.failReason = TransactionFailReason.AMOUNT_TO_SMALL;
-                    return result;
-                }
+//                if (txout.value.compareTo(Constants.DEFAULT_TX_FEE_MIN) < 0) {
+//                    result.failReason = TransactionFailReason.AMOUNT_TO_SMALL;
+//                    return result;
+//                }
                 tx.outputs.add(txout);
             }
 
@@ -202,8 +176,8 @@ public class Wallet implements Serializable {
                 // We do not move dust-change to fees, because the sender would end up paying more than requested.
                 // This would be against the purpose of the all-inclusive feature.
                 // So instead we raise the change and deduct from the recipient.
-                if (nSubtractFeeFromAmount > 0 && change.compareTo(Constants.DEFAULT_MIN_RELAY_TX_FEE) < 0) {
-                    BigInteger nDust = Constants.DEFAULT_MIN_RELAY_TX_FEE;
+                if (nSubtractFeeFromAmount > 0 && change.compareTo(Constants.DEFAULT_TX_FEE_MIN) < 0) {
+                    BigInteger nDust = Constants.DEFAULT_TX_FEE_MIN;
                     nDust = nDust.subtract(change);
                     // raise change until no more dust
                     change = change.add(nDust);
@@ -212,7 +186,7 @@ public class Wallet implements Serializable {
                     for (int i = 0; i < arrSendTo.size(); i++) {
                         if (arrSendTo.get(i).fSubtractFeeFromAmount) {
                             tx.outputs.get(i).value = tx.outputs.get(i).value.subtract(nDust);
-                            if (tx.outputs.get(i).value.compareTo(Constants.DEFAULT_MIN_RELAY_TX_FEE) < 0) {
+                            if (tx.outputs.get(i).value.compareTo(Constants.DEFAULT_TX_FEE_MIN) < 0) {
                                 result.failReason = TransactionFailReason.AMOUNT_TO_SMALL;
                                 return result;
                             }
@@ -221,7 +195,7 @@ public class Wallet implements Serializable {
                     }
                 }
 
-                if (change.compareTo(Constants.DEFAULT_MIN_RELAY_TX_FEE) < 0) {
+                if (change.compareTo(Constants.DEFAULT_TX_FEE_MIN) < 0) {
                     result.feeRet = result.feeRet.add(change);
                 } else {
                     // To keep simple, just get the first input as the change scriptPubkey
@@ -277,23 +251,10 @@ public class Wallet implements Serializable {
                 return result;
             }
 
-//            BigInteger needFee = new FeeRate(Constants.DEFAULT_MIN_RELAY_TX_FEE).getFee(nBytes);
-//            BigInteger userFee = BigInteger.ZERO;
-//            if (userFeeRate != null) {
-//                userFee = userFeeRate.getFee(nBytes);
-//            }
-//
-//            if (userFee.compareTo(needFee) > 0) {
-//                needFee = userFee;
-//            }
-//
-//            if (needFee.compareTo(Constants.DEFAULT_TRANSACTION_MAXFEE) > 0) {
-//                needFee = Constants.DEFAULT_TRANSACTION_MAXFEE;
-//            }
-
             BigInteger needFee = BigInteger.ZERO;
-            if (userFeeRate != null) {
-                needFee = userFeeRate.getFee();
+            if (StringUtil.isNotEmpty(txFee)) {
+                String fee = FmtMicrometer.fmtTxValue(txFee);
+                needFee = new BigInteger(fee, 10);
             }
 
             if (result.feeRet.compareTo(needFee) >= 0) {
@@ -302,25 +263,19 @@ public class Wallet implements Serializable {
             }
 
             result.feeRet = needFee;
-            continue;
         }
 
         return result;
     }
 
-    public synchronized boolean sendTransaction(Transaction tx) {
+    /**
+     * validate transaction parameter
+     */
+    public synchronized boolean validateTxParameter(TransactionHistory tx) {
         if (tx == null) {
             return false;
         }
-
-        // TODO: HTTP POST request
-        return true;
-    }
-
-    public synchronized boolean validateTxParamer(TransactionHistory tx) {
-        if (tx == null) {
-            return false;
-        }
+        // validate receive address
         if (StringUtil.isEmpty(tx.getToAddress())) {
             ToastUtils.showShortToast("Please enter address");
             return false;
@@ -329,13 +284,49 @@ public class Wallet implements Serializable {
             ToastUtils.showShortToast("Incorrect address");
             return false;
         }
+        // validate transaction amount
         if (StringUtil.isEmpty(tx.getValue())) {
             ToastUtils.showShortToast("Please enter amount");
             return false;
         }
+        BigInteger minAmount = Constants.MIN_CHANGE;
+        BigInteger maxAmount = Constants.MAX_MONEY;
+        String amountStr = FmtMicrometer.fmtTxValue(tx.getValue());
+        BigInteger amount = new BigInteger(amountStr, 10);
+        if (amount.compareTo(minAmount) < 0) {
+            ToastUtils.showShortToast(TransactionFailReason.AMOUNT_TO_SMALL.getMsg());
+            return false;
+        } else if (amount.compareTo(maxAmount) >= 0) {
+            ToastUtils.showShortToast(TransactionFailReason.AMOUNT_TO_LARGE.getMsg());
+            return false;
+        }
+        // validate transaction fee
         if (StringUtil.isEmpty(tx.getFee())) {
             ToastUtils.showShortToast("Please enter transaction fee");
             return false;
+        }
+
+        BigInteger minFee = Constants.DEFAULT_TX_FEE_MIN;
+        BigInteger maxFee = Constants.DEFAULT_TX_FEE_MAX;
+        String feeStr = FmtMicrometer.fmtTxValue(tx.getFee());
+        BigInteger fee = new BigInteger(feeStr, 10);
+        if (fee.compareTo(minFee) < 0) {
+            ToastUtils.showShortToast(TransactionFailReason.TX_FEE_TOO_SMALL.getMsg());
+            return false;
+        } else if (fee.compareTo(maxFee) > 0) {
+            ToastUtils.showShortToast(TransactionFailReason.TX_FEE_TOO_LARGE.getMsg());
+            return false;
+        }
+
+        // validate balance is enough
+        KeyValue keyValue = MyApplication.getKeyValue();
+        if (keyValue != null) {
+            String balanceStr = String.valueOf(keyValue.getBalance());
+            BigInteger balance = new BigInteger(balanceStr, 10);
+            if (balance.compareTo(amount.add(fee)) < 0) {
+                ToastUtils.showShortToast(TransactionFailReason.NO_ENOUGH_COINS.getMsg());
+                return false;
+            }
         }
         return true;
     }

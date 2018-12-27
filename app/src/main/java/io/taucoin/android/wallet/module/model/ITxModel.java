@@ -1,6 +1,8 @@
 package io.taucoin.android.wallet.module.model;
 
 import java.util.List;
+
+import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.db.entity.UTXORecord;
 import io.taucoin.android.wallet.module.bean.BalanceBean;
@@ -30,4 +32,5 @@ public interface ITxModel {
     void insertTransactionHistory(TransactionHistory txHistory);
 
     void queryTransactionHistory(int pageNo, String time, LogicObserver<List<TransactionHistory>> logicObserver);
+
 }

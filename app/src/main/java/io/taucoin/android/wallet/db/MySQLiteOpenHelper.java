@@ -34,22 +34,11 @@ public class MySQLiteOpenHelper extends DaoMaster.OpenHelper {
         super.onUpgrade(db, oldVersion, newVersion);
 
         if (oldVersion == newVersion) {
-            Logger.i("onUpgrade", "The latest version of the database does not need to be upgraded");
+            Logger.d("onUpgrade", "The latest version of the database does not need to be upgraded");
             return;
         }
-        Logger.i("onUpgrade", "Database upgrade start");
-        Log.e("onUpgrade", "数据库从版本" + oldVersion + "升级到版本" + newVersion);
-        for (int i = oldVersion; i < newVersion; i++) {
-            switch (i) {
-                case 1:
-                    String sql = "";
-                    db.execSQL(sql);
-                case 2:
-                default:
-                    break;
-            }
-        }
-        //把需要管理的数据库表DAO作为最后一个参数传入到方法中
+        Logger.d("onUpgrade", "Database upgrade start");
+        Log.d("onUpgrade", "Database version update form " + oldVersion + " to " + newVersion);
         MigrationHelper.migrate(db, new MigrationHelper.ReCreateAllTableListener() {
 
             @Override

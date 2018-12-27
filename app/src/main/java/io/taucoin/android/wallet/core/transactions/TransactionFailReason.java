@@ -25,7 +25,10 @@ public enum TransactionFailReason {
     AMOUNT_TO_SMALL(5, "sent amount too small"),
     UTXO_INVALID(6, "internal error: invalid utxo"),
     SIGNATURE_EXCEPTION(7, "internal error: sign fail"),
-    TX_TOO_LARGE(8, "Transaction too large");
+    TX_TOO_LARGE(8, "Transaction too large"),
+    TX_FEE_TOO_SMALL(9, "Transaction fees are too small"),
+    TX_FEE_TOO_LARGE(10, "Transaction fees are too large"),
+    AMOUNT_TO_LARGE(11, "sent amount too large");
 
     private int code;
     private String msg;

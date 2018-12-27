@@ -19,11 +19,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.base.BaseFragment;
 import io.taucoin.android.wallet.db.entity.KeyValue;
+import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.view.main.iview.IManageView;
 import io.taucoin.android.wallet.module.view.manage.HelpActivity;
 import io.taucoin.android.wallet.module.view.manage.ImportKeyActivity;
 import io.taucoin.android.wallet.module.view.manage.KeysActivity;
 import io.taucoin.android.wallet.module.view.manage.ProfileActivity;
+import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.UserUtil;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.util.AppUtil;
@@ -50,7 +52,7 @@ public class ManageFragment extends BaseFragment implements IManageView {
         String versionName = getResources().getString(R.string.manager_version);
         versionName = String.format(versionName, AppUtil.getVersionName(getActivity()));
         tvVersion.setText(versionName);
-        onEvent(null);
+        onEvent(EventBusUtil.getMessageEvent(MessageEvent.EventCode.ALL));
     }
 
     @OnClick({R.id.iv_header_pic, R.id.tv_nick, R.id.item_keys, R.id.item_address_note, R.id.item_help})
@@ -84,9 +86,24 @@ public class ManageFragment extends BaseFragment implements IManageView {
     }
 
     @Override
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void onEvent(Object object){
-        UserUtil.setNickName(tvNick);
-        UserUtil.setAvatar(ivHeaderPic);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent object) {
+        if(object == null){
+            return;
+        }
+        switch (object.getCode()){
+            case ALL:
+                UserUtil.setNickName(tvNick);
+                UserUtil.setAvatar(ivHeaderPic);
+                break;
+            case NICKNAME:
+                UserUtil.setNickName(tvNick);
+                break;
+            case AVATAR:
+                UserUtil.setAvatar(ivHeaderPic);
+                break;
+            default:
+                break;
+        }
     }
 }

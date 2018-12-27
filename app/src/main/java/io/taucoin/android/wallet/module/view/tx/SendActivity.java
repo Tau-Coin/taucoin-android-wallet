@@ -1,6 +1,7 @@
 package io.taucoin.android.wallet.module.view.tx;
 
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,9 +28,11 @@ import io.taucoin.android.wallet.module.presenter.TxService;
 import io.taucoin.android.wallet.module.presenter.TxPresenter;
 import io.taucoin.android.wallet.module.view.main.iview.ISendView;
 import io.taucoin.android.wallet.util.KeyboardUtils;
+import io.taucoin.android.wallet.util.MoneyValueFilter;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.widget.ActionSheetDialog;
 import io.taucoin.android.wallet.widget.CommonDialog;
+import io.taucoin.foundation.net.callback.LogicObserver;
 
 public class SendActivity extends BaseActivity implements ISendView {
 
@@ -52,10 +55,16 @@ public class SendActivity extends BaseActivity implements ISendView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send);
+        ButterKnife.bind(this);
         mTxPresenter = new TxPresenter(this);
         ProgressManager.showProgressDialog(this);
         TxService.startTxService(TransmitKey.ServiceType.GET_SEND_DATA);
-        ButterKnife.bind(this);
+        initView();
+    }
+
+    private void initView() {
+        etAmount.setFilters(new InputFilter[]{new MoneyValueFilter()});
+        etFee.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(4)});
     }
 
     @OnClick(R.id.tv_fee)
@@ -102,7 +111,7 @@ public class SendActivity extends BaseActivity implements ISendView {
         tx.setValue(amount);
         tx.setFee(fee);
 
-        if(Wallet.getInstance().validateTxParamer(tx)){
+        if(Wallet.getInstance().validateTxParameter(tx)){
             showSureDialog(tx);
         }
     }
@@ -119,16 +128,25 @@ public class SendActivity extends BaseActivity implements ISendView {
                 .setNegativeButton(R.string.send_dialog_no, (dialog, which) -> dialog.dismiss())
                 .setPositiveButton(R.string.send_dialog_yes, (dialog, which) -> {
                     dialog.dismiss();
-                    ProgressManager.showProgressDialog(this);
-                    mTxPresenter.getBalanceAndUTXO(tx);
+                    handleSendTransaction(tx);
                 })
                 .create().show();
 
     }
 
-    @Override
-    public void startService() {
-        TxService.startTxService(TransmitKey.ServiceType.GET_UTXO_LIST);
+    private void handleSendTransaction(TransactionHistory tx) {
+        ProgressManager.showProgressDialog(this);
+        mTxPresenter.getBalanceAndUTXO(tx, new LogicObserver<Boolean>() {
+            @Override
+            public void handleData(Boolean isSuccess) {
+                ProgressManager.closeProgressDialog();
+                if(isSuccess){
+                    etAddress.getText().clear();
+                    etAmount.getText().clear();
+                    etFee.setText(R.string.send_normal_value);
+                }
+            }
+        });
     }
 
     private void showSoftInput() {

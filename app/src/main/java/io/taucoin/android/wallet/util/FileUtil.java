@@ -55,7 +55,7 @@ public class FileUtil {
 
 
 
-    public static Bitmap getFilesDirBitmap(String filename){
+    static Bitmap getFilesDirBitmap(String filename){
         Bitmap bitmap = null;
         try {
             Context context = MyApplication.getInstance();

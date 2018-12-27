@@ -29,6 +29,7 @@ import java.util.List;
 import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.base.BaseFragment;
 import io.taucoin.android.wallet.widget.ActionSheetDialog;
+import io.taucoin.foundation.util.DimensionsUtil;
 import io.taucoin.foundation.util.StringUtil;
 import io.taucoin.foundation.util.permission.EasyPermissions;
 
@@ -149,8 +150,9 @@ public class TakePhotoUtil {
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
             // outputX outputY
-            intent.putExtra("outputX", 250);
-            intent.putExtra("outputY", 250);
+            int size = DimensionsUtil.dip2px(context, 125);
+            intent.putExtra("outputX", size);
+            intent.putExtra("outputY", size);
 //          intent.putExtra("return-data", true);
 
             tempUri = Uri.parse(getAllPath());
@@ -277,8 +279,6 @@ public class TakePhotoUtil {
                         ToastUtils.showShortToast("No sdcard");
                     }
                 }
-                break;
-            case TakePhotoUtil.CODE_RESULT_REQUEST:
                 break;
 
         }

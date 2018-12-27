@@ -116,11 +116,7 @@ public class SharedPreferencesHelper {
         }
     }
 
-    private SharedPreferences getSP() {
+    public SharedPreferences getSP() {
         return context.getSharedPreferences("sp", Context.MODE_MULTI_PROCESS);
-    }
-
-    private SharedPreferences getSP(String name) {
-        return context.getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 }

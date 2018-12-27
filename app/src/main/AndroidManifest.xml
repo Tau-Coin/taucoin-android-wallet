@@ -74,6 +74,7 @@
 
         <activity android:name="io.taucoin.android.wallet.module.view.manage.WebViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
+
     </application>
 
 </manifest>

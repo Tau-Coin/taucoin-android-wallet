@@ -2,16 +2,20 @@ package io.taucoin.android.wallet.module.presenter;
 
 import android.graphics.Bitmap;
 
-import org.greenrobot.eventbus.EventBus;
+import java.util.Map;
+import java.util.Set;
 
 import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.db.entity.KeyValue;
+import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.model.IUserModel;
 import io.taucoin.android.wallet.module.model.UserModel;
 import io.taucoin.android.wallet.module.view.manage.iview.IImportKeyView;
+import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 import io.taucoin.foundation.net.callback.LogicObserver;
+import io.taucoin.foundation.util.StringUtil;
 import io.taucoin.platform.adress.Key;
 import io.taucoin.platform.adress.KeyManager;
 
@@ -21,6 +25,7 @@ public class UserPresenter {
     private IUserModel mUserModel;
 
     public UserPresenter() {
+        mUserModel = new UserModel();
         mUserModel = new UserModel();
     }
     public UserPresenter(IImportKeyView view) {
@@ -56,7 +61,7 @@ public class UserPresenter {
         mUserModel.saveName(name, new LogicObserver<KeyValue>() {
             @Override
             public void handleData(KeyValue keyValue) {
-                EventBus.getDefault().postSticky(keyValue);
+                EventBusUtil.post(MessageEvent.EventCode.NICKNAME);
             }
         });
     }
@@ -65,8 +70,54 @@ public class UserPresenter {
         mUserModel.saveAvatar(avatar, bitmap, new LogicObserver<KeyValue>() {
             @Override
             public void handleData(KeyValue keyValue) {
-                EventBus.getDefault().postSticky(keyValue);
+                EventBusUtil.post(MessageEvent.EventCode.AVATAR);
             }
         });
+    }
+
+    public void initLocalData() {
+        Map<String, ?> mapValue = SharedPreferencesHelper.getInstance().getSP().getAll();
+        Set<String> keys = mapValue.keySet();
+        String privateKey = null;
+        String publicKey = null;
+        String address = null;
+        for (String key : keys) {
+            if(StringUtil.isNotEmpty(key)){
+                if(key.endsWith(TransmitKey.PRIVATE_KEY)){
+                    privateKey = mapValue.get(key).toString();
+                }else if(key.endsWith(TransmitKey.PUBLIC_KEY)){
+                    publicKey = mapValue.get(key).toString();
+                }else if(key.endsWith(TransmitKey.ADDRESS)){
+                    address = mapValue.get(key).toString();
+                }
+            }
+        }
+        // handle old version2.0 data
+        if(StringUtil.isNotEmpty(privateKey) && StringUtil.isNotEmpty(publicKey)
+                && StringUtil.isNotEmpty(address)){
+            KeyValue kayValue = new KeyValue();
+            kayValue.setPrivkey(privateKey);
+            kayValue.setPubkey(publicKey);
+            kayValue.setAddress(address);
+
+            mUserModel.saveKeyAndAddress(kayValue, new LogicObserver<KeyValue>() {
+                @Override
+                public void handleData(KeyValue keyValue) {
+                    MyApplication.setKeyValue(keyValue);
+                    SharedPreferencesHelper.getInstance().clear();
+                    SharedPreferencesHelper.getInstance().putString(TransmitKey.PUBLIC_KEY, keyValue.getPubkey());
+                    SharedPreferencesHelper.getInstance().putString(TransmitKey.ADDRESS, keyValue.getAddress());
+                    mUserModel.updateOldTxHistory(keyValue.getAddress());
+                }
+            });
+        }else{
+            publicKey = SharedPreferencesHelper.getInstance().getString(TransmitKey.PUBLIC_KEY, "");
+            mUserModel.getKeyAndAddress(publicKey, new LogicObserver<KeyValue>() {
+                @Override
+                public void handleData(KeyValue keyValue) {
+                    MyApplication.setKeyValue(keyValue);
+                }
+            });
+        }
     }
 }

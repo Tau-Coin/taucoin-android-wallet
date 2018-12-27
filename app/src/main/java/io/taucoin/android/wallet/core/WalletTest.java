@@ -193,7 +193,7 @@ public class WalletTest {
 
         Wallet wallet = Wallet.getInstance();
         Transaction tx = new Transaction(NetworkParameters.mainNet());
-        CreateTransactionResult result = wallet.createTransaction(receipts, false, null, tx);
+        CreateTransactionResult result = wallet.createTransaction(receipts, null, tx);
 
         if (result.failReason == TransactionFailReason.NO_ERROR) {
             System.out.println("Create tx success");

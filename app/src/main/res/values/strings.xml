@@ -52,6 +52,8 @@
     <string name="send_dialog_no">Back</string>
     <string name="send_has_pending">Previous transaction is under confirmation</string>
     <string name="send_tx_success">Transactions have been sent.</string>
+    <string name="send_tx_fail">Transaction Error.</string>
+    <string name="send_tx_network_error">Error in network, send failed.</string>
 
     <string name="keys_dialog_title">Please make sure your\nprivate key has been saved</string>
     <string name="keys_dialog_tips">Ignore this message for the first generate or import</string>

@@ -11,8 +11,10 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import io.taucoin.android.wallet.module.bean.MessageEvent;
+import io.taucoin.android.wallet.util.EventBusUtil;
 
 public abstract class BaseFragment extends Fragment implements OnRefreshListener, OnLoadmoreListener {
     private View mRootView;
@@ -25,8 +27,8 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
+        if (!EventBusUtil.isRegistered(this)) {
+            EventBusUtil.register(this);
         }
         if (mRootView != null) {
             ViewGroup parent = (ViewGroup) mRootView.getParent();
@@ -40,7 +42,8 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
     }
 
     @Subscribe
-    public void onEvent(Object object){
+    public void onEvent(MessageEvent event){
+
     }
 
     public abstract View getViewLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
@@ -48,8 +51,8 @@ public abstract class BaseFragment extends Fragment implements OnRefreshListener
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
+        if (EventBusUtil.isRegistered(this)) {
+            EventBusUtil.unregister(this);
         }
     }
 

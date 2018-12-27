@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnLongClick;
+import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.util.CopyManager;
 import io.taucoin.android.wallet.util.FmtMicrometer;
@@ -96,8 +97,8 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         amount = "-" + amount;
         groupViewHolder.tvAmount.setText(amount);
         groupViewHolder.tvTime.setText(tx.getTime());
-        boolean isSuccess = StringUtil.isSame("Successful", tx.getResult());
-        boolean isConfirming = StringUtil.isSame("Confirming", tx.getResult());
+        boolean isSuccess = StringUtil.isSame(TransmitKey.TxResult.SUCCESSFUL, tx.getResult());
+        boolean isConfirming = StringUtil.isSame(TransmitKey.TxResult.CONFIRMING, tx.getResult());
         int color = R.color.color_red;
         if(isConfirming){
             color = R.color.color_blue;
@@ -125,6 +126,10 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         childViewHolder.tvTransactionId.setText(tx.getTxId());
         String fee = tx.getFee() + "TAU";
         childViewHolder.tvTxFee.setText(fee);
+
+        childViewHolder.tvFailMsg.setText(tx.getMessage());
+        boolean isHaveFailMsg = StringUtil.isSame(TransmitKey.TxResult.FAILED, tx.getResult()) && StringUtil.isNotEmpty(tx.getMessage());
+        childViewHolder.tvFailMsg.setVisibility(isHaveFailMsg ? View.VISIBLE : View.GONE);
         return convertView;
     }
 
@@ -157,6 +162,8 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         TextView tvTransactionId;
         @BindView(R.id.tv_tx_fee)
         TextView tvTxFee;
+        @BindView(R.id.tv_fail_msg)
+        TextView tvFailMsg;
 
         ChildViewHolder(View view) {
             ButterKnife.bind(this, view);

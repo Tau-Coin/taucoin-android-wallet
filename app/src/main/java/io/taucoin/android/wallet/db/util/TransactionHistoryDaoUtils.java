@@ -52,8 +52,8 @@ public class TransactionHistoryDaoUtils {
         return getTransactionHistoryDao().queryBuilder()
         .where(TransactionHistoryDao.Properties.Confirmations.lt(1),
                 TransactionHistoryDao.Properties.FromAddress.eq(formAddress),
-                qb.or(TransactionHistoryDao.Properties.Result.eq("Confirming"),
-                    TransactionHistoryDao.Properties.Result.eq("Successful")))
+                qb.or(TransactionHistoryDao.Properties.Result.eq(TransmitKey.TxResult.CONFIRMING),
+                    TransactionHistoryDao.Properties.Result.eq(TransmitKey.TxResult.SUCCESSFUL)))
         .list();
     }
 
@@ -79,5 +79,16 @@ public class TransactionHistoryDaoUtils {
                 .orderDesc(TransactionHistoryDao.Properties.Time)
                 .offset((pageNo - 1) * TransmitKey.PAGE_SIZE).limit(TransmitKey.PAGE_SIZE)
                 .list();
+    }
+
+    public void updateOldTxHistory(String address) {
+        QueryBuilder<TransactionHistory> db = getTransactionHistoryDao().queryBuilder();
+        db.where(db.or(TransactionHistoryDao.Properties.FromAddress.eq(""),
+                TransactionHistoryDao.Properties.FromAddress.isNull()));
+        List<TransactionHistory> list = db.list();
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).setFromAddress(address);
+        }
+        getTransactionHistoryDao().updateInTx(list);
     }
 }

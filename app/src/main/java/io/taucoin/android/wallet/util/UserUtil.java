@@ -59,7 +59,7 @@ public class UserUtil {
         setBalance(tvBalance, keyValue.getBalance());
     }
 
-    public static void setBalance(TextView tvBalance, long balance) {
+    private static void setBalance(TextView tvBalance, long balance) {
         String balanceStr = MyApplication.getInstance().getResources().getString(R.string.common_balance);
         balanceStr = String.format(balanceStr, FmtMicrometer.fmtBalance(balance));
         tvBalance.setText(Html.fromHtml(balanceStr));
@@ -73,13 +73,26 @@ public class UserUtil {
         KeyValue keyValue = MyApplication.getKeyValue();
         if(keyValue != null){
             Observable.create((ObservableOnSubscribe<Bitmap>) emitter -> {
-                Bitmap bitmap = FileUtil.getFilesDirBitmap(keyValue.getHeaderImage());
-                if(bitmap != null){
-                    emitter.onNext(bitmap);
+                if(StringUtil.isNotEmpty(keyValue.getHeaderImage())){
+                    Bitmap bitmap = FileUtil.getFilesDirBitmap(keyValue.getHeaderImage());
+                    if(bitmap != null){
+                        emitter.onNext(bitmap);
+                    }else{
+                        emitter.onError(null);
+                    }
+                }else{
+                    emitter.onError(null);
                 }
             }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new LogicObserver<Bitmap>() {
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        ivAvatar.setImageResource(R.mipmap.icon_avatar);
+                    }
+
                     @Override
                     public void handleData(Bitmap bitmap) {
                         Logger.d("UserUtil.setAvatar=" + bitmap.getByteCount());

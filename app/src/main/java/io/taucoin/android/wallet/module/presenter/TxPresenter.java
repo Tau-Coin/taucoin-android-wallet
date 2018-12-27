@@ -11,12 +11,14 @@ import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.db.entity.UTXORecord;
 import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
+import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.model.ITxModel;
 import io.taucoin.android.wallet.module.model.TxModel;
 import io.taucoin.android.wallet.module.view.main.iview.ISendReceiveView;
 import io.taucoin.android.wallet.module.view.main.iview.ISendView;
 import io.taucoin.android.wallet.net.callback.TAUObserver;
-import io.taucoin.android.wallet.util.ProgressManager;
+import io.taucoin.android.wallet.util.EventBusUtil;
+import io.taucoin.android.wallet.util.ResourcesUtil;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.net.callback.RetResult;
@@ -25,10 +27,6 @@ public class TxPresenter {
     private ISendView mSendView;
     private ISendReceiveView mSendReceiveView;
     private ITxModel mTxModel;
-
-    public TxPresenter() {
-        mTxModel = new TxModel();
-    }
 
     public TxPresenter(ISendView sendView) {
         mTxModel = new TxModel();
@@ -44,6 +42,7 @@ public class TxPresenter {
             @Override
             public void handleData(Boolean isAnyTxPending) {
                 if(isAnyTxPending){
+                    TxService.startTxService(TransmitKey.ServiceType.GET_RAW_TX);
                     ToastUtils.showShortToast(R.string.send_has_pending);
                 }else{
                     mSendView.checkForm();
@@ -53,7 +52,7 @@ public class TxPresenter {
     }
 
     //First step: update Balance and UTXO
-    public void getBalanceAndUTXO(TransactionHistory tx) {
+    public void getBalanceAndUTXO(TransactionHistory tx, LogicObserver<Boolean> logicObserver) {
         KeyValue keyValue = MyApplication.getKeyValue();
         if(keyValue == null) return;
         long utxo = keyValue.getUtxo();
@@ -64,7 +63,7 @@ public class TxPresenter {
                 @Override
                 public void handleError(int code, String msg) {
                     super.handleError(code, msg);
-                    ProgressManager.closeProgressDialog();
+                    logicObserver.onNext(false);
                 }
 
                 @Override
@@ -76,61 +75,70 @@ public class TxPresenter {
                         sum += v;
                     }
                     if (utxo == sum){
-                        createTransaction(tx);
+                        createTransaction(tx, logicObserver);
                     }else {
                         mTxModel.getUTXOList();
-                        ProgressManager.closeProgressDialog();
+                        logicObserver.onNext(false);
                     }
                 }
             });
         }else {
             mTxModel.getUTXOList();
-            ProgressManager.closeProgressDialog();
+            logicObserver.onNext(false);
         }
     }
     //The second step: Building transactions
-    private void createTransaction(TransactionHistory txHistory) {
+    private void createTransaction(TransactionHistory txHistory, LogicObserver<Boolean> logicObserver) {
         mTxModel.createTransaction(txHistory, new LogicObserver<String>() {
             @Override
             public void handleData(String tx_hex) {
-                sendRawTransaction(tx_hex, txHistory);
+                sendRawTransaction(tx_hex, txHistory, logicObserver);
             }
 
             @Override
             public void handleError(int code, String msg) {
                 super.handleError(code, msg);
                 ToastUtils.showShortToast(msg);
-                ProgressManager.closeProgressDialog();
+                logicObserver.onNext(false);
             }
         });
 
     }
 
     //The third step: Send the transaction to the trading pool
-    private void sendRawTransaction(String tx_hex, TransactionHistory txHistory) {
+    private void sendRawTransaction(String tx_hex, TransactionHistory txHistory, LogicObserver<Boolean> logicObserver) {
         mTxModel.sendRawTransaction(tx_hex, new TAUObserver<RetResult<String>>(){
             @Override
             public void handleData(RetResult<String> stringResResult) {
                 super.handleData(stringResResult);
-                ProgressManager.closeProgressDialog();
                 Logger.d("get_txid_after_sendTX=" + stringResResult.getRet());
                 ToastUtils.showShortToast(R.string.send_tx_success);
                 TransactionHistory transactionHistory = new TransactionHistory();
                 transactionHistory.setTxId(txHistory.getTxId());
-                transactionHistory.setResult("Confirming");
+                transactionHistory.setResult(TransmitKey.TxResult.CONFIRMING);
                 mTxModel.updateTransactionHistory(transactionHistory);
 
+                EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
+                logicObserver.onNext(true);
                 checkRawTransaction();
             }
 
             @Override
             public void handleError(String msg, int msgCode) {
-                super.handleError(msg, msgCode);
-                ProgressManager.closeProgressDialog();
+                String result = "Error in network, send failed";
+                if(msgCode == 401){
+                    result = ResourcesUtil.getText(R.string.send_tx_fail);
+                }else if(msgCode == 402){
+                    result = msg;
+                }
+                super.handleError(result, msgCode);
                 TransactionHistory transactionHistory = TransactionHistoryDaoUtils.getInstance().queryTransactionById(txHistory.getTxId());
-                transactionHistory.setResult("Failed");
-                transactionHistory.setMessage(msg);
+                transactionHistory.setResult(TransmitKey.TxResult.FAILED);
+                transactionHistory.setMessage(result);
                 mTxModel.updateTransactionHistory(transactionHistory);
+                logicObserver.onNext(false);
+
+                EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
             }
         });
     }

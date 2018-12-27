@@ -12,6 +12,7 @@ public class TransmitKey {
         public static final String GET_INFO = "get_info";
     }
 
+    public static final String PRIVATE_KEY = "Privkey";
     public static final String PUBLIC_KEY = "Pubkey";
     public static final String ADDRESS = "Address";
 
@@ -20,4 +21,10 @@ public class TransmitKey {
     public static final String HOW_IMPORT_KEY_URL = "https://android.taucoin.io/static/help3.html";
 
     public static final int PAGE_SIZE = 20;
+
+    public static class TxResult{
+        public static final String FAILED = "Failed";
+        public static final String SUCCESSFUL = "Successful";
+        public static final String CONFIRMING = "Confirming";
+    }
 }

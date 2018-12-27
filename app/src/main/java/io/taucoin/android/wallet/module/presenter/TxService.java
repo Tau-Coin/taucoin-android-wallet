@@ -7,8 +7,6 @@ import android.os.IBinder;
 
 import com.github.naturs.logger.Logger;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -20,15 +18,18 @@ import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.db.util.KeyValueDaoUtils;
 import io.taucoin.android.wallet.module.bean.BalanceBean;
+import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.model.AppModel;
 import io.taucoin.android.wallet.module.model.IAppModel;
 import io.taucoin.android.wallet.module.model.ITxModel;
 import io.taucoin.android.wallet.module.model.TxModel;
 import io.taucoin.android.wallet.net.callback.CommonObserver;
 import io.taucoin.android.wallet.net.callback.TAUObserver;
+import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.net.callback.RetResult;
+import io.taucoin.foundation.util.StringUtil;
 
 public class TxService extends Service {
 
@@ -61,18 +62,18 @@ public class TxService extends Service {
             String serviceType = intent.getStringExtra(TransmitKey.SERVICE_TYPE);
             switch (serviceType){
                 case TransmitKey.ServiceType.GET_HOME_DATA:
-                    getBalance();
+                    getBalance(serviceType);
                     getUTXOList();
                     if(!mIsChecked){
                         checkRawTransaction();
                     }
                     break;
                 case TransmitKey.ServiceType.GET_SEND_DATA:
-                    getBalance();
+                    getBalance(serviceType);
                     getUTXOList();
                     break;
                 case TransmitKey.ServiceType.GET_BALANCE:
-                    getBalance();
+                    getBalance(serviceType);
                     break;
                 case TransmitKey.ServiceType.GET_UTXO_LIST:
                     getUTXOList();
@@ -125,7 +126,7 @@ public class TxService extends Service {
                             mTxModel.checkRawTransaction(txHistories.get(i).getTxId(), new LogicObserver<Boolean>(){
                                 @Override
                                 public void handleData(Boolean isOnBlockChain) {
-                                    getBalance();
+                                    getBalance(TransmitKey.ServiceType.GET_BALANCE);
                                     getUTXOList();
                                 }
                             });
@@ -143,7 +144,7 @@ public class TxService extends Service {
         });
     }
 
-    private void getBalance() {
+    private void getBalance(String serviceType) {
         mTxModel.getBalance( new TAUObserver<RetResult<BalanceBean>>() {
             @Override
             public void handleError(String msg, int msgCode) {
@@ -160,7 +161,11 @@ public class TxService extends Service {
                 KeyValue entry = KeyValueDaoUtils.getInstance().insertOrReplace(balance);
                 MyApplication.setKeyValue(entry);
                 if(entry != null){
-                    EventBus.getDefault().postSticky(TransmitKey.ServiceType.GET_BALANCE);
+                    if(StringUtil.isSame(serviceType, TransmitKey.ServiceType.GET_HOME_DATA)){
+                        EventBusUtil.post(MessageEvent.EventCode.ALL);
+                    }else{
+                        EventBusUtil.post(MessageEvent.EventCode.BALANCE);
+                    }
                 }
             }
         });

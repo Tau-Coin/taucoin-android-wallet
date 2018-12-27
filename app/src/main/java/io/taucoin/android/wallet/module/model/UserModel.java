@@ -9,6 +9,7 @@ import io.reactivex.schedulers.Schedulers;
 import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.db.util.KeyValueDaoUtils;
+import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
 import io.taucoin.android.wallet.util.FileUtil;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.util.StringUtil;
@@ -57,5 +58,22 @@ public class UserModel implements IUserModel{
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(observer);
+    }
+
+    @Override
+    public void getKeyAndAddress(String publicKey, LogicObserver<KeyValue> observer) {
+        Observable.create((ObservableOnSubscribe<KeyValue>) emitter -> {
+            KeyValue keyValue = KeyValueDaoUtils.getInstance().queryByPubicKey(publicKey);
+            emitter.onNext(keyValue);
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(observer);
+    }
+    @Override
+    public void updateOldTxHistory(String address){
+        Observable.create(emitter ->
+            TransactionHistoryDaoUtils.getInstance().updateOldTxHistory(address)
+        ).subscribeOn(Schedulers.io())
+        .subscribe();
     }
 }

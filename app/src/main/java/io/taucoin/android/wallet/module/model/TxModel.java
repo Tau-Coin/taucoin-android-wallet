@@ -5,7 +5,6 @@ import com.google.bitcoin.core.AddressFormatException;
 import com.google.bitcoin.core.ECKey;
 import com.google.bitcoin.core.NetworkParameters;
 import com.google.bitcoin.core.Utils;
-import io.taucoin.android.wallet.core.FeeRate;
 import io.taucoin.android.wallet.core.Wallet;
 import io.taucoin.android.wallet.core.keystore.KeyStore;
 import io.taucoin.android.wallet.core.transactions.CreateTransactionResult;
@@ -171,7 +170,7 @@ public class TxModel implements ITxModel {
                     transactionHistory.setTxId(txId);
                     transactionHistory.setConfirmations(rawTx.getConfirmations());
                     transactionHistory.setBlocktime(rawTx.getBlocktime());
-                    transactionHistory.setResult("Successful");
+                    transactionHistory.setResult(TransmitKey.TxResult.SUCCESSFUL);
                     updateTransactionHistory(transactionHistory);
                     if(rawTx.getBlocktime() >= 1){
                         observer.onNext(true);
@@ -206,9 +205,8 @@ public class TxModel implements ITxModel {
         receipts.put(txHistory.getToAddress(), new BigInteger(amount, 10));
         Wallet wallet = Wallet.getInstance();
         Transaction tx = new Transaction(NetworkParameters.mainNet());
-        String fee = FmtMicrometer.fmtTxValue(txHistory.getFee());
-        FeeRate feeRate = new FeeRate(new BigInteger(fee, 10));
-        CreateTransactionResult result = wallet.createTransaction(receipts, false, feeRate, tx);
+        String fee = txHistory.getFee();
+        CreateTransactionResult result = wallet.createTransaction(receipts, fee, tx);
         if (result.failReason == TransactionFailReason.NO_ERROR) {
             Logger.i("Create tx success");
             Logger.i(tx.toString());

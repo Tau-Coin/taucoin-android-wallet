@@ -3,10 +3,9 @@ package io.taucoin.android.wallet;
 import android.app.Application;
 
 import io.fabric.sdk.android.Fabric;
-import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.db.entity.KeyValue;
-import io.taucoin.android.wallet.db.util.KeyValueDaoUtils;
-import io.taucoin.android.wallet.util.SharedPreferencesHelper;
+import io.taucoin.android.wallet.module.presenter.TxPresenter;
+import io.taucoin.android.wallet.module.presenter.UserPresenter;
 import io.taucoin.foundation.net.NetWorkManager;
 import io.taucoin.foundation.util.AppUtil;
 import io.taucoin.foundation.util.PropertyUtils;
@@ -52,9 +51,7 @@ public class MyApplication extends Application {
         Logger.setLogConverter(new AndroidLogConverter());
 
         // Crashlytics
-//        if(!BuildConfig.DEBUG){
-            Fabric.with(this, new Crashlytics());
-//        }
+        Fabric.with(this, new Crashlytics());
 
         // Stetho DB Test
         if(BuildConfig.DEBUG){
@@ -68,8 +65,8 @@ public class MyApplication extends Application {
     }
 
     private void initKeyValue() {
-        String publicKey = SharedPreferencesHelper.getInstance().getString(TransmitKey.PUBLIC_KEY, "");
-        mKeyValue = KeyValueDaoUtils.getInstance().queryByPubicKey(publicKey);
+        UserPresenter userPresenter = new UserPresenter();
+        userPresenter.initLocalData();
     }
 
     public static MyApplication getInstance() {
