@@ -2,12 +2,12 @@ package io.taucoin.foundation.net.exception;
 
 
 public class HttpTimeException extends RuntimeException {
-    /*未知错误*/
-    public static final int UNKOWN_ERROR = 0x1002;
-    /*本地无缓存错误*/
-    public static final int NO_CHACHE_ERROR = 0x1003;
-    /*缓存过时错误*/
-    public static final int CHACHE_TIMEOUT_ERROR = 0x1004;
+    /* Unknown Error */
+    public static final int UNKNOWN_ERROR = 0x1002;
+    /* Cache less data */
+    public static final int NO_CACHE_ERROR = 0x1003;
+    /* Cached data expiration */
+    public static final int CACHE_TIMEOUT_ERROR = 0x1004;
 
 
     public HttpTimeException(int resultCode) {
@@ -19,21 +19,21 @@ public class HttpTimeException extends RuntimeException {
     }
 
     /**
-     * 转换错误数据
+     * Conversion error data
      *
      * @param code
      * @return
      */
     private static String getApiExceptionMessage(int code) {
         switch (code) {
-            case UNKOWN_ERROR:
-                return "错误：网络错误";
-            case NO_CHACHE_ERROR:
-                return "错误：无缓存数据";
-            case CHACHE_TIMEOUT_ERROR:
-                return "错误：缓存数据过期";
+            case UNKNOWN_ERROR:
+                return "Error: Network Error";
+            case NO_CACHE_ERROR:
+                return "Error: No cached data";
+            case CACHE_TIMEOUT_ERROR:
+                return "Error: Cached data expires";
             default:
-                return "错误：未知错误";
+                return "Error: Unknown Error";
         }
     }
 }

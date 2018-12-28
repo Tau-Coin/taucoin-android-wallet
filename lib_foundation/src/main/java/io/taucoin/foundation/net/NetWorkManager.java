@@ -50,31 +50,29 @@ public class NetWorkManager {
 
     public void init() {
 
-        //对OkHttp添加Log
+        // Add Log to OkHttp
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
         okHttpClientBuilder.readTimeout(10, TimeUnit.SECONDS);
         okHttpClientBuilder.writeTimeout(10, TimeUnit.SECONDS);
-        //设置请求超时时长
+        // Set request timeout
         okHttpClientBuilder.connectTimeout(10, TimeUnit.SECONDS);
         if (BuildConfig.DEBUG) {
-            //启用Log日志
+            // Enable Log
             okHttpClientBuilder.addInterceptor(logging);
         }
 
-        //设置https访问(验证证书，请把服务器给的证书文件放在R.raw文件夹下)
        /* okHttpClientBuilder.sslSocketFactory(getSSLSocketFactory(NetWorkManager.this, new int[]{R.raw.https_certificate}));
         okHttpClientBuilder.hostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);*/
 
-        //https请求时忽略证书
        /*
         okHttpClientBuilder.sslSocketFactory(IgnoreCertificateUtil.sslContext().getSocketFactory());
         okHttpClientBuilder.hostnameVerifier(IgnoreCertificateUtil.hostnameVerifier());*/
 
 
-        //验证证书
+        // Certificate of verification
         try {
             setCertificates(okHttpClientBuilder, mContext.getAssets().open("https_certificate.crt"));
         } catch (IOException e) {
@@ -83,15 +81,12 @@ public class NetWorkManager {
 
         OkHttpClient okHttpClient = okHttpClientBuilder.build();
 
-        // 初始化Retrofit
+        // init Retrofit
         retrofit = new Retrofit.Builder()
-                //设置OKHttpClient为网络客户端
                 .client(okHttpClient)
-                //服务器地址
                 .baseUrl(PropertyUtils.getApiBaseUrl())
-                //配置转化库，采用Gson
                 .addConverterFactory(GsonConverterFactory.create())
-                //配置回调库，采用RxJava 将服务器返回的json字符串转化为对象
+                // Configure callback libraries using RxJava
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
@@ -106,10 +101,10 @@ public class NetWorkManager {
     }
 
     /**
-     * 通过okhttpClient来设置证书
+     * Setting certificates through okHttp Client
      *
-     * @param clientBuilder OKhttpClient.builder
-     * @param certificates  读取证书的InputStream
+     * @param clientBuilder OkHttpClient.builder
+     * @param certificates  read certificates InputStream
      */
     private void setCertificates(OkHttpClient.Builder clientBuilder, InputStream... certificates) {
         try {
@@ -144,14 +139,14 @@ public class NetWorkManager {
         }
     }
 
-    //设置https证书
+    // Setting up HTTPS certificates
     protected static SSLSocketFactory getSSLSocketFactory(Context context, int[] certificates) {
 
         if (context == null) {
             throw new NullPointerException("context == null");
         }
 
-        //CertificateFactory用来证书生成
+        //CertificateFactory Used for certificate generation
         CertificateFactory certificateFactory;
         try {
             certificateFactory = CertificateFactory.getInstance("X.509");
@@ -160,7 +155,7 @@ public class NetWorkManager {
             keyStore.load(null, null);
 
             for (int i = 0; i < certificates.length; i++) {
-                //读取本地证书
+                // read local certificate
                 InputStream is = context.getResources().openRawResource(certificates[i]);
                 keyStore.setCertificateEntry(String.valueOf(i), certificateFactory
                         .generateCertificate(is));
@@ -185,6 +180,4 @@ public class NetWorkManager {
         }
         return null;
     }
-
-
 }

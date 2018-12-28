@@ -8,7 +8,6 @@ import io.taucoin.android.wallet.db.greendao.DaoSession;
 import org.greenrobot.greendao.database.Database;
 
 /**
- * GreenDaoManager中创建数据库,并对其进行管理：
  * Create and manage database in GreenDaoManager:
  */
 public class GreenDaoManager {
@@ -33,7 +32,7 @@ public class GreenDaoManager {
             MySQLiteOpenHelper helper = new MySQLiteOpenHelper(MyApplication.getInstance(), DB_NAME, null);
             Database db = helper.getWritableDb();
 
-           // Database database=helper.getEncryptedReadableDb("mima123");//加密
+           // Database database=helper.getEncryptedReadableDb("mima123");// Encrypt
             daoMaster = new DaoMaster(db);
             daoSession = daoMaster.newSession();
         }

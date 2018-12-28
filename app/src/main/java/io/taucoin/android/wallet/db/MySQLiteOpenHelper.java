@@ -1,6 +1,5 @@
 package io.taucoin.android.wallet.db;
 
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -14,10 +13,7 @@ import io.taucoin.android.wallet.db.greendao.KeyValueDao;
 import io.taucoin.android.wallet.db.greendao.TransactionHistoryDao;
 import io.taucoin.android.wallet.db.greendao.UTXORecordDao;
 import io.taucoin.android.wallet.db.util.MigrationHelper;
-
-
 /**
- * 处理数据库升级的逻辑：
  * Logic for handling database upgrade:
  */
 public class MySQLiteOpenHelper extends DaoMaster.OpenHelper {
