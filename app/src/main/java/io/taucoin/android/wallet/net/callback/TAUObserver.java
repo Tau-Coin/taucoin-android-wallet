@@ -15,6 +15,7 @@
  */
 package io.taucoin.android.wallet.net.callback;
 
+
 import io.taucoin.foundation.net.callback.RequestObserver;
 import io.taucoin.foundation.util.StringUtil;
 import io.taucoin.android.wallet.util.ToastUtils;

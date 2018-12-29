@@ -225,4 +225,41 @@ public final class KeyboardUtils {
     public interface OnSoftInputChangedListener {
         void onSoftInputChanged(int height);
     }
+
+    public static void fixInputMethodManagerLeak(Context destContext) {
+        if (destContext == null) {
+            return;
+        }
+
+        InputMethodManager imm = (InputMethodManager) destContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm == null) {
+            return;
+        }
+
+        String [] arr = new String[]{"mCurRootView", "mServedView", "mNextServedView"};
+        Field f;
+        Object obj_get;
+        for (String param : arr) {
+            try {
+                f = imm.getClass().getDeclaredField(param);
+                if (!f.isAccessible()) {
+                    f.setAccessible(true);
+                }
+                obj_get = f.get(imm);
+                if (obj_get instanceof View) {
+                    View v_get = (View) obj_get;
+                    if (v_get.getContext() == destContext) {
+                        f.set(imm, null); // set null，destroy path to gc point
+                    } else {
+                        // not handler, goto other page
+                        break;
+                    }
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
+    }
+
+
 }

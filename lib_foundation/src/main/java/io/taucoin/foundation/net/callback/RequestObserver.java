@@ -1,8 +1,12 @@
 package io.taucoin.foundation.net.callback;
 
+import com.github.naturs.logger.Logger;
+import com.google.gson.Gson;
+
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.taucoin.foundation.net.exception.ApiException;
+import io.taucoin.foundation.net.exception.CodeException;
 import io.taucoin.foundation.net.exception.FactoryException;
 
 public abstract class RequestObserver<T> implements Observer<T> {
@@ -14,6 +18,10 @@ public abstract class RequestObserver<T> implements Observer<T> {
         } catch (Throwable ex) {
             // never do anything!
         }
+    }
+
+    public void onError() {
+        handleError("unknown_error", CodeException.UNKNOWN_ERROR);
     }
 
     @Override
@@ -43,6 +51,10 @@ public abstract class RequestObserver<T> implements Observer<T> {
         }else{
             onError(new Throwable());
         }
+
+        try {
+            Logger.d(new Gson().toJson(t),"RequestObserver.Data");
+        }catch (Exception ignore){}
     }
 
     public abstract void handleError(String msg, int msgCode);

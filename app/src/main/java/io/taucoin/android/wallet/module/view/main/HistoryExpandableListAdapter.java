@@ -20,15 +20,16 @@ import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.util.CopyManager;
 import io.taucoin.android.wallet.util.FmtMicrometer;
+import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.util.StringUtil;
 
 public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
 
     private List<TransactionHistory> historyList = new ArrayList<>();
+    private String address;
 
     HistoryExpandableListAdapter() {
-
     }
 
     List<TransactionHistory> getData() {
@@ -36,7 +37,8 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     void setHistoryList(List<TransactionHistory> historyList, boolean isAdd) {
-        if(!isAdd){
+        address = SharedPreferencesHelper.getInstance().getString(TransmitKey.ADDRESS, "");
+        if (!isAdd) {
             this.historyList.clear();
         }
         this.historyList.addAll(historyList);
@@ -81,6 +83,7 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         GroupViewHolder groupViewHolder;
+        TransactionHistory tx = historyList.get(groupPosition);
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_history_group, parent, false);
             groupViewHolder = new GroupViewHolder(convertView);
@@ -92,18 +95,24 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         groupViewHolder.viewLineTop.setVisibility(groupPosition != 0 ? View.INVISIBLE : View.VISIBLE);
         groupViewHolder.ivRight.setImageResource(isExpanded ? R.mipmap.icon_up : R.mipmap.icon_down);
 
-        TransactionHistory tx = historyList.get(groupPosition);
+        boolean isReceiver = StringUtil.isNotSame(tx.getFromAddress(), address);
+
         String amount = FmtMicrometer.fmtFormat(tx.getValue());
-        amount = "-" + amount;
+        amount = isReceiver ? "+" + amount : "-" + amount;
         groupViewHolder.tvAmount.setText(amount);
         groupViewHolder.tvTime.setText(tx.getTime());
+        // The user is the sender
         boolean isSuccess = StringUtil.isSame(TransmitKey.TxResult.SUCCESSFUL, tx.getResult());
         boolean isConfirming = StringUtil.isSame(TransmitKey.TxResult.CONFIRMING, tx.getResult());
         int color = R.color.color_red;
-        if(isConfirming){
+        if (isConfirming) {
             color = R.color.color_blue;
-        }else if(isSuccess){
+        } else if (isSuccess) {
             color = tx.getConfirmations() > 0 ? R.color.color_black : R.color.color_blue;
+        }
+        // The user is the receiver
+        if (isReceiver) {
+            color = R.color.color_black;
         }
         int textColor = ContextCompat.getColor(parent.getContext(), color);
         groupViewHolder.tvAmount.setTextColor(textColor);
@@ -121,11 +130,17 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         } else {
             childViewHolder = (ChildViewHolder) convertView.getTag();
         }
+
         TransactionHistory tx = historyList.get(groupPosition);
         childViewHolder.tvReceivedAddress.setText(tx.getToAddress());
         childViewHolder.tvTransactionId.setText(tx.getTxId());
         String fee = tx.getFee() + "TAU";
         childViewHolder.tvTxFee.setText(fee);
+
+        boolean isReceiver = StringUtil.isNotSame(tx.getFromAddress(), address);
+        childViewHolder.tvAddressTitle.setText(isReceiver ? R.string.tx_to_address : R.string.tx_received_address);
+        childViewHolder.tvFeeTitle.setVisibility(isReceiver ? View.GONE : View.VISIBLE);
+        childViewHolder.tvTxFee.setVisibility(isReceiver ? View.GONE : View.VISIBLE);
 
         childViewHolder.tvFailMsg.setText(tx.getMessage());
         boolean isHaveFailMsg = StringUtil.isSame(TransmitKey.TxResult.FAILED, tx.getResult()) && StringUtil.isNotEmpty(tx.getMessage());
@@ -164,6 +179,10 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         TextView tvTxFee;
         @BindView(R.id.tv_fail_msg)
         TextView tvFailMsg;
+        @BindView(R.id.tv_address_title)
+        TextView tvAddressTitle;
+        @BindView(R.id.tv_fee_title)
+        TextView tvFeeTitle;
 
         ChildViewHolder(View view) {
             ButterKnife.bind(this, view);

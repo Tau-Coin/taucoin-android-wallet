@@ -26,6 +26,7 @@ import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.db.entity.UTXORecord;
 import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
+import io.taucoin.android.wallet.module.bean.AddOutBean;
 import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.model.ITxModel;
 import io.taucoin.android.wallet.module.model.TxModel;
@@ -35,6 +36,7 @@ import io.taucoin.android.wallet.net.callback.TAUObserver;
 import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.ResourcesUtil;
 import io.taucoin.android.wallet.util.ToastUtils;
+import io.taucoin.foundation.net.callback.DataResult;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.net.callback.RetResult;
 
@@ -43,10 +45,15 @@ public class TxPresenter {
     private ISendReceiveView mSendReceiveView;
     private ITxModel mTxModel;
 
+    TxPresenter() {
+        mTxModel = new TxModel();
+    }
+
     public TxPresenter(ISendView sendView) {
         mTxModel = new TxModel();
         mSendView = sendView;
     }
+
     public TxPresenter(ISendReceiveView sendView) {
         mTxModel = new TxModel();
         mSendReceiveView = sendView;
@@ -170,6 +177,28 @@ public class TxPresenter {
                 mSendReceiveView.loadTransactionHistory(transactionHistories);
                 mSendReceiveView.finishRefresh();
                 mSendReceiveView.finishLoadMore();
+            }
+        });
+    }
+
+    public void getAddOuts(LogicObserver<Boolean> observer) {
+
+        mTxModel.getAddOuts(new TAUObserver<DataResult<List<AddOutBean>>>(){
+
+            @Override
+            public void handleError(String msg, int msgCode) {
+                super.handleError(msg, msgCode);
+                observer.onNext(false);
+            }
+
+            @Override
+            public void handleData(DataResult<List<AddOutBean>> listDataResult) {
+                super.handleData(listDataResult);
+                if(listDataResult != null && listDataResult.getData() != null){
+                    mTxModel.saveAddOuts(listDataResult.getData(), observer);
+                }else {
+                    observer.onNext(true);
+                }
             }
         });
     }

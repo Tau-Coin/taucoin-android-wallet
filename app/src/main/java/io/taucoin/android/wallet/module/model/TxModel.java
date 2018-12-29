@@ -44,18 +44,20 @@ import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.db.entity.UTXORecord;
 import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
 import io.taucoin.android.wallet.db.util.UTXORecordDaoUtils;
+import io.taucoin.android.wallet.module.bean.AddOutBean;
 import io.taucoin.android.wallet.module.bean.BalanceBean;
 import io.taucoin.android.wallet.module.bean.RawTxBean;
 import io.taucoin.android.wallet.module.bean.UTXOList;
 import io.taucoin.android.wallet.module.bean.UtxosBean;
 import io.taucoin.android.wallet.net.callback.TAUObserver;
-import io.taucoin.android.wallet.net.service.TxService;
+import io.taucoin.android.wallet.net.service.TransactionService;
 import io.taucoin.android.wallet.util.DateUtil;
 import io.taucoin.android.wallet.util.FmtMicrometer;
 import io.taucoin.android.wallet.util.MD5_BASE64Util;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.net.NetWorkManager;
+import io.taucoin.foundation.net.callback.DataResult;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.net.callback.RetResult;
 import io.taucoin.foundation.util.StringUtil;
@@ -67,7 +69,7 @@ public class TxModel implements ITxModel {
         String publicKey = SharedPreferencesHelper.getInstance().getString(TransmitKey.PUBLIC_KEY, "");
         Map<String,String> map=new HashMap<>();
         map.put("pubkey",  publicKey);
-        NetWorkManager.createApiService(TxService.class)
+        NetWorkManager.createApiService(TransactionService.class)
             .getBalance(map)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -90,7 +92,7 @@ public class TxModel implements ITxModel {
         KeyValue keyValue = MyApplication.getKeyValue();
         Map<String,String> map = new HashMap<>();
         map.put("address",  keyValue.getAddress());
-        NetWorkManager.createApiService(TxService.class)
+        NetWorkManager.createApiService(TransactionService.class)
             .getUTXOList(map)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -143,13 +145,13 @@ public class TxModel implements ITxModel {
     @Override
     public void getUTXOListLocal(LogicObserver<List<UTXORecord>> observer) {
         KeyValue keyValue = MyApplication.getKeyValue();
-        String address = "";
-        if(keyValue != null){
-            address = keyValue.getAddress();
+        if(keyValue == null){
+            observer.onError();
+            return;
         }
-        String finalAddress = address;
+        String address = keyValue.getAddress();
         Observable.create((ObservableOnSubscribe<List<UTXORecord>>) emitter -> {
-            List<UTXORecord> list = UTXORecordDaoUtils.getInstance().queryByAddress(finalAddress);
+            List<UTXORecord> list = UTXORecordDaoUtils.getInstance().queryByAddress(address);
             emitter.onNext(list);
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -172,7 +174,7 @@ public class TxModel implements ITxModel {
     public void checkRawTransaction(String txId, LogicObserver<Boolean> observer) {
         Map<String,String> map = new HashMap<>();
         map.put("txid", txId);
-        NetWorkManager.createApiService(TxService.class)
+        NetWorkManager.createApiService(TransactionService.class)
             .getRawTransation(map)
             .subscribeOn(Schedulers.io())
             .subscribe(new TAUObserver<RetResult<RawTxBean>>() {
@@ -247,7 +249,7 @@ public class TxModel implements ITxModel {
     public void sendRawTransaction(String tx_hex, TAUObserver<RetResult<String>> observer) {
         Map<String,String> map = new HashMap<>();
         map.put("tx_hex", tx_hex);
-        NetWorkManager.createApiService(TxService.class)
+        NetWorkManager.createApiService(TransactionService.class)
                 .sendRawTransation(map)
                 .subscribeOn(Schedulers.io())
                 .subscribe(observer);
@@ -289,5 +291,64 @@ public class TxModel implements ITxModel {
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(logicObserver);
+    }
+
+    @Override
+    public void getAddOuts(TAUObserver<DataResult<List<AddOutBean>>> observer) {
+        KeyValue keyValue = MyApplication.getKeyValue();
+        if(keyValue == null){
+            observer.onError(null);
+            return;
+        }
+        String address = keyValue.getAddress();
+        Observable.create((ObservableOnSubscribe<String>) emitter -> {
+            String time = TransactionHistoryDaoUtils.getInstance().getNewestTxTime(address);
+            if(StringUtil.isNotEmpty(time)){
+                emitter.onNext(time);
+            }else {
+                observer.onError();
+            }
+        }).observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .subscribe(new LogicObserver<String>() {
+                @Override
+                public void handleData(String time) {
+
+                    Map<String,String> map = new HashMap<>();
+                    map.put("address", address);
+                    map.put("time", time);
+                    NetWorkManager.createApiService(TransactionService.class)
+                            .getAddOuts(map)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(Schedulers.io())
+                            .subscribe(observer);
+                }
+            });
+
+    }
+
+    @Override
+    public void saveAddOuts(List<AddOutBean> list, LogicObserver<Boolean> observer) {
+        Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
+            for (AddOutBean bean : list) {
+                TransactionHistory tx = new TransactionHistory();
+                tx.setFromAddress(bean.getAddIn());
+                tx.setToAddress(bean.getAddOut());
+                // time and blockTime need set value here!
+                long time = 0L;
+                try{
+                    time = Long.valueOf(bean.getTime());
+                }catch (Exception ignore){ }
+
+                tx.setTime(DateUtil.formatUTCTime(time, DateUtil.pattern6));
+                tx.setBlocktime(time);
+                tx.setTxId(bean.getTxid());
+                tx.setValue(FmtMicrometer.fmtAmount(bean.getVout()));
+                TransactionHistoryDaoUtils.getInstance().insertOrReplace(tx);
+            }
+            emitter.onNext(true);
+        }).observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .subscribe(observer);
     }
 }

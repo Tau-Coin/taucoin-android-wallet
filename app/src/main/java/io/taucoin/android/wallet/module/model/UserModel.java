@@ -28,12 +28,28 @@ import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
 import io.taucoin.android.wallet.util.FileUtil;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.util.StringUtil;
+import io.taucoin.platform.adress.Key;
+import io.taucoin.platform.adress.KeyManager;
 
 public class UserModel implements IUserModel{
     @Override
-    public void saveKeyAndAddress(KeyValue keyValue, LogicObserver<KeyValue> observer) {
+    public void saveKeyAndAddress(final KeyValue keyValue, LogicObserver<KeyValue> observer) {
         Observable.create((ObservableOnSubscribe<KeyValue>) emitter -> {
-            KeyValue result = KeyValueDaoUtils.getInstance().insertOrReplace(keyValue);
+
+            KeyValue kv = keyValue;
+            if(kv == null){
+                Key key = KeyManager.generatorKey();
+                if(key != null){
+                    kv = new KeyValue();
+                    kv.setPrivkey(key.getPrivkey());
+                    kv.setPubkey(key.getPubkey());
+                    kv.setAddress(key.getAddress());
+                }else {
+                    emitter.onError(null);
+                    return;
+                }
+            }
+            KeyValue result = KeyValueDaoUtils.getInstance().insertOrReplace(kv);
             emitter.onNext(result);
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

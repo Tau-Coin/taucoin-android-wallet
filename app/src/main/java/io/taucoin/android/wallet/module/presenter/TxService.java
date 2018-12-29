@@ -38,12 +38,14 @@ import io.taucoin.android.wallet.module.model.AppModel;
 import io.taucoin.android.wallet.module.model.IAppModel;
 import io.taucoin.android.wallet.module.model.ITxModel;
 import io.taucoin.android.wallet.module.model.TxModel;
+import io.taucoin.android.wallet.module.view.main.MainActivity;
 import io.taucoin.android.wallet.net.callback.CommonObserver;
 import io.taucoin.android.wallet.net.callback.TAUObserver;
 import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.net.callback.RetResult;
+import io.taucoin.foundation.util.ActivityManager;
 import io.taucoin.foundation.util.StringUtil;
 
 public class TxService extends Service {
@@ -172,7 +174,9 @@ public class TxService extends Service {
                 super.handleData(balanceRetBalance);
                 BalanceBean balance = balanceRetBalance.getRet();
                 Logger.i("getBalance success");
-                ProgressManager.closeProgressDialog();
+                if(ActivityManager.isTopActivity(MainActivity.class)){
+                    ProgressManager.closeProgressDialog();
+                }
                 KeyValue entry = KeyValueDaoUtils.getInstance().insertOrReplace(balance);
                 MyApplication.setKeyValue(entry);
                 if(entry != null){

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityManager {
+
     private static List<Activity> activities = new ArrayList<>();
 
     public static void addActivity(Activity activity) {
@@ -31,6 +32,15 @@ public class ActivityManager {
             return null;
         } else {
             return activities.get(activities.size() - 1);
+        }
+    }
+
+    public static boolean isTopActivity(Class<?> zClass) {
+        if (activities.isEmpty()) {
+            return false;
+        } else {
+            Activity topActivity = activities.get(activities.size() - 1);
+            return zClass.equals(topActivity.getClass());
         }
     }
 }

@@ -23,7 +23,6 @@ import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.util.ActivityManager;
 import io.taucoin.foundation.util.DrawablesUtil;
 
-
 public class MainActivity extends BaseActivity implements IMainView {
     @BindView(R.id.rb_home)
     RadioButton rbHome;

@@ -69,6 +69,11 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    testImplementation rootProject.ext.junit
+    androidTestImplementation rootProject.ext.test
+    androidTestImplementation rootProject.ext.espresso
+
     implementation project(':lib_foundation')
     implementation project(':lib_platform')
     implementation project(':lib_bitcoin')

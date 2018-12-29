@@ -36,9 +36,11 @@ import io.taucoin.android.wallet.module.view.manage.ImportKeyActivity;
 import io.taucoin.android.wallet.util.CopyManager;
 import io.taucoin.android.wallet.util.DateUtil;
 import io.taucoin.android.wallet.util.EventBusUtil;
+import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.android.wallet.util.UserUtil;
 import io.taucoin.android.wallet.widget.EmptyLayout;
+import io.taucoin.foundation.net.callback.LogicObserver;
 
 public class SendReceiveFragment extends BaseFragment implements ISendReceiveView {
 
@@ -77,6 +79,9 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
 
     @Override
     public void initData() {
+        if(UserUtil.isImportKey()){
+            ProgressManager.showProgressDialog(getActivity());
+        }
         onEvent(EventBusUtil.getMessageEvent(MessageEvent.EventCode.ALL));
     }
 
@@ -148,6 +153,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MessageEvent object) {
         if(object == null){
+            ProgressManager.closeProgressDialog();
             return;
         }
         switch (object.getCode()){
@@ -172,16 +178,33 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
         mTxPresenter.queryTransactionHistory(mPageNo, mTime);
     }
 
-    @Override
-    public void onRefresh(RefreshLayout refreshlayout) {
+    public void startRefresh() {
         mPageNo = 1;
         mTime = DateUtil.getCurrentTime(DateUtil.pattern6);
         if(mTxPresenter != null){
             mTxPresenter.queryTransactionHistory(mPageNo, mTime);
         }
-
         if(!UserUtil.isImportKey()){
             refreshLayout.finishRefresh(1000);
+        }
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshlayout) {
+        if(mTxPresenter != null){
+            mTxPresenter.getAddOuts(new LogicObserver<Boolean>() {
+                @Override
+                public void handleData(Boolean isSuccess) {
+                    ProgressManager.closeProgressDialog();
+                    if(isSuccess){
+                        startRefresh();
+                    }else{
+                        refreshLayout.finishRefresh(false);
+                    }
+                }
+            });
+        }else {
+            ProgressManager.closeProgressDialog();
         }
     }
 

@@ -22,6 +22,10 @@ import io.taucoin.android.wallet.net.callback.TAUObserver;
 import io.taucoin.foundation.net.callback.DataResult;
 
 public interface IAppModel {
+
+    /** Get the user's IP for the background */
     void getInfo();
+
+    /** Get help page data */
     void getHelpData(TAUObserver<DataResult<List<HelpBean>>> observer);
 }

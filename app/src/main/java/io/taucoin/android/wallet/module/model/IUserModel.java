@@ -22,13 +22,18 @@ import io.taucoin.foundation.net.callback.LogicObserver;
 
 public interface IUserModel {
 
+    /** Save user key and address */
     void saveKeyAndAddress(KeyValue keyValue, LogicObserver<KeyValue> observer);
 
+    /** Save user nickname */
     void saveName(String name, LogicObserver<KeyValue> observer);
 
+    /** Save  user avatar */
     void saveAvatar(String avatar, Bitmap bitmap, LogicObserver<KeyValue> observer);
 
+    /** Get user key and address */
     void getKeyAndAddress(String publicKey, LogicObserver<KeyValue> observer);
 
+    /** Update old version2.0 tx history data */
     void updateOldTxHistory(String address);
 }

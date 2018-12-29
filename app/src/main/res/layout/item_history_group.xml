@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/color_white"
-    android:layout_height="40dp">
+    android:layout_height="40dp"
+    android:background="@color/color_white">
 
     <TextView
         android:id="@+id/tv_amount"
-        style="@style/style_big_black"
+        style="@style/style_normal_black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -15,35 +15,38 @@
 
     <TextView
         android:id="@+id/tv_time"
-        style="@style/style_big_black"
+        style="@style/style_normal_black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/dimen_size_50"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/iv_right"
+        android:layout_toEndOf="@+id/tv_amount"
+        android:gravity="end"
         android:text="" />
 
     <ImageView
         android:id="@+id/iv_right"
-        android:layout_width="@dimen/dimen_size_20"
-        android:contentDescription="@null"
+        android:layout_width="@dimen/dimen_size_16"
+        android:layout_height="@dimen/dimen_size_16"
         android:layout_alignParentEnd="true"
-        android:src="@mipmap/icon_down"
-        android:layout_marginEnd="15dp"
         android:layout_centerVertical="true"
-        android:layout_height="@dimen/dimen_size_20" />
+        android:layout_marginEnd="15dp"
+        android:contentDescription="@null"
+        android:src="@mipmap/icon_down" />
 
     <View
         android:id="@+id/view_line_bottom"
-        android:background="@color/color_main_line"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_main_line" />
 
     <View
         android:id="@+id/view_line_top"
-        android:background="@color/color_main_line"
-        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/color_main_line" />
 </RelativeLayout>

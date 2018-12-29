@@ -21,10 +21,20 @@ import java.text.DecimalFormat;
 public class FmtMicrometer {
 
     public static String fmtBalance(Long balance) {
-        Long double_8 = 100000000L;
-        double_8.doubleValue();
+        double double_8 = Math.pow(10, 8);
         DecimalFormat df = new DecimalFormat("###,##0.########");
-        return df.format(balance.doubleValue() / double_8.doubleValue());
+        return df.format(balance.doubleValue() / double_8);
+    }
+
+    public static String fmtAmount(String amount) {
+        try {
+            Long number = Long.valueOf(amount);
+            double double_8 = Math.pow(10, 8);
+            double result = number.doubleValue() / double_8;
+            return String.valueOf(result);
+        } catch (Exception e) {
+            return amount;
+        }
     }
 
     public static String fmtFormat(String num) {

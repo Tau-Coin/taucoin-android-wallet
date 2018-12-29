@@ -28,16 +28,16 @@ import io.taucoin.android.wallet.module.model.IUserModel;
 import io.taucoin.android.wallet.module.model.UserModel;
 import io.taucoin.android.wallet.module.view.manage.iview.IImportKeyView;
 import io.taucoin.android.wallet.util.EventBusUtil;
+import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.util.StringUtil;
-import io.taucoin.platform.adress.Key;
-import io.taucoin.platform.adress.KeyManager;
 
 public class UserPresenter {
 
     private IImportKeyView mIImportKeyView;
     private IUserModel mUserModel;
+    private TxPresenter mTxPresenter;
 
     public UserPresenter() {
         mUserModel = new UserModel();
@@ -46,19 +46,11 @@ public class UserPresenter {
     public UserPresenter(IImportKeyView view) {
         mUserModel = new UserModel();
         mIImportKeyView = view;
+        mTxPresenter = new TxPresenter();
     }
 
 
     public void saveKeyAndAddress(KeyValue keyValue) {
-        if(keyValue == null){
-            keyValue = new KeyValue();
-            Key key = KeyManager.generatorKey();
-            if(key != null){
-                keyValue.setPrivkey(key.getPrivkey());
-                keyValue.setPubkey(key.getPubkey());
-                keyValue.setAddress(key.getAddress());
-            }
-        }
         mUserModel.saveKeyAndAddress(keyValue, new LogicObserver<KeyValue>() {
             @Override
             public void handleData(KeyValue keyValue) {
@@ -67,7 +59,26 @@ public class UserPresenter {
                 SharedPreferencesHelper.getInstance().putString(TransmitKey.ADDRESS, keyValue.getAddress());
                 TxService.startTxService(TransmitKey.ServiceType.GET_HOME_DATA);
                 TxService.startTxService(TransmitKey.ServiceType.GET_INFO);
+
+                getAddOuts();
+            }
+
+            @Override
+            public void handleError(int code, String msg) {
+                ProgressManager.closeProgressDialog();
+                super.handleError(code, msg);
+            }
+        });
+    }
+
+    private void getAddOuts() {
+        mTxPresenter.getAddOuts(new LogicObserver<Boolean>(){
+
+            @Override
+            public void handleData(Boolean aBoolean) {
+                ProgressManager.closeProgressDialog();
                 mIImportKeyView.gotoKeysActivity();
+                EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
             }
         });
     }

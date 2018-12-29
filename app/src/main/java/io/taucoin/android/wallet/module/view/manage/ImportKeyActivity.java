@@ -19,6 +19,7 @@ import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.module.presenter.UserPresenter;
 import io.taucoin.android.wallet.module.view.manage.iview.IImportKeyView;
+import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.android.wallet.widget.CommonDialog;
 import io.taucoin.foundation.util.DrawablesUtil;
@@ -102,6 +103,7 @@ public class ImportKeyActivity extends BaseActivity implements IImportKeyView {
     }
 
     private void saveKeyAndAddress(KeyValue keyValue) {
+        ProgressManager.showProgressDialog(this, false);
         mUserPresenter.saveKeyAndAddress(keyValue);
     }
 }

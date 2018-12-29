@@ -24,7 +24,9 @@ import io.taucoin.foundation.net.callback.DataResult;
 import io.taucoin.foundation.net.callback.RetResult;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
-
+/**
+ * Application of related back-end services
+ * */
 public interface AppService {
 
     @POST("getInfo/")

@@ -15,18 +15,23 @@
  */
 package io.taucoin.android.wallet.net.service;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
 
+import io.taucoin.android.wallet.module.bean.AddOutBean;
 import io.taucoin.android.wallet.module.bean.BalanceBean;
 import io.taucoin.android.wallet.module.bean.RawTxBean;
 import io.taucoin.android.wallet.module.bean.UTXOList;
+import io.taucoin.foundation.net.callback.DataResult;
 import io.taucoin.foundation.net.callback.RetResult;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
-
-public interface TxService {
+/**
+ * Application Transaction-related Background Services
+ * */
+public interface TransactionService {
 
     @POST("getNewBalance/")
     Observable<RetResult<BalanceBean>> getBalance(@Body Map<String,String> email);
@@ -39,4 +44,7 @@ public interface TxService {
 
     @POST("sendRawTransation/")
     Observable<RetResult<String>> sendRawTransation(@Body Map<String,String> tx_hex);
+
+    @POST("getAddOuts/")
+    Observable<DataResult<List<AddOutBean>>> getAddOuts(@Body Map<String,String> address);
 }
