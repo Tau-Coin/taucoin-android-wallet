@@ -27,6 +27,7 @@ import io.taucoin.android.wallet.db.util.KeyValueDaoUtils;
 import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
 import io.taucoin.android.wallet.util.FileUtil;
 import io.taucoin.foundation.net.callback.LogicObserver;
+import io.taucoin.foundation.net.exception.CodeException;
 import io.taucoin.foundation.util.StringUtil;
 import io.taucoin.platform.adress.Key;
 import io.taucoin.platform.adress.KeyManager;
@@ -45,7 +46,7 @@ public class UserModel implements IUserModel{
                     kv.setPubkey(key.getPubkey());
                     kv.setAddress(key.getAddress());
                 }else {
-                    emitter.onError(null);
+                    emitter.onError(CodeException.getError());
                     return;
                 }
             }

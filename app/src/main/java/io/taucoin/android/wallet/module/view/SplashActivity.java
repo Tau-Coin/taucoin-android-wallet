@@ -20,14 +20,26 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        // Is it the root of the task stack?
+        if (!this.isTaskRoot()) {
+            Intent intent = getIntent();
+            if (intent != null) {
+                String action = intent.getAction();
+                if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN.equals(action)) {
+                    finish();
+                }
+            }
+        } else {
+            // Open for the first time
+            setContentView(R.layout.activity_splash);
 
-        Logger.i("SplashActivity onCreate");
+            Logger.i("SplashActivity onCreate");
 
-        // delay 3 seconds jump
-        Observable.timer(3, TimeUnit.SECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(mDisposableObserver);
+            // delay 3 seconds jump
+            Observable.timer(3, TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(mDisposableObserver);
+        }
     }
 
     private CommonObserver<Long> mDisposableObserver = new CommonObserver<Long>() {

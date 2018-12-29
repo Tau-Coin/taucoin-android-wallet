@@ -84,12 +84,15 @@ public class TransactionHistoryDaoUtils {
         return null;
     }
 
-    public long insertOrReplace(TransactionHistory tx) {
+    public void insertOrReplace(TransactionHistory tx) {
+        getTransactionHistoryDao().insertOrReplace(tx);
+    }
+
+    public void saveAddOut(TransactionHistory tx) {
         TransactionHistory history = queryTransactionById(tx.getTxId());
         if(history == null){
-            return getTransactionHistoryDao().insertOrReplace(tx);
+            insertOrReplace(tx);
         }
-        return -1L;
     }
 
     public List<TransactionHistory> queryData(int pageNo, String time, String address) {
@@ -98,7 +101,7 @@ public class TransactionHistoryDaoUtils {
                 db.or(TransactionHistoryDao.Properties.FromAddress.eq(address),
                     TransactionHistoryDao.Properties.ToAddress.eq(address))
                 )
-            .orderDesc(TransactionHistoryDao.Properties.Time)
+            .orderDesc(TransactionHistoryDao.Properties.Time, TransactionHistoryDao.Properties.Blocktime)
             .offset((pageNo - 1) * TransmitKey.PAGE_SIZE).limit(TransmitKey.PAGE_SIZE);
         return db.list();
     }
@@ -108,8 +111,8 @@ public class TransactionHistoryDaoUtils {
         db.where(db.or(TransactionHistoryDao.Properties.FromAddress.eq(""),
                 TransactionHistoryDao.Properties.FromAddress.isNull()));
         List<TransactionHistory> list = db.list();
-        for (int i = 0; i < list.size(); i++) {
-            list.get(i).setFromAddress(address);
+        for (TransactionHistory tx : list) {
+            tx.setFromAddress(address);
         }
         getTransactionHistoryDao().updateInTx(list);
     }

@@ -17,15 +17,14 @@
     </style>
 
     <style name="dialog_translucent" parent="@android:style/Theme.Translucent.NoTitleBar">
-        <item name="android:windowFrame">@null</item><!-- 边框 -->
-        <item name="android:windowIsFloating">true</item><!-- 是否悬浮在activity上 -->
-        <item name="android:windowIsTranslucent">false</item><!-- 半透明 -->
-        <item name="android:windowNoTitle">true</item><!-- 无标题 -->
-        <item name="android:windowBackground">@android:color/transparent</item><!-- 背景透明 -->
-        <item name="android:backgroundDimEnabled">true</item><!-- 模糊 -->
-        <item name="android:windowContentOverlay">@null</item><!-- 对话框是否有遮盖 -->
-        <!--<item name="android:windowAnimationStyle">@style/dialog_animation</item>&lt;!&ndash; 弹出或者进入时的动画效果 &ndash;&gt;-->
-        <item name="android:colorBackgroundCacheHint">@null</item><!-- 背景缓存颜色 -->
+        <item name="android:windowFrame">@null</item><!-- border -->
+        <item name="android:windowIsFloating">true</item><!-- is over activity-->
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
     </style>
 
     <style name="CommonDialog" parent="android:style/Theme.Dialog">
@@ -58,7 +57,7 @@
         <item name="android:windowAnimationStyle">@style/ActionSheetDialogAnimation</item>
     </style>
 
-    <!-- ActionSheet进出动画 -->
+    <!-- ActionSheet in out animation  -->
     <style name="ActionSheetDialogAnimation" parent="@android:style/Animation.Dialog">
         <item name="android:windowEnterAnimation">@anim/action_sheet_dialog_in</item>
         <item name="android:windowExitAnimation">@anim/action_sheet_dialog_out</item>

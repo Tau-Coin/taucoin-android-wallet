@@ -60,6 +60,7 @@ import io.taucoin.foundation.net.NetWorkManager;
 import io.taucoin.foundation.net.callback.DataResult;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.net.callback.RetResult;
+import io.taucoin.foundation.net.exception.CodeException;
 import io.taucoin.foundation.util.StringUtil;
 
 public class TxModel implements ITxModel {
@@ -183,14 +184,16 @@ public class TxModel implements ITxModel {
                     super.handleData(rawTxBeanResResult);
                     RawTxBean rawTx = rawTxBeanResResult.getRet();
                     rawTx.setBlocktime(rawTx.getBlocktime());
-                    TransactionHistory transactionHistory = new TransactionHistory();
-                    transactionHistory.setTxId(txId);
-                    transactionHistory.setConfirmations(rawTx.getConfirmations());
-                    transactionHistory.setBlocktime(rawTx.getBlocktime());
-                    transactionHistory.setResult(TransmitKey.TxResult.SUCCESSFUL);
-                    updateTransactionHistory(transactionHistory);
-                    if(rawTx.getBlocktime() >= 1){
-                        observer.onNext(true);
+                    TransactionHistory transactionHistory = TransactionHistoryDaoUtils.getInstance().queryTransactionById(txId);
+                    if(transactionHistory != null){
+                        transactionHistory.setTxId(txId);
+                        transactionHistory.setConfirmations(rawTx.getConfirmations());
+                        transactionHistory.setBlocktime(rawTx.getBlocktime());
+                        transactionHistory.setResult(TransmitKey.TxResult.SUCCESSFUL);
+                        TransactionHistoryDaoUtils.getInstance().insertOrReplace(transactionHistory);
+                        if(rawTx.getConfirmations() >= 1){
+                            observer.onNext(true);
+                        }
                     }
                 }
             });
@@ -199,50 +202,53 @@ public class TxModel implements ITxModel {
 
     @Override
     public void createTransaction(TransactionHistory txHistory, LogicObserver<String> observer) {
-        KeyValue keyValue = MyApplication.getKeyValue();
+        Observable.create((ObservableOnSubscribe<String>) emitter -> {
+            KeyValue keyValue = MyApplication.getKeyValue();
+            if(keyValue == null || StringUtil.isEmpty(keyValue.getPrivkey())){
+                observer.onError();
+                return;
+            }
+            String newPrivateKey;
+            try {
+                newPrivateKey = Utils.convertWIFPrivkeyIntoPrivkey(keyValue.getPrivkey());
+            } catch (AddressFormatException e) {
+                System.out.println(e.toString());
+                Logger.e(e, "AddressFormatException in createTransaction");
+                observer.onError();
+                return;
+            }
+            ECKey key = new ECKey(new BigInteger(newPrivateKey, 16));
+            Logger.i("Compressed key hash:" + Utils.bytesToHexString(key.getCompressedPubKeyHash()));
+            KeyStore.getInstance().addKey(key);
+            String amount = FmtMicrometer.fmtTxValue(txHistory.getValue());
+            HashMap<String, BigInteger> receipts = new HashMap<>();
+            receipts.put(txHistory.getToAddress(), new BigInteger(amount, 10));
+            Wallet wallet = Wallet.getInstance();
+            Transaction tx = new Transaction(NetworkParameters.mainNet());
+            String fee = txHistory.getFee();
+            CreateTransactionResult result = wallet.createTransaction(receipts, fee, tx);
+            if (result.failReason == TransactionFailReason.NO_ERROR) {
+                Logger.i("Create tx success");
+                Logger.i(tx.toString());
+                txHistory.setTxId(tx.getHashAsString());
+                txHistory.setConfirmations(0);
+                txHistory.setResult("sending");
+                txHistory.setFromAddress(keyValue.getAddress());
+                txHistory.setTime(DateUtil.getCurrentTime());
 
-        if(keyValue == null || StringUtil.isEmpty(keyValue.getPrivkey())){
-            observer.onError(null);
-            return;
-        }
-        String newPrivateKey;
-        try {
-            newPrivateKey = Utils.convertWIFPrivkeyIntoPrivkey(keyValue.getPrivkey());
-        } catch (AddressFormatException e) {
-            System.out.println(e.toString());
-            Logger.e(e, "AddressFormatException in createTransaction");
-            observer.onError(null);
-            return;
-        }
-        ECKey key = new ECKey(new BigInteger(newPrivateKey, 16));
-        Logger.i("Compressed key hash:" + Utils.bytesToHexString(key.getCompressedPubKeyHash()));
-        KeyStore.getInstance().addKey(key);
-        String amount = FmtMicrometer.fmtTxValue(txHistory.getValue());
-        HashMap<String, BigInteger> receipts = new HashMap<>();
-        receipts.put(txHistory.getToAddress(), new BigInteger(amount, 10));
-        Wallet wallet = Wallet.getInstance();
-        Transaction tx = new Transaction(NetworkParameters.mainNet());
-        String fee = txHistory.getFee();
-        CreateTransactionResult result = wallet.createTransaction(receipts, fee, tx);
-        if (result.failReason == TransactionFailReason.NO_ERROR) {
-            Logger.i("Create tx success");
-            Logger.i(tx.toString());
-            txHistory.setTxId(tx.getHashAsString());
-            txHistory.setConfirmations(0);
-            txHistory.setResult("sending");
-            txHistory.setFromAddress(keyValue.getAddress());
-            txHistory.setTime(DateUtil.getCurrentTime(DateUtil.pattern6));
+                insertTransactionHistory(txHistory);
 
-            insertTransactionHistory(txHistory);
-
-            Logger.i("Transactions converted to hexadecimal strings:"+tx.dumpIntoHexStr());
-            String hex_after_base64= MD5_BASE64Util.EncoderByMd5_BASE64(tx.dumpIntoHexStr());
-            Logger.i("Transactions encrypted by BASE64: " + hex_after_base64);
-            observer.onNext(hex_after_base64);
-        } else {
-            observer.handleError(result.failReason.getCode(), result.failReason.getMsg());
-            ToastUtils.showShortToast(result.failReason.getMsg());
-        }
+                Logger.i("Transactions converted to hexadecimal strings:"+tx.dumpIntoHexStr());
+                String hex_after_base64= MD5_BASE64Util.EncoderByMd5_BASE64(tx.dumpIntoHexStr());
+                Logger.i("Transactions encrypted by BASE64: " + hex_after_base64);
+                observer.onNext(hex_after_base64);
+            } else {
+                observer.handleError(result.failReason.getCode(), result.failReason.getMsg());
+                ToastUtils.showShortToast(result.failReason.getMsg());
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(observer);
     }
 
     @Override
@@ -256,24 +262,23 @@ public class TxModel implements ITxModel {
     }
 
     @Override
-    public void updateTransactionHistory(TransactionHistory txHistory){
-        Observable.create((ObservableOnSubscribe<Long>) emitter -> {
+    public void updateTransactionHistory(TransactionHistory txHistory, LogicObserver<Boolean> observer){
+        Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
             TransactionHistory transactionHistory = TransactionHistoryDaoUtils.getInstance().queryTransactionById(txHistory.getTxId());
             transactionHistory.setResult(txHistory.getResult());
-            transactionHistory.setConfirmations(txHistory.getConfirmations());
-            transactionHistory.setBlocktime(txHistory.getBlocktime());
-            long result = TransactionHistoryDaoUtils.getInstance().insertOrReplace(transactionHistory);
-            emitter.onNext(result);
+            transactionHistory.setMessage(txHistory.getMessage());
+            TransactionHistoryDaoUtils.getInstance().insertOrReplace(transactionHistory);
+            emitter.onNext(true);
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe();
+                .subscribe(observer);
     }
 
     @Override
     public void insertTransactionHistory(TransactionHistory txHistory){
-        Observable.create((ObservableOnSubscribe<Long>) emitter -> {
-            long result = TransactionHistoryDaoUtils.getInstance().insertOrReplace(txHistory);
-            emitter.onNext(result);
+        Observable.create((ObservableOnSubscribe<TransactionHistory>) emitter -> {
+            TransactionHistoryDaoUtils.getInstance().insertOrReplace(txHistory);
+            emitter.onNext(txHistory);
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe();
@@ -297,7 +302,7 @@ public class TxModel implements ITxModel {
     public void getAddOuts(TAUObserver<DataResult<List<AddOutBean>>> observer) {
         KeyValue keyValue = MyApplication.getKeyValue();
         if(keyValue == null){
-            observer.onError(null);
+            observer.onError(CodeException.getError());
             return;
         }
         String address = keyValue.getAddress();
@@ -335,16 +340,15 @@ public class TxModel implements ITxModel {
                 tx.setFromAddress(bean.getAddIn());
                 tx.setToAddress(bean.getAddOut());
                 // time and blockTime need set value here!
-                long time = 0L;
+                tx.setTime(bean.getTime());
                 try{
-                    time = Long.valueOf(bean.getTime());
+                    long time = Long.valueOf(bean.getTime());
+                    tx.setBlocktime(time);
                 }catch (Exception ignore){ }
 
-                tx.setTime(DateUtil.formatUTCTime(time, DateUtil.pattern6));
-                tx.setBlocktime(time);
                 tx.setTxId(bean.getTxid());
                 tx.setValue(FmtMicrometer.fmtAmount(bean.getVout()));
-                TransactionHistoryDaoUtils.getInstance().insertOrReplace(tx);
+                TransactionHistoryDaoUtils.getInstance().saveAddOut(tx);
             }
             emitter.onNext(true);
         }).observeOn(Schedulers.io())

@@ -19,6 +19,7 @@ import butterknife.OnLongClick;
 import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.util.CopyManager;
+import io.taucoin.android.wallet.util.DateUtil;
 import io.taucoin.android.wallet.util.FmtMicrometer;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 import io.taucoin.android.wallet.util.ToastUtils;
@@ -100,7 +101,12 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         String amount = FmtMicrometer.fmtFormat(tx.getValue());
         amount = isReceiver ? "+" + amount : "-" + amount;
         groupViewHolder.tvAmount.setText(amount);
-        groupViewHolder.tvTime.setText(tx.getTime());
+
+        String time = DateUtil.formatTime(tx.getTime(), DateUtil.pattern6);
+        if(StringUtil.isEmpty(time) && tx.getBlocktime() > 0){
+            time = DateUtil.formatTime(tx.getBlocktime(), DateUtil.pattern6);
+        }
+        groupViewHolder.tvTime.setText(time);
         // The user is the sender
         boolean isSuccess = StringUtil.isSame(TransmitKey.TxResult.SUCCESSFUL, tx.getResult());
         boolean isConfirming = StringUtil.isSame(TransmitKey.TxResult.CONFIRMING, tx.getResult());
@@ -138,7 +144,7 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         childViewHolder.tvTxFee.setText(fee);
 
         boolean isReceiver = StringUtil.isNotSame(tx.getFromAddress(), address);
-        childViewHolder.tvAddressTitle.setText(isReceiver ? R.string.tx_to_address : R.string.tx_received_address);
+        childViewHolder.tvAddressTitle.setText(isReceiver ? R.string.tx_from_address : R.string.tx_received_address);
         childViewHolder.tvFeeTitle.setVisibility(isReceiver ? View.GONE : View.VISIBLE);
         childViewHolder.tvTxFee.setVisibility(isReceiver ? View.GONE : View.VISIBLE);
 

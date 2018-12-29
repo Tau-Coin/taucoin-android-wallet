@@ -25,7 +25,6 @@ import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.db.entity.UTXORecord;
-import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
 import io.taucoin.android.wallet.module.bean.AddOutBean;
 import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.model.ITxModel;
@@ -76,7 +75,10 @@ public class TxPresenter {
     //First step: update Balance and UTXO
     public void getBalanceAndUTXO(TransactionHistory tx, LogicObserver<Boolean> logicObserver) {
         KeyValue keyValue = MyApplication.getKeyValue();
-        if(keyValue == null) return;
+        if(keyValue == null) {
+            logicObserver.onError();
+            return;
+        }
         long utxo = keyValue.getUtxo();
         long balance = keyValue.getBalance();
         Logger.i("balance=" + balance + "\tutxo=" + utxo);
@@ -138,11 +140,16 @@ public class TxPresenter {
                 TransactionHistory transactionHistory = new TransactionHistory();
                 transactionHistory.setTxId(txHistory.getTxId());
                 transactionHistory.setResult(TransmitKey.TxResult.CONFIRMING);
-                mTxModel.updateTransactionHistory(transactionHistory);
+                mTxModel.updateTransactionHistory(transactionHistory, new LogicObserver<Boolean>(){
 
-                EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
+                    @Override
+                    public void handleData(Boolean aBoolean) {
+                        EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
+                        checkRawTransaction();
+                    }
+                });
                 logicObserver.onNext(true);
-                checkRawTransaction();
+
             }
 
             @Override
@@ -153,14 +160,20 @@ public class TxPresenter {
                 }else if(msgCode == 402){
                     result = msg;
                 }
-                super.handleError(result, msgCode);
-                TransactionHistory transactionHistory = TransactionHistoryDaoUtils.getInstance().queryTransactionById(txHistory.getTxId());
+                TransactionHistory transactionHistory = new TransactionHistory();
+                transactionHistory.setTxId(txHistory.getTxId());
                 transactionHistory.setResult(TransmitKey.TxResult.FAILED);
                 transactionHistory.setMessage(result);
-                mTxModel.updateTransactionHistory(transactionHistory);
+                mTxModel.updateTransactionHistory(transactionHistory, new LogicObserver<Boolean>(){
+
+                    @Override
+                    public void handleData(Boolean aBoolean) {
+                        EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
+                    }
+                });
                 logicObserver.onNext(false);
 
-                EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
+                super.handleError(result, msgCode);
             }
         });
     }
@@ -187,7 +200,6 @@ public class TxPresenter {
 
             @Override
             public void handleError(String msg, int msgCode) {
-                super.handleError(msg, msgCode);
                 observer.onNext(false);
             }
 

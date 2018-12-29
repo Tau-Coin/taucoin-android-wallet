@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import com.github.naturs.logger.Logger;
 import com.mofei.tau.R;
+
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.taucoin.android.wallet.core.Wallet;
 
 import java.util.concurrent.TimeUnit;
@@ -65,6 +68,17 @@ public class SendActivity extends BaseActivity implements ISendView {
     private void initView() {
         etAmount.setFilters(new InputFilter[]{new MoneyValueFilter()});
         etFee.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(4)});
+
+        Observable.create((ObservableOnSubscribe<View>)
+                e -> btnSend.setOnClickListener(e::onNext))
+                .throttleFirst(2, TimeUnit.SECONDS)
+                .subscribe(new LogicObserver<View>() {
+                    @Override
+                    public void handleData(View view) {
+                        KeyboardUtils.hideSoftInput(SendActivity.this);
+                        mTxPresenter.isAnyTxPending();
+                    }
+                });
     }
 
     @OnClick(R.id.tv_fee)
@@ -89,13 +103,6 @@ public class SendActivity extends BaseActivity implements ISendView {
     @OnTextChanged(value = R.id.et_fee, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     void afterFeeChanged() {
         tvFee.setText(etFee.getText());
-    }
-
-    @OnClick(R.id.btn_send)
-    public void onBtnSendClicked() {
-        KeyboardUtils.hideSoftInput(this);
-
-        mTxPresenter.isAnyTxPending();
     }
 
     @Override

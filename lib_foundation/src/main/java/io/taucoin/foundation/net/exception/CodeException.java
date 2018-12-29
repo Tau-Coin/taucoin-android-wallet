@@ -27,4 +27,7 @@ public class CodeException {
     public @interface CodeEp {
     }
 
+    public static Throwable getError(){
+        return new Throwable("unknown error");
+    }
 }

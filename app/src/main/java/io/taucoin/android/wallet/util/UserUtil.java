@@ -30,6 +30,7 @@ import io.reactivex.schedulers.Schedulers;
 import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.foundation.net.callback.LogicObserver;
+import io.taucoin.foundation.net.exception.CodeException;
 import io.taucoin.foundation.util.StringUtil;
 
 public class UserUtil {
@@ -93,10 +94,10 @@ public class UserUtil {
                     if(bitmap != null){
                         emitter.onNext(bitmap);
                     }else{
-                        emitter.onError(null);
+                        emitter.onError(CodeException.getError());
                     }
                 }else{
-                    emitter.onError(null);
+                    emitter.onError(CodeException.getError());
                 }
             }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

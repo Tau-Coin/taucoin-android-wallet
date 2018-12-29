@@ -75,39 +75,29 @@ public class DateUtil {
         return format.format(new Date(time));
     }
 
-    public static String getCurrentTime(String pattern) {
-        format.applyPattern(pattern);
-        return format.format(new Date());
+    public static String getCurrentTime() {
+        Date date = new Date();
+        Long time = date.getTime();
+        time = time / 1000;
+        return String.valueOf(time);
+    }
+
+    public static String formatTime(String time, String pattern) {
+        try {
+            long timeSeconds = Long.valueOf(time);
+            return formatTime(timeSeconds, pattern);
+        }catch (Exception ignore){}
+        return time;
     }
 
     public static String formatTime(long timeSeconds, String pattern) {
         timeSeconds = timeSeconds * 1000;
         Date date = new Date(timeSeconds);
-        TimeZone timeZone = TimeZone.getTimeZone("UTC");
+        TimeZone timeZone = TimeZone.getDefault();
         format.setTimeZone(timeZone);
 
         format.applyPattern(pattern);
         return format.format(date);
-    }
-
-    public static String formatUTCTime(long timeSeconds, String pattern) {
-       String utcStr = formatTime(timeSeconds, pattern);
-        return formUTCToCST(utcStr, pattern);
-    }
-
-    public static String formUTCToCST(String utcStr, String pattern){
-        try {
-            Date utcDate = format.parse(utcStr);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(utcDate);
-            calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 8);
-            Date cstDate = calendar.getTime();
-            format.applyPattern(pattern);
-            return format.format(cstDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return utcStr;
     }
 
     public static String formatBestTime(long timeSeconds) {

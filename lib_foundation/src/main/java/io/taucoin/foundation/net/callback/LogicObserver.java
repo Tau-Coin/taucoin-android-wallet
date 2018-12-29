@@ -9,12 +9,11 @@ import io.taucoin.foundation.net.exception.CodeException;
 public abstract class LogicObserver<T> implements Observer<T> {
     @Override
     public void onError(Throwable e) {
-        Logger.e(e,"LogicObserver onError");
         handleError(100, "unknown error");
     }
 
     public void onError() {
-        onError(null);
+        onError(CodeException.getError());
     }
 
     @Override
@@ -35,6 +34,5 @@ public abstract class LogicObserver<T> implements Observer<T> {
     public abstract void handleData(T t);
 
     public void handleError(int code, String msg){
-        Logger.e("LogicObserver onError:" + msg);
     }
 }

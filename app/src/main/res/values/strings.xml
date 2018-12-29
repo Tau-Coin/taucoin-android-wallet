@@ -24,7 +24,7 @@
     <string name="tx_log">Transaction log</string>
     <string name="tx_log_empty">No records</string>
     <string name="tx_received_address">Received Address</string>
-    <string name="tx_to_address">To Address</string>
+    <string name="tx_from_address">From Address</string>
     <string name="tx_transaction_id">Transaction ID</string>
     <string name="tx_transaction_fee">Transaction Fee</string>
     <string name="tx_log_tips">Red fails, black succeeds. + for receive, - for send</string>

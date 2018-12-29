@@ -52,7 +52,7 @@ public interface ITxModel {
     void sendRawTransaction(String tx_hex, TAUObserver<RetResult<String>> observer);
 
     /** Update local transaction history */
-    void updateTransactionHistory(TransactionHistory txHistory);
+    void updateTransactionHistory(TransactionHistory txHistory, LogicObserver<Boolean> observer);
 
     /** Insert local transaction history */
     void insertTransactionHistory(TransactionHistory txHistory);

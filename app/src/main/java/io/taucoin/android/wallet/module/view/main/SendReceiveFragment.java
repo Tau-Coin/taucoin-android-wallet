@@ -82,7 +82,8 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
         if(UserUtil.isImportKey()){
             ProgressManager.showProgressDialog(getActivity());
         }
-        onEvent(EventBusUtil.getMessageEvent(MessageEvent.EventCode.ALL));
+        onEvent(EventBusUtil.getMessageEvent(MessageEvent.EventCode.BALANCE));
+        onEvent(EventBusUtil.getMessageEvent(MessageEvent.EventCode.TRANSACTION));
     }
 
     @Override
@@ -158,9 +159,6 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
         }
         switch (object.getCode()){
             case ALL:
-                UserUtil.setBalance(balanceText);
-                onRefresh(null);
-                break;
             case BALANCE:
                 UserUtil.setBalance(balanceText);
                 break;
@@ -180,18 +178,15 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
 
     public void startRefresh() {
         mPageNo = 1;
-        mTime = DateUtil.getCurrentTime(DateUtil.pattern6);
+        mTime = DateUtil.getCurrentTime();
         if(mTxPresenter != null){
             mTxPresenter.queryTransactionHistory(mPageNo, mTime);
-        }
-        if(!UserUtil.isImportKey()){
-            refreshLayout.finishRefresh(1000);
         }
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
-        if(mTxPresenter != null){
+        if(UserUtil.isImportKey() && mTxPresenter != null){
             mTxPresenter.getAddOuts(new LogicObserver<Boolean>() {
                 @Override
                 public void handleData(Boolean isSuccess) {
@@ -204,6 +199,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
                 }
             });
         }else {
+            refreshLayout.finishRefresh(1000);
             ProgressManager.closeProgressDialog();
         }
     }
