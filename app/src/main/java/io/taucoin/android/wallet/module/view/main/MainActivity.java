@@ -77,7 +77,8 @@ public class MainActivity extends BaseActivity implements IMainView {
     }
 
     private void hideFragment(FragmentTransaction fragmentTransaction) {
-        for (Fragment fragment : mFragments) {
+        for (int i = 0; i < mFragments.length; i++) {
+            Fragment fragment = mFragments[i];
             if(fragment != null){
                 fragmentTransaction.hide(fragment);
             }

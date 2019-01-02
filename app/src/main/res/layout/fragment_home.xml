@@ -50,6 +50,7 @@
                     android:layout_below="@id/iv_header_pic"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal"
                     android:hint="@string/common_no_login"
                     android:textColorHint="@color/color_grey" />
 
@@ -60,7 +61,7 @@
                     android:layout_height="70dp"
                     android:layout_below="@id/tv_nick"
                     android:layout_centerHorizontal="true"
-                    android:gravity="center_vertical"
+                    android:gravity="center_vertical|center"
                     android:textColorHint="@color/color_black" />
             </RelativeLayout>
 

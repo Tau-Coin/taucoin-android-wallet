@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/message"
+    style="@style/style_middle_white"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/color_black"
     android:gravity="center"
-    android:padding="6dp"
-    android:textColor="@color/color_white"
-    android:textSize="12sp" />
+    android:padding="6dp" />

@@ -55,7 +55,6 @@ import io.taucoin.android.wallet.util.DateUtil;
 import io.taucoin.android.wallet.util.FmtMicrometer;
 import io.taucoin.android.wallet.util.MD5_BASE64Util;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
-import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.net.NetWorkManager;
 import io.taucoin.foundation.net.callback.DataResult;
 import io.taucoin.foundation.net.callback.LogicObserver;
@@ -98,6 +97,11 @@ public class TxModel implements ITxModel {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(new TAUObserver<UTXOList>() {
+
+                @Override
+                public void handleError(String msg, int msgCode) {
+
+                }
 
                 @Override
                 public void handleData(UTXOList resResult) {
@@ -145,13 +149,13 @@ public class TxModel implements ITxModel {
 
     @Override
     public void getUTXOListLocal(LogicObserver<List<UTXORecord>> observer) {
-        KeyValue keyValue = MyApplication.getKeyValue();
-        if(keyValue == null){
-            observer.onError();
-            return;
-        }
-        String address = keyValue.getAddress();
         Observable.create((ObservableOnSubscribe<List<UTXORecord>>) emitter -> {
+            KeyValue keyValue = MyApplication.getKeyValue();
+            if(keyValue == null){
+                emitter.onError(CodeException.getError());
+                return;
+            }
+            String address = keyValue.getAddress();
             List<UTXORecord> list = UTXORecordDaoUtils.getInstance().queryByAddress(address);
             emitter.onNext(list);
         }).observeOn(AndroidSchedulers.mainThread())
@@ -196,6 +200,10 @@ public class TxModel implements ITxModel {
                         }
                     }
                 }
+
+                @Override
+                public void handleError(String msg, int msgCode) {
+                }
             });
 
     }
@@ -205,7 +213,7 @@ public class TxModel implements ITxModel {
         Observable.create((ObservableOnSubscribe<String>) emitter -> {
             KeyValue keyValue = MyApplication.getKeyValue();
             if(keyValue == null || StringUtil.isEmpty(keyValue.getPrivkey())){
-                observer.onError();
+                emitter.onError(CodeException.getError());
                 return;
             }
             String newPrivateKey;
@@ -214,7 +222,7 @@ public class TxModel implements ITxModel {
             } catch (AddressFormatException e) {
                 System.out.println(e.toString());
                 Logger.e(e, "AddressFormatException in createTransaction");
-                observer.onError();
+                emitter.onError(CodeException.getError());
                 return;
             }
             ECKey key = new ECKey(new BigInteger(newPrivateKey, 16));
@@ -241,10 +249,9 @@ public class TxModel implements ITxModel {
                 Logger.i("Transactions converted to hexadecimal strings:"+tx.dumpIntoHexStr());
                 String hex_after_base64= MD5_BASE64Util.EncoderByMd5_BASE64(tx.dumpIntoHexStr());
                 Logger.i("Transactions encrypted by BASE64: " + hex_after_base64);
-                observer.onNext(hex_after_base64);
+                emitter.onNext(hex_after_base64);
             } else {
-                observer.handleError(result.failReason.getCode(), result.failReason.getMsg());
-                ToastUtils.showShortToast(result.failReason.getMsg());
+                emitter.onError(CodeException.getError(result.failReason.getMsg()));
             }
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -258,6 +265,7 @@ public class TxModel implements ITxModel {
         NetWorkManager.createApiService(TransactionService.class)
                 .sendRawTransation(map)
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
     }
 
@@ -348,6 +356,8 @@ public class TxModel implements ITxModel {
 
                 tx.setTxId(bean.getTxid());
                 tx.setValue(FmtMicrometer.fmtAmount(bean.getVout()));
+                tx.setFee(FmtMicrometer.fmtAmount(bean.getFee()));
+                tx.setBlockheight(bean.getBlockHeight());
                 TransactionHistoryDaoUtils.getInstance().saveAddOut(tx);
             }
             emitter.onNext(true);

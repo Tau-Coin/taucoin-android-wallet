@@ -32,19 +32,30 @@ import io.taucoin.foundation.util.DimensionsUtil;
  */
 public class ToastUtils {
 
+    private static int mGravity = Gravity.BOTTOM;
+
     public static void showLongToast(int resId) {
+        mGravity = Gravity.BOTTOM;
         showToast(resId, Toast.LENGTH_LONG);
     }
 
+    public static void showShortToastCenter(int resId) {
+        mGravity = Gravity.CENTER;
+        showToast(resId, Toast.LENGTH_SHORT);
+    }
+
     public static void showShortToast(int resId) {
+        mGravity = Gravity.BOTTOM;
         showToast(resId, Toast.LENGTH_SHORT);
     }
 
     public static void showLongToast(CharSequence text) {
+        mGravity = Gravity.BOTTOM;
         showToast(text, Toast.LENGTH_LONG);
     }
 
     public static void showShortToast(CharSequence text) {
+        mGravity = Gravity.BOTTOM;
         showToast(text, Toast.LENGTH_SHORT);
     }
 
@@ -92,7 +103,11 @@ public class ToastUtils {
             TextView tv = (TextView) LayoutInflater.from(MyApplication.getInstance()).inflate(R.layout.toast_layout, null);
             tv.setText(message);
             sToast.setView(tv);
-            sToast.setGravity(Gravity.BOTTOM, 0, DimensionsUtil.dip2px(MyApplication.getInstance(), 80));
+            if(mGravity == Gravity.BOTTOM){
+                sToast.setGravity(mGravity, 0, DimensionsUtil.dip2px(MyApplication.getInstance(), 80));
+            }else{
+                sToast.setGravity(mGravity, 0, 0);
+            }
             sToast.setDuration(duration);
             sToast.show();
         }

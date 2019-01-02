@@ -28,6 +28,7 @@ import io.taucoin.android.wallet.net.service.AppService;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 import io.taucoin.foundation.net.NetWorkManager;
 import io.taucoin.foundation.net.callback.DataResult;
+import io.taucoin.foundation.net.callback.RetResult;
 
 public class AppModel implements IAppModel{
 
@@ -40,7 +41,8 @@ public class AppModel implements IAppModel{
                 .getInfo(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .subscribe(new TAUObserver<Object>() {
+                });
     }
 
     @Override

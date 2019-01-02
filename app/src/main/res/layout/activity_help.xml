@@ -29,12 +29,11 @@
             android:id="@+id/list_view_help"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_main_line"
             android:divider="@color/color_transparent"
-            android:dividerHeight="1dp"
+            android:dividerHeight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:groupIndicator="@null"
-            android:paddingBottom="1dp"
-            android:paddingTop="1dp"
             android:scrollbars="none" />
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>

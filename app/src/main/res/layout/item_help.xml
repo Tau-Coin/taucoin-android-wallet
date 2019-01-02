@@ -10,7 +10,6 @@
         style="@style/style_normal_blue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="50dp"
         android:gravity="center_vertical"
         android:layout_marginStart="@dimen/dimen_size_20"
         android:layout_marginEnd="@dimen/dimen_size_20"

@@ -30,4 +30,8 @@ public class CodeException {
     public static Throwable getError(){
         return new Throwable("unknown error");
     }
+
+    public static Throwable getError(String msg){
+        return new Throwable(msg);
+    }
 }

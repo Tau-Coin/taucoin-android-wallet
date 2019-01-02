@@ -64,6 +64,11 @@
     </style>
 
 
+    <style name="style_middle_white">
+        <item name="android:textSize">@dimen/dimen_size_16</item>
+        <item name="android:textColor">@color/color_white</item>
+    </style>
+
     <style name="style_big_white">
         <item name="android:textSize">@dimen/dimen_size_18</item>
         <item name="android:textColor">@color/color_white</item>

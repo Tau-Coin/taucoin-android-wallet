@@ -122,6 +122,7 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         }
         int textColor = ContextCompat.getColor(parent.getContext(), color);
         groupViewHolder.tvAmount.setTextColor(textColor);
+        groupViewHolder.tvTime.setTextColor(textColor);
         return convertView;
     }
 
@@ -144,9 +145,14 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         childViewHolder.tvTxFee.setText(fee);
 
         boolean isReceiver = StringUtil.isNotSame(tx.getFromAddress(), address);
-        childViewHolder.tvAddressTitle.setText(isReceiver ? R.string.tx_from_address : R.string.tx_received_address);
+        childViewHolder.tvAddressTitle.setText(isReceiver ? R.string.tx_from_address : R.string.tx_to_address);
         childViewHolder.tvFeeTitle.setVisibility(isReceiver ? View.GONE : View.VISIBLE);
         childViewHolder.tvTxFee.setVisibility(isReceiver ? View.GONE : View.VISIBLE);
+
+        childViewHolder.tvMemo.setText(tx.getMemo());
+        boolean isHaveMemo = StringUtil.isNotEmpty(tx.getMemo());
+        childViewHolder.tvMemo.setVisibility(!isHaveMemo ? View.GONE : View.VISIBLE);
+        childViewHolder.tvMemoTitle.setVisibility(!isHaveMemo ? View.GONE : View.VISIBLE);
 
         childViewHolder.tvFailMsg.setText(tx.getMessage());
         boolean isHaveFailMsg = StringUtil.isSame(TransmitKey.TxResult.FAILED, tx.getResult()) && StringUtil.isNotEmpty(tx.getMessage());
@@ -189,6 +195,10 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         TextView tvAddressTitle;
         @BindView(R.id.tv_fee_title)
         TextView tvFeeTitle;
+        @BindView(R.id.tv_memo_title)
+        TextView tvMemoTitle;
+        @BindView(R.id.tv_memo)
+        TextView tvMemo;
 
         ChildViewHolder(View view) {
             ButterKnife.bind(this, view);

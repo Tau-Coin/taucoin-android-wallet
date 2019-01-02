@@ -150,6 +150,7 @@ public class SendActivity extends BaseActivity implements ISendView {
                 if(isSuccess){
                     etAddress.getText().clear();
                     etAmount.getText().clear();
+                    etMemo.getText().clear();
                     etFee.setText(R.string.send_normal_value);
                 }
             }

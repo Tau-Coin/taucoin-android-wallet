@@ -23,11 +23,13 @@
     <string name="tx_receive">Receive</string>
     <string name="tx_log">Transaction log</string>
     <string name="tx_log_empty">No records</string>
-    <string name="tx_received_address">Received Address</string>
+    <string name="tx_to_address">To Address</string>
     <string name="tx_from_address">From Address</string>
     <string name="tx_transaction_id">Transaction ID</string>
     <string name="tx_transaction_fee">Transaction Fee</string>
-    <string name="tx_log_tips">Red fails, black succeeds. + for receive, - for send</string>
+    <string name="tx_log_tips">Red font indicates a failed transaction, Black font indicates a successful transaction, Blue font indicates a pending transaction;
+        \'+\' represents income, \'-\' represents payout
+    </string>
     <string name="tx_address_copy">Received address is copied</string>
     <string name="tx_id_copy">Transaction id is copied</string>
 
@@ -35,6 +37,7 @@
     <string name="manager_keys">Keys</string>
     <string name="manager_address_note">Address Note</string>
     <string name="manager_help">Help</string>
+    <string name="manager_profile_no_key">Please import or generate the private key to set it up again</string>
 
     <string name="send_receiver_address">Receive\'s Address</string>
     <string name="send_amount">Amount</string>

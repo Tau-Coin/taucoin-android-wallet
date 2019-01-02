@@ -39,13 +39,13 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 @SuppressWarnings("unused")
 public class ClassicsFooter extends RelativeLayout implements RefreshFooter {
 
-    public static String REFRESH_FOOTER_PULLUP = "Pull-up Load More";
-    public static String REFRESH_FOOTER_RELEASE = "Release immediate loading";
-    public static String REFRESH_FOOTER_LOADING = "Loading...";
-    public static String REFRESH_FOOTER_REFRESHING = "Refreshing...";
-    public static String REFRESH_FOOTER_FINISH = "Load complete";
-    public static String REFRESH_FOOTER_FAILED = "Failed to load";
-    public static String REFRESH_FOOTER_ALLLOADED = "Complete loading";
+//    public static String REFRESH_FOOTER_PULLUP = "Pull-up Load More";
+//    public static String REFRESH_FOOTER_RELEASE = "Release immediate loading";
+//    public static String REFRESH_FOOTER_LOADING = "Loading...";
+//    public static String REFRESH_FOOTER_REFRESHING = "Refreshing...";
+//    public static String REFRESH_FOOTER_FINISH = "Load complete";
+//    public static String REFRESH_FOOTER_FAILED = "Failed to load";
+//    public static String REFRESH_FOOTER_ALLLOADED = "Complete loading";
 
     protected TextView mTitleText;
     protected ImageView mArrowView;
@@ -82,13 +82,13 @@ public class ClassicsFooter extends RelativeLayout implements RefreshFooter {
         mTitleText = new TextView(context);
         mTitleText.setId(android.R.id.widget_frame);
         mTitleText.setTextColor(0xff666666);
-        mTitleText.setText(REFRESH_FOOTER_PULLUP);
+//        mTitleText.setText(REFRESH_FOOTER_PULLUP);
 
         LayoutParams lpBottomText = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
         lpBottomText.addRule(CENTER_IN_PARENT);
         addView(mTitleText, lpBottomText);
 
-        LayoutParams lpArrow = new LayoutParams(density.dip2px(20), density.dip2px(20));
+        LayoutParams lpArrow = new LayoutParams(density.dip2px(24), density.dip2px(24));
         lpArrow.addRule(CENTER_VERTICAL);
         lpArrow.addRule(LEFT_OF, android.R.id.widget_frame);
         mArrowView = new ImageView(context);
@@ -96,7 +96,8 @@ public class ClassicsFooter extends RelativeLayout implements RefreshFooter {
 
         LayoutParams lpProgress = new LayoutParams((ViewGroup.LayoutParams)lpArrow);
         lpProgress.addRule(CENTER_VERTICAL);
-        lpProgress.addRule(LEFT_OF, android.R.id.widget_frame);
+        lpProgress.addRule(CENTER_HORIZONTAL);
+//        lpProgress.addRule(LEFT_OF, android.R.id.widget_frame);
         mProgressView = new ImageView(context);
         mProgressView.animate().setInterpolator(new LinearInterpolator());
         addView(mProgressView, lpProgress);
@@ -106,6 +107,8 @@ public class ClassicsFooter extends RelativeLayout implements RefreshFooter {
         } else {
             mArrowView.setVisibility(GONE);
         }
+        mProgressView.setVisibility(VISIBLE);
+        mArrowView.setVisibility(GONE);
 
         TypedArray ta = context.obtainStyledAttributes(attrs, com.scwang.smartrefresh.layout.R.styleable.ClassicsFooter);
 
@@ -233,12 +236,12 @@ public class ClassicsFooter extends RelativeLayout implements RefreshFooter {
             } else {
                 mProgressView.animate().rotation(0).setDuration(300);
             }
-            mProgressView.setVisibility(GONE);
-            if (success) {
-                mTitleText.setText(REFRESH_FOOTER_FINISH);
-            } else {
-                mTitleText.setText(REFRESH_FOOTER_FAILED);
-            }
+//            mProgressView.setVisibility(GONE);
+//            if (success) {
+//                mTitleText.setText(REFRESH_FOOTER_FINISH);
+//            } else {
+//                mTitleText.setText(REFRESH_FOOTER_FAILED);
+//            }
             return mFinishDuration;
         }
         return 0;
@@ -270,11 +273,11 @@ public class ClassicsFooter extends RelativeLayout implements RefreshFooter {
     public boolean setLoadmoreFinished(boolean finished) {
         if (mLoadmoreFinished != finished) {
             mLoadmoreFinished = finished;
-            if (finished) {
-                mTitleText.setText(REFRESH_FOOTER_ALLLOADED);
-            } else {
-                mTitleText.setText(REFRESH_FOOTER_PULLUP);
-            }
+//            if (finished) {
+//                mTitleText.setText(REFRESH_FOOTER_ALLLOADED);
+//            } else {
+//                mTitleText.setText(REFRESH_FOOTER_PULLUP);
+//            }
             if (mProgressDrawable != null) {
                 mProgressDrawable.stop();
             } else {
@@ -302,23 +305,24 @@ public class ClassicsFooter extends RelativeLayout implements RefreshFooter {
             switch (newState) {
                 case None:
 //                    restoreRefreshLayoutBackground();
-                    mArrowView.setVisibility(VISIBLE);
+                    mArrowView.setVisibility(GONE);
+                    mProgressView.setVisibility(VISIBLE);
                 case PullToUpLoad:
-                    mTitleText.setText(REFRESH_FOOTER_PULLUP);
+//                    mTitleText.setText(REFRESH_FOOTER_PULLUP);
                     mArrowView.animate().rotation(180);
                     break;
                 case Loading:
                     mArrowView.setVisibility(GONE);
-                    mTitleText.setText(REFRESH_FOOTER_LOADING);
+//                    mTitleText.setText(REFRESH_FOOTER_LOADING);
                     break;
                 case ReleaseToLoad:
-                    mTitleText.setText(REFRESH_FOOTER_RELEASE);
+//                    mTitleText.setText(REFRESH_FOOTER_RELEASE);
                     mArrowView.animate().rotation(0);
 //                    replaceRefreshLayoutBackground(refreshLayout);
                     break;
                 case Refreshing:
-                    mTitleText.setText(REFRESH_FOOTER_REFRESHING);
-                    mProgressView.setVisibility(GONE);
+//                    mTitleText.setText(REFRESH_FOOTER_REFRESHING);
+                    mProgressView.setVisibility(VISIBLE);
                     mArrowView.setVisibility(GONE);
                     break;
             }

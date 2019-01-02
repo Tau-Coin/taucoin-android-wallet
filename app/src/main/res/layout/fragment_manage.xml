@@ -33,6 +33,7 @@
             android:layout_below="@id/iv_header_pic"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
             android:textColorHint="@color/color_grey"
             android:hint="@string/common_no_login" />
 

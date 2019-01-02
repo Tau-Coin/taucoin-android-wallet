@@ -107,7 +107,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
             case R.id.btn_receive:
                 if (keyValue != null){
                     CopyManager.copyText(keyValue.getAddress());
-                    ToastUtils.showLongToast(R.string.keys_address_copy);
+                    ToastUtils.showShortToastCenter(R.string.keys_address_copy);
                 }
                 break;
             case R.id.btn_send:
@@ -115,7 +115,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
                 startActivity(intent);
                 break;
             case R.id.iv_tx_log_tips:
-                ToastUtils.showLongToast(R.string.tx_log_tips);
+                ToastUtils.showShortToastCenter(R.string.tx_log_tips);
                 break;
             default:
                 break;
