@@ -16,7 +16,7 @@
     <string name="main_manage">Manage</string>
     <string name="main_home_title">TAUcoin.io</string>
     <string name="main_exit">Click again to exit the application!</string>
-    <string name="main_mining_tips">Mobile mining function\nis in development</string>
+    <string name="main_mining_tips">Mobile Mining in development</string>
 
 
     <string name="tx_send">Send</string>
@@ -27,8 +27,8 @@
     <string name="tx_from_address">From Address</string>
     <string name="tx_transaction_id">Transaction ID</string>
     <string name="tx_transaction_fee">Transaction Fee</string>
-    <string name="tx_log_tips">Red font indicates a failed transaction, Black font indicates a successful transaction, Blue font indicates a pending transaction;
-        \'+\' represents income, \'-\' represents payout
+    <string name="tx_log_tips">Red font indicates a failed transaction, \nBlue font indicates a pending transaction, \nBlack font indicates a successful transaction;
+        \n\'+\' represents income, \'-\' represents payout
     </string>
     <string name="tx_address_copy">Received address is copied</string>
     <string name="tx_id_copy">Transaction id is copied</string>
@@ -37,9 +37,8 @@
     <string name="manager_keys">Keys</string>
     <string name="manager_address_note">Address Note</string>
     <string name="manager_help">Help</string>
-    <string name="manager_profile_no_key">Please import or generate the private key to set it up again</string>
 
-    <string name="send_receiver_address">Receive\'s Address</string>
+    <string name="send_receiver_address">Receiver\'s Address</string>
     <string name="send_amount">Amount</string>
     <string name="send_memo">Memo</string>
     <string name="send_priority">priority</string>
@@ -71,7 +70,7 @@
     <string name="keys_generate">Generate New Private Key</string>
     <string name="keys_how_import">How to import my private key?</string>
     <string name="keys_paste_tip">Paste private key here</string>
-    <string name="keys_address_copy">Address is copied</string>
+    <string name="keys_address_copy">Address copied</string>
     <string name="keys_public_copy">Public key is copied</string>
     <string name="keys_private_copy">Private key is copied</string>
     <string name="keys_private_empty">Private key cannot be empty</string>

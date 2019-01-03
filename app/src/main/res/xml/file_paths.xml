@@ -9,7 +9,8 @@
         <external-cache-path />: Context.getExternalCacheDir().
         <root-path />new File("/");
         -->
-        <!-- path=""代表根目录，也可以指定特定目录，name="camera_picture"是虚拟目录camera_picture -->
+        <!-- path=""Represents the root directory, or you can specify a specific directory
+            ，name="camera_picture" Is a virtual directory camera_picture -->
         <root-path name="root" path="" />
         <files-path name="files" path="com.mofei.tau" />
         <cache-path name="cache" path="" />

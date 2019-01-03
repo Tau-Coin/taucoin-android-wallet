@@ -3,6 +3,7 @@ package io.taucoin.foundation.net;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.github.naturs.logger.Logger;
 
 import java.io.IOException;
@@ -50,18 +51,16 @@ public class NetWorkManager {
 
     public void init() {
 
-        // Add Log to OkHttp
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
         okHttpClientBuilder.readTimeout(10, TimeUnit.SECONDS);
         okHttpClientBuilder.writeTimeout(10, TimeUnit.SECONDS);
         // Set request timeout
         okHttpClientBuilder.connectTimeout(10, TimeUnit.SECONDS);
+
+        // Add Log to OkHttp
         if (BuildConfig.DEBUG) {
             // Enable Log
-            okHttpClientBuilder.addInterceptor(logging);
+            okHttpClientBuilder.addNetworkInterceptor(new StethoInterceptor());
         }
 
        /* okHttpClientBuilder.sslSocketFactory(getSSLSocketFactory(NetWorkManager.this, new int[]{R.raw.https_certificate}));

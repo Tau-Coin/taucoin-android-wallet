@@ -2,6 +2,7 @@ package io.taucoin.android.wallet.module.view.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,7 +108,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
             case R.id.btn_receive:
                 if (keyValue != null){
                     CopyManager.copyText(keyValue.getAddress());
-                    ToastUtils.showShortToastCenter(R.string.keys_address_copy);
+                    ToastUtils.showLongToast(R.string.keys_address_copy, Gravity.CENTER, Gravity.CENTER);
                 }
                 break;
             case R.id.btn_send:
@@ -115,7 +116,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
                 startActivity(intent);
                 break;
             case R.id.iv_tx_log_tips:
-                ToastUtils.showShortToastCenter(R.string.tx_log_tips);
+                ToastUtils.showShortToast(R.string.tx_log_tips, Gravity.CENTER, Gravity.LEFT);
                 break;
             default:
                 break;
@@ -191,11 +192,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
                 @Override
                 public void handleData(Boolean isSuccess) {
                     ProgressManager.closeProgressDialog();
-                    if(isSuccess){
-                        startRefresh();
-                    }else{
-                        refreshLayout.finishRefresh(false);
-                    }
+                    startRefresh();
                 }
             });
         }else {

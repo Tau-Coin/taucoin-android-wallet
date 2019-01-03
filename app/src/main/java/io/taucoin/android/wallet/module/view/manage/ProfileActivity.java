@@ -67,7 +67,7 @@ public class ProfileActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         TakePhotoUtil.onActivityResult(this, requestCode, resultCode, data);
-        if(requestCode == TakePhotoUtil.CODE_RESULT_REQUEST){
+        if(requestCode == TakePhotoUtil.CODE_RESULT_REQUEST && resultCode == RESULT_OK){
             Bitmap bitmap = TakePhotoUtil.getPhotoZoom();
             if(bitmap != null){
                 ivAvatar.setImageBitmap(bitmap);

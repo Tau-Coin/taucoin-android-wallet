@@ -168,6 +168,7 @@ public class TxService extends Service {
             public void handleError(String msg, int msgCode) {
                 super.handleError(msg, msgCode);
                 ProgressManager.closeProgressDialog();
+                EventBusUtil.post(MessageEvent.EventCode.BALANCE);
             }
 
             @Override

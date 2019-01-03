@@ -24,7 +24,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
@@ -44,7 +43,6 @@ import java.util.List;
 import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.base.BaseFragment;
 import io.taucoin.android.wallet.widget.ActionSheetDialog;
-import io.taucoin.foundation.util.DimensionsUtil;
 import io.taucoin.foundation.util.StringUtil;
 import io.taucoin.foundation.util.permission.EasyPermissions;
 
@@ -61,6 +59,7 @@ public class TakePhotoUtil {
     private static Uri tempUri;
     private static String tempName = "image.png";
     private static String imageName;
+    private static String imagePath;
 
     public static void takePhotoForName(FragmentActivity context, String name){
         TakePhotoUtil.imageName = name;
@@ -106,6 +105,13 @@ public class TakePhotoUtil {
 
         Logger.i("TakePhoneUtil.choseHeadImageFromCapture");
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = getSaveFile();
+        if(file == null){
+            return;
+        }
+        Uri uri = getUriForFile(file);
+        imagePath = uri.toString();
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         if(fragment == null){
             context.startActivityForResult(intent, CODE_CAMERA_REQUEST);
         }else{
@@ -135,8 +141,7 @@ public class TakePhotoUtil {
         }
     }
     private static void startPhotoZoom(FragmentActivity context, String filepath) {
-        File file = new File(filepath);
-        Uri uri = getUriForFile(file);
+        Uri uri = Uri.parse(filepath);
         tempUri = uri;
         startPhotoZoom(context, uri, true);
     }
@@ -165,7 +170,7 @@ public class TakePhotoUtil {
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
             // outputX outputY
-            int size = DimensionsUtil.dip2px(context, 125);
+            int size = 300;
             intent.putExtra("outputX", size);
             intent.putExtra("outputY", size);
 //          intent.putExtra("return-data", true);
@@ -273,6 +278,21 @@ public class TakePhotoUtil {
         return path;
     }
 
+    private static File getSaveFile() {
+        String path = getSavePath();
+        if (android.os.Environment.getExternalStorageState().equals(
+                android.os.Environment.MEDIA_MOUNTED)) {
+            File dir = new File(path);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            return new File(path,  tempName);
+        }else{
+            ToastUtils.showShortToast("No sdcard");
+        }
+        return null;
+    }
+
     public static void onActivityResult(FragmentActivity context, int requestCode, int resultCode, Intent intent) {
         if (requestCode == Activity.RESULT_CANCELED) {
             ToastUtils.showShortToast("Canceled");
@@ -284,15 +304,8 @@ public class TakePhotoUtil {
                     TakePhotoUtil.startPhotoZoom(context, intent.getData());
                 break;
             case TakePhotoUtil.CODE_CAMERA_REQUEST:
-                if (Activity.RESULT_OK == resultCode && intent != null) {
-                    if (TakePhotoUtil.isHasSDCard()) {
-                        Bundle bundle = intent.getExtras();
-                        Bitmap bm = (Bitmap) bundle.get("data");
-                        String filepath = TakePhotoUtil.saveImage(bm);
-                        TakePhotoUtil.startPhotoZoom(context, filepath);
-                    } else {
-                        ToastUtils.showShortToast("No sdcard");
-                    }
+                if (Activity.RESULT_OK == resultCode) {
+                    TakePhotoUtil.startPhotoZoom(context, imagePath);
                 }
                 break;
 

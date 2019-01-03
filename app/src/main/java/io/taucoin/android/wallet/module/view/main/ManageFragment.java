@@ -1,6 +1,7 @@
 package io.taucoin.android.wallet.module.view.main;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,7 @@ public class ManageFragment extends BaseFragment implements IManageView {
                if(UserUtil.isImportKey()){
                    ActivityUtil.startActivity(getActivity(), ProfileActivity.class);
                }else{
-                   ToastUtils.showShortToastCenter(R.string.manager_profile_no_key);
+                   ActivityUtil.startActivity(getActivity(), ImportKeyActivity.class);
                }
                break;
            case R.id.item_keys:

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
@@ -66,35 +67,35 @@
             android:layout_centerVertical="true"
             android:text="@string/tx_transaction_fee" />
 
-        <TextView
-            android:layout_toEndOf="@+id/tv_fee_title"
-            android:id="@+id/tv_fee"
+
+        <EditText
+            android:layout_toStartOf="@+id/iv_fee"
+            android:id="@+id/et_fee"
             style="@style/style_normal_blue"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingEnd="0dp"
+            android:inputType="number|numberDecimal|textMultiLine"
+            android:digits=".0123456789"
+            android:paddingStart="5dp"
+            android:layout_marginStart="@dimen/dimen_size_120"
+            android:background="@color/color_transparent"
+            android:text="@string/send_normal_value" />
+
+        <ImageView
+            android:id="@+id/iv_fee"
+            style="@style/style_normal_blue"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:padding="4dp"
+            android:contentDescription="@null"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/dimen_size_15"
-            android:minWidth="@dimen/dimen_size_150"
-            android:gravity="right"
-            android:drawableEnd="@mipmap/icon_arrow"
-            android:text="@string/send_normal_value"
-            android:drawablePadding="2dp" />
+            android:src="@mipmap/icon_arrow" />
 
 
     </RelativeLayout>
-
-    <EditText
-        android:visibility="visible"
-        android:id="@+id/et_fee"
-        style="@style/style_normal_blue"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:inputType="number|numberDecimal"
-        android:maxLength="7"
-        android:text="@string/send_normal_value"
-        android:drawablePadding="2dp" />
 
     <Button
         android:id="@+id/btn_send"

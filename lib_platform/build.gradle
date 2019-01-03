@@ -44,8 +44,6 @@ dependencies {
     api rootProject.ext.expandable
     api rootProject.ext.butterknife
     api rootProject.ext.butterknifecompiler
-    api rootProject.ext.stetho
-    api rootProject.ext.stethookhttp3
     api rootProject.ext.crashlytics
     debugApi rootProject.ext.leakcanarydebug
     releaseApi rootProject.ext.leakcanaryrelease

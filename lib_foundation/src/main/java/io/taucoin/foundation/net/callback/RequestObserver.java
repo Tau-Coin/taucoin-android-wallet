@@ -1,8 +1,5 @@
 package io.taucoin.foundation.net.callback;
 
-import com.github.naturs.logger.Logger;
-import com.google.gson.Gson;
-
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.taucoin.foundation.net.exception.ApiException;
@@ -51,10 +48,6 @@ public abstract class RequestObserver<T> implements Observer<T> {
         }else{
             onError(new Throwable());
         }
-
-        try {
-            Logger.d(new Gson().toJson(t),"RequestObserver.Data");
-        }catch (Exception ignore){}
     }
 
     public abstract void handleError(String msg, int msgCode);

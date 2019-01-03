@@ -41,4 +41,6 @@ dependencies {
     api rootProject.ext.rxjava
     api rootProject.ext.rxandroid
     api rootProject.ext.logger
+    api rootProject.ext.stetho
+    api rootProject.ext.stethookhttp3
 }

@@ -30,10 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@color/color_transparent"
-            android:dividerHeight="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:groupIndicator="@null"
+            android:dividerHeight="0dp"
             android:scrollbars="none" />
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>

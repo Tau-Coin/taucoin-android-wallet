@@ -72,7 +72,7 @@ public class TxModel implements ITxModel {
         NetWorkManager.createApiService(TransactionService.class)
             .getBalance(map)
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(Schedulers.io())
             .subscribe(observer);
     }
 

@@ -200,6 +200,7 @@ public class TxPresenter {
 
             @Override
             public void handleError(String msg, int msgCode) {
+                super.handleError(msg, msgCode);
                 observer.onNext(false);
             }
 

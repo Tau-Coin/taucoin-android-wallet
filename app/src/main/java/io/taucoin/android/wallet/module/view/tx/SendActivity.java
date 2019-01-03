@@ -5,13 +5,14 @@ import android.text.InputFilter;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.naturs.logger.Logger;
 import com.mofei.tau.R;
 
-import io.reactivex.ObservableEmitter;
+import butterknife.OnTouch;
 import io.reactivex.ObservableOnSubscribe;
 import io.taucoin.android.wallet.core.Wallet;
 
@@ -20,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTextChanged;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
@@ -39,14 +39,16 @@ import io.taucoin.foundation.net.callback.LogicObserver;
 
 public class SendActivity extends BaseActivity implements ISendView {
 
+    @BindView(R.id.ll_root)
+    LinearLayout llRoot;
     @BindView(R.id.et_address)
     EditText etAddress;
     @BindView(R.id.et_amount)
     EditText etAmount;
     @BindView(R.id.et_memo)
     EditText etMemo;
-    @BindView(R.id.tv_fee)
-    TextView tvFee;
+    @BindView(R.id.iv_fee)
+    ImageView ivFee;
     @BindView(R.id.et_fee)
     EditText etFee;
     @BindView(R.id.btn_send)
@@ -69,6 +71,16 @@ public class SendActivity extends BaseActivity implements ISendView {
         etAmount.setFilters(new InputFilter[]{new MoneyValueFilter()});
         etFee.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(4)});
 
+        KeyboardUtils.registerSoftInputChangedListener(this, height -> {
+            if(etFee != null){
+                boolean isFeeFocus = etFee.hasFocus();
+                boolean isVisible = KeyboardUtils.isSoftInputVisible(SendActivity.this);
+                if(isFeeFocus && !isVisible){
+                    resetViewFocus(llRoot);
+                }
+            }
+        });
+
         Observable.create((ObservableOnSubscribe<View>)
                 e -> btnSend.setOnClickListener(e::onNext))
                 .throttleFirst(2, TimeUnit.SECONDS)
@@ -81,28 +93,35 @@ public class SendActivity extends BaseActivity implements ISendView {
                 });
     }
 
-    @OnClick(R.id.tv_fee)
-    public void onTvFeeClicked() {
+    @OnClick(R.id.iv_fee)
+    void onFeeSelectedClicked() {
         KeyboardUtils.hideSoftInput(this);
-
         new ActionSheetDialog(this)
                 .builder()
                 .setCancelable(true)
-                .setSelectValue(tvFee.getText().toString().trim())
+                .setSelectValue(etFee.getText().toString().trim())
                 .setCanceledOnTouchOutside(true)
                 .setTitle(R.string.send_choose_fee_title, R.string.send_choose_fee_tips)
                 .addSheetItem(R.string.send_priority, R.string.send_priority_vice, R.string.send_priority_value,
-                        which -> tvFee.setText(which.id))
+                        which -> etFee.setText(which.id))
                 .addSheetItem(R.string.send_normal, R.string.send_normal_vice, R.string.send_normal_value,
-                        which -> tvFee.setText(which.id))
+                        which -> etFee.setText(which.id))
                 .setCancel(R.string.send_customize,
                         which -> showSoftInput())
                 .show();
     }
 
-    @OnTextChanged(value = R.id.et_fee, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    void afterFeeChanged() {
-        tvFee.setText(etFee.getText());
+    @OnTouch(R.id.et_fee)
+    boolean onTxFeeClick(){
+        return true;
+    }
+
+    private void resetViewFocus(View view) {
+        if(view != null){
+            view.setFocusable(true);
+            view.setFocusableInTouchMode(true);
+            view.requestFocus();
+        }
     }
 
     @Override
@@ -110,7 +129,7 @@ public class SendActivity extends BaseActivity implements ISendView {
         String address = etAddress.getText().toString().trim();
         String amount = etAmount.getText().toString().trim();
         String memo = etMemo.getText().toString().trim();
-        String fee = tvFee.getText().toString().trim();
+        String fee = etFee.getText().toString().trim();
 
         TransactionHistory tx = new TransactionHistory();
         tx.setToAddress(address);
@@ -148,6 +167,7 @@ public class SendActivity extends BaseActivity implements ISendView {
             public void handleData(Boolean isSuccess) {
                 ProgressManager.closeProgressDialog();
                 if(isSuccess){
+                    // clear all editText data
                     etAddress.getText().clear();
                     etAmount.getText().clear();
                     etMemo.getText().clear();
@@ -158,6 +178,7 @@ public class SendActivity extends BaseActivity implements ISendView {
     }
 
     private void showSoftInput() {
+        // clear transaction fee
         Observable.timer(220, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<Long>() {
@@ -169,9 +190,7 @@ public class SendActivity extends BaseActivity implements ISendView {
 
                     @Override
                     public void onComplete() {
-                        etFee.setFocusable(true);
-                        etFee.setFocusableInTouchMode(true);
-                        etFee.requestFocus();
+                        resetViewFocus(etFee);
                         etFee.setSelection(etFee.getText().length());
                         KeyboardUtils.showSoftInput(etFee);
                     }
@@ -185,7 +204,10 @@ public class SendActivity extends BaseActivity implements ISendView {
 
     @Override
     protected void onDestroy() {
-        KeyboardUtils.hideSoftInput(this);
+        if(KeyboardUtils.isSoftInputVisible(this)){
+            KeyboardUtils.hideSoftInput(this);
+        }
+        KeyboardUtils.unregisterSoftInputChangedListener(this);
         super.onDestroy();
     }
 

@@ -53,7 +53,7 @@ public class HelpAdapter extends BaseAdapter {
         }
         HelpBean helpBean = list.get(position);
         viewHolder.tvHelpTitle.setText(helpBean.getTitle());
-        DrawablesUtil.setUnderLine(viewHolder.tvHelpTitle);
+//        DrawablesUtil.setUnderLine(viewHolder.tvHelpTitle);
         return convertView;
     }
 

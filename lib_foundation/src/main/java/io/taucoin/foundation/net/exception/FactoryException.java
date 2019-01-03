@@ -10,6 +10,8 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 
+import io.taucoin.foundation.net.NetWorkManager;
+import io.taucoin.foundation.util.AppUtil;
 import retrofit2.HttpException;
 
 public class FactoryException {
@@ -17,6 +19,7 @@ public class FactoryException {
     private static final String ConnectException_MSG = "Connection failed";
     private static final String JSONException_MSG = "Data parsing failure";
     private static final String UnknownHostException_MSG = "Unable to resolve the domain name";
+    private static final String NetworkError_MSG = "Please check the network connection and try again later.";
 
     /**
      * Analytical anomaly
@@ -24,7 +27,10 @@ public class FactoryException {
     public static ApiException analysisException(Throwable e) {
         Logger.e(e, "FactoryException.analysisException");
         ApiException apiException = new ApiException(e);
-        if (e instanceof HttpException) {
+        if (!AppUtil.isNetworkConnected(NetWorkManager.getContent())) {
+            apiException.setCode(CodeException.NETWORK_ERROR);
+            apiException.setDisplayMessage(NetworkError_MSG);
+        } else if (e instanceof HttpException) {
             apiException.setCode(CodeException.HTTP_ERROR);
             apiException.setDisplayMessage(HttpException_MSG);
         } else if (e instanceof HttpTimeException) {

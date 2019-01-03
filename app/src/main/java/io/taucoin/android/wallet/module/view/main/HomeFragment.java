@@ -15,12 +15,16 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.taucoin.android.wallet.base.BaseFragment;
 import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.presenter.TxService;
 import io.taucoin.android.wallet.module.view.main.iview.IHomeView;
+import io.taucoin.android.wallet.module.view.manage.ImportKeyActivity;
+import io.taucoin.android.wallet.module.view.manage.ProfileActivity;
+import io.taucoin.android.wallet.util.ActivityUtil;
 import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.UserUtil;
@@ -45,6 +49,20 @@ public class HomeFragment extends BaseFragment implements IHomeView {
         TxService.startTxService(TransmitKey.ServiceType.GET_HOME_DATA);
         TxService.startTxService(TransmitKey.ServiceType.GET_INFO);
         return view;
+    }
+
+    @OnClick({R.id.iv_header_pic, R.id.tv_nick})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_header_pic:
+            case R.id.tv_nick:
+                if (!UserUtil.isImportKey()) {
+                    ActivityUtil.startActivity(getActivity(), ImportKeyActivity.class);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
