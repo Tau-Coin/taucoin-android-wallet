@@ -1,11 +1,9 @@
 <resources>
     <string name="app_name">Taucoin</string>
 
-
     <!-- TODO: Remove or change this placeholder text -->
 
-
-    <string name="common_loading">loading...</string>
+    <string name="common_loading">loading&#8230;</string>
     <string name="common_no_login">Visitor</string>
     <string name="common_cancel">Cancel</string>
     <string name="common_done">Done</string>
@@ -27,11 +25,15 @@
     <string name="tx_from_address">From Address</string>
     <string name="tx_transaction_id">Transaction ID</string>
     <string name="tx_transaction_fee">Transaction Fee</string>
-    <string name="tx_log_tips">Red font indicates a failed transaction, \nBlue font indicates a pending transaction, \nBlack font indicates a successful transaction;
-        \n\'+\' represents income, \'-\' represents payout
+    <string name="tx_log_tips">
+        &#160;Red font indicates a failed transaction,\n
+        Blue font indicates a pending transaction,\n
+        Black font indicates a successful transaction;\n
+        \'+\' represents income,\n
+        \'-\' represents payout
     </string>
-    <string name="tx_address_copy">Received address is copied</string>
-    <string name="tx_id_copy">Transaction id is copied</string>
+    <string name="tx_address_copy">Address copied</string>
+    <string name="tx_id_copy">Transaction ID copied</string>
 
     <string name="manager_version">version %s</string>
     <string name="manager_keys">Keys</string>
@@ -74,8 +76,8 @@
     <string name="keys_how_import">How to import my private key?</string>
     <string name="keys_paste_tip">Paste private key here</string>
     <string name="keys_address_copy">Address copied</string>
-    <string name="keys_public_copy">Public key is copied</string>
-    <string name="keys_private_copy">Private key is copied</string>
+    <string name="keys_public_copy">Public Key copied</string>
+    <string name="keys_private_copy">Private Key copied</string>
     <string name="keys_private_invalid">Invalid private key</string>
 
     <string name="profile_avatar">Avatar</string>

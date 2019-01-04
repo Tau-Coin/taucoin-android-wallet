@@ -46,7 +46,7 @@ public class MyApplication extends Application {
         // Prevent multiple init
         if (AppUtil.isNotMainProcess(this)
                 // This process is dedicated to LeakCanary for heap analysis.
-                && LeakCanary.isInAnalyzerProcess(this)) {
+                || LeakCanary.isInAnalyzerProcess(this)) {
             return;
         }
 

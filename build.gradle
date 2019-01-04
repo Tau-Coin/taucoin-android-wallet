@@ -20,9 +20,9 @@ buildscript {
 }
 
 ext {
-    compileSdkVersion = 28
-    minSdkVersion = 19
-    targetSdkVersion = 28
+    compileSdkVersion = project.compileSdkVersion as int
+    minSdkVersion = project.minSdkVersion as int
+    targetSdkVersion = project.targetSdkVersion as int
     sourceCompatibilityVersion = JavaVersion.VERSION_1_8
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
     

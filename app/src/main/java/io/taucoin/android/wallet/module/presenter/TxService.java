@@ -144,6 +144,7 @@ public class TxService extends Service {
                             mTxModel.checkRawTransaction(txHistories.get(i).getTxId(), new LogicObserver<Boolean>(){
                                 @Override
                                 public void handleData(Boolean isOnBlockChain) {
+                                    EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
                                     getBalance(TransmitKey.ServiceType.GET_BALANCE);
                                     getUTXOList();
                                 }

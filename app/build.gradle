@@ -16,8 +16,8 @@ android {
         applicationId "com.mofei.tau"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 15
-        versionName "2.1"
+        versionCode project.appVersionCode as int
+        versionName project.appVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
@@ -44,7 +44,7 @@ android {
     }
 
     greendao {
-        schemaVersion 2
+        schemaVersion dbSchemaVersion as int
         daoPackage 'io.taucoin.android.wallet.db.greendao'
         targetGenDir 'src/main/java'
     }

@@ -103,7 +103,6 @@ public class SendActivity extends BaseActivity implements ISendView {
         editText.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(4).setEndSpace()});
         editText.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
         editText.setMaxLines(1);
-        editText.shieldingEvent();
     }
 
     @OnClick({R.id.iv_fee})

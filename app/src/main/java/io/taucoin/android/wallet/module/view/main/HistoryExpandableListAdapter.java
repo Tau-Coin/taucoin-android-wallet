@@ -139,13 +139,13 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TransactionHistory tx = historyList.get(groupPosition);
-        childViewHolder.tvReceivedAddress.setText(tx.getToAddress());
         childViewHolder.tvTransactionId.setText(tx.getTxId());
         String fee = tx.getFee() + "TAU";
         childViewHolder.tvTxFee.setText(fee);
 
         boolean isReceiver = StringUtil.isNotSame(tx.getFromAddress(), address);
         childViewHolder.tvAddressTitle.setText(isReceiver ? R.string.tx_from_address : R.string.tx_to_address);
+        childViewHolder.tvReceivedAddress.setText(isReceiver ? tx.getFromAddress() : tx.getToAddress());
         childViewHolder.tvFeeTitle.setVisibility(isReceiver ? View.GONE : View.VISIBLE);
         childViewHolder.tvTxFee.setVisibility(isReceiver ? View.GONE : View.VISIBLE);
 
