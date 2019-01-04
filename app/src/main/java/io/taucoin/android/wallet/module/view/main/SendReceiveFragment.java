@@ -32,14 +32,15 @@ import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.presenter.TxPresenter;
 import io.taucoin.android.wallet.module.view.main.iview.ISendReceiveView;
-import io.taucoin.android.wallet.module.view.tx.SendActivity;
 import io.taucoin.android.wallet.module.view.manage.ImportKeyActivity;
+import io.taucoin.android.wallet.module.view.tx.SendActivity;
 import io.taucoin.android.wallet.util.CopyManager;
 import io.taucoin.android.wallet.util.DateUtil;
 import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.android.wallet.util.UserUtil;
+import io.taucoin.android.wallet.widget.CommonDialog;
 import io.taucoin.android.wallet.widget.EmptyLayout;
 import io.taucoin.foundation.net.callback.LogicObserver;
 
@@ -116,12 +117,22 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
                 startActivity(intent);
                 break;
             case R.id.iv_tx_log_tips:
-                ToastUtils.showShortToast(R.string.tx_log_tips, Gravity.CENTER, Gravity.LEFT);
+                showTxLogTipDialog();
                 break;
             default:
                 break;
         }
 
+    }
+
+    private void showTxLogTipDialog() {
+        TextView textView = new TextView(getActivity());
+        textView.setTextAppearance(getActivity(), R.style.style_normal_grey_dark);
+        textView.setText(R.string.tx_log_tips);
+        textView.setLineSpacing(5.0f, 1.2f);
+        new CommonDialog.Builder(getActivity())
+                .setContentView(textView)
+                .create().show();
     }
 
     @Override

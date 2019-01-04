@@ -20,15 +20,15 @@ public enum TransactionFailReason {
     NO_ERROR(0, "no error"),
     EMPTY_RECIPIENTS(1, "empty recipients"),
     INVALID_RECIPIENT_OR_ADDRESS(2, "invalid recipient or address"),
-    NO_COINS(3, "no coins"),
-    NO_ENOUGH_COINS(4, "no enough coins"),
-    AMOUNT_TO_SMALL(5, "sent amount too small"),
+    NO_COINS(3, "No Balance"),
+    NO_ENOUGH_COINS(4, "Insufficient Balance"),
+    AMOUNT_TO_SMALL(5, "Transaction amount is too low"),
     UTXO_INVALID(6, "internal error: invalid utxo"),
     SIGNATURE_EXCEPTION(7, "internal error: sign fail"),
     TX_TOO_LARGE(8, "Transaction too large"),
-    TX_FEE_TOO_SMALL(9, "Transaction fees are too small"),
-    TX_FEE_TOO_LARGE(10, "Transaction fees are too large"),
-    AMOUNT_TO_LARGE(11, "sent amount too large");
+    TX_FEE_TOO_SMALL(9, "Transaction fee is too low"),
+    TX_FEE_TOO_LARGE(10, "Transaction fee is too high"),
+    AMOUNT_TO_LARGE(11, "Transaction amount is too high");
 
     private int code;
     private String msg;

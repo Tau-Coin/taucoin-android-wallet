@@ -52,12 +52,12 @@ public class ImportKeyActivity extends BaseActivity implements IImportKeyView {
     public void onBtnImportClicked() {
         String privateKey = etPrivateKey.getText().toString();
         if(StringUtil.isEmpty(privateKey)){
-            ToastUtils.showShortToast(R.string.keys_private_empty);
+            ToastUtils.showShortToast(R.string.keys_private_invalid);
             return;
         }
         Key key = KeyManager.validateKey(privateKey);
         if(key == null){
-            ToastUtils.showShortToast(R.string.keys_private_error);
+            ToastUtils.showShortToast(R.string.keys_private_invalid);
         }else{
             KeyValue keyValue = new KeyValue();
             keyValue.setPrivkey(privateKey);

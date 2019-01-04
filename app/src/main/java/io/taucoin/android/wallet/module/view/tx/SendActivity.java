@@ -2,6 +2,7 @@ package io.taucoin.android.wallet.module.view.tx;
 
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +36,8 @@ import io.taucoin.android.wallet.util.MoneyValueFilter;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.widget.ActionSheetDialog;
 import io.taucoin.android.wallet.widget.CommonDialog;
+import io.taucoin.android.wallet.widget.EditInput;
+import io.taucoin.android.wallet.widget.SelectionEditText;
 import io.taucoin.foundation.net.callback.LogicObserver;
 
 public class SendActivity extends BaseActivity implements ISendView {
@@ -50,7 +53,7 @@ public class SendActivity extends BaseActivity implements ISendView {
     @BindView(R.id.iv_fee)
     ImageView ivFee;
     @BindView(R.id.et_fee)
-    EditText etFee;
+    EditInput etFee;
     @BindView(R.id.btn_send)
     Button btnSend;
 
@@ -69,7 +72,7 @@ public class SendActivity extends BaseActivity implements ISendView {
 
     private void initView() {
         etAmount.setFilters(new InputFilter[]{new MoneyValueFilter()});
-        etFee.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(4)});
+        initTxFeeView();
 
         KeyboardUtils.registerSoftInputChangedListener(this, height -> {
             if(etFee != null){
@@ -93,13 +96,23 @@ public class SendActivity extends BaseActivity implements ISendView {
                 });
     }
 
-    @OnClick(R.id.iv_fee)
+    private void initTxFeeView() {
+        etFee.setText(R.string.send_normal_value);
+        SelectionEditText editText = etFee.getEditText();
+        editText.setTextAppearance(this, R.style.style_normal_blue);
+        editText.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(4).setEndSpace()});
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        editText.setMaxLines(1);
+        editText.shieldingEvent();
+    }
+
+    @OnClick({R.id.iv_fee})
     void onFeeSelectedClicked() {
         KeyboardUtils.hideSoftInput(this);
         new ActionSheetDialog(this)
                 .builder()
                 .setCancelable(true)
-                .setSelectValue(etFee.getText().toString().trim())
+                .setSelectValue(etFee.getText())
                 .setCanceledOnTouchOutside(true)
                 .setTitle(R.string.send_choose_fee_title, R.string.send_choose_fee_tips)
                 .addSheetItem(R.string.send_priority, R.string.send_priority_vice, R.string.send_priority_value,
@@ -129,7 +142,7 @@ public class SendActivity extends BaseActivity implements ISendView {
         String address = etAddress.getText().toString().trim();
         String amount = etAmount.getText().toString().trim();
         String memo = etMemo.getText().toString().trim();
-        String fee = etFee.getText().toString().trim();
+        String fee = etFee.getText();
 
         TransactionHistory tx = new TransactionHistory();
         tx.setToAddress(address);
@@ -190,9 +203,9 @@ public class SendActivity extends BaseActivity implements ISendView {
 
                     @Override
                     public void onComplete() {
-                        resetViewFocus(etFee);
-                        etFee.setSelection(etFee.getText().length());
-                        KeyboardUtils.showSoftInput(etFee);
+                        etFee.setText(etFee.getText());
+                        resetViewFocus(etFee.getEditText());
+                        KeyboardUtils.showSoftInput(etFee.getEditText());
                     }
 
                     @Override

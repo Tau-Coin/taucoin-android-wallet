@@ -16,7 +16,7 @@
     <string name="main_manage">Manage</string>
     <string name="main_home_title">TAUcoin.io</string>
     <string name="main_exit">Click again to exit the application!</string>
-    <string name="main_mining_tips">Mobile Mining in development</string>
+    <string name="main_mining_tips">Mobile mining function\nis in development</string>
 
 
     <string name="tx_send">Send</string>
@@ -53,10 +53,13 @@
     <string name="send_to">To</string>
     <string name="send_dialog_yes">Proceed</string>
     <string name="send_dialog_no">Back</string>
-    <string name="send_has_pending">Previous transaction is under confirmation</string>
-    <string name="send_tx_success">Transactions have been sent.</string>
+    <string name="send_has_pending">Please wait for previous transaction to be confirmed</string>
+    <string name="send_tx_success">Transaction sent</string>
     <string name="send_tx_fail">Transaction Error.</string>
-    <string name="send_tx_network_error">Error in network, send failed.</string>
+    <string name="send_tx_network_error">Network error, send failed</string>
+    <string name="send_tx_invalid_address">Invalid Address</string>
+    <string name="send_tx_invalid_amount">Invalid Amount</string>
+    <string name="send_tx_invalid_fee">Invalid Transaction Fee</string>
 
     <string name="keys_dialog_title">Please make sure your\nprivate key has been saved</string>
     <string name="keys_dialog_tips">Ignore this message for the first generate or import</string>
@@ -73,8 +76,7 @@
     <string name="keys_address_copy">Address copied</string>
     <string name="keys_public_copy">Public key is copied</string>
     <string name="keys_private_copy">Private key is copied</string>
-    <string name="keys_private_empty">Private key cannot be empty</string>
-    <string name="keys_private_error">Invalid private key</string>
+    <string name="keys_private_invalid">Invalid private key</string>
 
     <string name="profile_avatar">Avatar</string>
     <string name="profile_name">Name</string>

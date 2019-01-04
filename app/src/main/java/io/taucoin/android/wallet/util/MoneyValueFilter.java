@@ -25,25 +25,33 @@ import android.text.method.DigitsKeyListener;
  *
  */
 public class MoneyValueFilter extends DigitsKeyListener {
-
-    private static final String TAG = "MoneyValueFilter";
+    private int digits = 2;
+    private boolean isEndSpace = false;
 
     public MoneyValueFilter() {
         super(false, true);
     }
-
-    private int digits = 2;
 
     public MoneyValueFilter setDigits(int d) {
         digits = d;
         return this;
     }
 
+    public MoneyValueFilter setEndSpace() {
+        isEndSpace = true;
+        return this;
+    }
+
+    private String getEndExpand() {
+        return isEndSpace ? " " : "";
+    }
+
+
     @Override
     public CharSequence filter(CharSequence source, int start, int end,
                                Spanned dest, int dStart, int dEnd) {
         CharSequence out = super.filter(source, start, end, dest, dStart, dEnd);
-
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
         // if changed, replace the source
         if (out != null) {
             source = out;
@@ -56,11 +64,15 @@ public class MoneyValueFilter extends DigitsKeyListener {
         // if deleting, source is empty
         // and deleting can't break anything
         if (len == 0) {
-            return source;
+            stringBuilder.append(source);
+            stringBuilder.append(getEndExpand());
+            return stringBuilder;
         }
 
         if (source.toString().equals(".") && dStart == 0) {
-            return "0.";
+            stringBuilder.append("0.");
+            stringBuilder.append(getEndExpand());
+            return stringBuilder;
         }
 //
 //        if (!source.toString().equals(".") && dest.toString().equals("0")) {
@@ -68,30 +80,41 @@ public class MoneyValueFilter extends DigitsKeyListener {
 //        }
 
         int dLen = dest.length();
-
+        if(isEndSpace){
+            dLen -= 1;
+            dEnd -= 1;
+        }
         // Find the position of the decimal .
         for (int i = 0; i < dStart; i++) {
             if (dest.charAt(i) == '.') {
                 // being here means, that a number has
                 // been inserted after the dot
                 // check if the amount of digits is right
-                return (dLen - (i + 1) + len > digits) ?
+                CharSequence charSequence = (dLen - (i + 1) + len > digits) ?
                         "" :
                         new SpannableStringBuilder(source, start, end);
+
+                stringBuilder.append(charSequence);
+                stringBuilder.append(getEndExpand());
+                return stringBuilder;
             }
         }
         for (int i = start; i < end; ++i) {
             if (source.charAt(i) == '.') {
                 // being here means, dot has been inserted
                 // check if the amount of digits is right
-                if ((dLen - dEnd) + (end - (i + 1)) > digits)
-                    return "";
-                else
+                if ((dLen - dEnd) + (end - (i + 1)) > digits) {
+                    stringBuilder.append("");
+                    stringBuilder.append(getEndExpand());
+                    return stringBuilder;
+                }else
                     break;  // return new SpannableStringBuilder(source, start, end);
             }
         }
         // if the dot is after the inserted part,
         // nothing can break
-        return new SpannableStringBuilder(source, start, end);
+        stringBuilder.append(new SpannableStringBuilder(source, start, end));
+        stringBuilder.append(getEndExpand());
+        return stringBuilder;
     }
 }

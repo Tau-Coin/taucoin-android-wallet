@@ -63,6 +63,12 @@
         <item name="android:windowExitAnimation">@anim/action_sheet_dialog_out</item>
     </style>
 
+    <declare-styleable name="EditInput">
+        <attr name="ei_paddingBottom" format="dimension"/>
+        <attr name="ei_paddingTop" format="dimension"/>
+        <attr name="ei_paddingLeft" format="dimension"/>
+        <attr name="ei_paddingRight" format="dimension"/>
+    </declare-styleable>
 
     <style name="style_middle_white">
         <item name="android:textSize">@dimen/dimen_size_16</item>
@@ -112,6 +118,11 @@
     <style name="style_normal_light_grey">
         <item name="android:textSize">@dimen/dimen_size_16</item>
         <item name="android:textColor">@color/color_grey_light</item>
+    </style>
+
+    <style name="style_normal_grey_dark">
+        <item name="android:textSize">@dimen/dimen_size_16</item>
+        <item name="android:textColor">@color/color_grey_dark</item>
     </style>
 
     <style name="style_super_red">

@@ -21,6 +21,7 @@
     <color name="color_blue">#477df9</color>
     <color name="color_blue_light">#0E88EF</color>
     <color name="color_grey">#a9a9a9</color>
+    <color name="color_grey_dark">#3a3a3a</color>
     <color name="color_grey_light">#808080</color>
     <color name="color_violet">#7A00FF</color>
     <color name="color_green">#18ac18</color>

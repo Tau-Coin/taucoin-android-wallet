@@ -67,33 +67,28 @@
             android:layout_centerVertical="true"
             android:text="@string/tx_transaction_fee" />
 
-
-        <EditText
+        <io.taucoin.android.wallet.widget.EditInput
             android:layout_toStartOf="@+id/iv_fee"
+            android:layout_toEndOf="@+id/tv_fee_title"
             android:id="@+id/et_fee"
-            style="@style/style_normal_blue"
-            android:layout_width="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:paddingEnd="0dp"
-            android:inputType="number|numberDecimal|textMultiLine"
-            android:digits=".0123456789"
-            android:paddingStart="5dp"
-            android:layout_marginStart="@dimen/dimen_size_120"
-            android:background="@color/color_transparent"
-            android:text="@string/send_normal_value" />
+            android:layout_centerVertical="true" />
 
         <ImageView
             android:id="@+id/iv_fee"
             style="@style/style_normal_blue"
-            android:layout_width="28dp"
+            android:layout_width="24dp"
             android:layout_height="28dp"
-            android:padding="4dp"
+            android:paddingStart="2dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingEnd="2dp"
             android:contentDescription="@null"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@mipmap/icon_arrow" />
-
 
     </RelativeLayout>
 

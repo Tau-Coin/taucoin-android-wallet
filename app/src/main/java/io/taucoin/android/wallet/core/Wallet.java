@@ -23,6 +23,7 @@ import com.google.bitcoin.core.ProtocolException;
 import com.google.bitcoin.core.Script;
 import com.google.bitcoin.core.ScriptException;
 import com.google.bitcoin.core.Utils;
+import com.mofei.tau.R;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -277,16 +278,16 @@ public class Wallet implements Serializable {
         }
         // validate receive address
         if (StringUtil.isEmpty(tx.getToAddress())) {
-            ToastUtils.showShortToast("Please enter address");
+            ToastUtils.showShortToast(R.string.send_tx_invalid_address);
             return false;
         }
         if (!KeyManager.validateAddress(tx.getToAddress())) {
-            ToastUtils.showShortToast("Incorrect address");
+            ToastUtils.showShortToast(R.string.send_tx_invalid_address);
             return false;
         }
         // validate transaction amount
         if (StringUtil.isEmpty(tx.getValue())) {
-            ToastUtils.showShortToast("Please enter amount");
+            ToastUtils.showShortToast(R.string.send_tx_invalid_amount);
             return false;
         }
         BigInteger minAmount = Constants.MIN_CHANGE;
@@ -302,7 +303,7 @@ public class Wallet implements Serializable {
         }
         // validate transaction fee
         if (StringUtil.isEmpty(tx.getFee())) {
-            ToastUtils.showShortToast("Please enter transaction fee");
+            ToastUtils.showShortToast(R.string.send_tx_invalid_fee);
             return false;
         }
 
