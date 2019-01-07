@@ -17,7 +17,8 @@ import butterknife.OnCheckedChanged;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 import io.taucoin.android.wallet.base.BaseActivity;
-import io.taucoin.android.wallet.module.presenter.TxService;
+import io.taucoin.android.wallet.module.service.TxService;
+import io.taucoin.android.wallet.module.service.UpgradeService;
 import io.taucoin.android.wallet.module.view.main.iview.IMainView;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.util.ActivityManager;
@@ -33,6 +34,7 @@ public class MainActivity extends BaseActivity implements IMainView {
 
     private Fragment[] mFragments = new Fragment[3];
     private Subject<Integer> mBackClick = PublishSubject.create();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +42,8 @@ public class MainActivity extends BaseActivity implements IMainView {
         ButterKnife.bind(this);
         initBottomTabView();
         changeTab(0);
-        exitApp();
+        initExitApp();
+        UpgradeService.startUpdateService();
     }
 
     @Override
@@ -77,9 +80,8 @@ public class MainActivity extends BaseActivity implements IMainView {
     }
 
     private void hideFragment(FragmentTransaction fragmentTransaction) {
-        for (int i = 0; i < mFragments.length; i++) {
-            Fragment fragment = mFragments[i];
-            if(fragment != null){
+        for (Fragment fragment : mFragments) {
+            if (fragment != null) {
                 fragmentTransaction.hide(fragment);
             }
         }
@@ -115,7 +117,7 @@ public class MainActivity extends BaseActivity implements IMainView {
     }
 
     @SuppressLint("CheckResult")
-    private void exitApp() {
+    private void initExitApp() {
         mBackClick.mergeWith(mBackClick.debounce(2000, TimeUnit.MILLISECONDS)
             .map(i -> 0))
             .scan((prev, cur) -> {
@@ -127,7 +129,7 @@ public class MainActivity extends BaseActivity implements IMainView {
                 if (v == 1) {
                     ToastUtils.showLongToast(R.string.main_exit);
                 } else if (v == 2) {
-                    ActivityManager.finishAll();
+                    ActivityManager.getInstance().finishAll();
                 }
             });
     }
@@ -136,5 +138,6 @@ public class MainActivity extends BaseActivity implements IMainView {
     protected void onDestroy() {
         super.onDestroy();
         TxService.stopService();
+        UpgradeService.stopUpdateService();
     }
 }

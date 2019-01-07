@@ -87,4 +87,16 @@
     <string name="profile_take_photo">Take Photo</string>
     <string name="profile_dialog_name">Please enter the name</string>
 
+
+    <!--version upgrade-->
+    <string name="app_upgrade_title">Version upgrade</string>
+    <string name="app_upgrade_not_upgrade">Not updated</string>
+    <string name="app_upgrade_to_upgrade">Update now</string>
+    <string name="app_upgrade_install">Install Now</string>
+    <string name="app_upgrade_fail">Download failed</string>
+    <string name="app_upgrade_retry">Retry</string>
+    <string name="app_upgrade_permission_tip">
+        "Taucoin" wants to access your storage rights. If not, you will not be able to use the new version of the update service.
+    </string>
+
 </resources>

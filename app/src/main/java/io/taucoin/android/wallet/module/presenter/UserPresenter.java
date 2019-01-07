@@ -26,6 +26,7 @@ import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.model.IUserModel;
 import io.taucoin.android.wallet.module.model.UserModel;
+import io.taucoin.android.wallet.module.service.TxService;
 import io.taucoin.android.wallet.module.view.manage.iview.IImportKeyView;
 import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.ProgressManager;

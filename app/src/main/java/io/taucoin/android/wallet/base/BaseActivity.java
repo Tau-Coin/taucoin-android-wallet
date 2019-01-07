@@ -41,7 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnLoadmo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fullScreen(this);
-        ActivityManager.addActivity(this);
+        ActivityManager.getInstance().addActivity(this);
         if (!EventBusUtil.isRegistered(this)) {
             EventBusUtil.register(this);
         }
@@ -62,7 +62,7 @@ public abstract class BaseActivity extends AppCompatActivity implements OnLoadmo
         }catch (Exception ignore){
 
         }
-        ActivityManager.removeActivity(this);
+        ActivityManager.getInstance().removeActivity(this);
         if (EventBusUtil.isRegistered(this)) {
             EventBusUtil.unregister(this);
         }

@@ -21,7 +21,7 @@ import android.support.v4.app.FragmentActivity;
 
 /**
  * Description: Activity tools
- * Author:wuQy
+ * Author:yang
  * Date: 2019/01/02
  */
 public class ActivityUtil {

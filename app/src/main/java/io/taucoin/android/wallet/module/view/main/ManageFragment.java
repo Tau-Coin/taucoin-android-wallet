@@ -18,6 +18,7 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.taucoin.android.wallet.base.BaseFragment;
 import io.taucoin.android.wallet.module.bean.MessageEvent;
+import io.taucoin.android.wallet.module.service.UpgradeService;
 import io.taucoin.android.wallet.module.view.main.iview.IManageView;
 import io.taucoin.android.wallet.module.view.manage.HelpActivity;
 import io.taucoin.android.wallet.module.view.manage.ImportKeyActivity;
@@ -54,7 +55,7 @@ public class ManageFragment extends BaseFragment implements IManageView {
         onEvent(EventBusUtil.getMessageEvent(MessageEvent.EventCode.ALL));
     }
 
-    @OnClick({R.id.iv_header_pic, R.id.tv_nick, R.id.item_keys, R.id.item_address_note, R.id.item_help})
+    @OnClick({R.id.iv_header_pic, R.id.tv_nick, R.id.item_keys, R.id.item_address_note, R.id.item_help, R.id.tv_version})
     public void onClick(View view) {
        switch (view.getId()){
            case R.id.iv_header_pic:
@@ -77,6 +78,9 @@ public class ManageFragment extends BaseFragment implements IManageView {
                break;
            case R.id.item_help:
                ActivityUtil.startActivity(getActivity(), HelpActivity.class);
+               break;
+           case R.id.tv_version:
+               UpgradeService.startUpdateService();
                break;
            default:
                break;

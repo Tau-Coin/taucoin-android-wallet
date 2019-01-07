@@ -28,7 +28,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.taucoin.android.wallet.base.BaseActivity;
 import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
-import io.taucoin.android.wallet.module.presenter.TxService;
+import io.taucoin.android.wallet.module.service.TxService;
 import io.taucoin.android.wallet.module.presenter.TxPresenter;
 import io.taucoin.android.wallet.module.view.main.iview.ISendView;
 import io.taucoin.android.wallet.util.KeyboardUtils;

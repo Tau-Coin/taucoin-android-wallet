@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.taucoin.android.wallet.module.presenter;
+package io.taucoin.android.wallet.module.service;
 
 import android.app.Service;
 import android.content.Context;
@@ -167,9 +167,12 @@ public class TxService extends Service {
         mTxModel.getBalance( new TAUObserver<RetResult<BalanceBean>>() {
             @Override
             public void handleError(String msg, int msgCode) {
-                super.handleError(msg, msgCode);
-                ProgressManager.closeProgressDialog();
-                EventBusUtil.post(MessageEvent.EventCode.BALANCE);
+                if(StringUtil.isSame(serviceType, TransmitKey.ServiceType.GET_HOME_DATA)){
+                    getBalance(TransmitKey.ServiceType.GET_BALANCE);
+                }else{
+                    ProgressManager.closeProgressDialog();
+                    EventBusUtil.post(MessageEvent.EventCode.BALANCE);
+                }
             }
 
             @Override
@@ -177,8 +180,8 @@ public class TxService extends Service {
                 super.handleData(balanceRetBalance);
                 BalanceBean balance = balanceRetBalance.getRet();
                 Logger.i("getBalance success");
-                if(ActivityManager.isTopActivity(MainActivity.class) ||
-                        ActivityManager.isTopActivity(SendActivity.class)){
+                if(ActivityManager.getInstance().isTopActivity(MainActivity.class) ||
+                        ActivityManager.getInstance().isTopActivity(SendActivity.class)){
                     ProgressManager.closeProgressDialog();
                 }
                 KeyValue entry = KeyValueDaoUtils.getInstance().insertOrReplace(balance);

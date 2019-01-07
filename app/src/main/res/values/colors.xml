@@ -3,6 +3,7 @@
     <color name="colorPrimary">@color/color_blue</color>
     <color name="colorPrimaryDark">@color/color_blue</color>
     <color name="colorAccent">@color/color_blue</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
 
     <!-- New version color value  -->
     <color name="color_main_bg">#ffffff</color>

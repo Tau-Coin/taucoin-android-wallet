@@ -23,7 +23,6 @@ import javax.net.ssl.X509TrustManager;
 import io.taucoin.foundation.BuildConfig;
 import io.taucoin.foundation.util.PropertyUtils;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -47,7 +46,6 @@ public class NetWorkManager {
         mContext = context;
         return mInstance;
     }
-
 
     public void init() {
 
@@ -97,6 +95,10 @@ public class NetWorkManager {
 
     public static Context getContent() {
         return mContext;
+    }
+
+    public static Retrofit getRetrofit() {
+        return retrofit;
     }
 
     /**

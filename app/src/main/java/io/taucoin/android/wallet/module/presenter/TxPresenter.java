@@ -29,6 +29,7 @@ import io.taucoin.android.wallet.module.bean.AddOutBean;
 import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.model.ITxModel;
 import io.taucoin.android.wallet.module.model.TxModel;
+import io.taucoin.android.wallet.module.service.TxService;
 import io.taucoin.android.wallet.module.view.main.iview.ISendReceiveView;
 import io.taucoin.android.wallet.module.view.main.iview.ISendView;
 import io.taucoin.android.wallet.net.callback.TAUObserver;

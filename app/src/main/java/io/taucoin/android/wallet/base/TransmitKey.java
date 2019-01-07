@@ -42,4 +42,6 @@ public class TransmitKey {
         public static final String SUCCESSFUL = "Successful";
         public static final String CONFIRMING = "Confirming";
     }
+
+    public static final String BEAN = "bean";
 }

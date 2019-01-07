@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import java.util.List;
+
 public class AppUtil {
 
     public static boolean isNotMainProcess(Context context) {
@@ -43,16 +45,15 @@ public class AppUtil {
     }
 
     private static PackageInfo getPackageInfo(Context context) {
-        PackageInfo pi = null;
         try {
             PackageManager pm = context.getPackageManager();
-            pi = pm.getPackageInfo(context.getPackageName(),
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(),
                     PackageManager.GET_CONFIGURATIONS);
             return pi;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return pi;
+        return null;
     }
 
     public static boolean isNetworkConnected(Context context) {
@@ -64,5 +65,51 @@ public class AppUtil {
             }
         }
         return false;
+    }
+
+    /**
+     * Does the application run in the foreground
+     */
+    public static boolean isOnForeground(Context context) {
+        android.app.ActivityManager activityManager = (android.app.ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager
+                .getRunningAppProcesses();
+        for (android.app.ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.processName.equals(context.getPackageName())) {
+                return appProcess.importance == android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
+            }
+        }
+        return false;
+    }
+
+    public static long getLastUpdateTime(Context context) {
+        try {
+            PackageManager packageManager = context.getApplicationContext().getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            // app install time
+            long firstInstallTime = packageInfo.firstInstallTime;
+            // app last update time
+            long lastUpdateTime = packageInfo.lastUpdateTime;
+
+            return firstInstallTime > lastUpdateTime?firstInstallTime:lastUpdateTime;
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static boolean getUnInstallApkInfo(Context context, String filePath) {
+        boolean result = false;
+        try {
+            PackageManager pm = context.getPackageManager();
+            PackageInfo info = pm.getPackageArchiveInfo(filePath, PackageManager.GET_ACTIVITIES);
+            if (info != null) {
+                result = true;
+            }
+        } catch (Exception ignore) {
+        }
+        return result;
     }
 }

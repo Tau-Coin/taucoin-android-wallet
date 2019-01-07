@@ -109,7 +109,7 @@ public class TakePhotoUtil {
         if(file == null){
             return;
         }
-        Uri uri = getUriForFile(file);
+        Uri uri = FileUtil.getUriForFile(file);
         imagePath = uri.toString();
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         if(fragment == null){
@@ -185,24 +185,9 @@ public class TakePhotoUtil {
         }
     }
 
-    private static Uri getUriForFile(File file) {
-        Context context = MyApplication.getInstance();
-        if (context == null || file == null) {
-            throw new NullPointerException();
-        }
-        Uri uri;
-        if (Build.VERSION.SDK_INT >= 24) {
-            String authority = BuildConfig.APPLICATION_ID + ".fileprovider";
-            uri = FileProvider.getUriForFile(context.getApplicationContext(), authority, file);
-        } else {
-            uri = Uri.fromFile(file);
-        }
-        return uri;
-    }
-
     private static String getExternalPath(){
         return "file://" + File.separator + Environment.getExternalStorageDirectory().getPath() +
-                File.separator + BuildConfig.APPLICATION_ID + File.separator;
+                File.separator + BuildConfig.APPLICATION_ID + File.separator + "temp"  + File.separator;
     }
 
     private static String getAllPath(){

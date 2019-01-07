@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.taucoin.android.wallet.widget;
+package io.taucoin.android.wallet.widget.download;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -22,7 +22,6 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.Button;
 
@@ -33,13 +32,12 @@ import butterknife.ButterKnife;
 import io.taucoin.foundation.util.DimensionsUtil;
 import io.taucoin.foundation.util.StringUtil;
 
-public class CommonDialog extends Dialog {
+public class DownloadDialog extends Dialog {
 
-    public CommonDialog(Context context) {
-        super(context);
-    }
+    private static boolean isCanCancel = true;
 
-    public CommonDialog(Context context, int theme) {
+
+    private DownloadDialog(Context context, int theme) {
         super(context, theme);
     }
 
@@ -47,7 +45,6 @@ public class CommonDialog extends Dialog {
         private Context context;
         private String positiveButtonText;
         private String negativeButtonText;
-        private boolean isCanCancel = true;
         private boolean isEnabledPositive = true;
         private boolean isEnabledNegative = true;
         private int btnWidth;
@@ -56,79 +53,80 @@ public class CommonDialog extends Dialog {
         private View mContentView;
 
         public Builder(Context context) {
+            isCanCancel = true;
             this.context = context;
         }
 
-        public Builder setPositiveButton(int positiveButtonText,
-                                         OnClickListener listener) {
+        public DownloadDialog.Builder setPositiveButton(int positiveButtonText,
+                                                                                       OnClickListener listener) {
             this.positiveButtonText = (String) context
                     .getText(positiveButtonText);
             this.positiveButtonClickListener = listener;
             return this;
         }
 
-        public Builder setPositiveButton(OnClickListener listener) {
+        public DownloadDialog.Builder setPositiveButton(OnClickListener listener) {
             this.positiveButtonClickListener = listener;
             return this;
         }
 
-        public Builder setPositiveButton(String positiveButtonText,
-                                         OnClickListener listener) {
+        public DownloadDialog.Builder setPositiveButton(String positiveButtonText,
+                                                                                       OnClickListener listener) {
             this.positiveButtonText = positiveButtonText;
             this.positiveButtonClickListener = listener;
             return this;
         }
 
-        public Builder setButtonWidth(int dpWidth) {
+        public DownloadDialog.Builder setButtonWidth(int dpWidth) {
             this.btnWidth = dpWidth;
             return this;
         }
 
-        public Builder isEnabledPositive(boolean isEnabled) {
+        public DownloadDialog.Builder isEnabledPositive(boolean isEnabled) {
             this.isEnabledNegative = isEnabled;
             return this;
         }
 
-        public Builder isEnabledNegative(boolean isEnabled) {
+        public DownloadDialog.Builder isEnabledNegative(boolean isEnabled) {
             this.isEnabledNegative = isEnabled;
             return this;
         }
 
-        public Builder setCanceledOnTouchOutside(boolean cancel) {
-            this.isCanCancel = cancel;
+        public DownloadDialog.Builder setCanceledOnTouchOutside(boolean cancel) {
+            isCanCancel = cancel;
             return this;
         }
 
-        public Builder setContentView(View view) {
+        public DownloadDialog.Builder setContentView(View view) {
             this.mContentView = view;
             return this;
         }
 
-        public Builder setNegativeButton(int negativeButtonText,
-                                         OnClickListener listener) {
+        public DownloadDialog.Builder setNegativeButton(int negativeButtonText,
+                                                                                       OnClickListener listener) {
             this.negativeButtonText = (String) context
                     .getText(negativeButtonText);
             this.negativeButtonClickListener = listener;
             return this;
         }
 
-        public Builder setNegativeButton(String negativeButtonText,
-                                         OnClickListener listener) {
+        public DownloadDialog.Builder setNegativeButton(String negativeButtonText,
+                                                                                       OnClickListener listener) {
             this.negativeButtonText = negativeButtonText;
             this.negativeButtonClickListener = listener;
             return this;
         }
 
-        public CommonDialog create() {
+        public DownloadDialog create() {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final CommonDialog dialog = new CommonDialog(context, R.style.CommonDialog);
+            final DownloadDialog dialog = new DownloadDialog(context, R.style.CommonDialog);
             ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.dialog_common_layout, null);
-            dialog.addContentView(layout, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            dialog.addContentView(layout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             if(mContentView != null){
                 layout.addView(mContentView, 0);
             }
             resetDialogWidth(layout, dialog);
-            ViewHolder viewHolder = new ViewHolder(layout);
+            DownloadDialog.Builder.ViewHolder viewHolder = new DownloadDialog.Builder.ViewHolder(layout);
             viewHolder.positiveButton.setText(positiveButtonText);
             if (StringUtil.isEmpty(positiveButtonText)) {
                 viewHolder.positiveButton.setVisibility(View.GONE);
@@ -163,7 +161,7 @@ public class CommonDialog extends Dialog {
             return dialog;
         }
 
-        private void resetDialogWidth(ViewGroup layout, CommonDialog dialog) {
+        private void resetDialogWidth(ViewGroup layout, DownloadDialog dialog) {
             WindowManager windowManager = (WindowManager) context
                     .getSystemService(Context.WINDOW_SERVICE);
             Display display = windowManager.getDefaultDisplay();
@@ -179,6 +177,13 @@ public class CommonDialog extends Dialog {
             ViewHolder(View view) {
                 ButterKnife.bind(this, view);
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(isCanCancel){
+            super.onBackPressed();
         }
     }
 }

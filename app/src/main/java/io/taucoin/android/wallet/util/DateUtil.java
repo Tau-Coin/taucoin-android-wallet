@@ -27,7 +27,7 @@ import io.taucoin.foundation.util.StringUtil;
 
 /**
  * Description: Date tools
- * Author:wuQy
+ * Author:yang
  * Date: 2017/10/15
  */
 public class DateUtil {

@@ -18,6 +18,7 @@ package io.taucoin.android.wallet.module.model;
 import java.util.List;
 
 import io.taucoin.android.wallet.module.bean.HelpBean;
+import io.taucoin.android.wallet.module.bean.VersionBean;
 import io.taucoin.android.wallet.net.callback.TAUObserver;
 import io.taucoin.foundation.net.callback.DataResult;
 
@@ -28,4 +29,7 @@ public interface IAppModel {
 
     /** Get help page data */
     void getHelpData(TAUObserver<DataResult<List<HelpBean>>> observer);
+
+    /** Check app version info */
+    void checkAppVersion(TAUObserver<DataResult<VersionBean>> observer);
 }

@@ -20,6 +20,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.taucoin.android.wallet.module.bean.HelpBean;
+import io.taucoin.android.wallet.module.bean.VersionBean;
 import io.taucoin.foundation.net.callback.DataResult;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -33,4 +34,7 @@ public interface AppService {
 
     @POST("getHelps/")
     Observable<DataResult<List<HelpBean>>> getHelpData();
+
+    @POST("getVersion/")
+    Observable<DataResult<VersionBean>> checkAppVersion(@Body Map<String, Object> map);
 }
