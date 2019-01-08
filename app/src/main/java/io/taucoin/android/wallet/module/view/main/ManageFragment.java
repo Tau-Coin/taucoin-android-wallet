@@ -5,6 +5,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
@@ -17,6 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.taucoin.android.wallet.base.BaseFragment;
+import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.service.UpgradeService;
 import io.taucoin.android.wallet.module.view.main.iview.IManageView;
@@ -26,6 +28,8 @@ import io.taucoin.android.wallet.module.view.manage.KeysActivity;
 import io.taucoin.android.wallet.module.view.manage.ProfileActivity;
 import io.taucoin.android.wallet.util.ActivityUtil;
 import io.taucoin.android.wallet.util.EventBusUtil;
+import io.taucoin.android.wallet.util.ProgressManager;
+import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 import io.taucoin.android.wallet.util.UserUtil;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.util.AppUtil;
@@ -38,6 +42,8 @@ public class ManageFragment extends BaseFragment implements IManageView {
     TextView tvNick;
     @BindView(R.id.tv_version)
     TextView tvVersion;
+    @BindView(R.id.iv_version_upgrade)
+    ImageView ivVersionUpgrade;
 
     @Override
     public View getViewLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,11 +86,25 @@ public class ManageFragment extends BaseFragment implements IManageView {
                ActivityUtil.startActivity(getActivity(), HelpActivity.class);
                break;
            case R.id.tv_version:
+               ProgressManager.showProgressDialog(getActivity());
                UpgradeService.startUpdateService();
                break;
            default:
                break;
        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            showUpgradeView();
+        }
+    }
+
+    private void showUpgradeView() {
+        boolean isUpgrade = SharedPreferencesHelper.getInstance().getBoolean(TransmitKey.UPGRADE, false);
+        ivVersionUpgrade.setVisibility(isUpgrade ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
@@ -103,6 +123,9 @@ public class ManageFragment extends BaseFragment implements IManageView {
                 break;
             case AVATAR:
                 UserUtil.setAvatar(ivHeaderPic);
+                break;
+            case UPGRADE:
+                showUpgradeView();
                 break;
             default:
                 break;

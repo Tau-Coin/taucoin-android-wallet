@@ -25,6 +25,7 @@ import io.taucoin.android.wallet.net.callback.FileResponseBody;
 import io.taucoin.android.wallet.net.callback.TAUObserver;
 import io.taucoin.android.wallet.util.FileUtil;
 import io.taucoin.android.wallet.util.ProgressManager;
+import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 import io.taucoin.android.wallet.util.UriUtil;
 import io.taucoin.android.wallet.widget.download.DownloadManager;
 import io.taucoin.foundation.net.NetWorkManager;
@@ -75,6 +76,7 @@ public class UpgradeService extends Service {
         mVersionBean = null;
         mAppModel = new AppModel();
         mRetrofit = NetWorkManager.getRetrofit().newBuilder();
+        SharedPreferencesHelper.getInstance().putBoolean(TransmitKey.UPGRADE, false);
     }
 
     @Override
@@ -122,6 +124,7 @@ public class UpgradeService extends Service {
                             if(mUpgradeProgressListener != null){
                                 mUpgradeProgressListener.handlerUpgradeSuccess(file);
                             }
+                            mStatus = UpgradeStatus.SUCCESS;
                             stopSelf();
                         }
 
@@ -136,6 +139,7 @@ public class UpgradeService extends Service {
 
                         @Override
                         public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                            mStatus = UpgradeStatus.FAIL;
                             if(mUpgradeProgressListener != null){
                                 mUpgradeProgressListener.handlerUpgradeFail();
                             }
@@ -170,6 +174,8 @@ public class UpgradeService extends Service {
         mAppModel.checkAppVersion(new TAUObserver<DataResult<VersionBean>>() {
             @Override
             public void handleError(String msg, int msgCode) {
+                super.handleError(msg, msgCode);
+                ProgressManager.closeProgressDialog();
                 Logger.d("UpgradeService.checkAppVersion.handleError=" + msg);
                 stopSelf();
             }
@@ -193,11 +199,14 @@ public class UpgradeService extends Service {
             stopSelf();
             return;
         }
-        boolean isNeedUpdate = version.getNumber() >= AppUtil.getVersionCode(this);
+        // TODO: for test, release delete
+        version.setNumber(16);
+        boolean isNeedUpdate = version.getNumber() > AppUtil.getVersionCode(this);
         if(!isNeedUpdate){
             stopSelf();
             return;
         }
+        SharedPreferencesHelper.getInstance().putBoolean(TransmitKey.UPGRADE, true);
         String filePath = FileUtil.getDownloadFilePath();
         String fileName = getString(R.string.app_name);
         fileName += version.getNumber() + ".apk";

@@ -17,6 +17,8 @@ import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.base.BaseActivity;
 import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.module.presenter.UserPresenter;
+import io.taucoin.android.wallet.module.view.SplashActivity;
+import io.taucoin.android.wallet.util.ActivityUtil;
 import io.taucoin.android.wallet.util.TakePhotoUtil;
 import io.taucoin.android.wallet.util.UserUtil;
 import io.taucoin.android.wallet.widget.InputDialog;
@@ -33,6 +35,11 @@ public class ProfileActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(null != savedInstanceState){
+            Intent intent = new Intent();
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            ActivityUtil.startActivity(intent, this, SplashActivity.class);
+        }
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
         mUserPresenter = new UserPresenter();

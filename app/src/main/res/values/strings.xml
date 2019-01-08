@@ -7,6 +7,7 @@
     <string name="common_no_login">Visitor</string>
     <string name="common_cancel">Cancel</string>
     <string name="common_done">Done</string>
+    <string name="common_setting">Set up</string>
     <string name="common_balance" formatted="false"><Data><![CDATA[<font color="#477df9">%s</font> TAU]]> </Data></string>
 
     <string name="main_home">Home</string>
@@ -89,14 +90,35 @@
 
 
     <!--version upgrade-->
-    <string name="app_upgrade_title">Version upgrade</string>
+    <string name="app_upgrade_title">Version Update Tips</string>
     <string name="app_upgrade_not_upgrade">Not updated</string>
     <string name="app_upgrade_to_upgrade">Update now</string>
     <string name="app_upgrade_install">Install Now</string>
     <string name="app_upgrade_fail">Download failed</string>
     <string name="app_upgrade_retry">Retry</string>
-    <string name="app_upgrade_permission_tip">
-        "Taucoin" wants to access your storage rights. If not, you will not be able to use the new version of the update service.
+
+    <string name="permission_tip_upgrade_denied">
+        "Taucoin" wants to access your storage rights.
+    </string>
+
+    <string name="permission_tip_upgrade_never_ask_again">
+        "Taucoin" wants to access your storage rights.
+    </string>
+
+    <string name="permission_tip_capture_denied">
+        "Taucoin" needs access to your camera and storage rights.
+    </string>
+
+    <string name="permission_tip_capture_never_ask_again">
+        "Taucoin" needs access to your camera and storage rights.
+    </string>
+
+    <string name="permission_tip_gallery_denied">
+        "Taucoin" wants to access your storage rights.
+    </string>
+
+    <string name="permission_tip_gallery_never_ask_again">
+        "Taucoin" wants to access your storage rights.
     </string>
 
 </resources>

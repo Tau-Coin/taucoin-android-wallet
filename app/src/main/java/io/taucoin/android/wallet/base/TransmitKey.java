@@ -44,4 +44,5 @@ public class TransmitKey {
     }
 
     public static final String BEAN = "bean";
+    public static final String UPGRADE = "upgrade";
 }

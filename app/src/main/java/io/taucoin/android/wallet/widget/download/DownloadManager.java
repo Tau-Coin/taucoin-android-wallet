@@ -98,20 +98,21 @@ public class DownloadManager {
                         startDownload(activity);
                     } else {
                         EasyPermissions.requestPermissions(activity,
-                            activity.getString(R.string.app_upgrade_permission_tip),
+                            activity.getString(R.string.permission_tip_upgrade_denied),
                             PermissionUtils.REQUEST_PERMISSIONS_RECORD_STORAGE, permission);
                     }
                 }
             })
             .setCanceledOnTouchOutside(false)
             .create();
+        mDialog.setCancelable(false);
         mDialog.show();
     }
 
     /**
      * Check whether the file exists and is valid
      */
-    private  boolean isFileExists(VersionBean version) {
+    public boolean isFileExists(VersionBean version) {
         String filePath = version.getDownloadFilePath();
         String fileName = version.getDownloadFileName();
         String allPath = filePath + fileName;
@@ -138,7 +139,9 @@ public class DownloadManager {
      * Install the downloaded APK file
      */
     private void installApk() {
-        File file = new File(mVersionBean.getDownloadFilePath());
+        if(mVersionBean == null) return;
+        String allPath = mVersionBean.getDownloadFilePath() + mVersionBean.getDownloadFileName();
+        File file = new File(allPath);
         installApk(file);
     }
 
@@ -177,15 +180,25 @@ public class DownloadManager {
      * show Progress Dialog
      */
     private void showProgressDialog(FragmentActivity activity) {
+        if (mDialog != null) {
+            mDialog.dismiss();
+        }
         View view = LinearLayout.inflate(activity, R.layout.dialog_download_progress, null);
         mViewHolder = new ProgressViewHolder(view);
         mViewHolder.progressBar.setMax(100);
         updateProgress(0);
-        DownloadDialog dialog = new DownloadDialog.Builder(activity)
+        mDialog = new DownloadDialog.Builder(activity)
                 .setContentView(view)
                 .setCanceledOnTouchOutside(false)
                 .create();
-        dialog.show();
+        mDialog.setCancelable(false);
+        mDialog.show();
+    }
+
+    public void closeDialog() {
+        if(mDialog != null && mDialog.isShowing()){
+            mDialog.dismiss();
+        }
     }
 
     public OnUpgradeProgressListener getOnUpgradeProgressListener() {

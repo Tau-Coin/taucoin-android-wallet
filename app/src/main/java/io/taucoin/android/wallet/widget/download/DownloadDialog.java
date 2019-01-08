@@ -15,9 +15,9 @@
  */
 package io.taucoin.android.wallet.widget.download;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v7.app.AppCompatDialog;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
 import io.taucoin.foundation.util.DimensionsUtil;
 import io.taucoin.foundation.util.StringUtil;
 
-public class DownloadDialog extends Dialog {
+public class DownloadDialog extends AppCompatDialog {
 
     private static boolean isCanCancel = true;
 
@@ -177,13 +177,6 @@ public class DownloadDialog extends Dialog {
             ViewHolder(View view) {
                 ButterKnife.bind(this, view);
             }
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if(isCanCancel){
-            super.onBackPressed();
         }
     }
 }

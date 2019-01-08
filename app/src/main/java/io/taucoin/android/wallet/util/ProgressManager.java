@@ -75,4 +75,11 @@ public class ProgressManager {
             }
         }catch (Exception ignore){}
     }
+
+    public static boolean isShowing(){
+        if(mProgress != null){
+            return mProgress.isShowing();
+        }
+        return false;
+    }
 }

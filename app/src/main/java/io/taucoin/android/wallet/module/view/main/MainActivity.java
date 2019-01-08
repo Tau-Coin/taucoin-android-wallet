@@ -1,6 +1,7 @@
 package io.taucoin.android.wallet.module.view.main;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -19,8 +20,11 @@ import io.reactivex.subjects.Subject;
 import io.taucoin.android.wallet.base.BaseActivity;
 import io.taucoin.android.wallet.module.service.TxService;
 import io.taucoin.android.wallet.module.service.UpgradeService;
+import io.taucoin.android.wallet.module.view.SplashActivity;
 import io.taucoin.android.wallet.module.view.main.iview.IMainView;
+import io.taucoin.android.wallet.util.ActivityUtil;
 import io.taucoin.android.wallet.util.ToastUtils;
+import io.taucoin.android.wallet.widget.download.DownloadManager;
 import io.taucoin.foundation.util.ActivityManager;
 import io.taucoin.foundation.util.DrawablesUtil;
 

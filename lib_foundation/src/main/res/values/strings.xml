@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">lib-foundation</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>

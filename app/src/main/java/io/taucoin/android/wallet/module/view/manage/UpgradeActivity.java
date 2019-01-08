@@ -1,6 +1,7 @@
 package io.taucoin.android.wallet.module.view.manage;
 
 import android.content.ComponentName;
+import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -9,12 +10,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.github.naturs.logger.Logger;
+import com.mofei.tau.R;
 
 import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.base.BaseActivity;
 import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.module.bean.VersionBean;
 import io.taucoin.android.wallet.module.service.UpgradeService;
+import io.taucoin.android.wallet.module.view.SplashActivity;
+import io.taucoin.android.wallet.util.ActivityUtil;
 import io.taucoin.android.wallet.util.PermissionUtils;
 import io.taucoin.android.wallet.widget.download.DownloadManager;
 import io.taucoin.foundation.util.ActivityManager;
@@ -34,6 +38,15 @@ public class UpgradeActivity extends BaseActivity implements ServiceConnection {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(null != savedInstanceState){
+            if(null != mDownloadManager ){
+                mDownloadManager.closeDialog();
+            }
+            Intent intent = new Intent();
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            ActivityUtil.startActivity(intent, this, SplashActivity.class);
+
+        }
         mVersion = getIntent().getParcelableExtra(TransmitKey.BEAN);
         Logger.d("Upgrade show dialog start");
         if(mVersion != null && ActivityManager.getInstance().getActivitySize() > 0 &&
@@ -58,9 +71,13 @@ public class UpgradeActivity extends BaseActivity implements ServiceConnection {
         switch (requestCode) {
             case PermissionUtils.REQUEST_PERMISSIONS_RECORD_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mDownloadManager.startDownload(UpgradeActivity.this);
+                    if(mDownloadManager.isFileExists(mVersion)){
+                        mDownloadManager.showUpGradeDialog(UpgradeActivity.this, mVersion);
+                    }else{
+                        mDownloadManager.startDownload(UpgradeActivity.this);
+                    }
                 }else{
-//                    CheckUtil.getInstance().checkUserBanPermission(UpgradeActivity.this, permissions[0]);
+                    PermissionUtils.checkUserBanPermission(UpgradeActivity.this, permissions[0], R.string.permission_tip_upgrade_never_ask_again);
                 }
                 break;
 

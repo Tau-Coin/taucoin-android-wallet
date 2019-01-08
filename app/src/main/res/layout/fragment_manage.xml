@@ -37,18 +37,39 @@
             android:textColorHint="@color/color_grey"
             android:hint="@string/common_no_login" />
 
-        <TextView
-            android:id="@+id/tv_version"
-            style="@style/style_middle_grey"
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="22dp"
             android:layout_below="@id/tv_nick"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:background="@drawable/shape_corner_white_border"/>
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_version"
+                style="@style/style_middle_grey"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="232232323"
+                android:background="@drawable/shape_corner_white_border"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:visibility="invisible"
+                android:id="@+id/iv_version_upgrade"
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="1dp"
+                android:background="@color/color_red"
+                android:src="@mipmap/icon_avatar"
+                app:civ_border_color="@color/color_red"
+                app:civ_border_width="0.6dp" />
+
+        </FrameLayout>
+
     </RelativeLayout>
 
     <LinearLayout

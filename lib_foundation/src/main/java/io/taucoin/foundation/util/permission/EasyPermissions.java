@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.taucoin.foundation.R;
+
 /**
  * Utility to request and check System permissions for apps targeting Android M (API >= 23).
  */
@@ -120,8 +122,8 @@ public class EasyPermissions {
                                           final int requestCode,
                                           final String... perms) {
         return requestPermissions(activity, rationale, callback,
-                activity.getString(android.R.string.ok),
-                activity.getString(android.R.string.cancel),
+                activity.getString(R.string.ok),
+                activity.getString(R.string.cancel),
                 requestCode, perms);
     }
 
@@ -166,8 +168,8 @@ public class EasyPermissions {
                                           final int requestCode,
                                           final String... perms){
         return requestPermissions(fragment, rationale, callback,
-                fragment.getString(android.R.string.ok),
-                fragment.getString(android.R.string.cancel),
+                fragment.getString(R.string.ok),
+                fragment.getString(R.string.cancel),
                 requestCode, perms);
     }
 
@@ -212,8 +214,8 @@ public class EasyPermissions {
                                                             final int requestCode,
                                                             final String... perms){
         return requestPermissions(fragment, rationale, callback,
-                fragment.getString(android.R.string.ok),
-                fragment.getString(android.R.string.cancel),
+                fragment.getString(R.string.ok),
+                fragment.getString(R.string.cancel),
                 requestCode, perms);
     }
 
