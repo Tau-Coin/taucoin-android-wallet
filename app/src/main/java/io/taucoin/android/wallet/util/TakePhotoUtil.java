@@ -123,7 +123,7 @@ public class TakePhotoUtil {
         if (!EasyPermissions.hasPermissions(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE)) {
             EasyPermissions.requestPermissions(context, context.getString(R.string.permission_tip_gallery_denied),
-                    PermissionUtils.REQUEST_PERMISSIONS_RECORD_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    PermissionUtils.REQUEST_PERMISSIONS_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE);
             return;
         }
@@ -310,7 +310,7 @@ public class TakePhotoUtil {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private static void onRequestPermissionsResult(FragmentActivity activity, BaseFragment fragment, int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode != PermissionUtils.REQUEST_PERMISSIONS_CAMERA &&
-                requestCode != PermissionUtils.REQUEST_PERMISSIONS_RECORD_STORAGE) {
+                requestCode != PermissionUtils.REQUEST_PERMISSIONS_STORAGE) {
             return;
         }
         boolean isCamera = requestCode == PermissionUtils.REQUEST_PERMISSIONS_CAMERA;
@@ -344,7 +344,7 @@ public class TakePhotoUtil {
             case PermissionUtils.REQUEST_PERMISSIONS_CAMERA:
                 choseHeadImageFromCapture(activity, fragment);
                 break;
-            case PermissionUtils.REQUEST_PERMISSIONS_RECORD_STORAGE:
+            case PermissionUtils.REQUEST_PERMISSIONS_STORAGE:
                 choseHeadImageFromGallery(activity, fragment);
                 break;
             default:

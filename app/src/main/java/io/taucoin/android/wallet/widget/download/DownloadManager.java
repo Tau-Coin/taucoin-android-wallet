@@ -19,9 +19,12 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -32,16 +35,19 @@ import com.github.naturs.logger.Logger;
 import com.mofei.tau.R;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
 import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.module.bean.VersionBean;
 import io.taucoin.android.wallet.module.service.UpgradeService;
 import io.taucoin.android.wallet.module.view.manage.UpgradeActivity;
 import io.taucoin.android.wallet.util.FileUtil;
 import io.taucoin.android.wallet.util.PermissionUtils;
+import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.util.ActivityManager;
 import io.taucoin.foundation.util.AppUtil;
 import io.taucoin.foundation.util.permission.EasyPermissions;
@@ -53,7 +59,7 @@ import io.taucoin.foundation.util.permission.EasyPermissions;
  */
 public class DownloadManager {
 
-    private DownloadDialog mDialog;
+    private AlertDialog mDialog;
     private boolean isDownload = false;
     private ProgressViewHolder mViewHolder;
     private VersionBean mVersionBean;
@@ -67,52 +73,60 @@ public class DownloadManager {
         if (mDialog != null) {
             mDialog.dismiss();
         }
-        View view = LinearLayout.inflate(activity, R.layout.dialog_download, null);
-        ViewHolder viewHolder = new ViewHolder(view);
-        viewHolder.tvTitle.setText(R.string.app_upgrade_title);
-        viewHolder.tvContent.setText(Html.fromHtml(version.getContent()));
+        int leftButton = R.string.common_cancel;
+        int rightButton = isDownload ? R.string.app_upgrade_install : R.string.common_ok;
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+            .setTitle(R.string.app_upgrade_title)
+            .setMessage(Html.fromHtml(version.getContent()))
+            .setPositiveButton(rightButton, null)
+            .setCancelable(false);
 
-        int leftButton = R.string.app_upgrade_not_upgrade;
-        int rightButton = isDownload ? R.string.app_upgrade_install : R.string.app_upgrade_to_upgrade;
-        mDialog = new DownloadDialog.Builder(activity)
-            .setContentView(view)
-            .setNegativeButton(activity.getString(leftButton), (dialog, which) -> {
-                if (version.isForced()) {
-                    dialog.dismiss();
-                    ActivityManager.getInstance().finishAll();
-                } else {
-                    dialog.dismiss();
-                    Intent intent = new Intent(activity, UpgradeService.class);
-                    activity.stopService(intent);
-                }
-                activity.finish();
-            })
-            .setPositiveButton(activity.getString(rightButton), (dialog, which) -> {
-                if (isDownload) {
-                    installApk();
-                } else {
-                    String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
-                    if (EasyPermissions.hasPermissions(activity, permission)) {
-                        dialog.dismiss();
-                        showProgressDialog(activity);
-                        startDownload(activity);
-                    } else {
-                        EasyPermissions.requestPermissions(activity,
-                            activity.getString(R.string.permission_tip_upgrade_denied),
-                            PermissionUtils.REQUEST_PERMISSIONS_RECORD_STORAGE, permission);
-                    }
-                }
-            })
-            .setCanceledOnTouchOutside(false)
-            .create();
+        builder.setNegativeButton(leftButton, (dialog, which) -> {
+            if (version.isForced()) {
+                ActivityManager.getInstance().finishAll();
+            }
+            else {
+                Intent intent = new Intent(activity, UpgradeService.class);
+                activity.stopService(intent);
+            }
+            activity.finish();
+        });
+
+        mDialog = builder.create();
+        mDialog.setCanceledOnTouchOutside(false);
         mDialog.setCancelable(false);
         mDialog.show();
+
+        mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            if (isDownload) {
+                installApk();
+            } else {
+                String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+                if (EasyPermissions.hasPermissions(activity, permission)) {
+                    mDialog.dismiss();
+                    showProgressDialog(activity);
+                    startDownload(activity);
+                } else {
+                    EasyPermissions.requestPermissions(activity,
+                            activity.getString(R.string.permission_tip_upgrade_denied),
+                            PermissionUtils.REQUEST_PERMISSIONS_STORAGE, permission);
+                }
+            }
+        });
+        resetButton();
+    }
+
+    private void resetButton() {
+        if(mDialog != null){
+            mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+            mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
+        }
     }
 
     /**
      * Check whether the file exists and is valid
      */
-    public boolean isFileExists(VersionBean version) {
+    private boolean isFileExists(VersionBean version) {
         String filePath = version.getDownloadFilePath();
         String fileName = version.getDownloadFileName();
         String allPath = filePath + fileName;
@@ -129,10 +143,16 @@ public class DownloadManager {
     /**
      * start server and bindService to update app
      */
-    public void startDownload(UpgradeActivity activity) {
+    private void startDownload(UpgradeActivity activity) {
         Intent intent = new Intent(activity, UpgradeService.class);
         activity.bindService(intent, activity, Activity.BIND_AUTO_CREATE);
         activity.startService(intent);
+    }
+    /**
+     * retry download
+     */
+    private void retryDownload(UpgradeActivity activity) {
+        activity.mUpgradeServiceBinder.retryDownload();
     }
 
     /**
@@ -167,12 +187,16 @@ public class DownloadManager {
      * update download Progress
      */
     private void updateProgress(int progress) {
+        if(mViewHolder == null){
+            return;
+        }
         mViewHolder.progressBar.setProgress(progress);
         String progressStr = progress + "%";
         mViewHolder.tvProgress.setText(progressStr);
         if(progress == 0){
             mViewHolder.tvFailMsg.setVisibility(View.INVISIBLE);
-            mViewHolder.tvRetry.setVisibility(View.INVISIBLE);
+            mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.GONE);
+            mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.GONE);
         }
     }
 
@@ -183,16 +207,48 @@ public class DownloadManager {
         if (mDialog != null) {
             mDialog.dismiss();
         }
+
         View view = LinearLayout.inflate(activity, R.layout.dialog_download_progress, null);
         mViewHolder = new ProgressViewHolder(view);
         mViewHolder.progressBar.setMax(100);
         updateProgress(0);
-        mDialog = new DownloadDialog.Builder(activity)
-                .setContentView(view)
-                .setCanceledOnTouchOutside(false)
-                .create();
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setCancelable(false)
+                .setView(view);
+
+        builder.setNegativeButton(R.string.common_cancel, (dialog, which) -> {
+            if (mVersionBean.isForced()) {
+                ActivityManager.getInstance().finishAll();
+            } else {
+                Intent intent = new Intent(activity, UpgradeService.class);
+                activity.stopService(intent);
+            }
+            activity.finish();
+        });
+        mDialog = builder.create();
+        mDialog.setCanceledOnTouchOutside(false);
         mDialog.setCancelable(false);
         mDialog.show();
+        Observable.create((ObservableOnSubscribe<View>)
+            e -> mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(e::onNext))
+            .throttleFirst(2, TimeUnit.SECONDS)
+            .subscribe(new LogicObserver<View>() {
+                @Override
+                public void handleData(View view) {
+                    if(isDownload){
+                        installApk();
+                    }else{
+                        updateProgress(0);
+                        Activity currentActivity = ActivityManager.getInstance().currentActivity();
+                        if(currentActivity instanceof UpgradeActivity){
+                            retryDownload((UpgradeActivity) currentActivity);
+                        }
+                    }
+                }
+            });
+        mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.GONE);
+        mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.GONE);
+        resetButton();
     }
 
     public void closeDialog() {
@@ -233,27 +289,44 @@ public class DownloadManager {
             isDownload = true;
             updateProgress(100);
             installApk(file);
-            mViewHolder.tvRetry.setText(R.string.app_upgrade_install);
-            mViewHolder.tvRetry.setVisibility(View.VISIBLE);
+            if(null != mDialog){
+                mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.app_upgrade_install);
+                mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
+                mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
         public void handlerUpgradeFail() {
             Logger.d("handlerUpgradeFail");
             isDownload = false;
-            mViewHolder.tvFailMsg.setVisibility(View.VISIBLE);
-            mViewHolder.tvRetry.setVisibility(View.VISIBLE);
+            if(null != mViewHolder && null != mDialog){
+                mViewHolder.tvFailMsg.setVisibility(View.VISIBLE);
+                mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.app_upgrade_retry);
+                mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
+                mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
+            }
         }
     };
 
-    class ViewHolder {
-        @BindView(R.id.tv_title)
-        TextView tvTitle;
-        @BindView(R.id.tv_content)
-        TextView tvContent;
+    public void onRequestPermissionsResult(UpgradeActivity activity, int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PermissionUtils.REQUEST_PERMISSIONS_STORAGE:
+                if (grantResults.length > 0) {
+                    if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                        if(isFileExists(mVersionBean)){
+                            showUpGradeDialog(activity, mVersionBean);
+                        }else{
+                            startDownload(activity);
+                        }
+                    }else{
+                        PermissionUtils.checkUserBanPermission(activity, permissions[0], R.string.permission_tip_upgrade_never_ask_again);
+                    }
+                }
+                break;
 
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
+            default:
+                break;
         }
     }
 
@@ -264,22 +337,7 @@ public class DownloadManager {
         TextView tvProgress;
         @BindView(R.id.tv_fail_msg)
         TextView tvFailMsg;
-        @BindView(R.id.tv_retry)
-        TextView tvRetry;
 
-        // retry download
-        @OnClick(R.id.tv_retry)
-        void onRetry(){
-            if(isDownload){
-                installApk();
-            }else{
-                updateProgress(0);
-                Activity activity = ActivityManager.getInstance().currentActivity();
-                if(activity instanceof UpgradeActivity){
-                    startDownload((UpgradeActivity) activity);
-                }
-            }
-        }
         ProgressViewHolder(View view) {
             ButterKnife.bind(this, view);
         }

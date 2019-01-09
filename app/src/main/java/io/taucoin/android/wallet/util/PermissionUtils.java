@@ -26,8 +26,8 @@ import io.taucoin.foundation.util.StringUtil;
 import io.taucoin.foundation.util.permission.EasyPermissions;
 
 public class PermissionUtils {
-    static final int REQUEST_PERMISSIONS_CAMERA = 2;
-    public static final int REQUEST_PERMISSIONS_RECORD_STORAGE = 3;
+    static final int REQUEST_PERMISSIONS_CAMERA = 0x10;
+    public static final int REQUEST_PERMISSIONS_STORAGE = 0x20;
 
     /*Check if the user has completely prohibited pop-up permission requests*/
     public static void checkUserBanPermission(FragmentActivity activity, String permission, int resMsg) {
@@ -41,7 +41,7 @@ public class PermissionUtils {
 
     static void checkUserBanPermission(FragmentActivity activity, List<String> deniedPerms, int resMsg) {
         String message = activity.getString(resMsg);
-        CharSequence positiveButton = activity.getString(R.string.common_setting);
+        CharSequence positiveButton = activity.getString(R.string.common_ok);
         CharSequence negativeButton = activity.getString(R.string.common_cancel);
         EasyPermissions.checkDeniedPermissionsNeverAskAgain(activity, message, positiveButton, negativeButton, deniedPerms);
     }

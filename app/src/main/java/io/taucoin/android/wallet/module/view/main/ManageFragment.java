@@ -42,8 +42,8 @@ public class ManageFragment extends BaseFragment implements IManageView {
     TextView tvNick;
     @BindView(R.id.tv_version)
     TextView tvVersion;
-    @BindView(R.id.iv_version_upgrade)
-    ImageView ivVersionUpgrade;
+    @BindView(R.id.version_upgrade)
+    View versionUpgrade;
 
     @Override
     public View getViewLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -104,7 +104,7 @@ public class ManageFragment extends BaseFragment implements IManageView {
 
     private void showUpgradeView() {
         boolean isUpgrade = SharedPreferencesHelper.getInstance().getBoolean(TransmitKey.UPGRADE, false);
-        ivVersionUpgrade.setVisibility(isUpgrade ? View.VISIBLE : View.INVISIBLE);
+        versionUpgrade.setVisibility(isUpgrade ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override

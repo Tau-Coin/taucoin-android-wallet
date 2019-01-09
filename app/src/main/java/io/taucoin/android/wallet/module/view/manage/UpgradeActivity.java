@@ -3,14 +3,12 @@ package io.taucoin.android.wallet.module.view.manage;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.github.naturs.logger.Logger;
-import com.mofei.tau.R;
 
 import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.base.BaseActivity;
@@ -19,7 +17,6 @@ import io.taucoin.android.wallet.module.bean.VersionBean;
 import io.taucoin.android.wallet.module.service.UpgradeService;
 import io.taucoin.android.wallet.module.view.SplashActivity;
 import io.taucoin.android.wallet.util.ActivityUtil;
-import io.taucoin.android.wallet.util.PermissionUtils;
 import io.taucoin.android.wallet.widget.download.DownloadManager;
 import io.taucoin.foundation.util.ActivityManager;
 import io.taucoin.foundation.util.AppUtil;
@@ -34,6 +31,7 @@ public class UpgradeActivity extends BaseActivity implements ServiceConnection {
 
     private DownloadManager mDownloadManager;
     private VersionBean mVersion;
+    public UpgradeService.UpgradeServiceBinder mUpgradeServiceBinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,22 +66,7 @@ public class UpgradeActivity extends BaseActivity implements ServiceConnection {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PermissionUtils.REQUEST_PERMISSIONS_RECORD_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(mDownloadManager.isFileExists(mVersion)){
-                        mDownloadManager.showUpGradeDialog(UpgradeActivity.this, mVersion);
-                    }else{
-                        mDownloadManager.startDownload(UpgradeActivity.this);
-                    }
-                }else{
-                    PermissionUtils.checkUserBanPermission(UpgradeActivity.this, permissions[0], R.string.permission_tip_upgrade_never_ask_again);
-                }
-                break;
-
-            default:
-                break;
-        }
+        mDownloadManager.onRequestPermissionsResult(UpgradeActivity.this, requestCode, permissions, grantResults);
     }
 
     /**
@@ -92,14 +75,22 @@ public class UpgradeActivity extends BaseActivity implements ServiceConnection {
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         Logger.d("activity and service connected");
-        UpgradeService.UpgradeServiceBinder mUpgradeServiceBinder = (UpgradeService.UpgradeServiceBinder) service;
+        mUpgradeServiceBinder = (UpgradeService.UpgradeServiceBinder) service;
         mUpgradeServiceBinder.setUpgradeProgressListener(mDownloadManager.getOnUpgradeProgressListener());
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(null != mUpgradeServiceBinder){
+            mUpgradeServiceBinder.setUpgradeProgressListener(null);
+            unbindService(this);
+        }
+    }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-
+        unbindService(this);
     }
 
     @Override

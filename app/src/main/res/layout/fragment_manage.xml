@@ -52,21 +52,19 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
+                android:layout_marginEnd="5dp"
                 android:text="232232323"
                 android:background="@drawable/shape_corner_white_border"/>
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:visibility="invisible"
-                android:id="@+id/iv_version_upgrade"
-                android:layout_width="5dp"
-                android:layout_height="5dp"
+            <TextView
+                android:visibility="visible"
+                android:id="@+id/version_upgrade"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
                 android:layout_gravity="end"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="1dp"
-                android:background="@color/color_red"
-                android:src="@mipmap/icon_avatar"
-                app:civ_border_color="@color/color_red"
-                app:civ_border_width="0.6dp" />
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/selector_oval_point" />
 
         </FrameLayout>
 

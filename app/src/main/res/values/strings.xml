@@ -1,13 +1,13 @@
 <resources>
-    <string name="app_name">Taucoin</string>
+    <string name="app_name">TAUcoin</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 
     <string name="common_loading">loading&#8230;</string>
     <string name="common_no_login">Visitor</string>
     <string name="common_cancel">Cancel</string>
+    <string name="common_ok">OK</string>
     <string name="common_done">Done</string>
-    <string name="common_setting">Set up</string>
     <string name="common_balance" formatted="false"><Data><![CDATA[<font color="#477df9">%s</font> TAU]]> </Data></string>
 
     <string name="main_home">Home</string>
@@ -90,35 +90,34 @@
 
 
     <!--version upgrade-->
-    <string name="app_upgrade_title">Version Update Tips</string>
-    <string name="app_upgrade_not_upgrade">Not updated</string>
-    <string name="app_upgrade_to_upgrade">Update now</string>
-    <string name="app_upgrade_install">Install Now</string>
-    <string name="app_upgrade_fail">Download failed</string>
+    <string name="app_upgrade_title">Update Log</string>
+    <string name="app_upgrade_install">Install</string>
+    <string name="app_upgrade_fail">Failed</string>
     <string name="app_upgrade_retry">Retry</string>
 
+    <!--permission tip-->
     <string name="permission_tip_upgrade_denied">
-        "Taucoin" wants to access your storage rights.
+        "TAUcoin" would like to access the storage.
     </string>
 
     <string name="permission_tip_upgrade_never_ask_again">
-        "Taucoin" wants to access your storage rights.
+        "TAUcoin" would like to access the storage.
     </string>
 
     <string name="permission_tip_capture_denied">
-        "Taucoin" needs access to your camera and storage rights.
+        "TAUcoin" would like to access the camera and storage.
     </string>
 
     <string name="permission_tip_capture_never_ask_again">
-        "Taucoin" needs access to your camera and storage rights.
+        "TAUcoin" would like to access the camera and storage.
     </string>
 
     <string name="permission_tip_gallery_denied">
-        "Taucoin" wants to access your storage rights.
+        "TAUcoin" would like to access the storage.
     </string>
 
     <string name="permission_tip_gallery_never_ask_again">
-        "Taucoin" wants to access your storage rights.
+        "TAUcoin" would like to access the storage.
     </string>
 
 </resources>

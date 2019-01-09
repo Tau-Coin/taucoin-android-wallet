@@ -11,9 +11,12 @@ public class VersionBean implements Parcelable {
     private boolean isForced;
     private String link;
 
+    private int forcedNum;
+
     // local param
     private String downloadFilePath;
     private String downloadFileName;
+
 
     protected VersionBean(Parcel in) {
         number = in.readInt();
@@ -21,6 +24,7 @@ public class VersionBean implements Parcelable {
         content = in.readString();
         isForced = in.readByte() != 0;
         link = in.readString();
+        forcedNum = in.readInt();
         downloadFilePath = in.readString();
         downloadFileName = in.readString();
     }
@@ -32,6 +36,7 @@ public class VersionBean implements Parcelable {
         dest.writeString(content);
         dest.writeByte((byte) (isForced ? 1 : 0));
         dest.writeString(link);
+        dest.writeInt(forcedNum);
         dest.writeString(downloadFilePath);
         dest.writeString(downloadFileName);
     }
@@ -115,6 +120,14 @@ public class VersionBean implements Parcelable {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public int getForcedNum() {
+        return forcedNum;
+    }
+
+    public void setForcedNum(int forcedNum) {
+        this.forcedNum = forcedNum;
     }
 
 }

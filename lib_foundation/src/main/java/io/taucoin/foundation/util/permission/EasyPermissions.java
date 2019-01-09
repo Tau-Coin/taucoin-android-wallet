@@ -464,6 +464,8 @@ public class EasyPermissions {
                 }
             });
             dialog.show();
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
         } else {
             executePermissionsRequest(object, perms, requestCode);
         }
@@ -593,7 +595,8 @@ public class EasyPermissions {
                     }
                 });
                 dialog.show();
-
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
                 return true;
             }
         }

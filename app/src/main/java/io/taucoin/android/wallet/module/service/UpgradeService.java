@@ -9,13 +9,16 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 
 import com.github.naturs.logger.Logger;
+import com.mofei.tau.BuildConfig;
 import com.mofei.tau.R;
 
 import java.io.File;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.base.TransmitKey;
+import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.bean.VersionBean;
 import io.taucoin.android.wallet.module.model.AppModel;
 import io.taucoin.android.wallet.module.model.IAppModel;
@@ -23,6 +26,7 @@ import io.taucoin.android.wallet.module.view.manage.UpgradeActivity;
 import io.taucoin.android.wallet.net.callback.FileCallback;
 import io.taucoin.android.wallet.net.callback.FileResponseBody;
 import io.taucoin.android.wallet.net.callback.TAUObserver;
+import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.FileUtil;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
@@ -60,13 +64,14 @@ public class UpgradeService extends Service {
     private DownloadManager.OnUpgradeProgressListener mUpgradeProgressListener;
 
     /** service and Activity communication */
-    private UpgradeServiceBinder mUpgradeServiceBinder = new UpgradeService.UpgradeServiceBinder();
+    private UpgradeServiceBinder mUpgradeServiceBinder;
 
 
-    private UpgradeStatus mStatus;
-    private Retrofit.Builder mRetrofit;
+    private Retrofit.Builder mRetrofitBuilder;
+    private Call<ResponseBody> mCall;
     private IAppModel mAppModel;
 
+    private UpgradeStatus mStatus;
     private VersionBean mVersionBean;
 
     @Override
@@ -75,7 +80,8 @@ public class UpgradeService extends Service {
         mStatus = UpgradeStatus.CHECK;
         mVersionBean = null;
         mAppModel = new AppModel();
-        mRetrofit = NetWorkManager.getRetrofit().newBuilder();
+        mRetrofitBuilder = NetWorkManager.getRetrofit().newBuilder();
+        mRetrofitBuilder.client(initOkHttpClient());
         SharedPreferencesHelper.getInstance().putBoolean(TransmitKey.UPGRADE, false);
     }
 
@@ -83,7 +89,6 @@ public class UpgradeService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         switch (mStatus){
             case CHECK:
-            case PROGRESS:
                 if(mVersionBean == null){
                     checkAppVersion();
                 }else {
@@ -93,7 +98,7 @@ public class UpgradeService extends Service {
             case START:
             case FAIL:
                 mStatus = UpgradeStatus.PROGRESS;
-                startDownload();
+                initAndStartDownload();
                 break;
             default:
                 break;
@@ -101,7 +106,7 @@ public class UpgradeService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void startDownload() {
+    private void initAndStartDownload() {
         if(mVersionBean == null){
             stopSelf();
         }
@@ -109,49 +114,69 @@ public class UpgradeService extends Service {
             if(mUpgradeProgressListener != null){
                 mUpgradeProgressListener.handlerUpgradeStart();
             }
+            Uri uri = Uri.parse(mVersionBean.getLink());
             String destFileName = mVersionBean.getDownloadFileName();
             String destFileDir = mVersionBean.getDownloadFilePath();
-            Uri uri = Uri.parse(mVersionBean.getLink());
-            mRetrofit.baseUrl(UriUtil.getBaseUrl(uri))
-                    .client(initOkHttpClient())
-                    .build()
-                    .create(IFileLoad.class)
-                    .loadFile(UriUtil.getPath(uri))
-                    .enqueue(new FileCallback(destFileDir, destFileName) {
-                        @Override
-                        public void onSuccess(File file) {
-                            Logger.d("download apk success");
-                            if(mUpgradeProgressListener != null){
-                                mUpgradeProgressListener.handlerUpgradeSuccess(file);
-                            }
-                            mStatus = UpgradeStatus.SUCCESS;
-                            stopSelf();
-                        }
 
-                        @Override
-                        public void onLoading(long progress, long total) {
-                            int progressPercent = (int) (progress * 100 / total);
-                            if(mUpgradeProgressListener != null){
-                                mUpgradeProgressListener.handlerUpgradeProgress(progressPercent);
-                            }
-                            Logger.d("download progress=" + progress +"----total=" + total + "--progressPercent=" + progressPercent);
-                        }
+            mFileCallback.setFileData(destFileDir, destFileName);
+            mCall = mRetrofitBuilder
+                .baseUrl(UriUtil.getBaseUrl(uri))
+                .build()
+                .create(IFileLoad.class)
+                .loadFile(UriUtil.getPath(uri));
+            startDownload();
+        }catch (Exception e){
+            Logger.e(e, "init download Failure");
+        }
+    }
 
-                        @Override
-                        public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                            mStatus = UpgradeStatus.FAIL;
-                            if(mUpgradeProgressListener != null){
-                                mUpgradeProgressListener.handlerUpgradeFail();
-                            }
-                            Logger.e(t, "download Failure");
-                        }
-                    });
+    private void startDownload() {
+        try {
+            if(!mCall.isCanceled()){
+                mCall.cancel();
+            }
+            mCall = mCall.clone();
+            mCall.enqueue(mFileCallback);
         }catch (Exception e){
             Logger.e(e, "download Failure");
         }
     }
+
+    private FileCallback mFileCallback = new FileCallback() {
+        @Override
+        public void onSuccess(File file) {
+            Logger.d(time + "\ndownload apk success");
+            if(mUpgradeProgressListener != null){
+                mUpgradeProgressListener.handlerUpgradeSuccess(file);
+            }
+            mStatus = UpgradeStatus.SUCCESS;
+            stopSelf();
+        }
+
+        @Override
+        public void onLoading(long progress, long total) {
+            int progressPercent = (int) (progress * 100 / total);
+            if(mUpgradeProgressListener != null){
+                mUpgradeProgressListener.handlerUpgradeProgress(progressPercent);
+            }
+            Logger.d(time + "\ndownload progress=" + progress +"----total=" + total + "--progressPercent=" + progressPercent + "--isListener" + mUpgradeProgressListener);
+        }
+
+        @Override
+        public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+            super.onFailure(call, t);
+
+            mStatus = UpgradeStatus.FAIL;
+            if(mUpgradeProgressListener != null){
+                mUpgradeProgressListener.handlerUpgradeFail();
+            }
+            Logger.d( time + "\ndownload Failure");
+        }
+    };
+
     private OkHttpClient initOkHttpClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.retryOnConnectionFailure(false);
         builder.readTimeout(6, TimeUnit.HOURS);
         builder.writeTimeout(6, TimeUnit.HOURS);
         builder.connectTimeout(6, TimeUnit.HOURS);
@@ -199,14 +224,21 @@ public class UpgradeService extends Service {
             stopSelf();
             return;
         }
-        // TODO: for test, release delete
-        version.setNumber(16);
+        // TODO:Don`t forget to delete this line code for debug
+        if(BuildConfig.DEBUG){
+            version.setNumber(16);
+        }
         boolean isNeedUpdate = version.getNumber() > AppUtil.getVersionCode(this);
         if(!isNeedUpdate){
             stopSelf();
             return;
         }
+        if(!version.isForced()){
+            version.setForced(version.getForcedNum() > 0);
+        }
+
         SharedPreferencesHelper.getInstance().putBoolean(TransmitKey.UPGRADE, true);
+        EventBusUtil.post(MessageEvent.EventCode.UPGRADE);
         String filePath = FileUtil.getDownloadFilePath();
         String fileName = getString(R.string.app_name);
         fileName += version.getNumber() + ".apk";
@@ -222,7 +254,16 @@ public class UpgradeService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return mUpgradeServiceBinder;
+        if(mUpgradeServiceBinder == null){
+            mUpgradeServiceBinder = new UpgradeService.UpgradeServiceBinder();
+        }
+        return new UpgradeService.UpgradeServiceBinder();
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        mUpgradeServiceBinder = null;
+        return super.onUnbind(intent);
     }
 
     /**
@@ -232,6 +273,10 @@ public class UpgradeService extends Service {
 
         public void setUpgradeProgressListener(DownloadManager.OnUpgradeProgressListener listener) {
             mUpgradeProgressListener = listener;
+        }
+
+        public void retryDownload() {
+            startDownload();
         }
     }
 

@@ -26,6 +26,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Date;
 
 import io.taucoin.foundation.net.bean.FileLoadingBean;
 import okhttp3.ResponseBody;
@@ -42,11 +43,16 @@ public abstract class FileCallback implements Callback<ResponseBody> {
      * File names stored in target files
      */
     private String destFileName;
+    public long time;
 
-    public FileCallback(String destFileDir, String destFileName) {
+    protected FileCallback() {
+        EventBus.getDefault().register(this);
+    }
+
+    public void  setFileData(String destFileDir, String destFileName) {
+        time = new Date().getTime();
         this.destFileDir = destFileDir;
         this.destFileName = destFileName;
-        EventBus.getDefault().register(this);
     }
 
     /**
@@ -69,6 +75,13 @@ public abstract class FileCallback implements Callback<ResponseBody> {
         } catch (Exception e) {
             onFailure(call, e.getCause());
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+        if(!call.isCanceled()){
+            call.cancel();
         }
     }
 
