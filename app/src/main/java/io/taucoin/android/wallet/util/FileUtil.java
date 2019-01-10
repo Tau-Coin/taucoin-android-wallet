@@ -81,6 +81,16 @@ public class FileUtil {
         }
     }
 
+    public static void deleteFile(String filePath) {
+        try {
+            File file = new File(filePath);
+            deleteFile(file);
+        }catch (Exception ignore){
+
+        }
+
+    }
+
     static Bitmap getFilesDirBitmap(String filename){
         Bitmap bitmap = null;
         try {

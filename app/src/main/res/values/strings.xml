@@ -90,6 +90,7 @@
 
 
     <!--version upgrade-->
+    <string name="app_upgrade_progress">Updating progress&#8230;</string>
     <string name="app_upgrade_title">Update Log</string>
     <string name="app_upgrade_install">Install</string>
     <string name="app_upgrade_fail">Failed</string>

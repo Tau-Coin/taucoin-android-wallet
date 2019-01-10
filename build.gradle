@@ -27,16 +27,12 @@ ext {
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
     
     //lib
-    kotlin = project.property('DEP_KOTLIN')
     appcompatv7 = project.property('DEP_APPCOMPATV7')
-    constraint = project.property('DEP_CONSTRAINT')
     supportv4 = project.property('DEP_SUPPORTV4')
     design = project.property('DEP_DESIGN')
     junit = project.property('DEP_JUNIT')
     test = project.property('DEP_TEST')
     espresso = project.property('DEP_ESPRESSO')
-    zxing = project.property('DEP_ZXING')
-    facebook = project.property('DEP_FACEBOOK')
     greendao = project.property('DEP_GREENDAO')
     retrofit = project.property('DEP_RETROFIT')
     okhttp3 = project.property('DEP_OKHTTP3')

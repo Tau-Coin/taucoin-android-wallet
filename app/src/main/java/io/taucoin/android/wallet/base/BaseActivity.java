@@ -56,9 +56,11 @@ public abstract class BaseActivity extends AppCompatActivity implements OnLoadmo
     protected void onDestroy() {
         try {
             ProgressManager.closeProgressDialog(this);
-            KeyboardUtils.hideSoftInput(this);
-            // handler InputMethodManager Leak
-            KeyboardUtils.fixInputMethodManagerLeak(this);
+            if(KeyboardUtils.isSoftInputVisible(this)){
+                KeyboardUtils.hideSoftInput(this);
+                // handler InputMethodManager Leak
+                KeyboardUtils.fixInputMethodManagerLeak(this);
+            }
         }catch (Exception ignore){
 
         }

@@ -81,6 +81,7 @@ public class DownloadManager {
             .setPositiveButton(rightButton, null)
             .setCancelable(false);
 
+
         builder.setNegativeButton(leftButton, (dialog, which) -> {
             if (version.isForced()) {
                 ActivityManager.getInstance().finishAll();
@@ -113,10 +114,13 @@ public class DownloadManager {
                 }
             }
         });
-        resetButton();
+        if(mVersionBean.isForced()){
+            mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.GONE);
+        }
+        resetButtonCaps();
     }
 
-    private void resetButton() {
+    private void resetButtonCaps() {
         if(mDialog != null){
             mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setAllCaps(false);
             mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setAllCaps(false);
@@ -214,6 +218,7 @@ public class DownloadManager {
         updateProgress(0);
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
                 .setCancelable(false)
+                .setTitle(R.string.app_upgrade_progress)
                 .setView(view);
 
         builder.setNegativeButton(R.string.common_cancel, (dialog, which) -> {
@@ -248,7 +253,7 @@ public class DownloadManager {
             });
         mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.GONE);
         mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.GONE);
-        resetButton();
+        resetButtonCaps();
     }
 
     public void closeDialog() {
@@ -292,7 +297,9 @@ public class DownloadManager {
             if(null != mDialog){
                 mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.app_upgrade_install);
                 mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
-                mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
+                if(!mVersionBean.isForced()){
+                    mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
+                }
             }
         }
 
@@ -304,7 +311,9 @@ public class DownloadManager {
                 mViewHolder.tvFailMsg.setVisibility(View.VISIBLE);
                 mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.app_upgrade_retry);
                 mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.VISIBLE);
-                mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
+                if(!mVersionBean.isForced()){
+                    mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.VISIBLE);
+                }
             }
         }
     };
@@ -314,8 +323,9 @@ public class DownloadManager {
             case PermissionUtils.REQUEST_PERMISSIONS_STORAGE:
                 if (grantResults.length > 0) {
                     if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                        if(isFileExists(mVersionBean)){
-                            showUpGradeDialog(activity, mVersionBean);
+                        isDownload = isFileExists(mVersionBean);
+                        if(isDownload){
+                            installApk();
                         }else{
                             startDownload(activity);
                         }

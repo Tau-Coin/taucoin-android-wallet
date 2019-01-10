@@ -15,6 +15,7 @@ import io.taucoin.foundation.util.AppUtil;
 import retrofit2.HttpException;
 
 public class FactoryException {
+    private static final String ServeError_MSG = "Server error";
     private static final String HttpException_MSG = "Network error";
     private static final String ConnectException_MSG = "Connection failed";
     private static final String JSONException_MSG = "Data parsing failure";
@@ -31,8 +32,14 @@ public class FactoryException {
             apiException.setCode(CodeException.NETWORK_ERROR);
             apiException.setDisplayMessage(NetworkError_MSG);
         } else if (e instanceof HttpException) {
-            apiException.setCode(CodeException.HTTP_ERROR);
-            apiException.setDisplayMessage(HttpException_MSG);
+            HttpException httpException = (HttpException) e;
+            if(httpException.code() >= 500){
+                apiException.setCode(CodeException.SERVE_ERROR);
+                apiException.setDisplayMessage(ServeError_MSG);
+            }else{
+                apiException.setCode(CodeException.HTTP_ERROR);
+                apiException.setDisplayMessage(HttpException_MSG);
+            }
         } else if (e instanceof HttpTimeException) {
             HttpTimeException exception = (HttpTimeException) e;
             apiException.setCode(CodeException.RUNTIME_ERROR);

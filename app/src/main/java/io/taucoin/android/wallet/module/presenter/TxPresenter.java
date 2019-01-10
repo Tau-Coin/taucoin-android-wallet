@@ -196,7 +196,7 @@ public class TxPresenter {
     }
 
     public void getAddOuts(LogicObserver<Boolean> observer) {
-
+        Logger.i("getAddOuts start");
         mTxModel.getAddOuts(new TAUObserver<DataResult<List<AddOutBean>>>(){
 
             @Override
@@ -208,9 +208,13 @@ public class TxPresenter {
             @Override
             public void handleData(DataResult<List<AddOutBean>> listDataResult) {
                 super.handleData(listDataResult);
-                if(listDataResult != null && listDataResult.getData() != null){
+                Logger.i("getAddOuts success");
+                if(listDataResult != null && listDataResult.getData() != null  &&
+                        listDataResult.getData().size() > 0){
+                    Logger.i("getAddOuts success = " + listDataResult.getData().size());
                     mTxModel.saveAddOuts(listDataResult.getData(), observer);
                 }else {
+                    Logger.i("getAddOuts success = 0");
                     observer.onNext(true);
                 }
             }

@@ -30,12 +30,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':lib_foundation')
     implementation project(':lib_bitcoin')
-//    api rootProject.ext.kotlin
-    api rootProject.ext.constraint
     api rootProject.ext.supportv4
     api rootProject.ext.design
-//    api rootProject.ext.zxing
-//    api rootProject.ext.facebook
     api rootProject.ext.greendao
     api rootProject.ext.eventbus
     api rootProject.ext.circleimageview

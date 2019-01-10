@@ -52,6 +52,7 @@ public class UserPresenter {
 
 
     public void saveKeyAndAddress(KeyValue keyValue) {
+        boolean isGenerateKey = keyValue == null;
         mUserModel.saveKeyAndAddress(keyValue, new LogicObserver<KeyValue>() {
             @Override
             public void handleData(KeyValue keyValue) {
@@ -60,8 +61,11 @@ public class UserPresenter {
                 SharedPreferencesHelper.getInstance().putString(TransmitKey.ADDRESS, keyValue.getAddress());
                 TxService.startTxService(TransmitKey.ServiceType.GET_HOME_DATA);
                 TxService.startTxService(TransmitKey.ServiceType.GET_INFO);
-
-                getAddOuts();
+                if(isGenerateKey){
+                    gotoKeysActivity();
+                }else{
+                    getAddOuts();
+                }
             }
 
             @Override
@@ -72,14 +76,18 @@ public class UserPresenter {
         });
     }
 
+    private void gotoKeysActivity() {
+        ProgressManager.closeProgressDialog();
+        mIImportKeyView.gotoKeysActivity();
+        EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
+    }
+
     private void getAddOuts() {
         mTxPresenter.getAddOuts(new LogicObserver<Boolean>(){
 
             @Override
             public void handleData(Boolean aBoolean) {
-                ProgressManager.closeProgressDialog();
-                mIImportKeyView.gotoKeysActivity();
-                EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
+                gotoKeysActivity();
             }
         });
     }

@@ -224,10 +224,6 @@ public class UpgradeService extends Service {
             stopSelf();
             return;
         }
-        // TODO:Don`t forget to delete this line code for debug
-        if(BuildConfig.DEBUG){
-            version.setNumber(16);
-        }
         boolean isNeedUpdate = version.getNumber() > AppUtil.getVersionCode(this);
         if(!isNeedUpdate){
             stopSelf();
@@ -244,6 +240,8 @@ public class UpgradeService extends Service {
         fileName += version.getNumber() + ".apk";
         version.setDownloadFilePath(filePath);
         version.setDownloadFileName(fileName);
+        // delete old version install apk
+        FileUtil.deleteFile(filePath);
 
         mStatus = UpgradeStatus.START;
         mVersionBean = version;
