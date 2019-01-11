@@ -15,8 +15,6 @@
  */
 package io.taucoin.android.wallet.db.util;
 
-import com.mofei.tau.BuildConfig;
-
 import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.db.GreenDaoManager;
 import io.taucoin.android.wallet.db.greendao.TransactionHistoryDao;
@@ -56,9 +54,6 @@ public class TransactionHistoryDaoUtils {
 
 
     public boolean isAnyTxPending(String formAddress) {
-        if(BuildConfig.DEBUG){
-            return false;
-        }
         long size = getTxPendingList(formAddress).size();
         return size > 0;
     }

@@ -157,7 +157,7 @@ public class FileUtil {
             throw new NullPointerException();
         }
         Uri uri;
-        if (Build.VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             String authority = BuildConfig.APPLICATION_ID + ".fileprovider";
             uri = FileProvider.getUriForFile(context.getApplicationContext(), authority, file);
         } else {

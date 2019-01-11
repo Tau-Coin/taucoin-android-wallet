@@ -9,11 +9,9 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 
 import com.github.naturs.logger.Logger;
-import com.mofei.tau.BuildConfig;
 import com.mofei.tau.R;
 
 import java.io.File;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import io.taucoin.android.wallet.MyApplication;
@@ -117,6 +115,9 @@ public class UpgradeService extends Service {
             Uri uri = Uri.parse(mVersionBean.getLink());
             String destFileName = mVersionBean.getDownloadFileName();
             String destFileDir = mVersionBean.getDownloadFilePath();
+
+            // delete old version install apk
+            FileUtil.deleteFile(destFileDir);
 
             mFileCallback.setFileData(destFileDir, destFileName);
             mCall = mRetrofitBuilder
@@ -240,12 +241,11 @@ public class UpgradeService extends Service {
         fileName += version.getNumber() + ".apk";
         version.setDownloadFilePath(filePath);
         version.setDownloadFileName(fileName);
-        // delete old version install apk
-        FileUtil.deleteFile(filePath);
 
         mStatus = UpgradeStatus.START;
         mVersionBean = version;
         Intent intent = new Intent(this, UpgradeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(TransmitKey.BEAN, mVersionBean);
         startActivity(intent);
     }

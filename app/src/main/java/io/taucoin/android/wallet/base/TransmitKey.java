@@ -33,7 +33,7 @@ public class TransmitKey {
 
     public static final String TITLE = "title";
     public static final String URL = "url";
-    public static final String HOW_IMPORT_KEY_URL = "https://android.taucoin.io/static/help3.html";
+    public static final String HOW_IMPORT_KEY_URL = "https://android.taucoin.io/static/help/help3.html";
 
     public static final int PAGE_SIZE = 20;
 

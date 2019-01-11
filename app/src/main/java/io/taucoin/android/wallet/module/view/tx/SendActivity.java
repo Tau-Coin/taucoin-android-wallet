@@ -34,6 +34,7 @@ import io.taucoin.android.wallet.module.view.main.iview.ISendView;
 import io.taucoin.android.wallet.util.KeyboardUtils;
 import io.taucoin.android.wallet.util.MoneyValueFilter;
 import io.taucoin.android.wallet.util.ProgressManager;
+import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.android.wallet.widget.ActionSheetDialog;
 import io.taucoin.android.wallet.widget.CommonDialog;
 import io.taucoin.android.wallet.widget.EditInput;
@@ -184,6 +185,8 @@ public class SendActivity extends BaseActivity implements ISendView {
                     etAmount.getText().clear();
                     etMemo.getText().clear();
                     etFee.setText(R.string.send_normal_value);
+                }else {
+                    ToastUtils.showShortToast(R.string.send_tx_invalid_error);
                 }
             }
         });
