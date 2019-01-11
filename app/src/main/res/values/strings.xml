@@ -121,5 +121,8 @@
     <string name="permission_tip_gallery_never_ask_again">
         "TAUcoin" would like to access the storage.
     </string>
+    <string name="permission_install_unknown_apk_note">
+        Please open the installation of unknown application permissions.
+    </string>
 
 </resources>

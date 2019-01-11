@@ -32,6 +32,7 @@ import io.taucoin.android.wallet.util.UriUtil;
 import io.taucoin.android.wallet.widget.download.DownloadManager;
 import io.taucoin.foundation.net.NetWorkManager;
 import io.taucoin.foundation.net.callback.DataResult;
+import io.taucoin.foundation.util.ActivityManager;
 import io.taucoin.foundation.util.AppUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
@@ -244,10 +245,10 @@ public class UpgradeService extends Service {
 
         mStatus = UpgradeStatus.START;
         mVersionBean = version;
-        Intent intent = new Intent(this, UpgradeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Context context = ActivityManager.getInstance().currentActivity();
+        Intent intent = new Intent(context, UpgradeActivity.class);
         intent.putExtra(TransmitKey.BEAN, mVersionBean);
-        startActivity(intent);
+        context.startActivity(intent);
     }
 
     @Override

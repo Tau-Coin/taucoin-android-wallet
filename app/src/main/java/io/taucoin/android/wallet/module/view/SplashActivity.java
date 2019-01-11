@@ -21,15 +21,15 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Is it the root of the task stack?
-        if (!this.isTaskRoot()) {
-            Intent intent = getIntent();
-            if (intent != null) {
-                String action = intent.getAction();
-                if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN.equals(action)) {
-                    finish();
-                }
-            }
-        } else {
+//        if (!this.isTaskRoot()) {
+//            Intent intent = getIntent();
+//            if (intent != null) {
+//                String action = intent.getAction();
+//                if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN.equals(action)) {
+//                    finish();
+//                }
+//            }
+//        } else {
             // Open for the first time
             setContentView(R.layout.activity_splash);
 
@@ -39,7 +39,7 @@ public class SplashActivity extends BaseActivity {
             Observable.timer(3, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(mDisposableObserver);
-        }
+//        }
     }
 
     private CommonObserver<Long> mDisposableObserver = new CommonObserver<Long>() {

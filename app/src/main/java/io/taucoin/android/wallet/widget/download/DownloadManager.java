@@ -48,6 +48,7 @@ import io.taucoin.android.wallet.module.service.UpgradeService;
 import io.taucoin.android.wallet.module.view.manage.UpgradeActivity;
 import io.taucoin.android.wallet.util.FileUtil;
 import io.taucoin.android.wallet.util.PermissionUtils;
+import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.util.ActivityManager;
 import io.taucoin.foundation.util.AppUtil;
@@ -200,8 +201,11 @@ public class DownloadManager {
 
     private void startInstallPermissionSettingActivity() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            ToastUtils.showShortToast(R.string.permission_install_unknown_apk_note);
             Context context = ActivityManager.getInstance().currentActivity();
             Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+            Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+            intent.setData(uri);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }

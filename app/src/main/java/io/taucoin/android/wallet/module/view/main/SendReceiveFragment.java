@@ -19,6 +19,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -153,8 +154,11 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
 
     @Override
     public void loadTransactionHistory(List<TransactionHistory> txHistories) {
-        if(txHistories == null || mAdapter == null){
+        if(mAdapter == null){
             return;
+        }
+        if(txHistories == null){
+            txHistories = new ArrayList<>();
         }
         mAdapter.setHistoryList(txHistories, mPageNo != 1);
         emptyLayout.setVisibility(mAdapter.getData().size() == 0 ? View.VISIBLE : View.GONE);

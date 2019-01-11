@@ -48,7 +48,4 @@ public class MySQLiteOpenHelper extends DaoMaster.OpenHelper {
             }
         }, TransactionHistoryDao.class, UTXORecordDao.class, KeyValueDao.class);
     }
-
-
-
 }
