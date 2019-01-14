@@ -97,6 +97,9 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         groupViewHolder.ivRight.setImageResource(isExpanded ? R.mipmap.icon_up : R.mipmap.icon_down);
 
         boolean isReceiver = StringUtil.isNotSame(tx.getFromAddress(), address);
+        if(!isReceiver){
+            isReceiver = StringUtil.isSame(tx.getSentOrReceived(), TransmitKey.TxType.RECEIVE);
+        }
 
         String amount = FmtMicrometer.fmtFormat(tx.getValue());
         amount = isReceiver ? "+" + amount : "-" + amount;
@@ -116,8 +119,8 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         } else if (isSuccess) {
             color = tx.getConfirmations() > 0 ? R.color.color_black : R.color.color_blue;
         }
-        // The user is the receiver
-        if (isReceiver) {
+
+        if (StringUtil.isEmpty(tx.getResult())) {
             color = R.color.color_black;
         }
         int textColor = ContextCompat.getColor(parent.getContext(), color);
@@ -144,6 +147,10 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         childViewHolder.tvTxFee.setText(fee);
 
         boolean isReceiver = StringUtil.isNotSame(tx.getFromAddress(), address);
+        if(!isReceiver){
+            isReceiver = StringUtil.isSame(tx.getSentOrReceived(), TransmitKey.TxType.RECEIVE);
+        }
+
         childViewHolder.tvAddressTitle.setText(isReceiver ? R.string.tx_from_address : R.string.tx_to_address);
         childViewHolder.tvReceivedAddress.setText(isReceiver ? tx.getFromAddress() : tx.getToAddress());
         childViewHolder.tvFeeTitle.setVisibility(isReceiver ? View.GONE : View.VISIBLE);

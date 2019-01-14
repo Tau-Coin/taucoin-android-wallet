@@ -84,8 +84,18 @@ public class TransactionHistoryDaoUtils {
     }
 
     public void saveAddOut(TransactionHistory tx) {
-        TransactionHistory history = queryTransactionById(tx.getTxId());
-        if(history == null){
+        QueryBuilder<TransactionHistory> db = getTransactionHistoryDao().queryBuilder();
+        db.where(TransactionHistoryDao.Properties.TxId.eq(tx.getTxId()),
+            TransactionHistoryDao.Properties.FromAddress.eq(tx.getFromAddress()),
+            TransactionHistoryDao.Properties.ToAddress.eq(tx.getToAddress()),
+            TransactionHistoryDao.Properties.SentOrReceived.eq(tx.getSentOrReceived())
+        );
+        List<TransactionHistory> list = db.list();
+        if(list.size() > 0){
+            TransactionHistory bean = list.get(0);
+            bean.setResult(tx.getResult());
+            insertOrReplace(bean);
+        }else{
             insertOrReplace(tx);
         }
     }

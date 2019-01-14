@@ -50,10 +50,10 @@ public class NetWorkManager {
     public void init() {
 
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
-        okHttpClientBuilder.readTimeout(10, TimeUnit.SECONDS);
-        okHttpClientBuilder.writeTimeout(10, TimeUnit.SECONDS);
+        okHttpClientBuilder.readTimeout(30, TimeUnit.SECONDS);
+        okHttpClientBuilder.writeTimeout(30, TimeUnit.SECONDS);
         // Set request timeout
-        okHttpClientBuilder.connectTimeout(10, TimeUnit.SECONDS);
+        okHttpClientBuilder.connectTimeout(30, TimeUnit.SECONDS);
 
         // Add Log to OkHttp
         if (BuildConfig.DEBUG) {

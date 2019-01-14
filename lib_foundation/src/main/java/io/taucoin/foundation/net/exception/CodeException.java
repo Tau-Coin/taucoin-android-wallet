@@ -21,6 +21,8 @@ public class CodeException {
     public static final int UN_KNOW_HOST_ERROR = 0x6;
     /*serve error*/
     public static final int SERVE_ERROR = 0x7;
+    /*serve error*/
+    public static final int CONNECTION_TIMED_OUT = 0x7;
 
 
     @IntDef({NETWORK_ERROR, HTTP_ERROR, RUNTIME_ERROR, UNKNOWN_ERROR, JSON_ERROR, UN_KNOW_HOST_ERROR})

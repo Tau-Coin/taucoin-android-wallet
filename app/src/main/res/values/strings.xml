@@ -58,7 +58,8 @@
     <string name="send_dialog_no">Back</string>
     <string name="send_has_pending">Please wait for previous transaction to be confirmed</string>
     <string name="send_tx_success">Transaction sent</string>
-    <string name="send_tx_fail">Transaction Error.</string>
+    <string name="send_tx_fail">Transaction Error</string>
+    <string name="send_tx_fail_in_pool">Transaction error in memory pool</string>
     <string name="send_tx_network_error">Network error, send failed</string>
     <string name="send_tx_invalid_address">Invalid Address</string>
     <string name="send_tx_invalid_amount">Invalid Amount</string>

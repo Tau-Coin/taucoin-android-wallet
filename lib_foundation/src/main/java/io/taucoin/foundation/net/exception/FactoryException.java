@@ -18,9 +18,11 @@ public class FactoryException {
     private static final String ServeError_MSG = "Server error";
     private static final String HttpException_MSG = "Network error";
     private static final String ConnectException_MSG = "Connection failed";
+    private static final String ConnectTimedOut_MSG = "Connection timed out";
     private static final String JSONException_MSG = "Data parsing failure";
     private static final String UnknownHostException_MSG = "Unable to resolve the domain name";
     private static final String NetworkError_MSG = "Please check the network connection and try again later.";
+    private static final String UnknownError_MSG = "Unknown error";
 
     /**
      * Analytical anomaly
@@ -44,7 +46,10 @@ public class FactoryException {
             HttpTimeException exception = (HttpTimeException) e;
             apiException.setCode(CodeException.RUNTIME_ERROR);
             apiException.setDisplayMessage(exception.getMessage());
-        } else if (e instanceof ConnectException ||e instanceof SocketTimeoutException) {
+        } else if (e instanceof SocketTimeoutException) {
+            apiException.setCode(CodeException.CONNECTION_TIMED_OUT);
+            apiException.setDisplayMessage(ConnectTimedOut_MSG);
+        }else if (e instanceof ConnectException) {
             apiException.setCode(CodeException.HTTP_ERROR);
             apiException.setDisplayMessage(ConnectException_MSG);
         } else if (e instanceof JSONException || e instanceof ParseException) {
@@ -55,7 +60,7 @@ public class FactoryException {
             apiException.setDisplayMessage(UnknownHostException_MSG);
         } else {
             apiException.setCode(CodeException.UNKNOWN_ERROR);
-            apiException.setDisplayMessage(e.getMessage());
+            apiException.setDisplayMessage(UnknownError_MSG);
         }
         return apiException;
     }

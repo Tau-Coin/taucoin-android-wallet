@@ -58,7 +58,7 @@ public class SharedPreferencesHelper {
         try {
             SharedPreferences.Editor editor = getSP().edit();
             editor.putBoolean(key, value);
-            editor.commit();
+            editor.apply();
         } catch (NullPointerException exception) {
             Log.d("hcj", "" + exception);
         }
@@ -76,7 +76,7 @@ public class SharedPreferencesHelper {
         try {
             SharedPreferences.Editor editor = getSP().edit();
             editor.putLong(key, value);
-            editor.commit();
+            editor.apply();
         } catch (NullPointerException exception) {
             Log.d("hcj", "" + exception);
         }
@@ -96,7 +96,7 @@ public class SharedPreferencesHelper {
         try {
             SharedPreferences.Editor editor = getSP().edit();
             editor.putInt(key, value);
-            editor.commit();
+            editor.apply();
         } catch (Exception e) {
             Log.d("hcj", "" + e);
         }
@@ -115,7 +115,7 @@ public class SharedPreferencesHelper {
         try {
             SharedPreferences.Editor editor = getSP().edit();
             editor.putString(key, value);
-            editor.commit();
+            editor.apply();
         } catch (NullPointerException e) {
             Log.d("hcj", "" + e);
         }
@@ -125,7 +125,7 @@ public class SharedPreferencesHelper {
         try {
             SharedPreferences.Editor editor = getSP().edit();
             editor.clear();
-            editor.commit();
+            editor.apply();
         } catch (NullPointerException e) {
             Log.d("hcj", "" + e);
         }

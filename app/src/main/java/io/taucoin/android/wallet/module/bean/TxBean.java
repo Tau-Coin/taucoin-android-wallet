@@ -2,8 +2,7 @@ package io.taucoin.android.wallet.module.bean;
 
 import com.google.gson.annotations.SerializedName;
 
-public class AddOutBean {
-
+public class TxBean {
     private String time;
     private String txid;
     private String vout;

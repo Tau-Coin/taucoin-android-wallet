@@ -15,12 +15,11 @@
  */
 package io.taucoin.android.wallet.net.service;
 
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
 
-import io.taucoin.android.wallet.module.bean.AddOutBean;
+import io.taucoin.android.wallet.module.bean.AddInOutBean;
 import io.taucoin.android.wallet.module.bean.BalanceBean;
 import io.taucoin.android.wallet.module.bean.RawTxBean;
 import io.taucoin.android.wallet.module.bean.UTXOList;
@@ -46,5 +45,5 @@ public interface TransactionService {
     Observable<RetResult<String>> sendRawTransation(@Body Map<String,String> tx_hex);
 
     @POST("getAddOuts/")
-    Observable<DataResult<List<AddOutBean>>> getAddOuts(@Body Map<String,String> address);
+    Observable<DataResult<AddInOutBean>> getAddOuts(@Body Map<String,String> address);
 }

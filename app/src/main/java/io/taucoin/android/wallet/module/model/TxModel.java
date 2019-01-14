@@ -44,9 +44,10 @@ import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.db.entity.UTXORecord;
 import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
 import io.taucoin.android.wallet.db.util.UTXORecordDaoUtils;
-import io.taucoin.android.wallet.module.bean.AddOutBean;
+import io.taucoin.android.wallet.module.bean.AddInOutBean;
 import io.taucoin.android.wallet.module.bean.BalanceBean;
 import io.taucoin.android.wallet.module.bean.RawTxBean;
+import io.taucoin.android.wallet.module.bean.TxBean;
 import io.taucoin.android.wallet.module.bean.UTXOList;
 import io.taucoin.android.wallet.module.bean.UtxosBean;
 import io.taucoin.android.wallet.net.callback.TAUObserver;
@@ -203,6 +204,9 @@ public class TxModel implements ITxModel {
 
                 @Override
                 public void handleError(String msg, int msgCode) {
+                    if(msgCode == 402){
+                        observer.onNext(false);
+                    }
                 }
             });
 
@@ -243,6 +247,7 @@ public class TxModel implements ITxModel {
                 txHistory.setResult("sending");
                 txHistory.setFromAddress(keyValue.getAddress());
                 txHistory.setTime(DateUtil.getCurrentTime());
+                txHistory.setSentOrReceived(TransmitKey.TxType.SEND);
 
                 insertTransactionHistory(txHistory);
 
@@ -307,7 +312,7 @@ public class TxModel implements ITxModel {
     }
 
     @Override
-    public void getAddOuts(TAUObserver<DataResult<List<AddOutBean>>> observer) {
+    public void getAddOuts(TAUObserver<DataResult<AddInOutBean>> observer) {
         KeyValue keyValue = MyApplication.getKeyValue();
         if(keyValue == null){
             observer.onError(CodeException.getError());
@@ -341,28 +346,44 @@ public class TxModel implements ITxModel {
     }
 
     @Override
-    public void saveAddOuts(List<AddOutBean> list, LogicObserver<Boolean> observer) {
+    public void saveAddOuts(AddInOutBean addInOut, LogicObserver<Boolean> observer) {
         Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
-            for (AddOutBean bean : list) {
-                TransactionHistory tx = new TransactionHistory();
-                tx.setFromAddress(bean.getAddIn());
-                tx.setToAddress(bean.getAddOut());
-                // time and blockTime need set value here!
-                tx.setTime(bean.getTime());
-                try{
-                    long time = Long.valueOf(bean.getTime());
-                    tx.setBlocktime(time);
-                }catch (Exception ignore){ }
-
-                tx.setTxId(bean.getTxid());
-                tx.setValue(FmtMicrometer.fmtAmount(bean.getVout()));
-                tx.setFee(FmtMicrometer.fmtAmount(bean.getFee()));
-                tx.setBlockheight(bean.getBlockHeight());
-                TransactionHistoryDaoUtils.getInstance().saveAddOut(tx);
+            if(null != addInOut){
+                List<TxBean> receives = addInOut.getReceived();
+                if(null != receives && receives.size() > 0){
+                    for (TxBean bean : receives) {
+                        saveAddOutsToDB(bean, TransmitKey.TxType.RECEIVE);
+                    }
+                }
+                List<TxBean> sends = addInOut.getSent();
+                if(null != sends && sends.size() > 0){
+                    for (TxBean bean : sends) {
+                        saveAddOutsToDB(bean, TransmitKey.TxType.SEND);
+                    }
+                }
             }
             emitter.onNext(true);
         }).observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .subscribe(observer);
+    }
+
+    private void saveAddOutsToDB(TxBean bean, String txType) {
+        TransactionHistory tx = new TransactionHistory();
+        tx.setSentOrReceived(txType);
+        tx.setFromAddress(bean.getAddIn());
+        tx.setToAddress(bean.getAddOut());
+        // time and blockTime need set value here!
+        tx.setTime(bean.getTime());
+        try{
+            long time = Long.valueOf(bean.getTime());
+            tx.setBlocktime(time);
+        }catch (Exception ignore){ }
+
+        tx.setTxId(bean.getTxid());
+        tx.setValue(FmtMicrometer.fmtAmount(bean.getVout()));
+        tx.setFee(FmtMicrometer.fmtAmount(bean.getFee()));
+        tx.setBlockheight(bean.getBlockHeight());
+        TransactionHistoryDaoUtils.getInstance().saveAddOut(tx);
     }
 }

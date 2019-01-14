@@ -57,7 +57,7 @@ public class ActionSheetDialog {
 
     public ActionSheetDialog builder() {
 
-        View view = LayoutInflater.from(context).inflate(
+        View view = View.inflate(context,
                 R.layout.view_actionsheet, null);
         view.setMinimumWidth(display.getWidth());
         mViewHolder = new ViewHolder(view);
@@ -133,12 +133,12 @@ public class ActionSheetDialog {
 
         int size = sheetItemList.size();
 
-        if (size >= 7) {
-            LayoutParams params = (LayoutParams) mViewHolder.sLayoutContent
-                    .getLayoutParams();
-            params.height = display.getHeight() / 2;
-            mViewHolder.sLayoutContent.setLayoutParams(params);
-        }
+//        if (size >= 7) {
+//            LayoutParams params = (LayoutParams) mViewHolder.sLayoutContent
+//                    .getLayoutParams();
+//            params.height = display.getHeight() / 2;
+//            mViewHolder.sLayoutContent.setLayoutParams(params);
+//        }
 
         for (int i = 1; i <= size; i++) {
             SheetItem sheetItem = sheetItemList.get(i - 1);

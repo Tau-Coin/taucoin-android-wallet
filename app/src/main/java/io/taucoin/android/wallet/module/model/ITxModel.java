@@ -19,7 +19,7 @@ import java.util.List;
 
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.db.entity.UTXORecord;
-import io.taucoin.android.wallet.module.bean.AddOutBean;
+import io.taucoin.android.wallet.module.bean.AddInOutBean;
 import io.taucoin.android.wallet.module.bean.BalanceBean;
 import io.taucoin.android.wallet.net.callback.TAUObserver;
 import io.taucoin.foundation.net.callback.DataResult;
@@ -61,9 +61,9 @@ public interface ITxModel {
     void queryTransactionHistory(int pageNo, String time, LogicObserver<List<TransactionHistory>> logicObserver);
 
     /** Get the transaction history of the server  */
-    void getAddOuts(TAUObserver<DataResult<List<AddOutBean>>> observer);
+    void getAddOuts(TAUObserver<DataResult<AddInOutBean>> observer);
 
     /** Save the transaction history of the server  */
-    void saveAddOuts(List<AddOutBean> list, LogicObserver<Boolean> observer);
+    void saveAddOuts(AddInOutBean addInOut, LogicObserver<Boolean> observer);
 
 }

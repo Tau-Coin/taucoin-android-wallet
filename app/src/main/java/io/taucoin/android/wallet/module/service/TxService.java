@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.github.naturs.logger.Logger;
+import com.mofei.tau.R;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -44,6 +45,7 @@ import io.taucoin.android.wallet.net.callback.CommonObserver;
 import io.taucoin.android.wallet.net.callback.TAUObserver;
 import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.ProgressManager;
+import io.taucoin.android.wallet.util.ResourcesUtil;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.net.callback.RetResult;
 import io.taucoin.foundation.util.ActivityManager;
@@ -140,13 +142,29 @@ public class TxService extends Service {
                     Logger.d("checkRawTransaction start size=" + txHistories.size());
                     for (int i = 0; i < txHistories.size(); i++) {
                         try {
-                            Logger.d("checkRawTransaction TxId=" + txHistories.get(i).getTxId());
-                            mTxModel.checkRawTransaction(txHistories.get(i).getTxId(), new LogicObserver<Boolean>(){
+                            String txId = txHistories.get(i).getTxId();
+                            Logger.d("checkRawTransaction TxId=" + txId);
+                            mTxModel.checkRawTransaction(txId, new LogicObserver<Boolean>(){
+
                                 @Override
                                 public void handleData(Boolean isOnBlockChain) {
-                                    EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
-                                    getBalance(TransmitKey.ServiceType.GET_BALANCE);
-                                    getUTXOList();
+                                    if(isOnBlockChain){
+                                        EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
+                                        getBalance(TransmitKey.ServiceType.GET_BALANCE);
+                                        getUTXOList();
+                                    }else{
+                                        TransactionHistory transactionHistory = new TransactionHistory();
+                                        transactionHistory.setTxId(txId);
+                                        transactionHistory.setResult(TransmitKey.TxResult.FAILED);
+                                        transactionHistory.setMessage(ResourcesUtil.getText(R.string.send_tx_fail_in_pool));
+                                        mTxModel.updateTransactionHistory(transactionHistory, new LogicObserver<Boolean>(){
+
+                                            @Override
+                                            public void handleData(Boolean aBoolean) {
+                                                EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
+                                            }
+                                        });
+                                    }
                                 }
                             });
                             Thread.sleep(3000);

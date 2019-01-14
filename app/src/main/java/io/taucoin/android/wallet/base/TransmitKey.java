@@ -43,6 +43,11 @@ public class TransmitKey {
         public static final String CONFIRMING = "Confirming";
     }
 
+    public static class TxType{
+        public static final String SEND = "Send";
+        public static final String RECEIVE = "Receive";
+    }
+
     public static final String BEAN = "bean";
     public static final String UPGRADE = "upgrade";
 }

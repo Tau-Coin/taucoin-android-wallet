@@ -20,6 +20,7 @@ import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
+import com.github.naturs.logger.Logger;
 import com.mofei.tau.R;
 
 import java.lang.ref.WeakReference;
@@ -29,16 +30,17 @@ import java.lang.ref.WeakReference;
  */
 public class ProgressManager {
 
-    private static Dialog mProgress;
+    private static volatile WeakReference<Dialog> mProgress;
 
     private static WeakReference<FragmentActivity> mWeakReference;
 
-    public static void showProgressDialog(FragmentActivity activity){
+    public static synchronized void showProgressDialog(FragmentActivity activity){
         showProgressDialog(activity, true);
     }
 
-    public static void showProgressDialog(FragmentActivity activity, boolean isCanCancel){
+    public static synchronized void showProgressDialog(FragmentActivity activity, boolean isCanCancel){
         closeProgressDialog();
+        Logger.d("showProgressDialog");
         mWeakReference = new WeakReference<>(activity);
         if(activity != null && activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) != null){
 
@@ -47,29 +49,33 @@ public class ProgressManager {
             progress.setContentView(R.layout.dialog_waiting);
             progress.setCanceledOnTouchOutside(isCanCancel);
             progress.setOnCancelListener(dialog -> closeProgressDialog(activity));
-            mProgress = progress;
+            mProgress = new WeakReference<>(progress);
             if(!activity.isFinishing()){
                 progress.show();
             }
         }
     }
 
-    public static void closeProgressDialog(){
-        if(mProgress != null){
-            mProgress.dismiss();
-            mProgress = null;
+    public static synchronized void closeProgressDialog(){
+        if(mProgress != null && mProgress.get() != null){
+            mProgress.get().dismiss();
+            if(mProgress != null){
+                Logger.d("closeProgressDialog");
+                mProgress.clear();
+            }
             if(mWeakReference != null){
                 mWeakReference.clear();
             }
         }
     }
 
-    public static void closeProgressDialog(FragmentActivity activity){
+    public static synchronized void closeProgressDialog(FragmentActivity activity){
         try {
             if(mProgress != null && mWeakReference != null){
                 FragmentActivity activityReference = mWeakReference.get();
                 if(activityReference != null &&
                         activity.getClass().equals(activityReference.getClass())){
+                    Logger.d("closeProgressDialog(FragmentActivity activity)");
                     closeProgressDialog();
                 }
             }
@@ -77,8 +83,8 @@ public class ProgressManager {
     }
 
     public static boolean isShowing(){
-        if(mProgress != null){
-            return mProgress.isShowing();
+        if(mProgress != null && mProgress.get() != null){
+            return mProgress.get().isShowing();
         }
         return false;
     }
