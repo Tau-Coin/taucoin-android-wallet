@@ -54,6 +54,7 @@ ext {
     crashlytics = project.property('DEP_CRASHLYTICS')
     leakcanarydebug = project.property('DEP_LEAKCANARYDEBUG')
     leakcanaryrelease = project.property('DEP_LEAKCANARYRELEASE')
+    rxlifecycleComponents = project.property('DEP_RXLIFECYCLE_COMPONENTS')
 }
 
 allprojects {

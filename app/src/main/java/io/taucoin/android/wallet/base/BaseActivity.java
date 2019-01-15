@@ -26,6 +26,7 @@ import android.view.WindowManager;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -35,7 +36,7 @@ import io.taucoin.android.wallet.util.KeyboardUtils;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.foundation.util.ActivityManager;
 
-public abstract class BaseActivity extends AppCompatActivity implements OnLoadmoreListener, OnRefreshListener {
+public abstract class BaseActivity extends RxAppCompatActivity implements OnLoadmoreListener, OnRefreshListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +54,14 @@ public abstract class BaseActivity extends AppCompatActivity implements OnLoadmo
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        ProgressManager.closeProgressDialog(this);
+    }
+
+    @Override
     protected void onDestroy() {
         try {
-            ProgressManager.closeProgressDialog(this);
             if(KeyboardUtils.isSoftInputVisible(this)){
                 KeyboardUtils.hideSoftInput(this);
                 // handler InputMethodManager Leak

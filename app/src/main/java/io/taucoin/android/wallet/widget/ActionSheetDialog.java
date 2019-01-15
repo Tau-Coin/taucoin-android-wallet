@@ -163,7 +163,7 @@ public class ActionSheetDialog {
 
             view.setOnClickListener(v -> {
                 listener.onClick(sheetItem);
-                dialog.dismiss();
+                dialog.cancel();
             });
             mViewHolder.lLayoutContent.addView(view);
         }
@@ -214,7 +214,7 @@ public class ActionSheetDialog {
         @OnClick(R.id.tv_cancel)
         void onCancel() {
             if (dialog != null) {
-                dialog.dismiss();
+                dialog.cancel();
             }
             if(listener != null){
                 listener.onClick(null);

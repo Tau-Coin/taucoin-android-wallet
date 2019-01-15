@@ -62,12 +62,12 @@ public class ProfileActivity extends BaseActivity {
     @OnClick(R.id.rl_name)
     public void onNameClicked() {
         new InputDialog.Builder(this)
-            .setNegativeButton(R.string.common_cancel, (InputDialog.InputDialogListener) (dialog, text) -> dialog.dismiss())
+            .setNegativeButton(R.string.common_cancel, (InputDialog.InputDialogListener) (dialog, text) -> dialog.cancel())
             .setPositiveButton(R.string.common_done, (InputDialog.InputDialogListener) (dialog, text) -> {
                 MyApplication.getKeyValue().setNickName(text);
                 mUserPresenter.saveName(text);
                 UserUtil.setNickName(tvName);
-                dialog.dismiss();
+                dialog.cancel();
             }).create().show();
     }
 

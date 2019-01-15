@@ -66,7 +66,6 @@ public class SendActivity extends BaseActivity implements ISendView {
         setContentView(R.layout.activity_send);
         ButterKnife.bind(this);
         mTxPresenter = new TxPresenter(this);
-        ProgressManager.showProgressDialog(this);
         TxService.startTxService(TransmitKey.ServiceType.GET_SEND_DATA);
         initView();
     }
@@ -164,9 +163,9 @@ public class SendActivity extends BaseActivity implements ISendView {
         viewHolder.tvToMemo.setText(tx.getMemo());
         new CommonDialog.Builder(this)
                 .setContentView(view)
-                .setNegativeButton(R.string.send_dialog_no, (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(R.string.send_dialog_no, (dialog, which) -> dialog.cancel())
                 .setPositiveButton(R.string.send_dialog_yes, (dialog, which) -> {
-                    dialog.dismiss();
+                    dialog.cancel();
                     handleSendTransaction(tx);
                 })
                 .create().show();

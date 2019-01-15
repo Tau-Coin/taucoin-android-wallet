@@ -72,33 +72,33 @@ public class DownloadManager {
     public void showUpGradeDialog(UpgradeActivity activity, VersionBean version) {
         mVersionBean = version;
         isDownload = isFileExists(version);
-        if (mDialog != null) {
-            mDialog.dismiss();
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.cancel();
         }
         int leftButton = R.string.common_cancel;
         int rightButton = isDownload ? R.string.app_upgrade_install : R.string.common_ok;
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
             .setTitle(R.string.app_upgrade_title)
             .setMessage(Html.fromHtml(version.getContent()))
+            .setNegativeButton(leftButton, null)
             .setPositiveButton(rightButton, null)
             .setCancelable(false);
-
-
-        builder.setNegativeButton(leftButton, (dialog, which) -> {
-            if (version.isForced()) {
-                ActivityManager.getInstance().finishAll();
-            }
-            else {
-                Intent intent = new Intent(activity, UpgradeService.class);
-                activity.stopService(intent);
-            }
-            activity.finish();
-        });
 
         mDialog = builder.create();
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.setCancelable(false);
         mDialog.show();
+
+        mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> {
+            mDialog.cancel();
+            if (version.isForced()) {
+                ActivityManager.getInstance().finishAll();
+            } else {
+                Intent intent = new Intent(activity, UpgradeService.class);
+                activity.stopService(intent);
+            }
+            activity.finish();
+        });
 
         mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             if (isDownload) {
@@ -106,7 +106,7 @@ public class DownloadManager {
             } else {
                 String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
                 if (EasyPermissions.hasPermissions(activity, permission)) {
-                    mDialog.dismiss();
+                    mDialog.cancel();
                     showProgressDialog(activity);
                     startDownload(activity);
                 } else {
@@ -232,8 +232,8 @@ public class DownloadManager {
      * show Progress Dialog
      */
     private void showProgressDialog(FragmentActivity activity) {
-        if (mDialog != null) {
-            mDialog.dismiss();
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.cancel();
         }
 
         View view = LinearLayout.inflate(activity, R.layout.dialog_download_progress, null);
@@ -243,9 +243,15 @@ public class DownloadManager {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
                 .setCancelable(false)
                 .setTitle(R.string.app_upgrade_progress)
+                .setNegativeButton(R.string.common_cancel, null)
                 .setView(view);
 
-        builder.setNegativeButton(R.string.common_cancel, (dialog, which) -> {
+        mDialog = builder.create();
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.setCancelable(false);
+        mDialog.show();
+        mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> {
+            mDialog.cancel();
             if (mVersionBean.isForced()) {
                 ActivityManager.getInstance().finishAll();
             } else {
@@ -254,10 +260,6 @@ public class DownloadManager {
             }
             activity.finish();
         });
-        mDialog = builder.create();
-        mDialog.setCanceledOnTouchOutside(false);
-        mDialog.setCancelable(false);
-        mDialog.show();
         Observable.create((ObservableOnSubscribe<View>)
             e -> mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(e::onNext))
             .throttleFirst(2, TimeUnit.SECONDS)
@@ -282,7 +284,7 @@ public class DownloadManager {
 
     public void closeDialog() {
         if(mDialog != null && mDialog.isShowing()){
-            mDialog.dismiss();
+            mDialog.cancel();
         }
     }
 

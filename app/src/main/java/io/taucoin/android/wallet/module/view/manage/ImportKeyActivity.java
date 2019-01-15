@@ -86,10 +86,10 @@ public class ImportKeyActivity extends BaseActivity implements IImportKeyView {
                 .setContentView(view)
                 .setButtonWidth(240)
                 .setPositiveButton(R.string.keys_dialog_yes, (dialog, which) -> {
-                    dialog.dismiss();
+                    dialog.cancel();
                     saveKeyAndAddress(keyValue);
                 }).setNegativeButton(R.string.keys_dialog_no, (dialog, which) -> {
-                    dialog.dismiss();
+                    dialog.cancel();
                     gotoKeysActivity();
                 }).isEnabledNegative(null != currKeyValue)
                 .create().show();

@@ -30,7 +30,7 @@ import java.lang.ref.WeakReference;
  */
 public class ProgressManager {
 
-    private static volatile WeakReference<Dialog> mProgress;
+    private static volatile Dialog mProgress;
 
     private static WeakReference<FragmentActivity> mWeakReference;
 
@@ -42,27 +42,25 @@ public class ProgressManager {
         closeProgressDialog();
         Logger.d("showProgressDialog");
         mWeakReference = new WeakReference<>(activity);
-        if(activity != null && activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) != null){
+        if(mWeakReference.get() != null && mWeakReference.get().getSystemService(Context.LAYOUT_INFLATER_SERVICE) != null){
 
-            Dialog progress = new Dialog(activity, R.style.dialog_translucent);
+            Dialog progress = new Dialog(mWeakReference.get(), R.style.dialog_translucent);
             progress.requestWindowFeature(Window.FEATURE_NO_TITLE);
             progress.setContentView(R.layout.dialog_waiting);
             progress.setCanceledOnTouchOutside(isCanCancel);
-            progress.setOnCancelListener(dialog -> closeProgressDialog(activity));
-            mProgress = new WeakReference<>(progress);
-            if(!activity.isFinishing()){
+            mProgress = progress;
+            if(!mWeakReference.get().isFinishing()){
                 progress.show();
+            }else{
+                closeProgressDialog();
             }
         }
     }
 
     public static synchronized void closeProgressDialog(){
-        if(mProgress != null && mProgress.get() != null){
-            mProgress.get().dismiss();
-            if(mProgress != null){
-                Logger.d("closeProgressDialog");
-                mProgress.clear();
-            }
+        if(mProgress != null && mProgress.isShowing()){
+            mProgress.cancel();
+            mProgress = null;
             if(mWeakReference != null){
                 mWeakReference.clear();
             }
@@ -71,7 +69,7 @@ public class ProgressManager {
 
     public static synchronized void closeProgressDialog(FragmentActivity activity){
         try {
-            if(mProgress != null && mWeakReference != null){
+            if(activity != null && mProgress != null && mWeakReference != null){
                 FragmentActivity activityReference = mWeakReference.get();
                 if(activityReference != null &&
                         activity.getClass().equals(activityReference.getClass())){
@@ -80,12 +78,5 @@ public class ProgressManager {
                 }
             }
         }catch (Exception ignore){}
-    }
-
-    public static boolean isShowing(){
-        if(mProgress != null && mProgress.get() != null){
-            return mProgress.get().isShowing();
-        }
-        return false;
     }
 }

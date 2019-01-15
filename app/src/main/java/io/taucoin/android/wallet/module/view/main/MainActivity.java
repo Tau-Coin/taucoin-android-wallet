@@ -20,6 +20,7 @@ import io.taucoin.android.wallet.base.BaseActivity;
 import io.taucoin.android.wallet.module.service.TxService;
 import io.taucoin.android.wallet.module.service.UpgradeService;
 import io.taucoin.android.wallet.module.view.main.iview.IMainView;
+import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.util.ActivityManager;
 import io.taucoin.foundation.util.DrawablesUtil;
@@ -137,6 +138,7 @@ public class MainActivity extends BaseActivity implements IMainView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ProgressManager.closeProgressDialog();
         TxService.stopService();
         UpgradeService.stopUpdateService();
     }

@@ -15,6 +15,11 @@
  */
 package io.taucoin.android.wallet.module.model;
 
+import com.trello.rxlifecycle2.LifecycleProvider;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
 import java.util.List;
 
 import io.taucoin.android.wallet.module.bean.HelpBean;
@@ -28,7 +33,7 @@ public interface IAppModel {
     void getInfo();
 
     /** Get help page data */
-    void getHelpData(TAUObserver<DataResult<List<HelpBean>>> observer);
+    void getHelpData(LifecycleProvider<ActivityEvent> provider, TAUObserver<DataResult<List<HelpBean>>> observer);
 
     /** Check app version info */
     void checkAppVersion(TAUObserver<DataResult<VersionBean>> observer);

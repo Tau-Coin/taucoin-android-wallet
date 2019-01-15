@@ -15,12 +15,15 @@
  */
 package io.taucoin.android.wallet.module.presenter;
 
+import com.trello.rxlifecycle2.LifecycleProvider;
+import com.trello.rxlifecycle2.android.ActivityEvent;
+
 import java.util.List;
 
 import io.taucoin.android.wallet.module.bean.HelpBean;
-import io.taucoin.android.wallet.module.bean.VersionBean;
 import io.taucoin.android.wallet.module.model.AppModel;
 import io.taucoin.android.wallet.module.model.IAppModel;
+import io.taucoin.android.wallet.module.view.manage.HelpActivity;
 import io.taucoin.android.wallet.module.view.manage.iview.IHelpView;
 import io.taucoin.android.wallet.net.callback.TAUObserver;
 import io.taucoin.android.wallet.util.ProgressManager;
@@ -29,18 +32,16 @@ import io.taucoin.foundation.net.callback.DataResult;
 public class AppPresenter {
     private IHelpView mHelpView;
     private IAppModel mAppModel;
+    private LifecycleProvider<ActivityEvent> provider;
 
-    public AppPresenter() {
+    public AppPresenter(HelpActivity activity) {
         mAppModel = new AppModel();
-    }
-
-    public AppPresenter(IHelpView view) {
-        mAppModel = new AppModel();
-        mHelpView = view;
+        mHelpView = activity;
+        provider = activity;
     }
 
     public void getHelpData() {
-        mAppModel.getHelpData(new TAUObserver<DataResult<List<HelpBean>>>() {
+        mAppModel.getHelpData(provider, new TAUObserver<DataResult<List<HelpBean>>>() {
             @Override
             public void handleError(String msg, int msgCode) {
                 super.handleError(msg, msgCode);
@@ -54,24 +55,6 @@ public class AppPresenter {
                 if(listDataResult != null && listDataResult.getData() != null){
                     mHelpView.loadHelpData(listDataResult.getData());
                 }
-            }
-        });
-    }
-
-    public void checkAppVersion() {
-        mAppModel.checkAppVersion(new TAUObserver<DataResult<VersionBean>>() {
-            @Override
-            public void handleError(String msg, int msgCode) {
-            }
-
-            @Override
-            public void handleData(DataResult<VersionBean> versionBean) {
-                super.handleData(versionBean);
-                ProgressManager.closeProgressDialog();
-//                if(versionBean != null && versionBean.getData() != null){
-//
-////                    mHelpView.loadHelpData(listDataResult.getData());
-//                }
             }
         });
     }

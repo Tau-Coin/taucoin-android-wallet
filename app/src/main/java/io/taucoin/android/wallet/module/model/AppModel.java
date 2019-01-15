@@ -15,6 +15,9 @@
  */
 package io.taucoin.android.wallet.module.model;
 
+import com.trello.rxlifecycle2.LifecycleProvider;
+import com.trello.rxlifecycle2.android.ActivityEvent;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +33,6 @@ import io.taucoin.android.wallet.net.service.AppService;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 import io.taucoin.foundation.net.NetWorkManager;
 import io.taucoin.foundation.net.callback.DataResult;
-import io.taucoin.foundation.net.callback.RetResult;
 import io.taucoin.foundation.util.AppUtil;
 
 public class AppModel implements IAppModel{
@@ -49,11 +51,12 @@ public class AppModel implements IAppModel{
     }
 
     @Override
-    public void getHelpData(TAUObserver<DataResult<List<HelpBean>>> observer) {
+    public void getHelpData(LifecycleProvider<ActivityEvent> provider, TAUObserver<DataResult<List<HelpBean>>> observer) {
         NetWorkManager.createApiService(AppService.class)
                 .getHelpData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(provider.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(observer);
     }
 

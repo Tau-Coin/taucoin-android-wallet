@@ -198,8 +198,7 @@ public class TxService extends Service {
                 super.handleData(balanceRetBalance);
                 BalanceBean balance = balanceRetBalance.getRet();
                 Logger.i("getBalance success");
-                if(ActivityManager.getInstance().isTopActivity(MainActivity.class) ||
-                        ActivityManager.getInstance().isTopActivity(SendActivity.class)){
+                if(ActivityManager.getInstance().isTopActivity(MainActivity.class)){
                     ProgressManager.closeProgressDialog();
                 }
                 KeyValue entry = KeyValueDaoUtils.getInstance().insertOrReplace(balance);

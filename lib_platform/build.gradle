@@ -43,6 +43,7 @@ dependencies {
     api rootProject.ext.crashlytics
     debugApi rootProject.ext.leakcanarydebug
     releaseApi rootProject.ext.leakcanaryrelease
+    api rootProject.ext.rxlifecycleComponents
 
     api files('libs/BASE64.jar')
     api files('libs/bcprov-jdk15on-160.jar')
