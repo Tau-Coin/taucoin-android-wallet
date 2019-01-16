@@ -158,6 +158,11 @@
         <item name="android:textColor">@color/color_yellow</item>
     </style>
 
+    <style name="style_tau_yellow">
+        <item name="android:textSize">@dimen/dimen_size_20</item>
+        <item name="android:textColor">@color/color_yellow</item>
+    </style>
+
     <style name="style_tau_black">
         <item name="android:textSize">@dimen/dimen_size_26</item>
         <item name="android:textColor">@color/color_black</item>

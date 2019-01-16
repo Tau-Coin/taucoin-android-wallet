@@ -17,7 +17,7 @@ package io.taucoin.android.wallet.widget;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.view.Display;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,28 +44,31 @@ public class ActionSheetDialog {
     private Context context;
     private Dialog dialog;
     private List<SheetItem> sheetItemList = new ArrayList<>();
-    private Display display;
     private ViewHolder mViewHolder;
     private String mSelectValue;
+    private int mWindowWidth;
 
     public ActionSheetDialog(Context context) {
         this.context = context;
         WindowManager windowManager = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
-        display = windowManager.getDefaultDisplay();
+
+        DisplayMetrics dm = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(dm);
+        mWindowWidth  = dm.widthPixels ;
     }
 
     public ActionSheetDialog builder() {
 
         View view = View.inflate(context,
                 R.layout.view_actionsheet, null);
-        view.setMinimumWidth(display.getWidth());
+        view.setMinimumWidth(mWindowWidth);
         mViewHolder = new ViewHolder(view);
 
         dialog = new Dialog(context, R.style.ActionSheetDialogStyle);
         dialog.setContentView(view);
         Window dialogWindow = dialog.getWindow();
-        dialogWindow.setGravity(Gravity.LEFT | Gravity.BOTTOM);
+        dialogWindow.setGravity(Gravity.START | Gravity.BOTTOM);
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         lp.x = 0;
         lp.y = 0;

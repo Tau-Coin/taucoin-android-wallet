@@ -15,15 +15,14 @@
 
     <TextView
         android:id="@+id/app_title"
-        style="@style/style_big_yellow"
+        style="@style/style_tau_yellow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_logo"
         android:layout_centerHorizontal="true"
-        android:fontFamily="serif"
+        android:typeface="serif"
         android:layout_marginTop="20dp"
         android:textColor="@color/color_logo"
-        android:textSize="@dimen/dimen_size_20"
         android:text="@string/splash_title" />
 
     <TextView
@@ -33,7 +32,7 @@
         android:layout_below="@+id/app_title"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
-        android:fontFamily="serif"
+        android:typeface="serif"
         android:layout_marginTop="2dp"
         android:lineSpacingExtra="2dp"
         android:textColor="@color/color_logo"
@@ -48,7 +47,7 @@
         android:layout_marginBottom="@dimen/dimen_size_50"
         android:gravity="center"
         android:lineSpacingExtra="2dp"
-        android:fontFamily="serif"
+        android:typeface="serif"
         android:textColor="@color/color_grey_normal"
         android:text="@string/splash_describe" />
 </RelativeLayout>
