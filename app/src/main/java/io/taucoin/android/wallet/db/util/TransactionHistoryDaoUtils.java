@@ -20,6 +20,7 @@ import io.taucoin.android.wallet.db.GreenDaoManager;
 import io.taucoin.android.wallet.db.greendao.TransactionHistoryDao;
 
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
+import io.taucoin.foundation.util.StringUtil;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
@@ -85,11 +86,20 @@ public class TransactionHistoryDaoUtils {
 
     public void saveAddOut(TransactionHistory tx) {
         QueryBuilder<TransactionHistory> db = getTransactionHistoryDao().queryBuilder();
-        db.where(TransactionHistoryDao.Properties.TxId.eq(tx.getTxId()),
-            TransactionHistoryDao.Properties.FromAddress.eq(tx.getFromAddress()),
-            TransactionHistoryDao.Properties.ToAddress.eq(tx.getToAddress()),
-            TransactionHistoryDao.Properties.SentOrReceived.eq(tx.getSentOrReceived())
-        );
+        if(StringUtil.isSame(tx.getFromAddress(), tx.getToAddress())){
+            db.where(TransactionHistoryDao.Properties.TxId.eq(tx.getTxId()),
+                TransactionHistoryDao.Properties.FromAddress.eq(tx.getFromAddress()),
+                TransactionHistoryDao.Properties.ToAddress.eq(tx.getToAddress()),
+                TransactionHistoryDao.Properties.SentOrReceived.eq(tx.getSentOrReceived())
+            );
+        }else{
+            // Avoid duplication of data and login on the same mobile phone
+            db.where(TransactionHistoryDao.Properties.TxId.eq(tx.getTxId()),
+                TransactionHistoryDao.Properties.FromAddress.eq(tx.getFromAddress()),
+                TransactionHistoryDao.Properties.ToAddress.eq(tx.getToAddress())
+            );
+        }
+
         List<TransactionHistory> list = db.list();
         if(list.size() > 0){
             TransactionHistory bean = list.get(0);

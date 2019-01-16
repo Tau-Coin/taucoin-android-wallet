@@ -19,6 +19,7 @@ public class TransmitKey {
     public static final String SERVICE_TYPE = "service_type";
 
     public static class ServiceType{
+        public static final String GET_IMPORT_DATA = "get_import_data";
         public static final String GET_HOME_DATA = "get_home_data";
         public static final String GET_SEND_DATA = "get_send_data";
         public static final String GET_BALANCE = "get_balance";
@@ -50,4 +51,5 @@ public class TransmitKey {
 
     public static final String BEAN = "bean";
     public static final String UPGRADE = "upgrade";
+    public static final String ISSHOWTIP = "isShowTip";
 }

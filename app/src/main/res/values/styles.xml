@@ -127,14 +127,19 @@
         <item name="android:textColor">@color/color_grey_light</item>
     </style>
 
+    <style name="style_middle_light_grey">
+        <item name="android:textSize">@dimen/dimen_size_14</item>
+        <item name="android:textColor">@color/color_grey_light</item>
+    </style>
+
     <style name="style_normal_grey_dark">
         <item name="android:textSize">@dimen/dimen_size_16</item>
         <item name="android:textColor">@color/color_grey_dark</item>
     </style>
 
-    <style name="style_super_red">
+    <style name="style_super_yellow">
         <item name="android:textSize">@dimen/dimen_size_22</item>
-        <item name="android:textColor">@color/color_red</item>
+        <item name="android:textColor">@color/color_yellow</item>
     </style>
 
     <style name="style_middle_yellow">

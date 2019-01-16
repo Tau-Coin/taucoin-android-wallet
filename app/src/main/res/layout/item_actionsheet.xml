@@ -28,7 +28,7 @@
 
         <TextView
             android:id="@+id/tv_right"
-            style="@style/style_normal_blue"
+            style="@style/style_normal_yellow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

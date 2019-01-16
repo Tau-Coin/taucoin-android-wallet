@@ -81,6 +81,7 @@ public class TxService extends Service {
         if(intent != null && keyValue != null){
             String serviceType = intent.getStringExtra(TransmitKey.SERVICE_TYPE);
             switch (serviceType){
+                case TransmitKey.ServiceType.GET_IMPORT_DATA:
                 case TransmitKey.ServiceType.GET_HOME_DATA:
                     getBalance(serviceType);
                     getUTXOList();
@@ -185,7 +186,8 @@ public class TxService extends Service {
         mTxModel.getBalance( new TAUObserver<RetResult<BalanceBean>>() {
             @Override
             public void handleError(String msg, int msgCode) {
-                if(StringUtil.isSame(serviceType, TransmitKey.ServiceType.GET_HOME_DATA)){
+                if(StringUtil.isSame(serviceType, TransmitKey.ServiceType.GET_HOME_DATA) ||
+                        StringUtil.isSame(serviceType, TransmitKey.ServiceType.GET_IMPORT_DATA)){
                     getBalance(TransmitKey.ServiceType.GET_BALANCE);
                 }else{
                     ProgressManager.closeProgressDialog();
@@ -204,11 +206,13 @@ public class TxService extends Service {
                 KeyValue entry = KeyValueDaoUtils.getInstance().insertOrReplace(balance);
                 MyApplication.setKeyValue(entry);
                 if(entry != null){
-                    if(StringUtil.isSame(serviceType, TransmitKey.ServiceType.GET_HOME_DATA)){
+                    if(StringUtil.isSame(serviceType, TransmitKey.ServiceType.GET_HOME_DATA) ||
+                            StringUtil.isSame(serviceType, TransmitKey.ServiceType.GET_IMPORT_DATA)){
                         EventBusUtil.post(MessageEvent.EventCode.ALL);
                     }else{
                         EventBusUtil.post(MessageEvent.EventCode.BALANCE);
                     }
+
                 }
             }
         });

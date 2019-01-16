@@ -99,8 +99,8 @@ public class SendActivity extends BaseActivity implements ISendView {
     private void initTxFeeView() {
         etFee.setText(R.string.send_normal_value);
         SelectionEditText editText = etFee.getEditText();
-        editText.setTextAppearance(this, R.style.style_normal_blue);
-        editText.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(4).setEndSpace()});
+        editText.setTextAppearance(this, R.style.style_normal_yellow);
+        editText.setFilters(new InputFilter[]{new MoneyValueFilter().setDigits(2).setEndSpace()});
         editText.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
         editText.setMaxLines(1);
     }

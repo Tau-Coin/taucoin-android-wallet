@@ -8,7 +8,11 @@
     <string name="common_cancel">Cancel</string>
     <string name="common_ok">OK</string>
     <string name="common_done">Done</string>
-    <string name="common_balance" formatted="false"><Data><![CDATA[<font color="#477df9">%s</font> TAU]]> </Data></string>
+    <string name="common_balance" formatted="false"><Data><![CDATA[<font color="#f19322">%s</font> TAU]]> </Data></string>
+
+    <string name="splash_title">TAU - True Asset Unit</string>
+    <string name="splash_subheading">Mobile &#038; Decentral\nProof of Transaction</string>
+    <string name="splash_describe">Being a blockchain miner\nunder daily 2Mb data consumption</string>
 
     <string name="main_home">Home</string>
     <string name="main_send_receive">Send&#38;Receive</string>
@@ -49,10 +53,10 @@
     <string name="send_customize">customize</string>
     <string name="send_choose_fee_title">Choose Transaction Fee</string>
     <string name="send_choose_fee_tips">The higher transaction fee,the faster transaction speed</string>
-    <string name="send_priority_vice">(≈0.015 TAU)</string>
-    <string name="send_normal_vice">(≈0.0025 TAU)</string>
-    <string name="send_priority_value">0.015</string>
-    <string name="send_normal_value">0.0025</string>
+    <string name="send_priority_vice">(≈0.5 TAU)</string>
+    <string name="send_normal_vice">(≈0.1 TAU)</string>
+    <string name="send_priority_value">0.5</string>
+    <string name="send_normal_value">0.1</string>
     <string name="send_to">To</string>
     <string name="send_dialog_yes">Proceed</string>
     <string name="send_dialog_no">Back</string>
@@ -97,6 +101,7 @@
     <string name="app_upgrade_install">Install</string>
     <string name="app_upgrade_fail">Failed</string>
     <string name="app_upgrade_retry">Retry</string>
+    <string name="app_upgrade_latest">latest version</string>
 
     <!--permission tip-->
     <string name="permission_tip_upgrade_denied">

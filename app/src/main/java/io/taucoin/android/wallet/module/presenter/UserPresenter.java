@@ -59,7 +59,7 @@ public class UserPresenter {
                 MyApplication.setKeyValue(keyValue);
                 SharedPreferencesHelper.getInstance().putString(TransmitKey.PUBLIC_KEY, keyValue.getPubkey());
                 SharedPreferencesHelper.getInstance().putString(TransmitKey.ADDRESS, keyValue.getAddress());
-                TxService.startTxService(TransmitKey.ServiceType.GET_HOME_DATA);
+                TxService.startTxService(TransmitKey.ServiceType.GET_IMPORT_DATA);
                 TxService.startTxService(TransmitKey.ServiceType.GET_INFO);
                 if(isGenerateKey){
                     gotoKeysActivity();
@@ -79,7 +79,7 @@ public class UserPresenter {
     private void gotoKeysActivity() {
         ProgressManager.closeProgressDialog();
         mIImportKeyView.gotoKeysActivity();
-        EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
+        EventBusUtil.post(MessageEvent.EventCode.TRANSACTION_IMPORT);
     }
 
     private void getAddOuts() {

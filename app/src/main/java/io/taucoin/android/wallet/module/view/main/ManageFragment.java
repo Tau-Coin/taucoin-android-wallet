@@ -1,11 +1,10 @@
 package io.taucoin.android.wallet.module.view.main;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
@@ -87,7 +86,9 @@ public class ManageFragment extends BaseFragment implements IManageView {
                break;
            case R.id.tv_version:
                ProgressManager.showProgressDialog(getActivity());
-               UpgradeService.startUpdateService();
+               Intent intent = new Intent();
+               intent.putExtra(TransmitKey.ISSHOWTIP, true);
+               UpgradeService.startUpdateService(intent);
                break;
            default:
                break;

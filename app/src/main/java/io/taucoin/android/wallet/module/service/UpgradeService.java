@@ -28,6 +28,7 @@ import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.FileUtil;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
+import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.android.wallet.util.UriUtil;
 import io.taucoin.android.wallet.widget.download.DownloadManager;
 import io.taucoin.foundation.net.NetWorkManager;
@@ -86,12 +87,16 @@ public class UpgradeService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        boolean isShowTip = false;
+        if(intent != null){
+            isShowTip = intent.getBooleanExtra(TransmitKey.ISSHOWTIP, false);
+        }
         switch (mStatus){
             case CHECK:
                 if(mVersionBean == null){
-                    checkAppVersion();
+                    checkAppVersion(isShowTip);
                 }else {
-                    showUpgradeDialog(mVersionBean);
+                    showUpgradeDialog(mVersionBean, isShowTip);
                 }
                 break;
             case START:
@@ -197,7 +202,7 @@ public class UpgradeService extends Service {
         Call<ResponseBody> loadFile(@Path("pathParam") String pathParam);
     }
 
-    private void checkAppVersion() {
+    private void checkAppVersion(boolean isShowTip) {
         mAppModel.checkAppVersion(new TAUObserver<DataResult<VersionBean>>() {
             @Override
             public void handleError(String msg, int msgCode) {
@@ -212,7 +217,7 @@ public class UpgradeService extends Service {
                 super.handleData(versionBean);
                 Logger.d("UpgradeService.checkAppVersion.handleData=");
                 if(versionBean != null && versionBean.getData() != null){
-                    showUpgradeDialog(versionBean.getData());
+                    showUpgradeDialog(versionBean.getData(), isShowTip);
                 }else{
                     stopSelf();
                 }
@@ -220,7 +225,7 @@ public class UpgradeService extends Service {
         });
     }
 
-    private void showUpgradeDialog(VersionBean version) {
+    private void showUpgradeDialog(VersionBean version, boolean isShowTip) {
         ProgressManager.closeProgressDialog();
         if(version == null){
             stopSelf();
@@ -228,6 +233,9 @@ public class UpgradeService extends Service {
         }
         boolean isNeedUpdate = version.getNumber() > AppUtil.getVersionCode(this);
         if(!isNeedUpdate){
+            if(isShowTip){
+                ToastUtils.showShortToast(R.string.app_upgrade_latest);
+            }
             stopSelf();
             return;
         }
@@ -288,6 +296,12 @@ public class UpgradeService extends Service {
     public static void startUpdateService(){
         Context context = MyApplication.getInstance();
         Intent intent = new Intent();
+        intent.setClass(context, UpgradeService.class);
+        context.startService(intent);
+    }
+
+    public static void startUpdateService(Intent intent){
+        Context context = MyApplication.getInstance();
         intent.setClass(context, UpgradeService.class);
         context.startService(intent);
     }

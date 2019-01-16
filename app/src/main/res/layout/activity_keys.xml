@@ -80,9 +80,11 @@
     <Button
         android:id="@+id/btn_import_key"
         style="@style/style_big_white"
-        android:layout_width="@dimen/dimen_size_180"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="35dp"
+        android:layout_marginStart="@dimen/dimen_size_60"
+        android:layout_marginEnd="@dimen/dimen_size_60"
         android:layout_gravity="center"
         android:textAllCaps="false"
         android:text="@string/keys_import_key"

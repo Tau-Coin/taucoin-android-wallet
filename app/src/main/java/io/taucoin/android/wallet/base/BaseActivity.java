@@ -15,9 +15,11 @@
  */
 package io.taucoin.android.wallet.base;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -31,6 +33,8 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import org.greenrobot.eventbus.Subscribe;
 
 import io.taucoin.android.wallet.module.bean.MessageEvent;
+import io.taucoin.android.wallet.module.view.SplashActivity;
+import io.taucoin.android.wallet.util.ActivityUtil;
 import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.KeyboardUtils;
 import io.taucoin.android.wallet.util.ProgressManager;
@@ -51,6 +55,20 @@ public abstract class BaseActivity extends RxAppCompatActivity implements OnLoad
     @Subscribe
     public void onEvent(MessageEvent event){
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        ProgressManager.closeProgressDialog();
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        ActivityUtil.startActivity(intent, this, SplashActivity.class);
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override

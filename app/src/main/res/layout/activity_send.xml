@@ -50,6 +50,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="50dp"
         android:hint="@string/send_memo"
+        android:maxLength="25"
         android:textColorHint="@color/color_grey" />
 
     <RelativeLayout
@@ -78,7 +79,6 @@
 
         <ImageView
             android:id="@+id/iv_fee"
-            style="@style/style_normal_blue"
             android:layout_width="24dp"
             android:layout_height="28dp"
             android:paddingStart="2dp"
@@ -95,12 +95,14 @@
     <Button
         android:id="@+id/btn_send"
         style="@style/style_big_white"
-        android:layout_width="120dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
+        android:layout_marginStart="@dimen/dimen_size_60"
+        android:layout_marginEnd="@dimen/dimen_size_60"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/background_send_tau"
+        android:background="@drawable/yellow_rect_round_bg"
         android:text="@string/tx_send"
         android:textAllCaps="false" />
 

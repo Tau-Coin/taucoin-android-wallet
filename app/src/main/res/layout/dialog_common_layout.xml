@@ -33,6 +33,6 @@
         android:textAllCaps="false"
         android:maxLines="1"
         android:ellipsize="end"
-        android:background="@drawable/black_rect_round_bg" />
+        android:background="@drawable/black_light_rect_round_bg" />
 
 </LinearLayout>

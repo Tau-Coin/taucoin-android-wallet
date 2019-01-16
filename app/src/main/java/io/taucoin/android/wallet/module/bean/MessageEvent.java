@@ -8,6 +8,7 @@ public class MessageEvent{
         NICKNAME,
         AVATAR,
         TRANSACTION,
+        TRANSACTION_IMPORT,
         UPGRADE
     }
     private Object data;

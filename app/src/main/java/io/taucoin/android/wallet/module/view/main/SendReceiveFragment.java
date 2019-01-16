@@ -181,6 +181,9 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
             case TRANSACTION:
                 onRefresh(null);
                 break;
+            case TRANSACTION_IMPORT:
+                startRefresh();
+                break;
             default:
                 break;
         }

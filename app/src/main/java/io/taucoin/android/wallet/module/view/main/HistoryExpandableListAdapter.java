@@ -158,8 +158,8 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
 
         childViewHolder.tvMemo.setText(tx.getMemo());
         boolean isHaveMemo = StringUtil.isNotEmpty(tx.getMemo());
-        childViewHolder.tvMemo.setVisibility(!isHaveMemo ? View.GONE : View.VISIBLE);
-        childViewHolder.tvMemoTitle.setVisibility(!isHaveMemo ? View.GONE : View.VISIBLE);
+        childViewHolder.tvMemo.setVisibility(!isHaveMemo  || isReceiver? View.GONE : View.VISIBLE);
+        childViewHolder.tvMemoTitle.setVisibility(!isHaveMemo || isReceiver ? View.GONE : View.VISIBLE);
 
         childViewHolder.tvFailMsg.setText(tx.getMessage());
         boolean isHaveFailMsg = StringUtil.isSame(TransmitKey.TxResult.FAILED, tx.getResult()) && StringUtil.isNotEmpty(tx.getMessage());

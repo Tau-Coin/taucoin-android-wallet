@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/color_blue"
+            android:background="@color/color_yellow"
             android:text="@string/tx_send"
             android:textAllCaps="false" />
 
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/color_violet"
+            android:background="@color/color_tool_bar_child"
             android:text="@string/tx_receive"
             android:textAllCaps="false" />
 

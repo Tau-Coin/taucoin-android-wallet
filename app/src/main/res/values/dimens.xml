@@ -12,6 +12,7 @@
     <dimen name="dimen_size_34">34dip</dimen>
     <dimen name="dimen_size_40">40dip</dimen>
     <dimen name="dimen_size_50">50dip</dimen>
+    <dimen name="dimen_size_60">60dip</dimen>
 
     <dimen name="dimen_size_120">120dip</dimen>
     <dimen name="dimen_size_150">150dip</dimen>

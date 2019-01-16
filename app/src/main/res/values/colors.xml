@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/color_blue</color>
-    <color name="colorPrimaryDark">@color/color_blue</color>
-    <color name="colorAccent">@color/color_blue</color>
+    <color name="colorPrimary">@color/color_yellow</color>
+    <color name="colorPrimaryDark">@color/color_yellow</color>
+    <color name="colorAccent">@color/color_yellow</color>
     <color name="ic_launcher_background">#FFFFFF</color>
 
     <!-- New version color value  -->
     <color name="color_main_bg">#ffffff</color>
     <color name="color_main_line">#E0E0E0</color>
     <color name="color_transparent">#00000000</color>
-    <color name="color_tool_bar">#43455e</color>
+    <color name="color_tool_bar">#3f3f3f</color>
     <color name="color_tool_bar_child">#3f3f3f</color>
     <color name="color_select">#d0d3dc</color>
 
+    <color name="color_logo">#d06a00</color>
     <color name="color_yellow">#f19322</color>
     <color name="color_yellow_light">#FB9500</color>
     <color name="color_black">#000000</color>
@@ -24,7 +25,6 @@
     <color name="color_grey">#a9a9a9</color>
     <color name="color_grey_dark">#3a3a3a</color>
     <color name="color_grey_light">#808080</color>
-    <color name="color_violet">#7A00FF</color>
-    <color name="color_green">#18ac18</color>
+    <color name="color_grey_normal">#696969</color>
 
 </resources>
