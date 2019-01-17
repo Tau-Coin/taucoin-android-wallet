@@ -20,7 +20,6 @@ import io.taucoin.android.wallet.db.GreenDaoManager;
 import io.taucoin.android.wallet.db.greendao.TransactionHistoryDao;
 
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
-import io.taucoin.foundation.util.StringUtil;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
@@ -64,6 +63,7 @@ public class TransactionHistoryDaoUtils {
         return getTransactionHistoryDao().queryBuilder()
         .where(TransactionHistoryDao.Properties.Confirmations.lt(1),
                 TransactionHistoryDao.Properties.FromAddress.eq(formAddress),
+                TransactionHistoryDao.Properties.SentOrReceived.eq(TransmitKey.TxType.SEND),
                 qb.or(TransactionHistoryDao.Properties.Result.eq(TransmitKey.TxResult.CONFIRMING),
                     TransactionHistoryDao.Properties.Result.eq(TransmitKey.TxResult.SUCCESSFUL)))
         .list();
@@ -86,19 +86,11 @@ public class TransactionHistoryDaoUtils {
 
     public void saveAddOut(TransactionHistory tx) {
         QueryBuilder<TransactionHistory> db = getTransactionHistoryDao().queryBuilder();
-        if(StringUtil.isSame(tx.getFromAddress(), tx.getToAddress())){
-            db.where(TransactionHistoryDao.Properties.TxId.eq(tx.getTxId()),
-                TransactionHistoryDao.Properties.FromAddress.eq(tx.getFromAddress()),
-                TransactionHistoryDao.Properties.ToAddress.eq(tx.getToAddress()),
-                TransactionHistoryDao.Properties.SentOrReceived.eq(tx.getSentOrReceived())
-            );
-        }else{
-            // Avoid duplication of data and login on the same mobile phone
-            db.where(TransactionHistoryDao.Properties.TxId.eq(tx.getTxId()),
-                TransactionHistoryDao.Properties.FromAddress.eq(tx.getFromAddress()),
-                TransactionHistoryDao.Properties.ToAddress.eq(tx.getToAddress())
-            );
-        }
+        db.where(TransactionHistoryDao.Properties.TxId.eq(tx.getTxId()),
+            TransactionHistoryDao.Properties.FromAddress.eq(tx.getFromAddress()),
+            TransactionHistoryDao.Properties.ToAddress.eq(tx.getToAddress()),
+            TransactionHistoryDao.Properties.SentOrReceived.eq(tx.getSentOrReceived())
+        );
 
         List<TransactionHistory> list = db.list();
         if(list.size() > 0){
@@ -113,8 +105,10 @@ public class TransactionHistoryDaoUtils {
     public List<TransactionHistory> queryData(int pageNo, String time, String address) {
          QueryBuilder<TransactionHistory> db = getTransactionHistoryDao().queryBuilder();
          db.where(TransactionHistoryDao.Properties.Time.lt(time),
-                db.or(TransactionHistoryDao.Properties.FromAddress.eq(address),
-                    TransactionHistoryDao.Properties.ToAddress.eq(address))
+                db.or(db.and(TransactionHistoryDao.Properties.FromAddress.eq(address),
+                    TransactionHistoryDao.Properties.SentOrReceived.eq(TransmitKey.TxType.SEND)),
+                    db.and(TransactionHistoryDao.Properties.ToAddress.eq(address),
+                    TransactionHistoryDao.Properties.SentOrReceived.eq(TransmitKey.TxType.RECEIVE)))
                 )
             .orderDesc(TransactionHistoryDao.Properties.Time, TransactionHistoryDao.Properties.Blocktime)
             .offset((pageNo - 1) * TransmitKey.PAGE_SIZE).limit(TransmitKey.PAGE_SIZE);
@@ -133,24 +127,15 @@ public class TransactionHistoryDaoUtils {
         long time = 0L;
         QueryBuilder<TransactionHistory> db = getTransactionHistoryDao().queryBuilder();
         db.where(TransactionHistoryDao.Properties.Result.isNull(),
-                db.or(TransactionHistoryDao.Properties.FromAddress.eq(address),
-                TransactionHistoryDao.Properties.ToAddress.eq(address)))
+            db.or(db.and(TransactionHistoryDao.Properties.FromAddress.eq(address),
+                TransactionHistoryDao.Properties.SentOrReceived.eq(TransmitKey.TxType.SEND)),
+                db.and(TransactionHistoryDao.Properties.ToAddress.eq(address),
+                TransactionHistoryDao.Properties.SentOrReceived.eq(TransmitKey.TxType.RECEIVE)))
+        )
         .orderDesc(TransactionHistoryDao.Properties.Blocktime);
         List<TransactionHistory> list = db.list();
         if(list.size() > 0){
-            // Processing data under own private key
-            for (TransactionHistory bean : list) {
-                if(StringUtil.isSame(bean.getFromAddress(), address) &&
-                        StringUtil.isSame(bean.getSentOrReceived(), TransmitKey.TxType.SEND)){
-                    time = bean.getBlocktime();
-                    break;
-                }
-                if(StringUtil.isSame(bean.getToAddress(), address) &&
-                        StringUtil.isSame(bean.getSentOrReceived(), TransmitKey.TxType.RECEIVE)){
-                    time = bean.getBlocktime();
-                    break;
-                }
-            }
+            time = list.get(0).getBlocktime();
         }
         return String.valueOf(time);
     }

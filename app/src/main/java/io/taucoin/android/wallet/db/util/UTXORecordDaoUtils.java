@@ -68,7 +68,7 @@ public class UTXORecordDaoUtils {
     }
 
     /**
-     * query address data
+     * insert or Replace UTXO data
      */
     public void insertOrReplace(List<UTXORecord> list) {
         for (UTXORecord utxo : list) {
