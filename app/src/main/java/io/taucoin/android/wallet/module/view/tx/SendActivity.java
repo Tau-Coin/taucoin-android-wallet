@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.github.naturs.logger.Logger;
 import com.mofei.tau.R;
 
 import butterknife.OnTouch;
@@ -23,8 +22,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableObserver;
 import io.taucoin.android.wallet.base.BaseActivity;
 import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
@@ -35,7 +32,6 @@ import io.taucoin.android.wallet.util.KeyboardUtils;
 import io.taucoin.android.wallet.util.MoneyValueFilter;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.ToastUtils;
-import io.taucoin.android.wallet.widget.ActionSheetDialog;
 import io.taucoin.android.wallet.widget.CommonDialog;
 import io.taucoin.android.wallet.widget.EditInput;
 import io.taucoin.android.wallet.widget.SelectionEditText;
@@ -107,20 +103,7 @@ public class SendActivity extends BaseActivity implements ISendView {
 
     @OnClick({R.id.iv_fee})
     void onFeeSelectedClicked() {
-        KeyboardUtils.hideSoftInput(this);
-        new ActionSheetDialog(this)
-                .builder()
-                .setCancelable(true)
-                .setSelectValue(etFee.getText())
-                .setCanceledOnTouchOutside(true)
-                .setTitle(R.string.send_choose_fee_title, R.string.send_choose_fee_tips)
-                .addSheetItem(R.string.send_priority, R.string.send_priority_vice, R.string.send_priority_value,
-                        which -> etFee.setText(which.id))
-                .addSheetItem(R.string.send_normal, R.string.send_normal_vice, R.string.send_normal_value,
-                        which -> etFee.setText(which.id))
-                .setCancel(R.string.send_customize,
-                        which -> showSoftInput())
-                .show();
+        showSoftInput();
     }
 
     @OnTouch(R.id.et_fee)
@@ -192,28 +175,9 @@ public class SendActivity extends BaseActivity implements ISendView {
     }
 
     private void showSoftInput() {
-        // clear transaction fee
-        Observable.timer(220, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<Long>() {
-
-                    @Override
-                    public void onNext(Long aLong) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        etFee.setText(etFee.getText());
-                        resetViewFocus(etFee.getEditText());
-                        KeyboardUtils.showSoftInput(etFee.getEditText());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.e(e, "showSoftInput error");
-                    }
-                });
+        etFee.setText(etFee.getText());
+        resetViewFocus(etFee.getEditText());
+        KeyboardUtils.showSoftInput(etFee.getEditText());
     }
 
     @Override

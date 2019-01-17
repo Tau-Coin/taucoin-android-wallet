@@ -121,15 +121,11 @@ public class TransactionHistoryDaoUtils {
         return db.list();
     }
 
-    public void updateOldTxHistory(String address) {
-        QueryBuilder<TransactionHistory> db = getTransactionHistoryDao().queryBuilder();
-        db.where(db.or(TransactionHistoryDao.Properties.FromAddress.eq(""),
+    public void updateOldTxHistory() {
+        QueryBuilder<TransactionHistory> builder = getTransactionHistoryDao().queryBuilder();
+        builder.where(builder.or(TransactionHistoryDao.Properties.FromAddress.eq(""),
                 TransactionHistoryDao.Properties.FromAddress.isNull()));
-        List<TransactionHistory> list = db.list();
-        for (TransactionHistory tx : list) {
-            tx.setFromAddress(address);
-        }
-        getTransactionHistoryDao().updateInTx(list);
+        builder.buildDelete().executeDeleteWithoutDetachingEntities();
     }
 
     /** It's your latest time to accept your address here.*/
@@ -142,7 +138,19 @@ public class TransactionHistoryDaoUtils {
         .orderDesc(TransactionHistoryDao.Properties.Blocktime);
         List<TransactionHistory> list = db.list();
         if(list.size() > 0){
-            time = list.get(0).getBlocktime();
+            // Processing data under own private key
+            for (TransactionHistory bean : list) {
+                if(StringUtil.isSame(bean.getFromAddress(), address) &&
+                        StringUtil.isSame(bean.getSentOrReceived(), TransmitKey.TxType.SEND)){
+                    time = bean.getBlocktime();
+                    break;
+                }
+                if(StringUtil.isSame(bean.getToAddress(), address) &&
+                        StringUtil.isSame(bean.getSentOrReceived(), TransmitKey.TxType.RECEIVE)){
+                    time = bean.getBlocktime();
+                    break;
+                }
+            }
         }
         return String.valueOf(time);
     }

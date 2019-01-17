@@ -96,11 +96,7 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         groupViewHolder.viewLineTop.setVisibility(groupPosition != 0 ? View.INVISIBLE : View.VISIBLE);
         groupViewHolder.ivRight.setImageResource(isExpanded ? R.mipmap.icon_up : R.mipmap.icon_down);
 
-        boolean isReceiver = StringUtil.isNotSame(tx.getFromAddress(), address);
-        if(!isReceiver){
-            isReceiver = StringUtil.isSame(tx.getSentOrReceived(), TransmitKey.TxType.RECEIVE);
-        }
-
+        boolean isReceiver = isReceiver(tx);
         String amount = FmtMicrometer.fmtFormat(tx.getValue());
         amount = isReceiver ? "+" + amount : "-" + amount;
         groupViewHolder.tvAmount.setText(amount);
@@ -129,6 +125,15 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+    private boolean isReceiver(TransactionHistory tx) {
+        boolean isReceiver = StringUtil.isNotSame(tx.getFromAddress(), address);
+        // Only send to self handler
+        if(!isReceiver && StringUtil.isSame(tx.getFromAddress(), tx.getToAddress())){
+            isReceiver = StringUtil.isSame(tx.getSentOrReceived(), TransmitKey.TxType.RECEIVE);
+        }
+        return isReceiver;
+    }
+
     @Override
     public View getChildView(final int groupPosition, int childPosition, boolean isLastChild, View
             convertView, ViewGroup parent) {
@@ -146,10 +151,7 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         String fee = tx.getFee() + "TAU";
         childViewHolder.tvTxFee.setText(fee);
 
-        boolean isReceiver = StringUtil.isNotSame(tx.getFromAddress(), address);
-        if(!isReceiver){
-            isReceiver = StringUtil.isSame(tx.getSentOrReceived(), TransmitKey.TxType.RECEIVE);
-        }
+        boolean isReceiver = isReceiver(tx);
 
         childViewHolder.tvAddressTitle.setText(isReceiver ? R.string.tx_from_address : R.string.tx_to_address);
         childViewHolder.tvReceivedAddress.setText(isReceiver ? tx.getFromAddress() : tx.getToAddress());

@@ -102,9 +102,9 @@ public class UserModel implements IUserModel{
                 .subscribe(observer);
     }
     @Override
-    public void updateOldTxHistory(String address){
+    public void updateOldTxHistory(){
         Observable.create(emitter ->
-            TransactionHistoryDaoUtils.getInstance().updateOldTxHistory(address)
+            TransactionHistoryDaoUtils.getInstance().updateOldTxHistory()
         ).subscribeOn(Schedulers.io())
         .subscribe();
     }

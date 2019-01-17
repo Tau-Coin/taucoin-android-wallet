@@ -35,5 +35,5 @@ public interface IUserModel {
     void getKeyAndAddress(String publicKey, LogicObserver<KeyValue> observer);
 
     /** Update old version2.0 tx history data */
-    void updateOldTxHistory(String address);
+    void updateOldTxHistory();
 }

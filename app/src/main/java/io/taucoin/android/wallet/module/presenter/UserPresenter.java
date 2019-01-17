@@ -142,7 +142,7 @@ public class UserPresenter {
                     SharedPreferencesHelper.getInstance().clear();
                     SharedPreferencesHelper.getInstance().putString(TransmitKey.PUBLIC_KEY, keyValue.getPubkey());
                     SharedPreferencesHelper.getInstance().putString(TransmitKey.ADDRESS, keyValue.getAddress());
-                    mUserModel.updateOldTxHistory(keyValue.getAddress());
+                    mUserModel.updateOldTxHistory();
                 }
             });
         }else{
