@@ -23,6 +23,14 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup, android:supportsRtl">
+
+        <!-- hua wei -->
+        <meta-data android:name="android.notch_support" android:value="true"/>
+        <!-- xiao mi -->
+        <meta-data android:name="notch.config" android:value="portrait|landscape"/>
+        <!-- google oppo vivo   Configuration supports maximum aspect ratio -->
+        <meta-data android:name="android.max_aspect"  android:value="ratio_float" />
+
         <activity
             android:name="io.taucoin.android.wallet.module.view.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -88,34 +96,6 @@
         <activity android:name="io.taucoin.android.wallet.module.view.manage.WebViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
-
-        <!--&lt;!&ndash;leakcanary start &ndash;&gt;-->
-        <!--<service android:name="com.squareup.leakcanary.internal.HeapAnalyzerService"-->
-            <!--android:enabled="false"-->
-            <!--android:process=":leakcanary" />-->
-
-        <!--<service-->
-            <!--android:name="com.squareup.leakcanary.DisplayLeakService"-->
-            <!--android:enabled="false" />-->
-        <!--&lt;!&ndash;<activity&ndash;&gt;-->
-            <!--&lt;!&ndash;android:name="com.squareup.leakcanary.internal.DisplayLeakActivity"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:enabled="false"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:icon="@drawable/__leak_canary_icon"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:label="@string/__leak_canary_display_activity_label"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:taskAffinity="com.squareup.leakcanary"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:theme="@style/__LeakCanary.Base" >&ndash;&gt;-->
-
-        <!--<activity-->
-            <!--android:name="com.squareup.leakcanary.internal.DisplayLeakActivity"-->
-            <!--android:enabled="false"-->
-            <!--tools:replace="android:taskAffinity"-->
-            <!--android:taskAffinity="com.squareup.leakcanary" >-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
-        <!--&lt;!&ndash;leakcanary end &ndash;&gt;-->
     </application>
 
 </manifest>

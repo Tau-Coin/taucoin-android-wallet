@@ -22,6 +22,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ import com.mofei.tau.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.taucoin.android.wallet.util.NotchUtil;
 import io.taucoin.android.wallet.util.KeyboardUtils;
 import io.taucoin.foundation.util.StringUtil;
 
@@ -38,6 +40,7 @@ public class ToolbarView extends RelativeLayout {
     private int titleBackground;
     private int leftImage;
     private ViewHolder viewHolder;
+    private int statusBarHeight;
 
     public ToolbarView(Context context) {
         this(context, null);
@@ -49,8 +52,9 @@ public class ToolbarView extends RelativeLayout {
 
     public ToolbarView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initData(attrs);
 
+        statusBarHeight = NotchUtil.getStatusBarOrNotchHeight(context);
+        initData(attrs);
     }
 
     private void initData(AttributeSet attrs) {
@@ -65,6 +69,12 @@ public class ToolbarView extends RelativeLayout {
     private void loadView() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_toolbar, this, true);
         viewHolder = new ViewHolder(view);
+        if(statusBarHeight > 0){
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewHolder.rlToolBar.getLayoutParams();
+            layoutParams.topMargin = statusBarHeight;
+            viewHolder.rlToolBar.setLayoutParams(layoutParams);
+        }
+
         if (leftImage != -1) {
             viewHolder.ivLeftBack.setImageResource(leftImage);
         } else {
@@ -76,6 +86,7 @@ public class ToolbarView extends RelativeLayout {
         if (titleBackground != -1) {
             view.setBackgroundColor(titleBackground);
         }
+        requestLayout();
     }
 
     public void setTitle(String title) {
@@ -88,6 +99,8 @@ public class ToolbarView extends RelativeLayout {
         ImageButton ivLeftBack;
         @BindView(R.id.tv_title)
         TextView tvTitle;
+        @BindView(R.id.rl_tool_bar)
+        RelativeLayout rlToolBar;
 
         @OnClick(R.id.iv_left_back)
         void leftBack() {
