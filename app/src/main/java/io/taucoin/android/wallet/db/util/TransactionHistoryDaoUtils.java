@@ -20,6 +20,7 @@ import io.taucoin.android.wallet.db.GreenDaoManager;
 import io.taucoin.android.wallet.db.greendao.TransactionHistoryDao;
 
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
+import io.taucoin.foundation.util.StringUtil;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
@@ -95,8 +96,10 @@ public class TransactionHistoryDaoUtils {
         List<TransactionHistory> list = db.list();
         if(list.size() > 0){
             TransactionHistory bean = list.get(0);
-            bean.setResult(tx.getResult());
-            insertOrReplace(bean);
+            if(StringUtil.isNotSame(bean.getResult(), tx.getResult())){
+                bean.setResult(tx.getResult());
+                insertOrReplace(bean);
+            }
         }else{
             insertOrReplace(tx);
         }

@@ -19,7 +19,7 @@ public class EditInput extends LinearLayout {
 
     private static final float PADDING_DEFAULT = 0;
     private static final float PADDING_DEFAULT_LEFT = 0;
-    private static final float ANDROID_SDK_NUM = 24;
+    private static final float ANDROID_SDK_NUM = 19;
     @BindView(R.id.et_input)
     SelectionEditText mEtInput;
     @BindView(R.id.tv_et_hint)
