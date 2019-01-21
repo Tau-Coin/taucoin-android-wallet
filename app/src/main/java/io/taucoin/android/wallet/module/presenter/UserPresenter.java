@@ -15,8 +15,6 @@
  */
 package io.taucoin.android.wallet.module.presenter;
 
-import android.graphics.Bitmap;
-
 import java.util.Map;
 import java.util.Set;
 
@@ -97,15 +95,6 @@ public class UserPresenter {
             @Override
             public void handleData(KeyValue keyValue) {
                 EventBusUtil.post(MessageEvent.EventCode.NICKNAME);
-            }
-        });
-    }
-
-    public void saveAvatar(String avatar, Bitmap bitmap) {
-        mUserModel.saveAvatar(avatar, bitmap, new LogicObserver<KeyValue>() {
-            @Override
-            public void handleData(KeyValue keyValue) {
-                EventBusUtil.post(MessageEvent.EventCode.AVATAR);
             }
         });
     }

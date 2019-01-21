@@ -15,7 +15,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.taucoin.android.wallet.base.BaseFragment;
 import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.module.bean.MessageEvent;
@@ -35,8 +34,6 @@ import io.taucoin.foundation.util.AppUtil;
 
 public class ManageFragment extends BaseFragment implements IManageView {
 
-    @BindView(R.id.iv_header_pic)
-    CircleImageView ivHeaderPic;
     @BindView(R.id.tv_nick)
     TextView tvNick;
     @BindView(R.id.tv_version)
@@ -60,10 +57,9 @@ public class ManageFragment extends BaseFragment implements IManageView {
         onEvent(EventBusUtil.getMessageEvent(MessageEvent.EventCode.ALL));
     }
 
-    @OnClick({R.id.iv_header_pic, R.id.tv_nick, R.id.item_keys, R.id.item_address_note, R.id.item_help, R.id.tv_version})
+    @OnClick({R.id.tv_nick, R.id.item_keys, R.id.item_address_note, R.id.item_help, R.id.tv_version})
     public void onClick(View view) {
        switch (view.getId()){
-           case R.id.iv_header_pic:
            case R.id.tv_nick:
                if(UserUtil.isImportKey()){
                    ActivityUtil.startActivity(getActivity(), ProfileActivity.class);
@@ -117,13 +113,9 @@ public class ManageFragment extends BaseFragment implements IManageView {
         switch (object.getCode()){
             case ALL:
                 UserUtil.setNickName(tvNick);
-                UserUtil.setAvatar(ivHeaderPic);
                 break;
             case NICKNAME:
                 UserUtil.setNickName(tvNick);
-                break;
-            case AVATAR:
-                UserUtil.setAvatar(ivHeaderPic);
                 break;
             case UPGRADE:
                 showUpgradeView();

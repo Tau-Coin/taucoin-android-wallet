@@ -2,7 +2,6 @@ package io.taucoin.android.wallet.module.view.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,8 +48,6 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
 
     @BindView(R.id.balance_text)
     TextView balanceText;
-    @BindView(R.id.btn_receive)
-    Button btnReceive;
     @BindView(R.id.btn_send)
     Button btnSend;
     @BindView(R.id.iv_tx_log_tips)
@@ -98,7 +95,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
         refreshLayout.setEnableLoadmoreWhenContentNotFull(true);
     }
 
-    @OnClick({R.id.btn_receive, R.id.btn_send, R.id.iv_tx_log_tips})
+    @OnClick({R.id.btn_send, R.id.iv_tx_log_tips})
     void onClick(View view) {
         KeyValue keyValue = MyApplication.getKeyValue();
         if (keyValue == null && view.getId() != R.id.iv_tx_log_tips) {
@@ -107,12 +104,6 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
             return;
         }
         switch (view.getId()) {
-            case R.id.btn_receive:
-                if (keyValue != null){
-                    CopyManager.copyText(keyValue.getAddress());
-                    ToastUtils.showLongToast(R.string.keys_address_copy, Gravity.CENTER, Gravity.CENTER);
-                }
-                break;
             case R.id.btn_send:
                 Intent intent = new Intent(getActivity(), SendActivity.class);
                 startActivity(intent);

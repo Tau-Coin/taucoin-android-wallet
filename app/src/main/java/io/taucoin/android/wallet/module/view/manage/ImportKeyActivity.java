@@ -13,7 +13,6 @@ import com.mofei.tau.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.base.BaseActivity;
 import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.db.entity.KeyValue;
@@ -80,18 +79,14 @@ public class ImportKeyActivity extends BaseActivity implements IImportKeyView {
     }
 
     private void showSureDialog(KeyValue keyValue) {
-        KeyValue currKeyValue = MyApplication.getKeyValue();
         View view = LinearLayout.inflate(this, R.layout.view_dialog_keys, null);
         new CommonDialog.Builder(this)
                 .setContentView(view)
                 .setButtonWidth(240)
-                .setPositiveButton(R.string.keys_dialog_yes, (dialog, which) -> {
+                .setPositiveButton(R.string.send_dialog_yes, (dialog, which) -> {
                     dialog.cancel();
                     saveKeyAndAddress(keyValue);
-                }).setNegativeButton(R.string.keys_dialog_no, (dialog, which) -> {
-                    dialog.cancel();
-                    gotoKeysActivity();
-                }).isEnabledNegative(null != currKeyValue)
+                }).setNegativeButton(R.string.send_dialog_no, (dialog, which) -> dialog.cancel())
                 .create().show();
     }
 

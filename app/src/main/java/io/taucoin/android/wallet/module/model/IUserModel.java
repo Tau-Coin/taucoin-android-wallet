@@ -15,8 +15,6 @@
  */
 package io.taucoin.android.wallet.module.model;
 
-import android.graphics.Bitmap;
-
 import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.foundation.net.callback.LogicObserver;
 
@@ -27,9 +25,6 @@ public interface IUserModel {
 
     /** Save user nickname */
     void saveName(String name, LogicObserver<KeyValue> observer);
-
-    /** Save  user avatar */
-    void saveAvatar(String avatar, Bitmap bitmap, LogicObserver<KeyValue> observer);
 
     /** Get user key and address */
     void getKeyAndAddress(String publicKey, LogicObserver<KeyValue> observer);

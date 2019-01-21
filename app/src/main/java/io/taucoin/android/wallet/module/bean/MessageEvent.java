@@ -6,7 +6,6 @@ public class MessageEvent{
         ALL,
         BALANCE,
         NICKNAME,
-        AVATAR,
         TRANSACTION,
         TRANSACTION_IMPORT,
         UPGRADE

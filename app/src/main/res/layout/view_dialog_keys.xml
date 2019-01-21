@@ -16,15 +16,4 @@
         android:lineSpacingExtra="10dp"
         android:text="@string/keys_dialog_title" />
 
-    <TextView
-        style="@style/style_middle_grey"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:minLines="2"
-        android:gravity="center_horizontal"
-        android:lineSpacingExtra="5dp"
-        android:textColor="@color/color_tool_bar_child"
-        android:text="@string/keys_dialog_tips" />
-
 </LinearLayout>

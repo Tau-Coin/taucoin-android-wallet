@@ -16,7 +16,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.taucoin.android.wallet.base.BaseFragment;
 import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.module.bean.MessageEvent;
@@ -30,8 +29,6 @@ import io.taucoin.android.wallet.util.UserUtil;
 
 public class HomeFragment extends BaseFragment implements IHomeView {
 
-    @BindView(R.id.iv_header_pic)
-    CircleImageView ivHeaderPic;
     @BindView(R.id.tv_nick)
     TextView tvNick;
     @BindView(R.id.tv_balance)
@@ -50,10 +47,9 @@ public class HomeFragment extends BaseFragment implements IHomeView {
         return view;
     }
 
-    @OnClick({R.id.iv_header_pic, R.id.tv_nick})
+    @OnClick({R.id.tv_nick})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_header_pic:
             case R.id.tv_nick:
                 if (!UserUtil.isImportKey()) {
                     ActivityUtil.startActivity(getActivity(), ImportKeyActivity.class);
@@ -74,7 +70,6 @@ public class HomeFragment extends BaseFragment implements IHomeView {
             case ALL:
                 UserUtil.setBalance(tvBalance);
                 UserUtil.setNickName(tvNick);
-                UserUtil.setAvatar(ivHeaderPic);
                 break;
             case BALANCE:
                 if(refreshLayout != null && refreshLayout.isRefreshing()){
@@ -84,9 +79,6 @@ public class HomeFragment extends BaseFragment implements IHomeView {
                 break;
             case NICKNAME:
                 UserUtil.setNickName(tvNick);
-                break;
-            case AVATAR:
-                UserUtil.setAvatar(ivHeaderPic);
                 break;
             default:
                 break;

@@ -71,9 +71,6 @@
     <string name="send_tx_invalid_error">Send failed, please try again later</string>
 
     <string name="keys_dialog_title">Please make sure your\nprivate key has been saved</string>
-    <string name="keys_dialog_tips">Ignore this message for the first generate or import</string>
-    <string name="keys_dialog_yes">Yes.Go on Import/Generate</string>
-    <string name="keys_dialog_no">No.Go to save key</string>
     <string name="keys_address">Address</string>
     <string name="keys_public_key">Public Key</string>
     <string name="keys_private_key">Private Key</string>

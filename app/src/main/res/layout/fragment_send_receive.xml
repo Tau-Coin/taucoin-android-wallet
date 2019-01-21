@@ -23,39 +23,21 @@
         android:layout_gravity="center|center_vertical"
         android:gravity="center_vertical|center" />
 
-    <LinearLayout
-        android:id="@+id/ll_send_receive"
+
+    <Button
         android:layout_below="@+id/balance_text"
+        android:id="@+id/btn_send"
+        style="@style/style_big_white"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_send"
-            style="@style/style_big_white"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/color_yellow"
-            android:text="@string/tx_send"
-            android:textAllCaps="false" />
-
-        <Button
-            android:id="@+id/btn_receive"
-            style="@style/style_big_white"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/color_tool_bar_child"
-            android:text="@string/tx_receive"
-            android:textAllCaps="false" />
-
-    </LinearLayout>
+        android:background="@color/color_yellow"
+        android:text="@string/tx_send"
+        android:textAllCaps="false" />
 
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/ll_tip"
-        android:layout_below="@+id/ll_send_receive"
+        android:layout_below="@+id/btn_send"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/color_white"
