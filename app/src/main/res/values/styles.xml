@@ -82,6 +82,13 @@
         <item name="android:textColor">@color/color_white</item>
     </style>
 
+    <style name="style_big_white_button">
+        <item name="android:textSize">@dimen/dimen_size_18</item>
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:layout_marginStart">@dimen/dimen_size_40</item>
+        <item name="android:layout_marginEnd">@dimen/dimen_size_40</item>
+    </style>
+
     <style name="style_middle_black">
         <item name="android:textSize">@dimen/dimen_size_14</item>
         <item name="android:textColor">@color/color_black</item>

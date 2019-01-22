@@ -15,6 +15,12 @@
  */
 package io.taucoin.android.wallet.module.presenter;
 
+import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.widget.LinearLayout;
+
+import com.mofei.tau.R;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -29,6 +35,7 @@ import io.taucoin.android.wallet.module.view.manage.iview.IImportKeyView;
 import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
+import io.taucoin.android.wallet.widget.CommonDialog;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.util.StringUtil;
 
@@ -40,7 +47,6 @@ public class UserPresenter {
 
     public UserPresenter() {
         mUserModel = new UserModel();
-        mUserModel = new UserModel();
     }
     public UserPresenter(IImportKeyView view) {
         mUserModel = new UserModel();
@@ -48,8 +54,28 @@ public class UserPresenter {
         mTxPresenter = new TxPresenter();
     }
 
+    public void showSureDialog(FragmentActivity context) {
+        showSureDialog(context, null);
+    }
 
-    public void saveKeyAndAddress(KeyValue keyValue) {
+    public void showSureDialog(FragmentActivity context, KeyValue keyValue) {
+        View view = LinearLayout.inflate(context, R.layout.view_dialog_keys, null);
+        new CommonDialog.Builder(context)
+            .setContentView(view)
+            .setButtonWidth(240)
+            .setPositiveButton(R.string.send_dialog_yes, (dialog, which) -> {
+                dialog.cancel();
+                saveKeyAndAddress(context, keyValue);
+            }).setNegativeButton(R.string.send_dialog_no, (dialog, which) -> dialog.cancel())
+            .create().show();
+    }
+
+    private void saveKeyAndAddress(FragmentActivity context, KeyValue keyValue) {
+        ProgressManager.showProgressDialog(context, false);
+        saveKeyAndAddress(keyValue);
+    }
+
+    private void saveKeyAndAddress(KeyValue keyValue) {
         boolean isGenerateKey = keyValue == null;
         mUserModel.saveKeyAndAddress(keyValue, new LogicObserver<KeyValue>() {
             @Override

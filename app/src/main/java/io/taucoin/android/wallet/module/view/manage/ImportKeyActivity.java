@@ -62,7 +62,7 @@ public class ImportKeyActivity extends BaseActivity implements IImportKeyView {
             keyValue.setPrivkey(privateKey);
             keyValue.setPubkey(key.getPubkey());
             keyValue.setAddress(key.getAddress());
-            showSureDialog(keyValue);
+            mUserPresenter.showSureDialog(this, keyValue);
         }
     }
     @OnClick(R.id.tv_how_import)
@@ -75,19 +75,7 @@ public class ImportKeyActivity extends BaseActivity implements IImportKeyView {
 
     @OnClick(R.id.btn_generate)
     public void onBtnGenerateClicked() {
-        showSureDialog(null);
-    }
-
-    private void showSureDialog(KeyValue keyValue) {
-        View view = LinearLayout.inflate(this, R.layout.view_dialog_keys, null);
-        new CommonDialog.Builder(this)
-                .setContentView(view)
-                .setButtonWidth(240)
-                .setPositiveButton(R.string.send_dialog_yes, (dialog, which) -> {
-                    dialog.cancel();
-                    saveKeyAndAddress(keyValue);
-                }).setNegativeButton(R.string.send_dialog_no, (dialog, which) -> dialog.cancel())
-                .create().show();
+        mUserPresenter.showSureDialog(this);
     }
 
     @Override
@@ -95,10 +83,5 @@ public class ImportKeyActivity extends BaseActivity implements IImportKeyView {
         Intent intent = new Intent(this, KeysActivity.class);
         startActivity(intent);
         this.finish();
-    }
-
-    private void saveKeyAndAddress(KeyValue keyValue) {
-        ProgressManager.showProgressDialog(this, false);
-        mUserPresenter.saveKeyAndAddress(keyValue);
     }
 }

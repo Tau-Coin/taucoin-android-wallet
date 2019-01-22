@@ -29,12 +29,10 @@
 
     <Button
         android:id="@+id/btn_import"
-        style="@style/style_big_white"
+        style="@style/style_big_white_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="35dp"
-        android:layout_marginStart="@dimen/dimen_size_60"
-        android:layout_marginEnd="@dimen/dimen_size_60"
         android:layout_gravity="center"
         android:textAllCaps="false"
         android:text="@string/keys_import"
@@ -55,12 +53,10 @@
 
     <Button
         android:id="@+id/btn_generate"
-        style="@style/style_big_white"
+        style="@style/style_big_white_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="40dp"
-        android:layout_marginStart="@dimen/dimen_size_60"
-        android:layout_marginEnd="@dimen/dimen_size_60"
         android:layout_gravity="center"
         android:textAllCaps="false"
         android:text="@string/keys_generate"

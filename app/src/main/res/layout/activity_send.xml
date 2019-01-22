@@ -94,13 +94,11 @@
 
     <Button
         android:id="@+id/btn_send"
-        style="@style/style_big_white"
+        style="@style/style_big_white_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
-        android:layout_marginStart="@dimen/dimen_size_60"
-        android:layout_marginEnd="@dimen/dimen_size_60"
         android:layout_marginBottom="10dp"
         android:background="@drawable/yellow_rect_round_bg"
         android:text="@string/tx_send"

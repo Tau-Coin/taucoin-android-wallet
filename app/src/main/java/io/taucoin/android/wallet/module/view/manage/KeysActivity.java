@@ -14,11 +14,13 @@ import butterknife.OnLongClick;
 import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.base.BaseActivity;
 import io.taucoin.android.wallet.db.entity.KeyValue;
+import io.taucoin.android.wallet.module.presenter.UserPresenter;
+import io.taucoin.android.wallet.module.view.manage.iview.IImportKeyView;
 import io.taucoin.android.wallet.util.CopyManager;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.util.StringUtil;
 
-public class KeysActivity extends BaseActivity {
+public class KeysActivity extends BaseActivity implements IImportKeyView {
 
     @BindView(R.id.tv_address)
     TextView tvAddress;
@@ -27,12 +29,14 @@ public class KeysActivity extends BaseActivity {
     @BindView(R.id.tv_private_key)
     TextView tvPrivateKey;
 
+    private UserPresenter mUserPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_keys);
         ButterKnife.bind(this);
         initView();
+        mUserPresenter = new UserPresenter(this);
     }
 
     private void initView() {
@@ -49,6 +53,16 @@ public class KeysActivity extends BaseActivity {
         Intent intent = new Intent(this, ImportKeyActivity.class);
         startActivity(intent);
         this.finish();
+    }
+
+    @OnClick(R.id.btn_generate_key)
+    public void onBtnGenerateClicked() {
+        mUserPresenter.showSureDialog(this);
+    }
+
+    @Override
+    public void gotoKeysActivity() {
+        initView();
     }
 
     @OnLongClick({R.id.tv_address, R.id.tv_public_key, R.id.tv_private_key})

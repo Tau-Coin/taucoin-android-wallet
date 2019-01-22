@@ -22,6 +22,7 @@ import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.service.TxService;
 import io.taucoin.android.wallet.module.view.main.iview.IHomeView;
 import io.taucoin.android.wallet.module.view.manage.ImportKeyActivity;
+import io.taucoin.android.wallet.module.view.manage.ProfileActivity;
 import io.taucoin.android.wallet.util.ActivityUtil;
 import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.ProgressManager;
@@ -53,6 +54,8 @@ public class HomeFragment extends BaseFragment implements IHomeView {
             case R.id.tv_nick:
                 if (!UserUtil.isImportKey()) {
                     ActivityUtil.startActivity(getActivity(), ImportKeyActivity.class);
+                }else{
+                    ActivityUtil.startActivity(getActivity(), ProfileActivity.class);
                 }
                 break;
             default:
