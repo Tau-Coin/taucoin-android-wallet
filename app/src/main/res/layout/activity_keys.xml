@@ -13,14 +13,33 @@
         app:titleBackground="@color/color_tool_bar_child"
         app:titleText="@string/manager_keys" />
 
-    <TextView
-        style="@style/style_normal_grey"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_marginTop="35dp"
         android:layout_marginStart="@dimen/dimen_size_30"
         android:layout_marginEnd="@dimen/dimen_size_30"
-        android:text="@string/keys_address" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:visibility="visible"
+            style="@style/style_normal_grey"
+            android:id="@+id/tv_address_title"
+            android:layout_width="wrap_content"
+            android:text="@string/keys_address"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_toEndOf="@+id/tv_address_title"
+            android:id="@+id/iv_address_copy"
+            android:layout_width="@dimen/dimen_size_16"
+            android:src="@mipmap/icon_copy"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@null"
+            android:layout_height="@dimen/dimen_size_16" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_address"
@@ -34,14 +53,33 @@
         android:paddingBottom="5dp"
         android:tag="@string/keys_address" />
 
-    <TextView
-        style="@style/style_normal_grey"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:layout_marginStart="@dimen/dimen_size_30"
         android:layout_marginEnd="@dimen/dimen_size_30"
-        android:text="@string/keys_public_key" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:visibility="visible"
+            style="@style/style_normal_grey"
+            android:id="@+id/tv_public_keys_title"
+            android:layout_width="wrap_content"
+            android:text="@string/keys_public_key"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_toEndOf="@+id/tv_public_keys_title"
+            android:id="@+id/iv_public_keys_copy"
+            android:layout_width="@dimen/dimen_size_16"
+            android:src="@mipmap/icon_copy"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@null"
+            android:layout_height="@dimen/dimen_size_16" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_public_key"
@@ -56,14 +94,33 @@
         android:paddingBottom="5dp"
         android:tag="@string/keys_public_key"/>
 
-    <TextView
-        style="@style/style_normal_light_grey"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="@dimen/dimen_size_30"
         android:layout_marginEnd="@dimen/dimen_size_30"
-        android:layout_marginTop="10dp"
-        android:text="@string/keys_private_key" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:visibility="visible"
+            style="@style/style_normal_grey"
+            android:id="@+id/tv_private_key_title"
+            android:layout_width="wrap_content"
+            android:text="@string/keys_private_key"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_toEndOf="@+id/tv_private_key_title"
+            android:id="@+id/iv_private_key_copy"
+            android:layout_width="@dimen/dimen_size_16"
+            android:src="@mipmap/icon_copy"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@null"
+            android:layout_height="@dimen/dimen_size_16" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_private_key"

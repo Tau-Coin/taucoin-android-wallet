@@ -16,6 +16,7 @@
 package io.taucoin.android.wallet.util;
 
 import android.text.Html;
+import android.view.View;
 import android.widget.TextView;
 
 import com.github.naturs.logger.Logger;
@@ -77,5 +78,19 @@ public class UserUtil {
     public static boolean isImportKey() {
         KeyValue keyValue = MyApplication.getKeyValue();
         return  keyValue != null;
+    }
+
+    public static void setAddress(TextView tvAddress) {
+        KeyValue keyValue = MyApplication.getKeyValue();
+        String newAddress = "";
+        if(keyValue != null){
+            newAddress = keyValue.getAddress();
+        }
+        String oldAddress = StringUtil.getText(tvAddress);
+        if(StringUtil.isNotSame(newAddress, oldAddress)){
+            tvAddress.setText(newAddress);
+        }
+        int visibility = StringUtil.isEmpty(newAddress) ? View.GONE : View.VISIBLE;
+        tvAddress.setVisibility(visibility);
     }
 }

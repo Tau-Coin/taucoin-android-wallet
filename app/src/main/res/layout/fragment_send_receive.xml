@@ -23,9 +23,21 @@
         android:layout_gravity="center|center_vertical"
         android:gravity="center_vertical|center" />
 
+    <TextView
+        android:layout_below="@+id/balance_text"
+        style="@style/style_normal_yellow"
+        android:id="@+id/tv_address"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:drawablePadding="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/color_tool_bar"
+        android:layout_height="wrap_content" />
 
     <Button
-        android:layout_below="@+id/balance_text"
+        android:layout_below="@+id/tv_address"
         android:id="@+id/btn_send"
         style="@style/style_big_white"
         android:layout_width="match_parent"

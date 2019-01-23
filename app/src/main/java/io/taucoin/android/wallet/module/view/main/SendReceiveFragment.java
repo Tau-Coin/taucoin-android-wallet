@@ -43,6 +43,8 @@ import io.taucoin.android.wallet.util.UserUtil;
 import io.taucoin.android.wallet.widget.CommonDialog;
 import io.taucoin.android.wallet.widget.EmptyLayout;
 import io.taucoin.foundation.net.callback.LogicObserver;
+import io.taucoin.foundation.util.DrawablesUtil;
+import io.taucoin.foundation.util.StringUtil;
 
 public class SendReceiveFragment extends BaseFragment implements ISendReceiveView {
 
@@ -60,6 +62,8 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.ll_tip)
     LinearLayout llTip;
+    @BindView(R.id.tv_address)
+    TextView tvAddress;
 
     private TxPresenter mTxPresenter;
     private HistoryExpandableListAdapter mAdapter;
@@ -78,6 +82,12 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        UserUtil.setAddress(tvAddress);
+    }
+
+    @Override
     public void initData() {
         if(UserUtil.isImportKey()){
             ProgressManager.showProgressDialog(getActivity());
@@ -93,9 +103,10 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
         refreshLayout.setEnableLoadmore(false);
         refreshLayout.setEnableAutoLoadmore(false);
         refreshLayout.setEnableLoadmoreWhenContentNotFull(true);
+        DrawablesUtil.setEndDrawable(tvAddress, R.mipmap.icon_copy, 16);
     }
 
-    @OnClick({R.id.btn_send, R.id.iv_tx_log_tips})
+    @OnClick({R.id.btn_send, R.id.iv_tx_log_tips, R.id.tv_address})
     void onClick(View view) {
         KeyValue keyValue = MyApplication.getKeyValue();
         if (keyValue == null && view.getId() != R.id.iv_tx_log_tips) {
@@ -111,10 +122,18 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
             case R.id.iv_tx_log_tips:
                 showTxLogTipDialog();
                 break;
+            case R.id.tv_address:
+                copyData(view);
+                break;
             default:
                 break;
         }
 
+    }
+
+    private void  copyData(View view) {
+        CopyManager.copyText( StringUtil.getText((TextView) view));
+        ToastUtils.showShortToast(R.string.keys_address_copy);
     }
 
     private void showTxLogTipDialog() {

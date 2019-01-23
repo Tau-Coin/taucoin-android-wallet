@@ -19,7 +19,7 @@
     <string name="main_manage">Manage</string>
     <string name="main_home_title">TAUcoin.io</string>
     <string name="main_exit">Click again to exit the application!</string>
-    <string name="main_mining_tips">Mobile mining function\nis in development</string>
+    <string name="main_mining_tips">Mobile mining function\nis in development.</string>
 
 
     <string name="tx_send">Send</string>

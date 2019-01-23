@@ -83,4 +83,20 @@ public class KeysActivity extends BaseActivity implements IImportKeyView {
         }
         return false;
     }
+    @OnClick({R.id.iv_address_copy, R.id.iv_public_keys_copy, R.id.iv_private_key_copy})
+    void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_address_copy:
+                copyData(tvAddress);
+                break;
+            case R.id.iv_public_keys_copy:
+                copyData(tvPublicKey);
+                break;
+            case R.id.iv_private_key_copy:
+                copyData(tvPrivateKey);
+                break;
+            default:
+                break;
+        }
+    }
 }
