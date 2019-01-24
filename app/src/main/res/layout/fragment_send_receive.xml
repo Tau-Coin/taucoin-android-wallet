@@ -31,6 +31,7 @@
         android:layout_marginBottom="20dp"
         android:drawablePadding="10dp"
         android:layout_marginStart="15dp"
+        android:text=""
         android:layout_marginEnd="15dp"
         android:layout_centerHorizontal="true"
         android:textColor="@color/color_tool_bar"
@@ -71,7 +72,7 @@
             android:layout_marginStart="5dp"
             android:layout_gravity="center_vertical"
             android:contentDescription="@null"
-            android:src="@mipmap/icon_tip" />
+            android:src="@mipmap/icon_log_help" />
 
     </LinearLayout>
 

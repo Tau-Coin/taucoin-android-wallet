@@ -103,7 +103,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
         refreshLayout.setEnableLoadmore(false);
         refreshLayout.setEnableAutoLoadmore(false);
         refreshLayout.setEnableLoadmoreWhenContentNotFull(true);
-        DrawablesUtil.setEndDrawable(tvAddress, R.mipmap.icon_copy, 16);
+        DrawablesUtil.setEndDrawable(tvAddress, R.mipmap.icon_copy, 22);
     }
 
     @OnClick({R.id.btn_send, R.id.iv_tx_log_tips, R.id.tv_address})
@@ -123,7 +123,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
                 showTxLogTipDialog();
                 break;
             case R.id.tv_address:
-                copyData(view);
+                copyData();
                 break;
             default:
                 break;
@@ -131,9 +131,12 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
 
     }
 
-    private void  copyData(View view) {
-        CopyManager.copyText( StringUtil.getText((TextView) view));
-        ToastUtils.showShortToast(R.string.keys_address_copy);
+    private void copyData() {
+        KeyValue keyValue = MyApplication.getKeyValue();
+        if(keyValue != null){
+            CopyManager.copyText(keyValue.getAddress());
+            ToastUtils.showShortToast(R.string.keys_address_copy);
+        }
     }
 
     private void showTxLogTipDialog() {

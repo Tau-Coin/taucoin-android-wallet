@@ -32,12 +32,12 @@
         <ImageView
             android:layout_toEndOf="@+id/tv_address_title"
             android:id="@+id/iv_address_copy"
-            android:layout_width="@dimen/dimen_size_16"
+            android:layout_width="@dimen/dimen_size_20"
             android:src="@mipmap/icon_copy"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:contentDescription="@null"
-            android:layout_height="@dimen/dimen_size_16" />
+            android:layout_height="@dimen/dimen_size_20" />
 
     </RelativeLayout>
 
@@ -72,12 +72,12 @@
         <ImageView
             android:layout_toEndOf="@+id/tv_public_keys_title"
             android:id="@+id/iv_public_keys_copy"
-            android:layout_width="@dimen/dimen_size_16"
+            android:layout_width="@dimen/dimen_size_20"
             android:src="@mipmap/icon_copy"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:contentDescription="@null"
-            android:layout_height="@dimen/dimen_size_16" />
+            android:layout_height="@dimen/dimen_size_20" />
 
     </RelativeLayout>
 
@@ -113,12 +113,12 @@
         <ImageView
             android:layout_toEndOf="@+id/tv_private_key_title"
             android:id="@+id/iv_private_key_copy"
-            android:layout_width="@dimen/dimen_size_16"
+            android:layout_width="@dimen/dimen_size_20"
             android:src="@mipmap/icon_copy"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:contentDescription="@null"
-            android:layout_height="@dimen/dimen_size_16" />
+            android:layout_height="@dimen/dimen_size_20" />
 
     </RelativeLayout>
 

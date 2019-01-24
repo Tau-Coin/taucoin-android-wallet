@@ -15,6 +15,7 @@
  */
 package io.taucoin.android.wallet.util;
 
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
@@ -88,7 +89,9 @@ public class UserUtil {
         }
         String oldAddress = StringUtil.getText(tvAddress);
         if(StringUtil.isNotSame(newAddress, oldAddress)){
-            tvAddress.setText(newAddress);
+            String address = MyApplication.getInstance().getResources().getString(R.string.send_tx_address);
+            address = String.format(address, newAddress);
+            tvAddress.setText(address);
         }
         int visibility = StringUtil.isEmpty(newAddress) ? View.GONE : View.VISIBLE;
         tvAddress.setVisibility(visibility);

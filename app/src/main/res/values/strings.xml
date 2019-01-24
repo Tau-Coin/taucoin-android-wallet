@@ -15,7 +15,7 @@
     <string name="splash_describe">Being a blockchain miner\nunder daily 2Mb data consumption</string>
 
     <string name="main_home">Home</string>
-    <string name="main_send_receive">Send&#38;Receive</string>
+    <string name="main_send_receive">Send &#38; Receive</string>
     <string name="main_manage">Manage</string>
     <string name="main_home_title">TAUcoin.io</string>
     <string name="main_exit">Click again to exit the application!</string>
@@ -53,10 +53,10 @@
     <string name="send_customize">customize</string>
     <string name="send_choose_fee_title">Choose Transaction Fee</string>
     <string name="send_choose_fee_tips">The higher transaction fee,the faster transaction speed</string>
-    <string name="send_priority_vice">(≈0.5 TAU)</string>
-    <string name="send_normal_vice">(≈0.1 TAU)</string>
-    <string name="send_priority_value">0.5</string>
-    <string name="send_normal_value">0.1</string>
+    <string name="send_priority_vice">(≈0.05 TAU)</string>
+    <string name="send_normal_vice">(≈0.01 TAU)</string>
+    <string name="send_priority_value">0.05</string>
+    <string name="send_normal_value">0.01</string>
     <string name="send_to">To</string>
     <string name="send_dialog_yes">Proceed</string>
     <string name="send_dialog_no">Back</string>
@@ -69,6 +69,7 @@
     <string name="send_tx_invalid_amount">Invalid Amount</string>
     <string name="send_tx_invalid_fee">Invalid Transaction Fee</string>
     <string name="send_tx_invalid_error">Send failed, please try again later</string>
+    <string name="send_tx_address">Receive Address:&#160;%s</string>
 
     <string name="keys_dialog_title">Please make sure your\nprivate key has been saved</string>
     <string name="keys_address">Address</string>

@@ -21,7 +21,7 @@ public enum TransactionFailReason {
     EMPTY_RECIPIENTS(1, "empty recipients"),
     INVALID_RECIPIENT_OR_ADDRESS(2, "invalid recipient or address"),
     NO_COINS(3, "No Balance"),
-    NO_ENOUGH_COINS(4, "Insufficient Balance"),
+    NO_ENOUGH_COINS(4, "Insufficient Balance :\nAmount + Transaction Fee > Balance"),
     AMOUNT_TO_SMALL(5, "Transaction amount is too low"),
     UTXO_INVALID(6, "internal error: invalid utxo"),
     SIGNATURE_EXCEPTION(7, "internal error: sign fail"),
