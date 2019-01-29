@@ -16,7 +16,7 @@
 package io.taucoin.android.wallet;
 
 import android.app.Activity;
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 import android.os.Bundle;
 
 import io.fabric.sdk.android.Fabric;
@@ -36,7 +36,7 @@ import com.github.naturs.logger.android.strategy.converter.AndroidLogConverter;
 import com.mofei.tau.BuildConfig;
 import com.squareup.leakcanary.LeakCanary;
 
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
 
     private static MyApplication mInstance;
     private static volatile KeyValue mKeyValue;

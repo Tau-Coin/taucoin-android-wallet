@@ -48,16 +48,26 @@ public class FmtMicrometer {
     }
 
     public static BigInteger fmtUTXOValue(String value) {
-        Double d = Double.valueOf(value) * Math.pow(10, 8);
-        java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
-        nf.setGroupingUsed(false);
-        return new BigInteger(nf.format(d));
+        try{
+            Double d = Double.valueOf(value) * Math.pow(10, 8);
+            java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
+            nf.setGroupingUsed(false);
+            return new BigInteger(nf.format(d));
+        }catch (Exception ignore){
+
+        }
+        return new BigInteger("0");
     }
 
     public static String fmtTxValue(String value) {
-        Double d = Double.valueOf(value) * Math.pow(10, 8);
-        java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
-        nf.setGroupingUsed(false);
-        return nf.format(d);
+        try{
+            Double d = Double.valueOf(value) * Math.pow(10, 8);
+            java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
+            nf.setGroupingUsed(false);
+            return nf.format(d);
+        }catch (Exception ignore){
+
+        }
+        return value;
     }
 }

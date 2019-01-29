@@ -88,6 +88,12 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UserUtil.setAddress(tvAddress);
+    }
+
+    @Override
     public void initData() {
         if(UserUtil.isImportKey()){
             ProgressManager.showProgressDialog(getActivity());
@@ -111,7 +117,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
         KeyValue keyValue = MyApplication.getKeyValue();
         if (keyValue == null && view.getId() != R.id.iv_tx_log_tips) {
             Intent intent = new Intent(getActivity(), ImportKeyActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, 100);
             return;
         }
         switch (view.getId()) {

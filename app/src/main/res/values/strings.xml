@@ -69,7 +69,7 @@
     <string name="send_tx_invalid_amount">Invalid Amount</string>
     <string name="send_tx_invalid_fee">Invalid Transaction Fee</string>
     <string name="send_tx_invalid_error">Send failed, please try again later</string>
-    <string name="send_tx_address">Receive Address:&#160;%s</string>
+    <string name="send_tx_address">Receiver&#160;Address:&#160;%s</string>
 
     <string name="keys_dialog_title">Please make sure your\nprivate key has been saved</string>
     <string name="keys_address">Address</string>

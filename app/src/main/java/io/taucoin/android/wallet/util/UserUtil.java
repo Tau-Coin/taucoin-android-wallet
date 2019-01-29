@@ -82,6 +82,9 @@ public class UserUtil {
     }
 
     public static void setAddress(TextView tvAddress) {
+        if(tvAddress == null){
+            return;
+        }
         KeyValue keyValue = MyApplication.getKeyValue();
         String newAddress = "";
         if(keyValue != null){

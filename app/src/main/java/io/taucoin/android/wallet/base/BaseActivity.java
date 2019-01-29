@@ -17,7 +17,6 @@ package io.taucoin.android.wallet.base;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -55,8 +54,8 @@ public abstract class BaseActivity extends RxAppCompatActivity implements OnLoad
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override

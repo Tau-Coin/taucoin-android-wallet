@@ -23,6 +23,7 @@ import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.db.util.KeyValueDaoUtils;
 import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
+import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.net.exception.CodeException;
 import io.taucoin.foundation.util.StringUtil;
@@ -73,7 +74,18 @@ public class UserModel implements IUserModel{
     public void getKeyAndAddress(String publicKey, LogicObserver<KeyValue> observer) {
         Observable.create((ObservableOnSubscribe<KeyValue>) emitter -> {
             KeyValue keyValue = KeyValueDaoUtils.getInstance().queryByPubicKey(publicKey);
-            emitter.onNext(keyValue);
+
+            if(StringUtil.isNotEmpty(keyValue.getPrivkey())){
+                Key key = KeyManager.validateKey(keyValue.getPrivkey());
+                if(key != null){
+                    keyValue.setPubkey(key.getPubkey());
+                    keyValue.setAddress(key.getAddress());
+                    KeyValueDaoUtils.getInstance().update(keyValue);
+                }
+                emitter.onNext(keyValue);
+            }else{
+                SharedPreferencesHelper.getInstance().clear();
+            }
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(observer);

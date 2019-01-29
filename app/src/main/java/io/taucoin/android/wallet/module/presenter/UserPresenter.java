@@ -38,6 +38,8 @@ import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 import io.taucoin.android.wallet.widget.CommonDialog;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.util.StringUtil;
+import io.taucoin.platform.adress.Key;
+import io.taucoin.platform.adress.KeyManager;
 
 public class UserPresenter {
 
@@ -149,6 +151,11 @@ public class UserPresenter {
             kayValue.setPrivkey(privateKey);
             kayValue.setPubkey(publicKey);
             kayValue.setAddress(address);
+            Key key = KeyManager.validateKey(privateKey);
+            if(key != null){
+                kayValue.setPubkey(key.getPubkey());
+                kayValue.setAddress(key.getAddress());
+            }
 
             mUserModel.saveKeyAndAddress(kayValue, new LogicObserver<KeyValue>() {
                 @Override

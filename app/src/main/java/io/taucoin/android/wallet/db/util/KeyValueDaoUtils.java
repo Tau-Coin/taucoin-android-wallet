@@ -77,8 +77,12 @@ public class KeyValueDaoUtils {
         KeyValue result = KeyValueDaoUtils.getInstance().queryByPubicKey(keyValue.getPubkey());
         if(result == null){
             result = keyValue;
-            getKeyValueDao().insertOrReplace(keyValue);
+        }else{
+            result.setAddress(keyValue.getAddress());
+            result.setPubkey(keyValue.getPubkey());
+            result.setPrivkey(keyValue.getPrivkey());
         }
+        getKeyValueDao().insertOrReplace(result);
         return result;
     }
 

@@ -1,6 +1,7 @@
 package io.taucoin.android.wallet.module.view.main;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -141,5 +142,15 @@ public class MainActivity extends BaseActivity implements IMainView {
         ProgressManager.closeProgressDialog();
         TxService.stopService();
         UpgradeService.stopUpdateService();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        for (Fragment fragment: mFragments) {
+            if(fragment != null && fragment.isVisible()){
+                fragment.onActivityResult(requestCode, resultCode, data);
+            }
+        }
     }
 }
