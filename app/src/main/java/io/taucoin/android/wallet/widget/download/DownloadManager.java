@@ -36,6 +36,7 @@ import com.github.naturs.logger.Logger;
 import com.mofei.tau.R;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -52,6 +53,7 @@ import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.util.ActivityManager;
 import io.taucoin.foundation.util.AppUtil;
+import io.taucoin.foundation.util.DimensionsUtil;
 import io.taucoin.foundation.util.permission.EasyPermissions;
 
 /**
@@ -89,6 +91,8 @@ public class DownloadManager {
         mDialog.setCancelable(false);
         mDialog.show();
 
+        setMessageStyle(mDialog);
+
         mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(v -> {
             mDialog.cancel();
             if (version.isForced()) {
@@ -120,6 +124,20 @@ public class DownloadManager {
             mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setVisibility(View.GONE);
         }
         resetButtonCaps();
+    }
+
+    private void setMessageStyle(AlertDialog mDialog) {
+        try {
+            Field mAlert = AlertDialog.class.getDeclaredField("mAlert");
+            mAlert.setAccessible(true);
+            Object mAlertController = mAlert.get(mDialog);
+            Field mMessage = mAlertController.getClass().getDeclaredField("mMessageView");
+            mMessage.setAccessible(true);
+            TextView mMessageView = (TextView) mMessage.get(mAlertController);
+            mMessageView.setLineSpacing(DimensionsUtil.dip2px(MyApplication.getInstance(), 5), 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void resetButtonCaps() {
