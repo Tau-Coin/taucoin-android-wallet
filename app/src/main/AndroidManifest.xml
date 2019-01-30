@@ -3,15 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mofei.tau">
 
+    <!--Allow programs to access network privileges and connect to the network-->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!--Allow programs to access information about GSM network and view current network information-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!--Allow programs to access Wi-Fi network status information, view Wifi network status, imply android. hardware. WiFi privileges-->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!--Allow program access SD card to get write permission, version update-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--Allow programs to access SD cards for read permission, version updates-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!--android9.0 startForeground() need-->
+    <!--android9.0 Require permissions for version update installer APK, version update-->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <!--android9.0 Require that the service must be declared to run in the foreground-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
+    <!--google play Avoiding the filtering mechanism of implicit permissions-->
     <uses-feature android:name="android.hardware.wifi" android:required="false"/>
 
     <application
