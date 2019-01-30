@@ -7,7 +7,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!--Allow programs to access information about GSM network and view current network information-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--Allow programs to access Wi-Fi network status information, view Wifi network status, imply android. hardware. WiFi privileges-->
+    <!--Allow programs to access Wi-Fi network status information, view Wifi network status,
+    imply android. hardware. WiFi privileges-->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!--Allow program access SD card to get write permission, version update-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -21,6 +22,10 @@
 
     <!--google play Avoiding the filtering mechanism of implicit permissions-->
     <uses-feature android:name="android.hardware.wifi" android:required="false"/>
+    <!--Android P Support for the platform support of the IEEE802.11mc Wi-Fi protocol
+    (also known as Wi-Fi Round-Trip-Time (RTT), so that your application can take advantage
+    of the indoor positioning function. -->
+    <uses-feature android:name="android.hardware.wifi.rtt" android:required="false"/>
 
     <application
         android:name="io.taucoin.android.wallet.MyApplication"
