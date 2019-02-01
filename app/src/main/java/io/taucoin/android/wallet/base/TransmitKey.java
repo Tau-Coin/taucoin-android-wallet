@@ -37,6 +37,7 @@ public class TransmitKey {
     public static final String HOW_IMPORT_KEY_URL = "https://android.taucoin.io/static/help/help3.html";
 
     public static final int PAGE_SIZE = 20;
+    public static final int TX_CONFIRMATIONS = 2;
 
     public static class TxResult{
         public static final String FAILED = "Failed";

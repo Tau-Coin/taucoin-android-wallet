@@ -196,7 +196,7 @@ public class TxModel implements ITxModel {
                         transactionHistory.setBlocktime(rawTx.getBlocktime());
                         transactionHistory.setResult(TransmitKey.TxResult.SUCCESSFUL);
                         TransactionHistoryDaoUtils.getInstance().insertOrReplace(transactionHistory);
-                        if(rawTx.getConfirmations() >= 1){
+                        if(rawTx.getConfirmations() > TransmitKey.TX_CONFIRMATIONS){
                             observer.onNext(true);
                         }
                     }

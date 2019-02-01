@@ -113,7 +113,7 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
         if (isConfirming) {
             color = R.color.color_blue;
         } else if (isSuccess) {
-            color = tx.getConfirmations() > 0 ? R.color.color_black : R.color.color_blue;
+            color = tx.getConfirmations() > TransmitKey.TX_CONFIRMATIONS ? R.color.color_black : R.color.color_blue;
         }
 
         if (StringUtil.isEmpty(tx.getResult())) {

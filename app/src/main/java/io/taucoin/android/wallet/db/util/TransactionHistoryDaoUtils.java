@@ -62,7 +62,7 @@ public class TransactionHistoryDaoUtils {
     public List<TransactionHistory> getTxPendingList(String formAddress) {
         QueryBuilder qb = getTransactionHistoryDao().queryBuilder();
         return getTransactionHistoryDao().queryBuilder()
-        .where(TransactionHistoryDao.Properties.Confirmations.lt(1),
+        .where(TransactionHistoryDao.Properties.Confirmations.le(TransmitKey.TX_CONFIRMATIONS),
                 TransactionHistoryDao.Properties.FromAddress.eq(formAddress),
                 TransactionHistoryDao.Properties.SentOrReceived.eq(TransmitKey.TxType.SEND),
                 qb.or(TransactionHistoryDao.Properties.Result.eq(TransmitKey.TxResult.CONFIRMING),
