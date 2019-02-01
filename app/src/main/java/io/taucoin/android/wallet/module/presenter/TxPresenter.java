@@ -83,7 +83,7 @@ public class TxPresenter {
         long utxo = keyValue.getUtxo();
         long balance = keyValue.getBalance();
         Logger.i("balance=" + balance + "\tutxo=" + utxo);
-        if (utxo == balance){
+        if (utxo <= balance){
             mTxModel.getUTXOListLocal(new LogicObserver<List<UTXORecord>>() {
                 @Override
                 public void handleError(int code, String msg) {

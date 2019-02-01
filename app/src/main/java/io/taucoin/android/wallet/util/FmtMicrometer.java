@@ -15,23 +15,42 @@
  */
 package io.taucoin.android.wallet.util;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
+
+import io.taucoin.foundation.util.StringUtil;
 
 public class FmtMicrometer {
+    
+    private static String mDecimal8 = "100000000";
 
-    public static String fmtBalance(Long balance) {
-        double double_8 = Math.pow(10, 8);
-        DecimalFormat df = new DecimalFormat("###,##0.########");
-        return df.format(balance.doubleValue() / double_8);
+    static String fmtBalance(Long balance) {
+        DecimalFormat df = getDecimalFormatInstance();
+        df.applyPattern("###,##0.########");
+        BigDecimal bigDecimal = new BigDecimal(balance);
+        bigDecimal = bigDecimal.divide(new BigDecimal(mDecimal8), 8, RoundingMode.HALF_UP);
+        return df.format(bigDecimal);
+    }
+
+    private static DecimalFormat getDecimalFormatInstance() {
+        DecimalFormat df;
+        try{
+            df = (DecimalFormat)NumberFormat.getInstance(Locale.CHINA);
+        }catch (Exception e){
+            df = new DecimalFormat();
+        }
+        return df;
     }
 
     public static String fmtAmount(String amount) {
         try {
-            Long number = Long.valueOf(amount);
-            double double_8 = Math.pow(10, 8);
-            double result = number.doubleValue() / double_8;
-            return String.valueOf(result);
+            BigDecimal bigDecimal = new BigDecimal(amount);
+            bigDecimal = bigDecimal.divide(new BigDecimal(mDecimal8), 8, RoundingMode.HALF_UP);
+            return bigDecimal.toString();
         } catch (Exception e) {
             return amount;
         }
@@ -39,8 +58,9 @@ public class FmtMicrometer {
 
     public static String fmtFormat(String num) {
         try {
-            double number = Double.valueOf(num);
-            DecimalFormat df = new DecimalFormat("0.00######");
+            BigDecimal number = new BigDecimal(num);
+            DecimalFormat df = getDecimalFormatInstance();
+            df.applyPattern("0.00######");
             return df.format(number);
         } catch (Exception e) {
             return num;
@@ -49,25 +69,31 @@ public class FmtMicrometer {
 
     public static BigInteger fmtUTXOValue(String value) {
         try{
-            Double d = Double.valueOf(value) * Math.pow(10, 8);
-            java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
-            nf.setGroupingUsed(false);
-            return new BigInteger(nf.format(d));
+            BigDecimal bigDecimal = new BigDecimal(value);
+            bigDecimal = bigDecimal.multiply(new BigDecimal(mDecimal8));
+            DecimalFormat df = getDecimalFormatInstance();
+            df.applyPattern("0");
+            String valueFormat = df.format(bigDecimal);
+            if(StringUtil.isNotEmpty(valueFormat) && valueFormat.contains(",")){
+                valueFormat = valueFormat.replaceAll(",", "");
+            }
+            return new BigInteger(valueFormat);
         }catch (Exception ignore){
-
         }
         return new BigInteger("0");
     }
 
     public static String fmtTxValue(String value) {
         try{
-            Double d = Double.valueOf(value) * Math.pow(10, 8);
-            java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
-            nf.setGroupingUsed(false);
-            return nf.format(d);
+            BigDecimal bigDecimal = new BigDecimal(value);
+            bigDecimal = bigDecimal.multiply(new BigDecimal(mDecimal8));
+
+            DecimalFormat df = getDecimalFormatInstance();
+            df.applyPattern("0");
+            return df.format(bigDecimal);
         }catch (Exception ignore){
 
         }
-        return value;
+        return new BigInteger("0").toString();
     }
 }
