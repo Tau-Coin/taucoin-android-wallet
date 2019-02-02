@@ -68,6 +68,17 @@ public class FmtMicrometer {
         }
     }
 
+    public static String fmtFormatFee(String num) {
+        try {
+            BigDecimal number = new BigDecimal(num);
+            DecimalFormat df = getDecimalFormatInstance();
+            df.applyPattern("0.########");
+            return df.format(number);
+        } catch (Exception e) {
+            return num;
+        }
+    }
+
     public static BigInteger fmtUTXOValue(String value) {
         try{
             BigDecimal bigDecimal = new BigDecimal(value);

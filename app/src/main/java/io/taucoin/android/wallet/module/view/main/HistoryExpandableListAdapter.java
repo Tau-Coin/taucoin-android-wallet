@@ -148,7 +148,7 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
 
         TransactionHistory tx = historyList.get(groupPosition);
         childViewHolder.tvTransactionId.setText(tx.getTxId());
-        String fee = tx.getFee() + "TAU";
+        String fee = FmtMicrometer.fmtFormatFee(tx.getFee()) + "TAU";
         childViewHolder.tvTxFee.setText(fee);
 
         boolean isReceiver = isReceiver(tx);
