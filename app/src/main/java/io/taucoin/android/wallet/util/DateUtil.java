@@ -19,8 +19,8 @@ import android.widget.Chronometer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import io.taucoin.foundation.util.StringUtil;
@@ -52,7 +52,7 @@ public class DateUtil {
         if (format == null) {
             synchronized (DateUtil.class) {
                 if (format == null) {
-                    format = new SimpleDateFormat();
+                    format = new SimpleDateFormat(pattern6, Locale.CHINA);
                 }
             }
         }
