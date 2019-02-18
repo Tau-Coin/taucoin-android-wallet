@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity implements IMainView {
             hideFragment(fragmentTransaction);
             fragmentTransaction.show(fragment);
         }
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
     private void hideFragment(FragmentTransaction fragmentTransaction) {
