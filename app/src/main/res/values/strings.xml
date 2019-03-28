@@ -56,7 +56,7 @@
     <string name="send_priority_vice">(≈0.05 TAU)</string>
     <string name="send_normal_vice">(≈0.01 TAU)</string>
     <string name="send_priority_value">0.05</string>
-    <string name="send_normal_value">0.01</string>
+    <string name="send_normal_value">1</string>
     <string name="send_to">To</string>
     <string name="send_dialog_yes">Proceed</string>
     <string name="send_dialog_no">Back</string>

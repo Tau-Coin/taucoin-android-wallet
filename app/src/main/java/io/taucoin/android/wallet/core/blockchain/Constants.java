@@ -32,7 +32,7 @@ public class Constants {
     public static final BigInteger MAX_MONEY = new BigInteger("10000000000", 10).multiply(COIN);
 
     //  0.01 COIN
-    public static final BigInteger DEFAULT_TX_FEE_MIN = new BigInteger("1000000", 10);
+    public static final BigInteger DEFAULT_TX_FEE_MIN = new BigInteger("100000000", 10);
 
     // TODO New version change < 665.00 coin
     // 1 COIN
