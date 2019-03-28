@@ -25,6 +25,8 @@ import com.mofei.tau.R;
 
 import java.lang.ref.WeakReference;
 
+import io.taucoin.android.wallet.base.BaseActivity;
+
 /**
  * Description: Progress Manager
  */
@@ -34,11 +36,21 @@ public class ProgressManager {
 
     private static WeakReference<FragmentActivity> mWeakReference;
 
+    public static synchronized void showProgressDialog(BaseActivity activity){
+        activity.mDialog = showProgressDialog(activity, true);
+    }
+
     public static synchronized void showProgressDialog(FragmentActivity activity){
-        showProgressDialog(activity, true);
+        BaseActivity baseActivity = (BaseActivity) activity;
+        showProgressDialog(baseActivity);
     }
 
     public static synchronized void showProgressDialog(FragmentActivity activity, boolean isCanCancel){
+        BaseActivity baseActivity = (BaseActivity) activity;
+        baseActivity.mDialog = showProgressDialog(baseActivity, isCanCancel);
+    }
+
+    private static synchronized Dialog showProgressDialog(BaseActivity activity, boolean isCanCancel){
         closeProgressDialog();
         Logger.d("showProgressDialog");
         mWeakReference = new WeakReference<>(activity);
@@ -55,6 +67,7 @@ public class ProgressManager {
                 closeProgressDialog();
             }
         }
+        return mProgress;
     }
 
     public static synchronized void closeProgressDialog(){

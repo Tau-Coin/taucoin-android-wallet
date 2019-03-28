@@ -15,6 +15,7 @@
  */
 package io.taucoin.android.wallet.base;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -28,14 +29,15 @@ import org.greenrobot.eventbus.Subscribe;
 import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.view.SplashActivity;
 import io.taucoin.android.wallet.util.ActivityUtil;
+import io.taucoin.android.wallet.util.FixMemLeak;
 import io.taucoin.android.wallet.util.NotchUtil;
 import io.taucoin.android.wallet.util.EventBusUtil;
-import io.taucoin.android.wallet.util.KeyboardUtils;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.foundation.util.ActivityManager;
 
 public abstract class BaseActivity extends RxAppCompatActivity implements OnLoadmoreListener, OnRefreshListener {
 
+    public Dialog mDialog = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,11 +78,12 @@ public abstract class BaseActivity extends RxAppCompatActivity implements OnLoad
     @Override
     protected void onDestroy() {
         try {
-            if(KeyboardUtils.isSoftInputVisible(this)){
-                KeyboardUtils.hideSoftInput(this);
-                // handler InputMethodManager Leak
-                KeyboardUtils.fixInputMethodManagerLeak(this);
+            if(mDialog != null){
+                mDialog.dismiss();
+                mDialog = null;
             }
+            ProgressManager.closeProgressDialog();
+            FixMemLeak.fixLeak(this);
         }catch (Exception ignore){
 
         }

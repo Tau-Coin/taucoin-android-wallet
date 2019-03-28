@@ -101,6 +101,11 @@ public class WebViewActivity extends BaseActivity {
             }
         });
 
+        // Build.VERSION.SDK_INT > 19
+        // Fatal Exception: java.util.concurrent.TimeoutException
+        // android.view.ThreadedRenderer.finalize() timed out after 10 seconds
+        webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
         WebSettings webSettings = webView.getSettings();
         if (webSettings == null) return;
         webSettings.setJavaScriptEnabled(false);

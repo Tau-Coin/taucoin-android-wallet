@@ -15,13 +15,16 @@
  */
 package io.taucoin.android.wallet.util;
 
+import android.content.Context;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NotificationManagerCompat;
 
 import com.mofei.tau.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.foundation.util.StringUtil;
 import io.taucoin.foundation.util.permission.EasyPermissions;
 
@@ -44,5 +47,11 @@ public class PermissionUtils {
         CharSequence positiveButton = activity.getString(R.string.common_ok);
         CharSequence negativeButton = activity.getString(R.string.common_cancel);
         EasyPermissions.checkDeniedPermissionsNeverAskAgain(activity, message, positiveButton, negativeButton, deniedPerms);
+    }
+
+    public static boolean isNotificationEnabled() {
+        Context context = MyApplication.getInstance();
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
+        return notificationManagerCompat.areNotificationsEnabled();
     }
 }
