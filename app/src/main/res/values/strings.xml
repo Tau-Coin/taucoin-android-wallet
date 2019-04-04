@@ -8,7 +8,8 @@
     <string name="common_cancel">Cancel</string>
     <string name="common_ok">OK</string>
     <string name="common_done">Done</string>
-    <string name="common_balance" formatted="false"><Data><![CDATA[<font color="#f19322">%s</font> TAU]]> </Data></string>
+    <string name="common_balance" formatted="false"><Data><![CDATA[<font color="#d5b060">%s</font> TAUT]]> </Data></string>
+    <string name="common_fee">%sTAUT</string>
 
     <string name="splash_title">TAU - True Asset Unit</string>
     <string name="splash_subheading">Mobile &#038; Decentral\nProof of Transaction</string>
@@ -53,8 +54,8 @@
     <string name="send_customize">customize</string>
     <string name="send_choose_fee_title">Choose Transaction Fee</string>
     <string name="send_choose_fee_tips">The higher transaction fee,the faster transaction speed</string>
-    <string name="send_priority_vice">(≈0.05 TAU)</string>
-    <string name="send_normal_vice">(≈0.01 TAU)</string>
+    <string name="send_priority_vice">(≈0.05 TAUT)</string>
+    <string name="send_normal_vice">(≈0.01 TAUT)</string>
     <string name="send_priority_value">0.05</string>
     <string name="send_normal_value">1</string>
     <string name="send_to">To</string>
@@ -103,27 +104,27 @@
 
     <!--permission tip-->
     <string name="permission_tip_upgrade_denied">
-        "TAUcoin" would like to access the storage.
+        "TAUT" would like to access the storage.
     </string>
 
     <string name="permission_tip_upgrade_never_ask_again">
-        "TAUcoin" would like to access the storage.
+        "TAUT" would like to access the storage.
     </string>
 
     <string name="permission_tip_capture_denied">
-        "TAUcoin" would like to access the camera and storage.
+        "TAUT" would like to access the camera and storage.
     </string>
 
     <string name="permission_tip_capture_never_ask_again">
-        "TAUcoin" would like to access the camera and storage.
+        "TAUT" would like to access the camera and storage.
     </string>
 
     <string name="permission_tip_gallery_denied">
-        "TAUcoin" would like to access the storage.
+        "TAUT" would like to access the storage.
     </string>
 
     <string name="permission_tip_gallery_never_ask_again">
-        "TAUcoin" would like to access the storage.
+        "TAUT" would like to access the storage.
     </string>
     <string name="permission_install_unknown_apk_note">
         Please open the installation of unknown application permissions.

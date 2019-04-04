@@ -13,9 +13,9 @@
     <color name="color_tool_bar_child">#3f3f3f</color>
     <color name="color_select">#d0d3dc</color>
 
-    <color name="color_logo">#d06a00</color>
-    <color name="color_yellow">#f19322</color>
-    <color name="color_yellow_light">#FB9500</color>
+    <color name="color_logo">#d5b060</color>
+    <color name="color_yellow">#d5b060</color>
+    <color name="color_yellow_light">#e2b85c</color>
     <color name="color_black">#000000</color>
     <color name="color_black_light">#454545</color>
     <color name="color_white">#ffffff</color>

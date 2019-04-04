@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.taucoin.android.wallet.base.BaseActivity;
 import io.taucoin.android.wallet.base.TransmitKey;
+import io.taucoin.android.wallet.util.ActivityUtil;
 import io.taucoin.android.wallet.widget.ToolbarView;
 import io.taucoin.foundation.util.StringUtil;
 
@@ -88,9 +89,7 @@ public class WebViewActivity extends BaseActivity {
                 if(StringUtil.isSame(mUrl, url)){
                     view.loadUrl(url);
                 }else{
-                    Uri uri = Uri.parse(url);
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
+                    ActivityUtil.openUri(WebViewActivity.this, url);
                 }
                 return true;
             }

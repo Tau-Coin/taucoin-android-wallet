@@ -16,6 +16,7 @@
 package io.taucoin.android.wallet.util;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
@@ -44,5 +45,11 @@ public class ActivityUtil {
     public static void startActivity(Intent intent, Fragment fragment, Class<?> zClass){
         intent.setClass(fragment.getActivity(), zClass);
         fragment.startActivity(intent);
+    }
+
+    public static void openUri(FragmentActivity context, String uriStr) {
+        Uri uri = Uri.parse(uriStr);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        context.startActivity(intent);
     }
 }

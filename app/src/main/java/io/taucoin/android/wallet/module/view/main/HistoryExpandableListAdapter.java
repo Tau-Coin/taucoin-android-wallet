@@ -21,6 +21,7 @@ import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.util.CopyManager;
 import io.taucoin.android.wallet.util.DateUtil;
 import io.taucoin.android.wallet.util.FmtMicrometer;
+import io.taucoin.android.wallet.util.ResourcesUtil;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.util.StringUtil;
@@ -148,7 +149,8 @@ public class HistoryExpandableListAdapter extends BaseExpandableListAdapter {
 
         TransactionHistory tx = historyList.get(groupPosition);
         childViewHolder.tvTransactionId.setText(tx.getTxId());
-        String fee = FmtMicrometer.fmtFormatFee(tx.getFee()) + "TAU";
+        String fee = ResourcesUtil.getText(R.string.common_fee);
+        fee = String.format(fee, FmtMicrometer.fmtFormatFee(tx.getFee()));
         childViewHolder.tvTxFee.setText(fee);
 
         boolean isReceiver = isReceiver(tx);
