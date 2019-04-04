@@ -5,9 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 public class NetUtils {
-    //判断是否有网络
+    //Judging whether there is a network
     public static boolean isNetWork(Context context){
-        //得到网络的管理者
         ConnectivityManager manager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = manager.getActiveNetworkInfo();
         if(info!=null){
@@ -17,10 +16,11 @@ public class NetUtils {
         }
     }
     /**
-     * 判断当前是否有可用的网络以及网络类型 0：无网络 1：WIFI 2：CMWAP 3：CMNET
-     *
-     * @param context
-     * @return
+     * Determine whether there are currently available networks and network type
+     * 0: No Network
+     * 1: WIFI
+     * 2: CMWAP
+     * 3: CMNET
      */
     public static int isNetworkAvailable(Context context) {
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -7,7 +7,6 @@ public class MessageEvent{
         BALANCE,
         NICKNAME,
         TRANSACTION,
-        TRANSACTION_IMPORT,
         UPGRADE
     }
     private Object data;

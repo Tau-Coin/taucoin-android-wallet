@@ -105,7 +105,7 @@ public class UserPresenter {
     private void gotoKeysActivity() {
         ProgressManager.closeProgressDialog();
         mIImportKeyView.gotoKeysActivity();
-        EventBusUtil.post(MessageEvent.EventCode.TRANSACTION_IMPORT);
+        EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
         EventBusUtil.post(MessageEvent.EventCode.NICKNAME);
     }
 
