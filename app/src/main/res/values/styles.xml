@@ -72,6 +72,11 @@
         <attr name="ei_paddingRight" format="dimension"/>
     </declare-styleable>
 
+    <style name="style_small_white">
+        <item name="android:textSize">@dimen/dimen_size_14</item>
+        <item name="android:textColor">@color/color_white</item>
+    </style>
+
     <style name="style_middle_white">
         <item name="android:textSize">@dimen/dimen_size_16</item>
         <item name="android:textColor">@color/color_white</item>
@@ -131,6 +136,11 @@
 
     <style name="style_normal_light_grey">
         <item name="android:textSize">@dimen/dimen_size_16</item>
+        <item name="android:textColor">@color/color_grey_light</item>
+    </style>
+
+    <style name="style_big_light_grey">
+        <item name="android:textSize">@dimen/dimen_size_18</item>
         <item name="android:textColor">@color/color_grey_light</item>
     </style>
 

@@ -18,7 +18,9 @@ import io.taucoin.android.wallet.module.presenter.UserPresenter;
 import io.taucoin.android.wallet.module.view.manage.iview.IImportKeyView;
 import io.taucoin.android.wallet.util.CopyManager;
 import io.taucoin.android.wallet.util.ToastUtils;
+import io.taucoin.android.wallet.util.WalletEncrypt;
 import io.taucoin.foundation.util.StringUtil;
+import io.taucoin.platform.adress.KeyManager;
 
 public class KeysActivity extends BaseActivity implements IImportKeyView {
 
@@ -44,7 +46,8 @@ public class KeysActivity extends BaseActivity implements IImportKeyView {
         if(keyValue != null){
             tvAddress.setText(keyValue.getAddress());
             tvPublicKey.setText(keyValue.getPubkey());
-            tvPrivateKey.setText(keyValue.getPrivkey());
+            String encryptKey = WalletEncrypt.decrypt(keyValue.getPrivkey());
+            tvPrivateKey.setText(encryptKey);
         }
     }
 

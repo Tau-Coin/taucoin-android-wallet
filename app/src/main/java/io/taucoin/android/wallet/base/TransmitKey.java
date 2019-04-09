@@ -53,4 +53,9 @@ public class TransmitKey {
     public static final String BEAN = "bean";
     public static final String UPGRADE = "upgrade";
     public static final String ISSHOWTIP = "isShowTip";
+
+    public static class ExternalUrl{
+        public static final String EXCHANGE = "https://wadax.io/trade/TAUTBTC";
+        public static final String P2P_BUY_SELL = "https://taucointalk.org/index.php?board=144.0";
+    }
 }

@@ -24,6 +24,7 @@ import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.db.util.KeyValueDaoUtils;
 import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
+import io.taucoin.android.wallet.util.WalletEncrypt;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.net.exception.CodeException;
 import io.taucoin.foundation.util.StringUtil;
@@ -48,6 +49,10 @@ public class UserModel implements IUserModel{
                     return;
                 }
             }
+            // private key encrypt
+            String encryptKey = WalletEncrypt.encrypt(kv.getPrivkey());
+            kv.setPrivkey(encryptKey);
+
             KeyValue result = KeyValueDaoUtils.getInstance().insertOrReplace(kv);
             emitter.onNext(result);
         }).observeOn(AndroidSchedulers.mainThread())
@@ -77,6 +82,16 @@ public class UserModel implements IUserModel{
 
             if(StringUtil.isNotEmpty(keyValue.getPrivkey())){
                 Key key = KeyManager.validateKey(keyValue.getPrivkey());
+                if(key == null){
+                    // private key decrypt
+                    String encryptKey = WalletEncrypt.decrypt(keyValue.getPrivkey());
+                    key = KeyManager.validateKey(encryptKey);
+
+                }else{
+                    // private key encrypt
+                    String encryptKey = WalletEncrypt.encrypt(keyValue.getPrivkey());
+                    keyValue.setPrivkey(encryptKey);
+                }
                 if(key != null){
                     keyValue.setPubkey(key.getPubkey());
                     keyValue.setAddress(key.getAddress());

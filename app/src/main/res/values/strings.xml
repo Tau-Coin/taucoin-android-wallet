@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">TAUT</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -11,17 +11,23 @@
     <string name="common_balance" formatted="false"><Data><![CDATA[<font color="#d5b060">%s</font> TAUT]]> </Data></string>
     <string name="common_fee">%sTAUT</string>
 
-    <string name="splash_title">TAU - True Asset Unit</string>
+    <string name="splash_title">TAUT</string>
     <string name="splash_subheading">Mobile &#038; Decentral\nProof of Transaction</string>
     <string name="splash_describe">Being a blockchain miner\nunder daily 2Mb data consumption</string>
 
     <string name="main_home">Home</string>
     <string name="main_send_receive">Send &#38; Receive</string>
     <string name="main_manage">Manage</string>
-    <string name="main_home_title">TAUcoin.io</string>
+    <string name="main_home_title">TAUT</string>
     <string name="main_exit">Click again to exit the application!</string>
-    <string name="main_mining_tips">Mobile mining function\nis in development.</string>
-
+    <string name="main_referral_link">Referral link</string>
+    <string name="main_referral_link_copied">Referral link copied</string>
+    <string name="main_referral_tip">Please check out Proof of Transaction coin, TAUT, and full mobile mining TAUcoin.</string>
+    <string name="main_invited_friends" formatted="false"><Data><![CDATA[invited <font color="#d5b060">%s</font> friends]]></Data></string>
+    <string name="main_your_referral" formatted="false"><Data><![CDATA[<font color="#a9a9a9">Invited Your Friends Successfully:</font><br/><font color="#d5b060">%s</font> TAUT/person]]></Data></string>
+    <string name="main_friend_referral" formatted="false"><Data><![CDATA[<font color="#a9a9a9">Your Friends Will Get:</font><br/><font color="#d5b060">%s</font> TAUT/person]]></Data></string>
+    <string name="main_exchange">Exchange</string>
+    <string name="main_p2p_buy_sell">P2P Buy &#38; Sell</string>
 
     <string name="tx_send">Send</string>
     <string name="tx_receive">Receive</string>

@@ -162,11 +162,11 @@ public class KeyManager {
                 compressedPk = "03" + sx;
             }
             return compressedPk;
-        } catch (AddressFormatException ae) {
-            Logger.e(ae, "AddressFormatException in KeyManager.generatorPublicKey");
+        } catch (AddressFormatException ignore) {
+            Logger.i("AddressFormatException in KeyManager.generatorPublicKey");
             return null;
         } catch (Exception e) {
-            Logger.e(e, "Exception in KeyManager.generatorPublicKey");
+            Logger.i("Exception in KeyManager.generatorPublicKey");
             return null;
         }
     }

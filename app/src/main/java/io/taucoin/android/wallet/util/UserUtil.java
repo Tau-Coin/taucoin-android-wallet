@@ -15,8 +15,8 @@
  */
 package io.taucoin.android.wallet.util;
 
-import android.support.v4.content.ContextCompat;
 import android.text.Html;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.TextView;
 
@@ -98,5 +98,46 @@ public class UserUtil {
         }
         int visibility = StringUtil.isEmpty(newAddress) ? View.GONE : View.VISIBLE;
         tvAddress.setVisibility(visibility);
+    }
+
+    public static void loadReferralView(TextView tvReferralLink, TextView tvYourInvited, TextView tvFriendReferral) {
+        if(tvReferralLink != null){
+            String link = "https://www.taucoin.io/account/login?referralURL=3938eba1cec919831fe2871eb1e2eea1318aef30bc6db38d6bed2057d14ee66c";
+            link = toDBC(link);
+            tvReferralLink.setText(link);
+        }
+        if(tvYourInvited != null){
+            String referral = tvYourInvited.getResources().getString(R.string.main_your_referral);
+            String num = "50";
+            referral = String.format(referral, num);
+            tvYourInvited.setText(Html.fromHtml(referral));
+        }
+        if(tvFriendReferral != null){
+            String referral = tvFriendReferral.getResources().getString(R.string.main_friend_referral);
+            String num = "50";
+            referral = String.format(referral, num);
+            tvFriendReferral.setText(Html.fromHtml(referral));
+        }
+    }
+
+    private static String toDBC(String input) {
+        char[] c = input.toCharArray();
+        for (int i = 0; i< c.length; i++) {
+            if (c[i] == 12288) {
+                c[i] = (char) 32;
+                continue;
+            }if (c[i]> 65280&& c[i]< 65375)
+                c[i] = (char) (c[i] - 65248);
+        }
+        return new String(c);
+    }
+
+    public static void setInvitedView(TextView tvYourInvited) {
+        if(tvYourInvited != null){
+            String invitedFriends = tvYourInvited.getResources().getString(R.string.main_invited_friends);
+            String num = "0";
+            invitedFriends = String.format(invitedFriends, num);
+            tvYourInvited.setText(Html.fromHtml(invitedFriends));
+        }
     }
 }

@@ -54,14 +54,127 @@
                     android:textColorHint="@color/color_black" />
             </RelativeLayout>
 
-            <TextView
-                style="@style/style_big_yellow"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:gravity="center_horizontal"
-                android:lineSpacingExtra="10dp"
-                android:text="@string/main_mining_tips" />
+                android:fillViewport="true"
+                android:layout_marginTop="30dp"
+                android:scrollbars="none"
+                android:layout_weight="1"
+                android:layout_height="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="40dp"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_height="30dp">
+
+                        <TextView
+                            style="@style/style_big_light_grey"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:lineSpacingExtra="10dp"
+                            android:text="@string/main_referral_link" />
+
+                        <ImageView
+                            android:id="@+id/iv_referral_link"
+                            android:layout_width="22dp"
+                            android:src="@mipmap/icon_copy"
+                            android:layout_marginStart="10dp"
+                            android:contentDescription="@null"
+                            android:layout_height="22dp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/style_middle_light_grey"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:layout_marginTop="3dp"
+                        android:text="@string/main_referral_tip" />
+
+                    <TextView
+                        android:id="@+id/tv_referral_link"
+                        style="@style/style_small_white"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:background="@color/color_yellow"
+                        android:layout_marginTop="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:lineSpacingExtra="0dp"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/tv_your_invited"
+                        style="@style/style_normal_black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/tv_your_referral"
+                        style="@style/style_normal_black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:lineSpacingExtra="5dp"
+                        android:layout_marginTop="10dp"
+                        android:text="" />
+
+                    <TextView
+                        android:id="@+id/tv_friend_referral"
+                        style="@style/style_normal_black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:lineSpacingExtra="5dp"
+                        android:layout_marginTop="10dp"
+                        android:text="" />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginStart="40dp"
+                android:paddingTop="15dp"
+                android:layout_marginEnd="40dp"
+                android:layout_height="75dp">
+
+                <TextView
+                    style="@style/style_normal_blue"
+                    android:id="@+id/tv_exchange"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="@string/main_exchange"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    style="@style/style_normal_blue"
+                    android:id="@+id/tv_p2p"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="@string/main_p2p_buy_sell"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
         </LinearLayout>
 
