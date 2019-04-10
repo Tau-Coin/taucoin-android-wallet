@@ -40,7 +40,6 @@ import io.taucoin.android.wallet.module.model.IAppModel;
 import io.taucoin.android.wallet.module.model.ITxModel;
 import io.taucoin.android.wallet.module.model.TxModel;
 import io.taucoin.android.wallet.module.view.main.MainActivity;
-import io.taucoin.android.wallet.module.view.tx.SendActivity;
 import io.taucoin.android.wallet.net.callback.CommonObserver;
 import io.taucoin.android.wallet.net.callback.TAUObserver;
 import io.taucoin.android.wallet.util.EventBusUtil;
@@ -182,13 +181,25 @@ public class TxService extends Service {
         });
     }
 
+    private void getBalanceDelay(String serviceType) {
+        mIsChecked = true;
+        Observable.timer(5, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .subscribe(new CommonObserver<Long>() {
+                @Override
+                public void onComplete() {
+                    getBalance(serviceType);
+                }
+            });
+    }
+
     private void getBalance(String serviceType) {
         mTxModel.getBalance( new TAUObserver<RetResult<BalanceBean>>() {
             @Override
             public void handleError(String msg, int msgCode) {
                 if(StringUtil.isSame(serviceType, TransmitKey.ServiceType.GET_HOME_DATA) ||
                         StringUtil.isSame(serviceType, TransmitKey.ServiceType.GET_IMPORT_DATA)){
-                    getBalance(TransmitKey.ServiceType.GET_BALANCE);
+                    getBalanceDelay(TransmitKey.ServiceType.GET_BALANCE);
                 }else{
                     ProgressManager.closeProgressDialog();
                     EventBusUtil.post(MessageEvent.EventCode.BALANCE);
