@@ -31,6 +31,7 @@ import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.android.wallet.util.UserUtil;
+import io.taucoin.android.wallet.widget.BreakTextView;
 import io.taucoin.foundation.util.DrawablesUtil;
 import io.taucoin.foundation.util.StringUtil;
 
@@ -45,7 +46,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     @BindView(R.id.iv_referral_link)
     ImageView ivReferralLink;
     @BindView(R.id.tv_referral_link)
-    TextView tvReferralLink;
+    BreakTextView tvReferralLink;
     @BindView(R.id.tv_your_invited)
     TextView tvYourInvited;
     @BindView(R.id.tv_your_referral)
@@ -89,7 +90,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
                 if (!UserUtil.isImportKey()) {
                     ActivityUtil.startActivity(getActivity(), ImportKeyActivity.class);
                 } else {
-                    ActivityUtil.openUri(getActivity(), StringUtil.getText(tvReferralLink));
+                    ActivityUtil.openUri(getActivity(), StringUtil.getText(tvReferralLink.getRawText()));
                 }
                 break;
             case R.id.tv_exchange:
@@ -105,7 +106,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
 
     @OnLongClick(R.id.tv_referral_link)
     boolean copyReferralLink() {
-        CopyManager.copyText(StringUtil.getText(tvReferralLink));
+        CopyManager.copyText(StringUtil.getText(tvReferralLink.getRawText()));
         ToastUtils.showShortToast(R.string.main_referral_link_copied);
         return true;
     }

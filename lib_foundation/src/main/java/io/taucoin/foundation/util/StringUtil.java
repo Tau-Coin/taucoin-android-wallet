@@ -130,6 +130,14 @@ public class StringUtil {
         }
     }
 
+    public static String getText(CharSequence charSequence) {
+        try{
+            return charSequence.toString();
+        }catch (Exception e){
+            return "";
+        }
+    }
+
     public static int getIntText(TextView view) {
         try{
             return Integer.valueOf(getText(view));

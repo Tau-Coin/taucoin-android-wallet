@@ -16,7 +16,6 @@
 package io.taucoin.android.wallet.util;
 
 import android.text.Html;
-import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.TextView;
 
@@ -25,6 +24,7 @@ import com.mofei.tau.R;
 
 import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.db.entity.KeyValue;
+import io.taucoin.android.wallet.widget.BreakTextView;
 import io.taucoin.foundation.util.StringUtil;
 
 public class UserUtil {
@@ -100,11 +100,10 @@ public class UserUtil {
         tvAddress.setVisibility(visibility);
     }
 
-    public static void loadReferralView(TextView tvReferralLink, TextView tvYourInvited, TextView tvFriendReferral) {
+    public static void loadReferralView(BreakTextView tvReferralLink, TextView tvYourInvited, TextView tvFriendReferral) {
         if(tvReferralLink != null){
             String link = "https://www.taucoin.io/account/login?referralURL=3938eba1cec919831fe2871eb1e2eea1318aef30bc6db38d6bed2057d14ee66c";
-            link = toDBC(link);
-            tvReferralLink.setText(link);
+            tvReferralLink.setAutoSplitText(link);
         }
         if(tvYourInvited != null){
             String referral = tvYourInvited.getResources().getString(R.string.main_your_referral);
@@ -118,18 +117,6 @@ public class UserUtil {
             referral = String.format(referral, num);
             tvFriendReferral.setText(Html.fromHtml(referral));
         }
-    }
-
-    private static String toDBC(String input) {
-        char[] c = input.toCharArray();
-        for (int i = 0; i< c.length; i++) {
-            if (c[i] == 12288) {
-                c[i] = (char) 32;
-                continue;
-            }if (c[i]> 65280&& c[i]< 65375)
-                c[i] = (char) (c[i] - 65248);
-        }
-        return new String(c);
     }
 
     public static void setInvitedView(TextView tvYourInvited) {

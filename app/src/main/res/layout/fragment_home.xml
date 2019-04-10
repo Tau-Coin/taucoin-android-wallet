@@ -101,7 +101,7 @@
                         android:layout_marginTop="3dp"
                         android:text="@string/main_referral_tip" />
 
-                    <TextView
+                    <io.taucoin.android.wallet.widget.BreakTextView
                         android:id="@+id/tv_referral_link"
                         style="@style/style_small_white"
                         android:layout_width="match_parent"
@@ -111,8 +111,8 @@
                         android:layout_marginTop="10dp"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="5dp"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="4dp"
                         android:lineSpacingExtra="0dp"
                         android:text="" />
 
