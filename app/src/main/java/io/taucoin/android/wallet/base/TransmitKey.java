@@ -55,7 +55,7 @@ public class TransmitKey {
     public static final String ISSHOWTIP = "isShowTip";
 
     public static class ExternalUrl{
-        public static final String EXCHANGE = "https://wadax.io/trade/TAUTBTC";
-        public static final String P2P_BUY_SELL = "https://taucointalk.org/index.php?board=144.0";
+        public static final String EXCHANGE = "https://www.taucoin.io";
+        public static final String P2P_BUY_SELL = "https://www.taucoin.io/#p2plink";
     }
 }

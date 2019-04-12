@@ -22,6 +22,7 @@ android {
         multiDexEnabled true
         javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
         resConfigs "en"
+        buildConfigField "String", "DES3_KEY", des3Key
     }
 
     sourceSets {

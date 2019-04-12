@@ -16,18 +16,16 @@
 package io.taucoin.android.wallet.util;
 
 import com.github.naturs.logger.Logger;
+import com.mofei.tau.BuildConfig;
 
 import io.taucoin.foundation.util.DESEncryptUtils;
 import io.taucoin.foundation.util.MyBase64;
 
 public class WalletEncrypt {
 
-    private static final String DES3_KEY = "bT2RhiOJj/svgBmJcAQQ/QuKp3xhN9rm";
-
-
     public static String encrypt(String data){
         try {
-            byte[] byteKey = MyBase64.decode(DES3_KEY);
+            byte[] byteKey = MyBase64.decode(BuildConfig.DES3_KEY);
             byte[] byteData = MyBase64.decode(data);
             byte[] des3Data = DESEncryptUtils.des3EncodeECB(byteKey, byteData);
             return MyBase64.encode(des3Data);
@@ -39,7 +37,7 @@ public class WalletEncrypt {
 
     public static String decrypt(String data){
         try {
-            byte[] byteKey = MyBase64.decode(DES3_KEY);
+            byte[] byteKey = MyBase64.decode(BuildConfig.DES3_KEY);
             byte[] byteData = MyBase64.decode(data);
             byte[] des3Data = DESEncryptUtils.des3DecodeECB(byteKey, byteData);
             return MyBase64.encode(des3Data);
