@@ -60,15 +60,15 @@ public class UTXOManager {
         for (int i=0;i<utxoRecordList.size();i++){
 
             UTXORecord utxoRecord=utxoRecordList.get(i);
-            Logger.e(utxoRecord.getTxId()+" getTxId");
-            Logger.e(utxoRecord.getAddress()+" getAddress");
-            Logger.e(utxoRecord.getVout()+" getVout");
-            Logger.e(utxoRecord.getValue()+" getValue");
-            Logger.e(utxoRecord.getConfirmations()+" getConfirmations");
-            Logger.e(utxoRecord.getScriptPubKey().getAsm()+" getScriptPubKey_getAsm");
-            Logger.e(utxoRecord.getScriptPubKey().getHex()+" getScriptPubKey_getHex");
-
-            Logger.e("---------------");
+//            Logger.e(utxoRecord.getTxId()+" getTxId");
+//            Logger.e(utxoRecord.getAddress()+" getAddress");
+//            Logger.e(utxoRecord.getVout()+" getVout");
+//            Logger.e(utxoRecord.getValue()+" getValue");
+//            Logger.e(utxoRecord.getConfirmations()+" getConfirmations");
+//            Logger.e(utxoRecord.getScriptPubKey().getAsm()+" getScriptPubKey_getAsm");
+//            Logger.e(utxoRecord.getScriptPubKey().getHex()+" getScriptPubKey_getHex");
+//
+//            Logger.e("---------------");
             vCoins.add(utxoRecord);
         }
         return true;

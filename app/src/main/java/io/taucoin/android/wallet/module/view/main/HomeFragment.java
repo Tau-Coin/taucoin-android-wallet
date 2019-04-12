@@ -31,7 +31,6 @@ import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.android.wallet.util.UserUtil;
-import io.taucoin.android.wallet.widget.BreakTextView;
 import io.taucoin.foundation.util.DrawablesUtil;
 import io.taucoin.foundation.util.StringUtil;
 
@@ -46,7 +45,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     @BindView(R.id.iv_referral_link)
     ImageView ivReferralLink;
     @BindView(R.id.tv_referral_link)
-    BreakTextView tvReferralLink;
+    TextView tvReferralLink;
     @BindView(R.id.tv_your_invited)
     TextView tvYourInvited;
     @BindView(R.id.tv_your_referral)
@@ -57,6 +56,8 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     TextView tvExchange;
     @BindView(R.id.tv_p2p)
     TextView tvP2p;
+    @BindView(R.id.ll_referral_link)
+    View llReferralLink;
 
     @Override
     public View getViewLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,7 +91,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
                 if (!UserUtil.isImportKey()) {
                     ActivityUtil.startActivity(getActivity(), ImportKeyActivity.class);
                 } else {
-                    ActivityUtil.openUri(getActivity(), StringUtil.getText(tvReferralLink.getRawText()));
+                    ActivityUtil.openUri(getActivity(), StringUtil.getText(tvReferralLink));
                 }
                 break;
             case R.id.tv_exchange:
@@ -106,7 +107,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
 
     @OnLongClick(R.id.tv_referral_link)
     boolean copyReferralLink() {
-        CopyManager.copyText(StringUtil.getText(tvReferralLink.getRawText()));
+        CopyManager.copyText(StringUtil.getText(tvReferralLink));
         ToastUtils.showShortToast(R.string.main_referral_link_copied);
         return true;
     }
@@ -138,8 +139,12 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     }
 
     private void loadReferralView() {
-        UserUtil.loadReferralView(tvReferralLink, tvYourReferral, tvFriendReferral);
-        UserUtil.setInvitedView(tvYourInvited);
+        boolean isVisibility = UserUtil.isImportKey();
+        llReferralLink.setVisibility(!isVisibility ? View.GONE : View.VISIBLE);
+        if(UserUtil.isImportKey()){
+            UserUtil.loadReferralView(tvReferralLink, tvYourReferral, tvFriendReferral);
+            UserUtil.setInvitedView(tvYourInvited);
+        }
     }
 
     @Override

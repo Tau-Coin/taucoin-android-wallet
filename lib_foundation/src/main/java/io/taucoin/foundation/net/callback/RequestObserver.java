@@ -1,5 +1,8 @@
 package io.taucoin.foundation.net.callback;
 
+import com.github.naturs.logger.Logger;
+import com.google.gson.Gson;
+
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.taucoin.foundation.net.exception.ApiException;
@@ -34,6 +37,9 @@ public abstract class RequestObserver<T> implements Observer<T> {
     @Override
     public void onNext(T t) {
         if(null != t){
+            try {
+                Logger.json(new Gson().toJson(t));
+            }catch (Exception ignore){}
             if(t instanceof RetResult){
                 RetResult response = (RetResult) t;
                 boolean isSuccess = response.getStatus() == NetResultCode.SUCCESS_CODE;

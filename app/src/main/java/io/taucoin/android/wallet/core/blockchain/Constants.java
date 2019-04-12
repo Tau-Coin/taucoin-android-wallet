@@ -31,12 +31,11 @@ public class Constants {
     // 100 * 100000000 COIN
     public static final BigInteger MAX_MONEY = new BigInteger("10000000000", 10).multiply(COIN);
 
-    //  0.01 COIN
+    // 1 COIN
     public static final BigInteger DEFAULT_TX_FEE_MIN = new BigInteger("100000000", 10);
 
-    // TODO New version change < 665.00 coin
-    // 1 COIN
-    public static final BigInteger DEFAULT_TX_FEE_MAX = new BigInteger("100000000", 10);
+    // 10 COIN
+    public static final BigInteger DEFAULT_TX_FEE_MAX = new BigInteger("1000000000", 10);
 
     public static final long MAX_STANDARD_TX_WEIGHT = 400000;
 

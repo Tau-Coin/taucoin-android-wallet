@@ -36,6 +36,7 @@ import io.taucoin.android.wallet.widget.CommonDialog;
 import io.taucoin.android.wallet.widget.EditInput;
 import io.taucoin.android.wallet.widget.SelectionEditText;
 import io.taucoin.foundation.net.callback.LogicObserver;
+import io.taucoin.foundation.util.StringUtil;
 
 public class SendActivity extends BaseActivity implements ISendView {
 
@@ -170,6 +171,15 @@ public class SendActivity extends BaseActivity implements ISendView {
                 }else {
                     ToastUtils.showShortToast(R.string.send_tx_invalid_error);
                 }
+            }
+
+            @Override
+            public void handleError(int code, String msg) {
+                if(StringUtil.isNotEmpty(msg)){
+                    ToastUtils.showShortToast(msg);
+                }
+                ProgressManager.closeProgressDialog();
+                super.handleError(code, msg);
             }
         });
     }

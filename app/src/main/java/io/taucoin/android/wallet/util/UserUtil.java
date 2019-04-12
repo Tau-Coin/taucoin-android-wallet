@@ -16,6 +16,8 @@
 package io.taucoin.android.wallet.util;
 
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,7 +26,7 @@ import com.mofei.tau.R;
 
 import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.db.entity.KeyValue;
-import io.taucoin.android.wallet.widget.BreakTextView;
+import io.taucoin.android.wallet.widget.BreakTextSpan;
 import io.taucoin.foundation.util.StringUtil;
 
 public class UserUtil {
@@ -66,7 +68,7 @@ public class UserUtil {
             setBalance(tvBalance, 0L);
             return;
         }
-        setBalance(tvBalance, keyValue.getBalance());
+        setBalance(tvBalance, keyValue.getUtxo());
     }
 
     private static void setBalance(TextView tvBalance, long balance) {
@@ -100,10 +102,13 @@ public class UserUtil {
         tvAddress.setVisibility(visibility);
     }
 
-    public static void loadReferralView(BreakTextView tvReferralLink, TextView tvYourInvited, TextView tvFriendReferral) {
+    public static void loadReferralView(TextView tvReferralLink, TextView tvYourInvited, TextView tvFriendReferral) {
         if(tvReferralLink != null){
             String link = "https://www.taucoin.io/account/login?referralURL=3938eba1cec919831fe2871eb1e2eea1318aef30bc6db38d6bed2057d14ee66c";
-            tvReferralLink.setAutoSplitText(link);
+            SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
+            stringBuilder.append(link);
+            stringBuilder.setSpan(new BreakTextSpan(tvReferralLink, link), 0, stringBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tvReferralLink.setText(stringBuilder);
         }
         if(tvYourInvited != null){
             String referral = tvYourInvited.getResources().getString(R.string.main_your_referral);

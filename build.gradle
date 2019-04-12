@@ -49,7 +49,6 @@ ext {
     butterknife = project.property('DEP_BUTTERKNIFE')
     butterknifecompiler = project.property('DEP_BUTTERKNIFECOMPILER')
     logger = project.property('DEP_LOGGER')
-    stetho = project.property('DEP_STETHO')
     stethookhttp3 = project.property('DEP_STETHOOKHTTP3')
     crashlytics = project.property('DEP_CRASHLYTICS')
     leakcanarydebug = project.property('DEP_LEAKCANARYDEBUG')

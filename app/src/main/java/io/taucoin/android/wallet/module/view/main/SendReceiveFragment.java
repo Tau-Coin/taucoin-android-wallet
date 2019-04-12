@@ -31,6 +31,7 @@ import io.taucoin.android.wallet.db.entity.KeyValue;
 import io.taucoin.android.wallet.db.entity.TransactionHistory;
 import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.presenter.TxPresenter;
+import io.taucoin.android.wallet.module.service.TxService;
 import io.taucoin.android.wallet.module.view.main.iview.ISendReceiveView;
 import io.taucoin.android.wallet.module.view.manage.ImportKeyActivity;
 import io.taucoin.android.wallet.module.view.tx.SendActivity;
@@ -222,6 +223,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         if(UserUtil.isImportKey() && mTxPresenter != null){
+            TxService.startTxService(TransmitKey.ServiceType.GET_BALANCE);
             mTxPresenter.getAddOuts(new LogicObserver<Boolean>() {
                 @Override
                 public void handleData(Boolean isSuccess) {

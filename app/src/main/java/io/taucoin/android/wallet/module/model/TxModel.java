@@ -246,7 +246,7 @@ public class TxModel implements ITxModel {
                 Logger.i(tx.toString());
                 txHistory.setTxId(tx.getHashAsString());
                 txHistory.setConfirmations(0);
-                txHistory.setResult("sending");
+                txHistory.setResult(TransmitKey.TxResult.CONFIRMING);
                 txHistory.setFromAddress(keyValue.getAddress());
                 txHistory.setTime(DateUtil.getCurrentTime());
                 txHistory.setSentOrReceived(TransmitKey.TxType.SEND);

@@ -322,7 +322,7 @@ public class Wallet implements Serializable {
         // validate balance is enough
         KeyValue keyValue = MyApplication.getKeyValue();
         if (keyValue != null) {
-            String balanceStr = String.valueOf(keyValue.getBalance());
+            String balanceStr = String.valueOf(keyValue.getUtxo());
             BigInteger balance = new BigInteger(balanceStr, 10);
             if (balance.compareTo(amount.add(fee)) < 0) {
                 ToastUtils.showShortToast(TransactionFailReason.NO_ENOUGH_COINS.getMsg());

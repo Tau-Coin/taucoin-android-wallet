@@ -103,12 +103,14 @@ public class TxPresenter {
                         createTransaction(tx, logicObserver);
                     }else {
                         mTxModel.getUTXOList();
+                        TxService.startTxService(TransmitKey.ServiceType.GET_BALANCE);
                         logicObserver.onNext(false);
                     }
                 }
             });
         }else {
             mTxModel.getUTXOList();
+            TxService.startTxService(TransmitKey.ServiceType.GET_BALANCE);
             logicObserver.onNext(false);
         }
     }
@@ -123,8 +125,7 @@ public class TxPresenter {
             @Override
             public void handleError(int code, String msg) {
                 super.handleError(code, msg);
-                ToastUtils.showShortToast(msg);
-                logicObserver.onNext(false);
+                logicObserver.handleError(code, msg);
             }
         });
 
@@ -172,9 +173,7 @@ public class TxPresenter {
                         EventBusUtil.post(MessageEvent.EventCode.TRANSACTION);
                     }
                 });
-                logicObserver.onNext(false);
-
-                super.handleError(result, msgCode);
+                logicObserver.handleError(msgCode, result);
             }
         });
     }

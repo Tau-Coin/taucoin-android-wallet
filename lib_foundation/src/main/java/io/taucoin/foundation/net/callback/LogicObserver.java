@@ -1,15 +1,18 @@
 package io.taucoin.foundation.net.callback;
 
-import com.github.naturs.logger.Logger;
-
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.taucoin.foundation.net.exception.CodeException;
+import io.taucoin.foundation.util.StringUtil;
 
 public abstract class LogicObserver<T> implements Observer<T> {
     @Override
     public void onError(Throwable e) {
-        handleError(100, "unknown error");
+        String msg = "unknown error";
+        if(e != null && StringUtil.isNotEmpty(e.getMessage())){
+            msg = e.getMessage();
+        }
+        handleError(100, msg);
     }
 
     public void onError() {
