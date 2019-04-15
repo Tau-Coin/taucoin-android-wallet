@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mofei.tau.R;
@@ -42,8 +41,6 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     TextView tvBalance;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
-    @BindView(R.id.iv_referral_link)
-    ImageView ivReferralLink;
     @BindView(R.id.tv_referral_link)
     TextView tvReferralLink;
     @BindView(R.id.tv_your_invited)
@@ -105,6 +102,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
         }
     }
 
+    @SuppressWarnings("all")
     @OnLongClick(R.id.tv_referral_link)
     boolean copyReferralLink() {
         CopyManager.copyText(StringUtil.getText(tvReferralLink));

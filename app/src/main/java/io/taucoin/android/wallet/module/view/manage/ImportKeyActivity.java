@@ -54,6 +54,7 @@ public class ImportKeyActivity extends BaseActivity implements IImportKeyView {
             ToastUtils.showShortToast(R.string.keys_private_invalid);
             return;
         }
+        privateKey = privateKey.trim();
         Key key = KeyManager.validateKey(privateKey);
         if(key == null){
             ToastUtils.showShortToast(R.string.keys_private_invalid);
