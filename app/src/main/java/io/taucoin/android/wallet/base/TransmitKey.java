@@ -25,7 +25,7 @@ public class TransmitKey {
         public static final String GET_BALANCE = "get_balance";
         public static final String GET_UTXO_LIST = "get_utxo_list";
         public static final String GET_RAW_TX = "get_raw_tx";
-        public static final String GET_INFO = "get_info";
+        public static final String GET_REFERRAL_INFO = "get_referral_info";
     }
 
     public static final String PRIVATE_KEY = "Privkey";

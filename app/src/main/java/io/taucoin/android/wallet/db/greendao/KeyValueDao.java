@@ -33,6 +33,8 @@ public class KeyValueDao extends AbstractDao<KeyValue, Long> {
         public final static Property Balance = new Property(6, long.class, "balance", false, "BALANCE");
         public final static Property HeaderImage = new Property(7, String.class, "headerImage", false, "HEADER_IMAGE");
         public final static Property NickName = new Property(8, String.class, "nickName", false, "NICK_NAME");
+        public final static Property InvitedFriends = new Property(9, int.class, "invitedFriends", false, "INVITED_FRIENDS");
+        public final static Property ReferralLink = new Property(10, String.class, "referralLink", false, "REFERRAL_LINK");
     }
 
 
@@ -56,7 +58,9 @@ public class KeyValueDao extends AbstractDao<KeyValue, Long> {
                 "\"REWARD\" INTEGER NOT NULL ," + // 5: reward
                 "\"BALANCE\" INTEGER NOT NULL ," + // 6: balance
                 "\"HEADER_IMAGE\" TEXT," + // 7: headerImage
-                "\"NICK_NAME\" TEXT);"); // 8: nickName
+                "\"NICK_NAME\" TEXT," + // 8: nickName
+                "\"INVITED_FRIENDS\" INTEGER NOT NULL ," + // 9: invitedFriends
+                "\"REFERRAL_LINK\" TEXT);"); // 10: referralLink
     }
 
     /** Drops the underlying database table. */
@@ -101,6 +105,12 @@ public class KeyValueDao extends AbstractDao<KeyValue, Long> {
         if (nickName != null) {
             stmt.bindString(9, nickName);
         }
+        stmt.bindLong(10, entity.getInvitedFriends());
+ 
+        String referralLink = entity.getReferralLink();
+        if (referralLink != null) {
+            stmt.bindString(11, referralLink);
+        }
     }
 
     @Override
@@ -139,6 +149,12 @@ public class KeyValueDao extends AbstractDao<KeyValue, Long> {
         if (nickName != null) {
             stmt.bindString(9, nickName);
         }
+        stmt.bindLong(10, entity.getInvitedFriends());
+ 
+        String referralLink = entity.getReferralLink();
+        if (referralLink != null) {
+            stmt.bindString(11, referralLink);
+        }
     }
 
     @Override
@@ -157,7 +173,9 @@ public class KeyValueDao extends AbstractDao<KeyValue, Long> {
             cursor.getLong(offset + 5), // reward
             cursor.getLong(offset + 6), // balance
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // headerImage
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // nickName
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // nickName
+            cursor.getInt(offset + 9), // invitedFriends
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10) // referralLink
         );
         return entity;
     }
@@ -173,6 +191,8 @@ public class KeyValueDao extends AbstractDao<KeyValue, Long> {
         entity.setBalance(cursor.getLong(offset + 6));
         entity.setHeaderImage(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setNickName(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setInvitedFriends(cursor.getInt(offset + 9));
+        entity.setReferralLink(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
      }
     
     @Override

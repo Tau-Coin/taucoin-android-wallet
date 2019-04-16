@@ -64,4 +64,8 @@ public class EventBusUtil {
         msg.setCode(code);
         return msg;
     }
+
+    public static void post(MessageEvent messageEvent){
+        EventBus.getDefault().post(messageEvent);
+    }
 }

@@ -19,7 +19,10 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import io.taucoin.android.wallet.base.BaseFragment;
 import io.taucoin.android.wallet.base.TransmitKey;
+import io.taucoin.android.wallet.db.entity.ReferralInfo;
 import io.taucoin.android.wallet.module.bean.MessageEvent;
+import io.taucoin.android.wallet.module.model.IUserModel;
+import io.taucoin.android.wallet.module.model.UserModel;
 import io.taucoin.android.wallet.module.service.TxService;
 import io.taucoin.android.wallet.module.view.main.iview.IHomeView;
 import io.taucoin.android.wallet.module.view.manage.ImportKeyActivity;
@@ -30,6 +33,7 @@ import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.android.wallet.util.UserUtil;
+import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.util.DrawablesUtil;
 import io.taucoin.foundation.util.StringUtil;
 
@@ -55,15 +59,18 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     TextView tvP2p;
     @BindView(R.id.ll_referral_link)
     View llReferralLink;
+    @BindView(R.id.iv_referral_link)
+    View ivReferralLink;
 
+    private IUserModel userModel;
     @Override
     public View getViewLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
+        userModel = new UserModel();
         initView();
         ProgressManager.showProgressDialog(getActivity());
         TxService.startTxService(TransmitKey.ServiceType.GET_HOME_DATA);
-        TxService.startTxService(TransmitKey.ServiceType.GET_INFO);
         return view;
     }
 
@@ -87,7 +94,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
             case R.id.tv_referral_link:
                 if (!UserUtil.isImportKey()) {
                     ActivityUtil.startActivity(getActivity(), ImportKeyActivity.class);
-                } else {
+                } else if(UserUtil.isHaveLlink()){
                     ActivityUtil.openUri(getActivity(), StringUtil.getText(tvReferralLink));
                 }
                 break;
@@ -105,8 +112,10 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     @SuppressWarnings("all")
     @OnLongClick(R.id.tv_referral_link)
     boolean copyReferralLink() {
-        CopyManager.copyText(StringUtil.getText(tvReferralLink));
-        ToastUtils.showShortToast(R.string.main_referral_link_copied);
+        if(UserUtil.isHaveLlink()){
+            CopyManager.copyText(StringUtil.getText(tvReferralLink));
+            ToastUtils.showShortToast(R.string.main_referral_link_copied);
+        }
         return true;
     }
 
@@ -120,7 +129,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
             case ALL:
                 UserUtil.setBalance(tvBalance);
                 UserUtil.setNickName(tvNick);
-                loadReferralView();
+                loadReferralView(null);
                 break;
             case BALANCE:
                 if (refreshLayout != null && refreshLayout.isRefreshing()) {
@@ -131,17 +140,31 @@ public class HomeFragment extends BaseFragment implements IHomeView {
             case NICKNAME:
                 UserUtil.setNickName(tvNick);
                 break;
+            case INVITED:
+                UserUtil.setInvitedView(tvYourInvited);
+                break;
+            case REFERRAL:
+                loadReferralView(object.getData());
+                break;
             default:
                 break;
         }
     }
 
-    private void loadReferralView() {
-        boolean isVisibility = UserUtil.isImportKey();
-        llReferralLink.setVisibility(!isVisibility ? View.GONE : View.VISIBLE);
+    private void loadReferralView(Object object) {
+        llReferralLink.setVisibility(View.GONE);
         if(UserUtil.isImportKey()){
-            UserUtil.loadReferralView(tvReferralLink, tvYourReferral, tvFriendReferral);
+            ivReferralLink.setVisibility(UserUtil.isHaveLlink() ? View.VISIBLE : View.INVISIBLE);
+            llReferralLink.setVisibility(View.VISIBLE);
+            UserUtil.loadReferralView(tvReferralLink, object);
             UserUtil.setInvitedView(tvYourInvited);
+            userModel.getReferralInfo(new LogicObserver<ReferralInfo>() {
+                @Override
+                public void handleData(ReferralInfo referralInfo) {
+                    UserUtil.loadRewardView(referralInfo, tvYourReferral, tvFriendReferral);
+                }
+            });
+
         }
     }
 
@@ -158,6 +181,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         TxService.startTxService(TransmitKey.ServiceType.GET_BALANCE);
+        TxService.startTxService(TransmitKey.ServiceType.GET_REFERRAL_INFO);
 
         if (!UserUtil.isImportKey()) {
             refreshLayout.finishRefresh(1000);

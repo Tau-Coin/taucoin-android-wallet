@@ -26,6 +26,7 @@ import com.mofei.tau.R;
 
 import io.taucoin.android.wallet.MyApplication;
 import io.taucoin.android.wallet.db.entity.KeyValue;
+import io.taucoin.android.wallet.db.entity.ReferralInfo;
 import io.taucoin.android.wallet.widget.BreakTextSpan;
 import io.taucoin.foundation.util.StringUtil;
 
@@ -78,6 +79,11 @@ public class UserUtil {
         Logger.d("UserUtil.setBalance=" + balanceStr);
     }
 
+    public static boolean isHaveLlink() {
+        KeyValue keyValue = MyApplication.getKeyValue();
+        return  keyValue != null && StringUtil.isNotEmpty(keyValue.getReferralLink());
+    }
+
     public static boolean isImportKey() {
         KeyValue keyValue = MyApplication.getKeyValue();
         return  keyValue != null;
@@ -102,32 +108,54 @@ public class UserUtil {
         tvAddress.setVisibility(visibility);
     }
 
-    public static void loadReferralView(TextView tvReferralLink, TextView tvYourInvited, TextView tvFriendReferral) {
+    public static void loadReferralView(TextView tvReferralLink, Object object) {
+        KeyValue keyValue = MyApplication.getKeyValue();
+        if(keyValue == null){
+            return;
+        }
         if(tvReferralLink != null){
-            String link = "https://www.taucoin.io/account/login?referralURL=3938eba1cec919831fe2871eb1e2eea1318aef30bc6db38d6bed2057d14ee66c";
+            String link = keyValue.getReferralLink();
+            if(object != null && StringUtil.isEmpty(link)){
+                if(object instanceof Boolean){
+                    Boolean isSuccess = (Boolean) object;
+                    if(!isSuccess){
+                        link = ResourcesUtil.getText(R.string.main_referral_link_failed);
+                    }
+                }
+            }
+            if(StringUtil.isEmpty(link)){
+                link = StringUtil.getText(tvReferralLink);
+            }
             SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
             stringBuilder.append(link);
             stringBuilder.setSpan(new BreakTextSpan(tvReferralLink, link), 0, stringBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             tvReferralLink.setText(stringBuilder);
         }
+    }
+
+    public static void loadRewardView(ReferralInfo referralInfo, TextView tvYourInvited, TextView tvFriendReferral) {
         if(tvYourInvited != null){
-            String referral = tvYourInvited.getResources().getString(R.string.main_your_referral);
-            String num = "50";
+            String referral = ResourcesUtil.getText(R.string.main_your_referral);
+            long num = referralInfo.getInvitedReward();
             referral = String.format(referral, num);
             tvYourInvited.setText(Html.fromHtml(referral));
         }
         if(tvFriendReferral != null){
-            String referral = tvFriendReferral.getResources().getString(R.string.main_friend_referral);
-            String num = "50";
+            String referral = ResourcesUtil.getText(R.string.main_friend_referral);
+            long num = referralInfo.getFriendReward();
             referral = String.format(referral, num);
             tvFriendReferral.setText(Html.fromHtml(referral));
         }
     }
 
     public static void setInvitedView(TextView tvYourInvited) {
+        KeyValue keyValue = MyApplication.getKeyValue();
+        if(keyValue == null){
+            return;
+        }
         if(tvYourInvited != null){
-            String invitedFriends = tvYourInvited.getResources().getString(R.string.main_invited_friends);
-            String num = "0";
+            String invitedFriends = ResourcesUtil.getText(R.string.main_invited_friends);
+            int num = keyValue.getInvitedFriends();
             invitedFriends = String.format(invitedFriends, num);
             tvYourInvited.setText(Html.fromHtml(invitedFriends));
         }

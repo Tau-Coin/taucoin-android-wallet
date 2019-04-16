@@ -15,16 +15,27 @@
  */
 package io.taucoin.android.wallet.module.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.taucoin.android.wallet.MyApplication;
+import io.taucoin.android.wallet.base.TransmitKey;
 import io.taucoin.android.wallet.db.entity.KeyValue;
+import io.taucoin.android.wallet.db.entity.ReferralInfo;
 import io.taucoin.android.wallet.db.util.KeyValueDaoUtils;
+import io.taucoin.android.wallet.db.util.ReferralInfoDaoUtils;
 import io.taucoin.android.wallet.db.util.TransactionHistoryDaoUtils;
+import io.taucoin.android.wallet.module.bean.ReferralBean;
+import io.taucoin.android.wallet.net.callback.TAUObserver;
+import io.taucoin.android.wallet.net.service.UserService;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 import io.taucoin.android.wallet.util.WalletEncrypt;
+import io.taucoin.foundation.net.NetWorkManager;
+import io.taucoin.foundation.net.callback.DataResult;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.net.exception.CodeException;
 import io.taucoin.foundation.util.StringUtil;
@@ -111,5 +122,93 @@ public class UserModel implements IUserModel{
             TransactionHistoryDaoUtils.getInstance().updateOldTxHistory()
         ).subscribeOn(Schedulers.io())
         .subscribe();
+    }
+
+    @Override
+    public void getReferralUrl(LogicObserver<Boolean> observer) {
+        String address = SharedPreferencesHelper.getInstance().getString(TransmitKey.ADDRESS, "");
+        Map<String,String> map = new HashMap<>();
+        map.put("address", address);
+        NetWorkManager.createApiService(UserService.class)
+                .getReferralUrl(map)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new TAUObserver<DataResult<ReferralBean>>() {
+                    @Override
+                    public void handleData(DataResult<ReferralBean> dataResult) {
+                        super.handleData(dataResult);
+                        if(dataResult.getData() != null){
+                            saveReferralInfo(dataResult.getData(), observer);
+                        }else{
+                            observer.onNext(false);
+                        }
+                    }
+
+                    @Override
+                    public void handleError(String msg, int msgCode) {
+                        observer.onNext(false);
+                    }
+                });
+    }
+
+    private void saveReferralInfo(ReferralBean data, LogicObserver<Boolean> observer) {
+        Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
+            String publicKey = SharedPreferencesHelper.getInstance().getString(TransmitKey.PUBLIC_KEY, "");
+            KeyValue keyValue = KeyValueDaoUtils.getInstance().queryByPubicKey(publicKey);
+            keyValue.setReferralLink(data.getReferralUrl());
+            KeyValueDaoUtils.getInstance().update(keyValue);
+            ReferralInfoDaoUtils.getInstance().setReferralInfo(data.getInviteeReword(), data.getInviterReword());
+            emitter.onNext(true);
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(observer);
+    }
+
+    @Override
+    public void getReferralCounts(LogicObserver<Boolean> observer) {
+        String address = SharedPreferencesHelper.getInstance().getString(TransmitKey.ADDRESS, "");
+        Map<String,String> map = new HashMap<>();
+        map.put("address", address);
+        NetWorkManager.createApiService(UserService.class)
+            .getReferralCounts(map)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe(new TAUObserver<DataResult<Integer>>() {
+                @Override
+                public void handleData(DataResult<Integer> dataResult) {
+                    super.handleData(dataResult);
+                    saveReferralCounts(dataResult.getData(), observer);
+                }
+
+                @Override
+                public void handleError(String msg, int msgCode) {
+                    observer.onNext(false);
+                }
+            });
+    }
+
+    private void saveReferralCounts(int counts, LogicObserver<Boolean> observer) {
+        Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
+            String publicKey = SharedPreferencesHelper.getInstance().getString(TransmitKey.PUBLIC_KEY, "");
+            KeyValue keyValue = KeyValueDaoUtils.getInstance().queryByPubicKey(publicKey);
+            keyValue.setInvitedFriends(counts);
+            KeyValueDaoUtils.getInstance().update(keyValue);
+            emitter.onNext(true);
+        }).observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe(observer);
+    }
+
+    @Override
+    public void getReferralInfo(LogicObserver<ReferralInfo> observer) {
+        Observable.create((ObservableOnSubscribe<ReferralInfo>) emitter -> {
+            ReferralInfo referralInfo = ReferralInfoDaoUtils.getInstance().query();
+            if(referralInfo == null){
+                referralInfo = new ReferralInfo();
+            }
+            emitter.onNext(referralInfo);
+        }).observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe(observer);
     }
 }

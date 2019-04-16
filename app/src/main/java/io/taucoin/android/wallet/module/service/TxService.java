@@ -38,7 +38,9 @@ import io.taucoin.android.wallet.module.bean.MessageEvent;
 import io.taucoin.android.wallet.module.model.AppModel;
 import io.taucoin.android.wallet.module.model.IAppModel;
 import io.taucoin.android.wallet.module.model.ITxModel;
+import io.taucoin.android.wallet.module.model.IUserModel;
 import io.taucoin.android.wallet.module.model.TxModel;
+import io.taucoin.android.wallet.module.model.UserModel;
 import io.taucoin.android.wallet.module.view.main.MainActivity;
 import io.taucoin.android.wallet.net.callback.CommonObserver;
 import io.taucoin.android.wallet.net.callback.TAUObserver;
@@ -54,7 +56,9 @@ public class TxService extends Service {
 
     private ITxModel mTxModel;
     private IAppModel mAppModel;
+    private IUserModel mUserModel;
     private boolean mIsChecked;
+    private boolean mIsUpdate;
 
     public TxService() {
     }
@@ -70,7 +74,9 @@ public class TxService extends Service {
         super.onCreate();
         mTxModel = new TxModel();
         mAppModel = new AppModel();
+        mUserModel = new UserModel();
         mIsChecked = false;
+        mIsUpdate = false;
         Logger.i("TxService onCreate");
     }
 
@@ -87,6 +93,8 @@ public class TxService extends Service {
                     if(!mIsChecked){
                         checkRawTransaction();
                     }
+                    getInfo();
+                    getReferralInfo();
                     break;
                 case TransmitKey.ServiceType.GET_SEND_DATA:
                     getBalance(serviceType);
@@ -103,8 +111,8 @@ public class TxService extends Service {
                         checkRawTransactionDelay();
                     }
                     break;
-                case TransmitKey.ServiceType.GET_INFO:
-                    getInfo();
+                case TransmitKey.ServiceType.GET_REFERRAL_INFO:
+                    getReferralInfo();
                     break;
                 default:
                     break;
@@ -118,6 +126,33 @@ public class TxService extends Service {
 
     private void getInfo() {
         mAppModel.getInfo();
+    }
+
+    private void getReferralCounts() {
+        mUserModel.getReferralCounts(new LogicObserver<Boolean>(){
+            @Override
+            public void handleData(Boolean aBoolean) {
+                if(aBoolean){
+                    EventBusUtil.post(MessageEvent.EventCode.NICKNAME);
+                }
+            }
+        });
+    }
+
+    private void getReferralInfo() {
+        getReferralCounts();
+        if(!mIsUpdate){
+            mUserModel.getReferralUrl(new LogicObserver<Boolean>(){
+                @Override
+                public void handleData(Boolean aBoolean) {
+                    mIsUpdate = aBoolean;
+                    MessageEvent messageEvent = new MessageEvent();
+                    messageEvent.setData(aBoolean);
+                    messageEvent.setCode(MessageEvent.EventCode.REFERRAL);
+                    EventBusUtil.post(messageEvent);
+                }
+            });
+        }
     }
 
     private void checkRawTransactionDelay() {

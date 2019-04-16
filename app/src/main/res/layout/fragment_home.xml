@@ -14,7 +14,8 @@
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         app:srlAccentColor="#00000000"
         app:srlPrimaryColor="#00000000"
         app:srlEnablePreviewInEditMode="true">
@@ -147,33 +148,6 @@
 
             </ScrollView>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginStart="40dp"
-                android:paddingTop="15dp"
-                android:layout_marginEnd="40dp"
-                android:layout_height="75dp">
-
-                <TextView
-                    style="@style/style_normal_blue"
-                    android:id="@+id/tv_exchange"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:text="@string/main_exchange"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    style="@style/style_normal_blue"
-                    android:id="@+id/tv_p2p"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:text="@string/main_p2p_buy_sell"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
         </LinearLayout>
 
         <io.taucoin.android.wallet.widget.refresh.ClassicsFooter
@@ -181,4 +155,30 @@
             android:layout_height="wrap_content"/>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginStart="40dp"
+        android:paddingTop="15dp"
+        android:layout_marginEnd="40dp"
+        android:layout_height="85dp">
+
+        <TextView
+            style="@style/style_normal_blue"
+            android:id="@+id/tv_exchange"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/main_exchange"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/style_normal_blue"
+            android:id="@+id/tv_p2p"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/main_p2p_buy_sell"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </LinearLayout>

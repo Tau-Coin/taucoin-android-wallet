@@ -22,10 +22,12 @@ public class KeyValue {
     private long balance;
     private String headerImage;
     private String nickName;
-    @Generated(hash = 461750094)
+    private int invitedFriends;
+    private String referralLink;
+    @Generated(hash = 1003161012)
     public KeyValue(Long id, String pubkey, String privkey, String address,
             long utxo, long reward, long balance, String headerImage,
-            String nickName) {
+            String nickName, int invitedFriends, String referralLink) {
         this.id = id;
         this.pubkey = pubkey;
         this.privkey = privkey;
@@ -35,6 +37,8 @@ public class KeyValue {
         this.balance = balance;
         this.headerImage = headerImage;
         this.nickName = nickName;
+        this.invitedFriends = invitedFriends;
+        this.referralLink = referralLink;
     }
     @Generated(hash = 92014137)
     public KeyValue() {
@@ -92,5 +96,17 @@ public class KeyValue {
     }
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+    public int getInvitedFriends() {
+        return this.invitedFriends;
+    }
+    public void setInvitedFriends(int invitedFriends) {
+        this.invitedFriends = invitedFriends;
+    }
+    public String getReferralLink() {
+        return this.referralLink;
+    }
+    public void setReferralLink(String referralLink) {
+        this.referralLink = referralLink;
     }
 }

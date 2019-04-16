@@ -16,6 +16,7 @@
 package io.taucoin.android.wallet.module.model;
 
 import io.taucoin.android.wallet.db.entity.KeyValue;
+import io.taucoin.android.wallet.db.entity.ReferralInfo;
 import io.taucoin.foundation.net.callback.LogicObserver;
 
 public interface IUserModel {
@@ -31,4 +32,13 @@ public interface IUserModel {
 
     /** Update old version2.0 tx history data */
     void updateOldTxHistory();
+
+    /** Get referral link and invitation award */
+    void getReferralUrl(LogicObserver<Boolean> observer);
+
+    /** Get invited friends count */
+    void getReferralCounts(LogicObserver<Boolean> observer);
+
+    /** Get referral info */
+    void getReferralInfo(LogicObserver<ReferralInfo> observer);
 }

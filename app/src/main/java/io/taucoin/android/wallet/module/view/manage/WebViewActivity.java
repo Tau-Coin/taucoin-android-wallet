@@ -1,8 +1,6 @@
 package io.taucoin.android.wallet.module.view.manage;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -60,7 +58,9 @@ public class WebViewActivity extends BaseActivity {
     }
 
     private void initWebView() {
+        // Solve CVE-2014-1939 Loophole
         webView.removeJavascriptInterface("searchBoxJavaBridge_");
+        // Solve CVE-2014-7224 Loophole
         webView.removeJavascriptInterface("accessibility");
         webView.removeJavascriptInterface("accessibilityTraversal");
         webView.setWebChromeClient(new WebChromeClient() {
@@ -116,7 +116,8 @@ public class WebViewActivity extends BaseActivity {
         webSettings.setAppCachePath(getCacheDir().getAbsolutePath());
 
         webSettings.setSupportZoom(false);
-        webSettings.setAllowFileAccess(true);
+        //  Solve WebView file field Homology strategy bypasses vulnerabilities
+        webSettings.setAllowFileAccess(false);
         webSettings.setAllowFileAccessFromFileURLs(false);
         webSettings.setAllowUniversalAccessFromFileURLs(false);
     }

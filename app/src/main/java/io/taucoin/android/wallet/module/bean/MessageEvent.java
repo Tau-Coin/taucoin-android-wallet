@@ -7,7 +7,9 @@ public class MessageEvent{
         BALANCE,
         NICKNAME,
         TRANSACTION,
-        UPGRADE
+        UPGRADE,
+        INVITED,
+        REFERRAL
     }
     private Object data;
 
