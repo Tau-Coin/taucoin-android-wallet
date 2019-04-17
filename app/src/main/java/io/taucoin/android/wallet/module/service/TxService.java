@@ -94,6 +94,7 @@ public class TxService extends Service {
                         checkRawTransaction();
                     }
                     getInfo();
+                    mIsUpdate = false;
                     getReferralInfo();
                     break;
                 case TransmitKey.ServiceType.GET_SEND_DATA:
