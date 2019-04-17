@@ -20,20 +20,3 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-
-# greenDAO开始
-#-keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
-#public static java.lang.String TABLENAME;
-#}
-#-keep class **$Properties
-# If you do not use SQLCipher:
-#-dontwarn org.greenrobot.greendao.database.**
-# If you do not use RxJava: -dontwarn rx.**
-# greenDAO结束
-# 如果按照上面介绍的加入了数据库加密功能，则需添加一下配置
-#sqlcipher数据库加密开始
-#-keep class net.sqlcipher.** {*;}
-#-keep class net.sqlcipher.database.** {*;}
-#sqlcipher数据库加密结束
-
-

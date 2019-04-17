@@ -22,7 +22,6 @@ android {
         multiDexEnabled true
         javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
         resConfigs "en"
-        buildConfigField "String", "DES3_KEY", des3Key
     }
 
     sourceSets {
@@ -57,11 +56,13 @@ android {
             shrinkResources false
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "DES3_KEY", des3KeyRelease
         }
         debug {
             minifyEnabled false
             zipAlignEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "DES3_KEY", des3KeyDebug
         }
     }
 
