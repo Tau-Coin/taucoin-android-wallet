@@ -56,13 +56,13 @@ android {
             shrinkResources false
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "DES3_KEY", des3KeyRelease
+//            buildConfigField "String", "DES3_KEY", des3KeyRelease
         }
         debug {
             minifyEnabled false
             zipAlignEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "DES3_KEY", des3KeyDebug
+//            buildConfigField "String", "DES3_KEY", des3KeyDebug
         }
     }
 

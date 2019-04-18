@@ -33,7 +33,6 @@ import io.taucoin.android.wallet.module.bean.ReferralBean;
 import io.taucoin.android.wallet.net.callback.TAUObserver;
 import io.taucoin.android.wallet.net.service.UserService;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
-import io.taucoin.android.wallet.util.WalletEncrypt;
 import io.taucoin.foundation.net.NetWorkManager;
 import io.taucoin.foundation.net.callback.DataResult;
 import io.taucoin.foundation.net.callback.LogicObserver;
@@ -61,8 +60,8 @@ public class UserModel implements IUserModel{
                 }
             }
             // private key encrypt
-            String encryptKey = WalletEncrypt.encrypt(kv.getPrivkey());
-            kv.setPrivkey(encryptKey);
+//            String encryptKey = WalletEncrypt.encrypt(kv.getPrivkey());
+//            kv.setPrivkey(encryptKey);
 
             KeyValue result = KeyValueDaoUtils.getInstance().insertOrReplace(kv);
             emitter.onNext(result);
@@ -93,16 +92,16 @@ public class UserModel implements IUserModel{
 
             if(StringUtil.isNotEmpty(keyValue.getPrivkey())){
                 Key key = KeyManager.validateKey(keyValue.getPrivkey());
-                if(key == null){
-                    // private key decrypt
-                    String encryptKey = WalletEncrypt.decrypt(keyValue.getPrivkey());
-                    key = KeyManager.validateKey(encryptKey);
-
-                }else{
-                    // private key encrypt
-                    String encryptKey = WalletEncrypt.encrypt(keyValue.getPrivkey());
-                    keyValue.setPrivkey(encryptKey);
-                }
+//                if(key == null){
+//                    // private key decrypt
+//                    String encryptKey = WalletEncrypt.decrypt(keyValue.getPrivkey());
+//                    key = KeyManager.validateKey(encryptKey);
+//
+//                }else{
+//                    // private key encrypt
+//                    String encryptKey = WalletEncrypt.encrypt(keyValue.getPrivkey());
+//                    keyValue.setPrivkey(encryptKey);
+//                }
                 if(key != null){
                     keyValue.setPubkey(key.getPubkey());
                     keyValue.setAddress(key.getAddress());

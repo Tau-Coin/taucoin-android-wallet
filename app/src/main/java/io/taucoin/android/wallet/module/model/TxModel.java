@@ -56,7 +56,6 @@ import io.taucoin.android.wallet.util.DateUtil;
 import io.taucoin.android.wallet.util.FmtMicrometer;
 import io.taucoin.android.wallet.util.MD5_BASE64Util;
 import io.taucoin.android.wallet.util.SharedPreferencesHelper;
-import io.taucoin.android.wallet.util.WalletEncrypt;
 import io.taucoin.foundation.net.NetWorkManager;
 import io.taucoin.foundation.net.callback.DataResult;
 import io.taucoin.foundation.net.callback.LogicObserver;
@@ -223,8 +222,9 @@ public class TxModel implements ITxModel {
             }
             String newPrivateKey;
             try {
-                String encryptKey = WalletEncrypt.decrypt(keyValue.getPrivkey());
-                newPrivateKey = Utils.convertWIFPrivkeyIntoPrivkey(encryptKey);
+//                String encryptKey = WalletEncrypt.decrypt(keyValue.getPrivkey());
+//                newPrivateKey = Utils.convertWIFPrivkeyIntoPrivkey(encryptKey);
+                newPrivateKey = Utils.convertWIFPrivkeyIntoPrivkey(keyValue.getPrivkey());
             } catch (AddressFormatException e) {
                 System.out.println(e.toString());
                 Logger.e(e, "AddressFormatException in createTransaction");

@@ -15,35 +15,35 @@
  */
 package io.taucoin.android.wallet.util;
 
-import com.github.naturs.logger.Logger;
-import com.mofei.tau.BuildConfig;
-
-import io.taucoin.foundation.util.DESEncryptUtils;
-import io.taucoin.foundation.util.MyBase64;
+//import com.github.naturs.logger.Logger;
+//import com.mofei.tau.BuildConfig;
+//
+//import io.taucoin.foundation.util.DESEncryptUtils;
+//import io.taucoin.foundation.util.MyBase64;
 
 public class WalletEncrypt {
 
-    public static String encrypt(String data){
-        try {
-            byte[] byteKey = MyBase64.decode(BuildConfig.DES3_KEY);
-            byte[] byteData = MyBase64.decode(data);
-            byte[] des3Data = DESEncryptUtils.des3EncodeECB(byteKey, byteData);
-            return MyBase64.encode(des3Data);
-        }catch (Exception e){
-            Logger.e("encrypt is error", e);
-        }
-        return data;
-    }
-
-    public static String decrypt(String data){
-        try {
-            byte[] byteKey = MyBase64.decode(BuildConfig.DES3_KEY);
-            byte[] byteData = MyBase64.decode(data);
-            byte[] des3Data = DESEncryptUtils.des3DecodeECB(byteKey, byteData);
-            return MyBase64.encode(des3Data);
-        }catch (Exception e){
-            Logger.e("decrypt is error", e);
-        }
-        return data;
-    }
+//    public static String encrypt(String data){
+//        try {
+//            byte[] byteKey = MyBase64.decode(BuildConfig.DES3_KEY);
+//            byte[] byteData = MyBase64.decode(data);
+//            byte[] des3Data = DESEncryptUtils.des3EncodeECB(byteKey, byteData);
+//            return MyBase64.encode(des3Data);
+//        }catch (Exception e){
+//            Logger.e("encrypt is error", e);
+//        }
+//        return data;
+//    }
+//
+//    public static String decrypt(String data){
+//        try {
+//            byte[] byteKey = MyBase64.decode(BuildConfig.DES3_KEY);
+//            byte[] byteData = MyBase64.decode(data);
+//            byte[] des3Data = DESEncryptUtils.des3DecodeECB(byteKey, byteData);
+//            return MyBase64.encode(des3Data);
+//        }catch (Exception e){
+//            Logger.e("decrypt is error", e);
+//        }
+//        return data;
+//    }
 }
