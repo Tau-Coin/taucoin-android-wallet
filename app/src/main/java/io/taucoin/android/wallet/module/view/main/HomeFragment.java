@@ -181,6 +181,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         TxService.startTxService(TransmitKey.ServiceType.GET_BALANCE);
+        TxService.startTxService(TransmitKey.ServiceType.GET_UTXO_LIST);
         TxService.startTxService(TransmitKey.ServiceType.GET_REFERRAL_INFO);
 
         if (!UserUtil.isImportKey()) {

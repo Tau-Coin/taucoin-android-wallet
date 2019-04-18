@@ -52,8 +52,7 @@ public class FixMemLeak {
                     field.setAccessible(true);
                     field.set(imm, null);
                 }
-            } catch (Throwable t) {
-                t.printStackTrace();
+            } catch (Throwable ignore) {
             }
         }
     }
