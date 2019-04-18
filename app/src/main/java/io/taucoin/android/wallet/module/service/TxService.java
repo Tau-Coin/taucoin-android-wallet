@@ -134,7 +134,7 @@ public class TxService extends Service {
             @Override
             public void handleData(Boolean aBoolean) {
                 if(aBoolean){
-                    EventBusUtil.post(MessageEvent.EventCode.NICKNAME);
+                    EventBusUtil.post(MessageEvent.EventCode.INVITED);
                 }
             }
         });
