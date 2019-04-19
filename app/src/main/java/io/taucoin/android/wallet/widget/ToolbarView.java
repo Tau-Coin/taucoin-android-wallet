@@ -39,6 +39,7 @@ public class ToolbarView extends RelativeLayout {
     private String titleText;
     private int titleBackground;
     private int leftImage;
+    private int rightImage;
     private ViewHolder viewHolder;
     private int statusBarHeight;
 
@@ -60,6 +61,7 @@ public class ToolbarView extends RelativeLayout {
     private void initData(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ToolbarView);
         this.leftImage = a.getResourceId(R.styleable.ToolbarView_leftBackImage, -1);
+        this.rightImage = a.getResourceId(R.styleable.ToolbarView_rightImage, -1);
         this.titleText = a.getString(R.styleable.ToolbarView_titleText);
         this.titleBackground = a.getColor(R.styleable.ToolbarView_titleBackground, -1);
         a.recycle();
@@ -80,6 +82,11 @@ public class ToolbarView extends RelativeLayout {
         } else {
             viewHolder.ivLeftBack.setVisibility(INVISIBLE);
         }
+        if (rightImage != -1) {
+            viewHolder.ivRight.setImageResource(rightImage);
+        } else {
+            viewHolder.ivRight.setVisibility(INVISIBLE);
+        }
         if (StringUtil.isNotEmpty(titleText)) {
             viewHolder.tvTitle.setText(titleText);
         }
@@ -97,6 +104,8 @@ public class ToolbarView extends RelativeLayout {
     class ViewHolder {
         @BindView(R.id.iv_left_back)
         ImageButton ivLeftBack;
+        @BindView(R.id.iv_right)
+        ImageButton ivRight;
         @BindView(R.id.tv_title)
         TextView tvTitle;
         @BindView(R.id.rl_tool_bar)
@@ -114,4 +123,6 @@ public class ToolbarView extends RelativeLayout {
             ButterKnife.bind(this, view);
         }
     }
+
+
 }

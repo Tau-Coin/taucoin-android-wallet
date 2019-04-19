@@ -9,6 +9,7 @@
     <io.taucoin.android.wallet.widget.ToolbarView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:rightImage="@mipmap/icon_refresh"
         app:titleText="@string/main_home_title" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout

@@ -41,12 +41,14 @@ import io.taucoin.android.wallet.module.model.ITxModel;
 import io.taucoin.android.wallet.module.model.IUserModel;
 import io.taucoin.android.wallet.module.model.TxModel;
 import io.taucoin.android.wallet.module.model.UserModel;
+import io.taucoin.android.wallet.module.view.main.HomeFragment;
 import io.taucoin.android.wallet.module.view.main.MainActivity;
 import io.taucoin.android.wallet.net.callback.CommonObserver;
 import io.taucoin.android.wallet.net.callback.TAUObserver;
 import io.taucoin.android.wallet.util.EventBusUtil;
 import io.taucoin.android.wallet.util.ProgressManager;
 import io.taucoin.android.wallet.util.ResourcesUtil;
+import io.taucoin.android.wallet.util.ToastUtils;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.net.callback.RetResult;
 import io.taucoin.foundation.util.ActivityManager;
@@ -239,12 +241,17 @@ public class TxService extends Service {
                 }else{
                     ProgressManager.closeProgressDialog();
                     EventBusUtil.post(MessageEvent.EventCode.BALANCE);
+                    if(HomeFragment.mIsToast){
+                        HomeFragment.mIsToast = false;
+                        ToastUtils.showShortToast(R.string.common_refresh_failed);
+                    }
                 }
             }
 
             @Override
             public void handleData(RetResult<BalanceBean> balanceRetBalance) {
                 super.handleData(balanceRetBalance);
+                HomeFragment.mIsToast = false;
                 BalanceBean balance = balanceRetBalance.getRet();
                 Logger.i("getBalance success");
                 if(ActivityManager.getInstance().isTopActivity(MainActivity.class)){

@@ -25,6 +25,7 @@
 
     <declare-styleable name="ToolbarView">
         <attr name="leftBackImage" format="reference" />
+        <attr name="rightImage" format="reference" />
         <attr name="titleText" format="string" />
         <attr name="titleBackground" format="color" />
     </declare-styleable>

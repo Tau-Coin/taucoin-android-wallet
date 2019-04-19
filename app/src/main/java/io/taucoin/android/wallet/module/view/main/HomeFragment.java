@@ -63,6 +63,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     View ivReferralLink;
 
     private IUserModel userModel;
+    public static boolean mIsToast = false;
     @Override
     public View getViewLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -74,7 +75,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
         return view;
     }
 
-    @OnClick({R.id.tv_nick, R.id.iv_referral_link, R.id.tv_exchange, R.id.tv_p2p, R.id.tv_referral_link})
+    @OnClick({R.id.tv_nick, R.id.iv_referral_link, R.id.tv_exchange, R.id.tv_p2p, R.id.tv_referral_link, R.id.iv_right})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_nick:
@@ -103,6 +104,15 @@ public class HomeFragment extends BaseFragment implements IHomeView {
                 break;
             case R.id.tv_p2p:
                 ActivityUtil.openUri(getActivity(), TransmitKey.ExternalUrl.P2P_BUY_SELL);
+                break;
+            case R.id.iv_right:
+                if (!UserUtil.isImportKey()) {
+                    ActivityUtil.startActivity(getActivity(), ImportKeyActivity.class);
+                } else {
+                    ProgressManager.showProgressDialog(getActivity());
+                    mIsToast = true;
+                    onRefresh(null);
+                }
                 break;
             default:
                 break;

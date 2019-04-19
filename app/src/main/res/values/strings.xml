@@ -8,6 +8,7 @@
     <string name="common_done">Done</string>
     <string name="common_balance" formatted="false"><Data><![CDATA[<font color="#d5b060">%s</font> TAUT]]> </Data></string>
     <string name="common_fee">%sTAUT</string>
+    <string name="common_refresh_failed">Refresh Failed</string>
 
     <string name="splash_title">TAUT</string>
     <string name="splash_subheading">Mobile &#038; Decentral\nProof of Transaction</string>

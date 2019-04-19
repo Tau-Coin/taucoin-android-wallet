@@ -33,5 +33,19 @@
             android:gravity="center"
             android:singleLine="true"
             android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/iv_right"
+            style="?attr/toolbarNavigationButtonStyle"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:layout_marginEnd="17dp"
+            android:background="#00000000"
+            android:contentDescription="@null"
+            android:src="@mipmap/icon_refresh" />
     </RelativeLayout>
 </LinearLayout>
