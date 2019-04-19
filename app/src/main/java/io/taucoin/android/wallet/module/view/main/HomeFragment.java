@@ -100,10 +100,8 @@ public class HomeFragment extends BaseFragment implements IHomeView {
                 }
                 break;
             case R.id.tv_exchange:
-                ActivityUtil.openUri(getActivity(), TransmitKey.ExternalUrl.EXCHANGE);
-                break;
             case R.id.tv_p2p:
-                ActivityUtil.openUri(getActivity(), TransmitKey.ExternalUrl.P2P_BUY_SELL);
+                ActivityUtil.openUri(getActivity(), TransmitKey.ExternalUrl.P2P_EXCHANGE);
                 break;
             case R.id.iv_right:
                 if (!UserUtil.isImportKey()) {

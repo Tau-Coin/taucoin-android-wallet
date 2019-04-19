@@ -117,6 +117,7 @@
                         android:text="" />
 
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/tv_your_invited"
                         style="@style/style_normal_black"
                         android:layout_width="match_parent"

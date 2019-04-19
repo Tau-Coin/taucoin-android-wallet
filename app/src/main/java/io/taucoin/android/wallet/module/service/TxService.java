@@ -143,7 +143,7 @@ public class TxService extends Service {
     }
 
     private void getReferralInfo() {
-        getReferralCounts();
+//        getReferralCounts();
         if(!mIsUpdate){
             mUserModel.getReferralUrl(new LogicObserver<Boolean>(){
                 @Override
