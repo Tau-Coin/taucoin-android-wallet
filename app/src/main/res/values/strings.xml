@@ -22,10 +22,10 @@
     <string name="main_referral_link">Referral link</string>
     <string name="main_referral_link_failed">Connection error, scroll down to refresh</string>
     <string name="main_referral_link_copied">Referral link copied</string>
-    <string name="main_referral_tip">Please check out Proof of Transaction coin, TAUT, and full mobile mining TAUcoin.</string>
+    <string name="main_referral_tip">Please check out Proof of Transaction coin, TAUT.</string>
     <string name="main_invited_friends" formatted="false"><Data><![CDATA[invited <font color="#d5b060">%d</font> friends]]></Data></string>
-    <string name="main_your_referral" formatted="false"><Data><![CDATA[<font color="#a9a9a9">Invited Your Friends Successfully:</font><br/><font color="#d5b060">%d</font> TAUT/person]]></Data></string>
-    <string name="main_friend_referral" formatted="false"><Data><![CDATA[<font color="#a9a9a9">Your Friends Will Get:</font><br/><font color="#d5b060">%d</font> TAUT/person]]></Data></string>
+    <string name="main_your_referral" formatted="false"><Data><![CDATA[<font color="#a9a9a9">Uppon successful invitation, you will receive:</font><br/><font color="#d5b060">%d</font> TAUT/person]]></Data></string>
+    <string name="main_friend_referral" formatted="false"><Data><![CDATA[<font color="#a9a9a9">Your friend will receive:</font><br/><font color="#d5b060">%d</font> TAUT/person]]></Data></string>
     <string name="main_exchange">Exchange</string>
     <string name="main_p2p_buy_sell">P2P Buy &#38; Sell</string>
 
@@ -70,12 +70,12 @@
     <string name="send_has_pending">Please wait for previous transaction to be confirmed</string>
     <string name="send_tx_success">Transaction sent</string>
     <string name="send_tx_fail">Transaction Error</string>
-    <string name="send_tx_fail_in_pool">Transaction error in memory pool</string>
+    <string name="send_tx_fail_in_pool">Transaction not existing in the memory pool</string>
     <string name="send_tx_network_error">Network error, send failed</string>
     <string name="send_tx_invalid_address">Invalid Address</string>
     <string name="send_tx_invalid_amount">Invalid Amount</string>
     <string name="send_tx_invalid_fee">Invalid Transaction Fee</string>
-    <string name="send_tx_invalid_error">Send failed, please try again later</string>
+    <string name="send_tx_invalid_error">UTXO mismatch. </string>
     <string name="send_tx_address">Receiver&#160;Address:&#160;%s</string>
 
     <string name="keys_dialog_title">Please make sure your\nprivate key has been saved</string>
@@ -110,11 +110,11 @@
 
     <!--permission tip-->
     <string name="permission_tip_upgrade_denied">
-        "TAUT" would like to access the storage.
+        Please enable storage rights for TAUT, it is disabled.
     </string>
 
     <string name="permission_tip_upgrade_never_ask_again">
-        "TAUT" would like to access the storage.
+        Please enable storage rights for TAUT, it is forbidden now.
     </string>
 
     <string name="permission_tip_capture_denied">
@@ -133,7 +133,7 @@
         "TAUT" would like to access the storage.
     </string>
     <string name="permission_install_unknown_apk_note">
-        Please open the installation of unknown application permissions.
+        Please allow the installation of TAUT application permissions.
     </string>
 
 </resources>
