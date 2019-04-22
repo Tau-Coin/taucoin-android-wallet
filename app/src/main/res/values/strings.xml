@@ -24,10 +24,9 @@
     <string name="main_referral_link_copied">Referral link copied</string>
     <string name="main_referral_tip">Please check out Proof of Transaction coin, TAUT.</string>
     <string name="main_invited_friends" formatted="false"><Data><![CDATA[invited <font color="#d5b060">%d</font> friends]]></Data></string>
-    <string name="main_your_referral" formatted="false"><Data><![CDATA[<font color="#a9a9a9">Uppon successful invitation, you will receive:</font><br/><font color="#d5b060">%d</font> TAUT/person]]></Data></string>
+    <string name="main_your_referral" formatted="false"><Data><![CDATA[<font color="#a9a9a9">Upon successful invitation, you will receive:</font><br/><font color="#d5b060">%d</font> TAUT/person]]></Data></string>
     <string name="main_friend_referral" formatted="false"><Data><![CDATA[<font color="#a9a9a9">Your friend will receive:</font><br/><font color="#d5b060">%d</font> TAUT/person]]></Data></string>
-    <string name="main_exchange">Exchange</string>
-    <string name="main_p2p_buy_sell">P2P Buy &#38; Sell</string>
+    <string name="main_p2p_exchange">P2P &#38; Exchange</string>
 
     <string name="tx_send">Send</string>
     <string name="tx_receive">Receive</string>

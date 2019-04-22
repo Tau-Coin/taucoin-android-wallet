@@ -172,6 +172,8 @@ public class UserPresenter {
             mUserModel.getKeyAndAddress(publicKey, new LogicObserver<KeyValue>() {
                 @Override
                 public void handleData(KeyValue keyValue) {
+                    SharedPreferencesHelper.getInstance().putString(TransmitKey.PUBLIC_KEY, keyValue.getPubkey());
+                    SharedPreferencesHelper.getInstance().putString(TransmitKey.ADDRESS, keyValue.getAddress());
                     MyApplication.setKeyValue(keyValue);
                 }
             });

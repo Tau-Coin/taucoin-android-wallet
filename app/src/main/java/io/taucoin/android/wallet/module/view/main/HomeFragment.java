@@ -53,10 +53,8 @@ public class HomeFragment extends BaseFragment implements IHomeView {
     TextView tvYourReferral;
     @BindView(R.id.tv_friend_referral)
     TextView tvFriendReferral;
-    @BindView(R.id.tv_exchange)
-    TextView tvExchange;
-    @BindView(R.id.tv_p2p)
-    TextView tvP2p;
+    @BindView(R.id.tv_p2p_exchange)
+    TextView tvP2pExchange;
     @BindView(R.id.ll_referral_link)
     View llReferralLink;
     @BindView(R.id.iv_referral_link)
@@ -75,7 +73,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
         return view;
     }
 
-    @OnClick({R.id.tv_nick, R.id.iv_referral_link, R.id.tv_exchange, R.id.tv_p2p, R.id.tv_referral_link, R.id.iv_right})
+    @OnClick({R.id.tv_nick, R.id.iv_referral_link, R.id.tv_p2p_exchange, R.id.tv_referral_link, R.id.iv_right})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_nick:
@@ -99,8 +97,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
                     ActivityUtil.openUri(getActivity(), StringUtil.getText(tvReferralLink));
                 }
                 break;
-            case R.id.tv_exchange:
-            case R.id.tv_p2p:
+            case R.id.tv_p2p_exchange:
                 ActivityUtil.openUri(getActivity(), TransmitKey.ExternalUrl.P2P_EXCHANGE);
                 break;
             case R.id.iv_right:
@@ -182,8 +179,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
         refreshLayout.setOnRefreshListener(this);
         onEvent(EventBusUtil.getMessageEvent(MessageEvent.EventCode.ALL));
 
-        DrawablesUtil.setUnderLine(tvExchange);
-        DrawablesUtil.setUnderLine(tvP2p);
+        DrawablesUtil.setUnderLine(tvP2pExchange);
     }
 
     @Override

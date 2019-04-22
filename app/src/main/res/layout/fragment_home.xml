@@ -167,20 +167,11 @@
 
         <TextView
             style="@style/style_normal_blue"
-            android:id="@+id/tv_exchange"
+            android:id="@+id/tv_p2p_exchange"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:text="@string/main_exchange"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            style="@style/style_normal_blue"
-            android:id="@+id/tv_p2p"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/main_p2p_buy_sell"
+            android:text="@string/main_p2p_exchange"
             android:layout_height="wrap_content" />
     </LinearLayout>
 </LinearLayout>

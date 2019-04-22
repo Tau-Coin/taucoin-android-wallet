@@ -90,7 +90,7 @@ public class UserModel implements IUserModel{
         Observable.create((ObservableOnSubscribe<KeyValue>) emitter -> {
             KeyValue keyValue = KeyValueDaoUtils.getInstance().queryByPubicKey(publicKey);
 
-            if(StringUtil.isNotEmpty(keyValue.getPrivkey())){
+            if(keyValue != null && StringUtil.isNotEmpty(keyValue.getPrivkey())){
                 Key key = KeyManager.validateKey(keyValue.getPrivkey());
 //                if(key == null){
 //                    // private key decrypt
@@ -110,6 +110,8 @@ public class UserModel implements IUserModel{
                 emitter.onNext(keyValue);
             }else{
                 SharedPreferencesHelper.getInstance().clear();
+                // Default initialization of private key
+                saveKeyAndAddress(null, observer);
             }
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
