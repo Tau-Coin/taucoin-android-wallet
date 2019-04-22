@@ -2,6 +2,7 @@ package io.taucoin.android.wallet.widget;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.style.ReplacementSpan;
 import android.widget.TextView;
@@ -14,8 +15,12 @@ public class BreakTextSpan extends ReplacementSpan {
     private TextView mTextView;
     private String mText;
     private boolean isRefresh;
+    private long isDrawTime;
+    private int oneCharWidth;
+    private List<String> textList = new ArrayList<>();
     public BreakTextSpan(TextView textView, String text) {
         isRefresh = true;
+        isDrawTime = 0;
         mText = text;
         mTextView = textView;
     }
@@ -33,16 +38,43 @@ public class BreakTextSpan extends ReplacementSpan {
             fm.bottom = top;
             fm.descent = top;
         }
+        isDrawTime = 0;
         return mSize;
     }
 
     @Override
     public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, @NonNull Paint paint) {
+        isDrawTime += 1;
+        parseText(text, paint);
 
+        int color = paint.getColor();
+        paint.setAntiAlias(true);
+        paint.setColor(color);
+
+        int height = 0;
+        for(String txt : textList){
+            height += y;
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                canvas.drawText(txt, start, txt.length(), x + oneCharWidth / 2, height, paint);
+            }else{
+                if(isDrawTime % 2 == 1){
+                    canvas.drawText(txt, start, txt.length(), x + oneCharWidth / 2, height, paint);
+                }
+            }
+        }
+        if(isRefresh){
+            isRefresh = false;
+            mTextView.setHeight(height + y);
+        }
+    }
+
+    private synchronized void parseText(CharSequence text, Paint paint) {
+        if(textList.size() > 0){
+            return;
+        }
         char[] chars = mText.toCharArray();
-        int oneCharWidth = mSize / chars.length;
+        oneCharWidth = mSize / chars.length;
         int viewWidth = mTextView.getWidth() - mTextView.getPaddingStart() - mTextView.getPaddingEnd() - 2 * oneCharWidth;
-        List<String> textList = new ArrayList<>();
         StringBuilder newText = new StringBuilder();
         newText.append(chars[0]);
         int startPos = 0;
@@ -60,23 +92,6 @@ public class BreakTextSpan extends ReplacementSpan {
                 newText.append(chars[i]);
                 startPos = i;
             }
-        }
-
-        int color = paint.getColor();
-        paint.setAntiAlias(true);
-        canvas.save();
-
-        paint.setColor(color);
-        int height = 0;
-        for(String txt : textList){
-            height += y;
-            canvas.drawText(txt, start, txt.length(), x + oneCharWidth / 2, height, paint);
-        }
-        canvas.restore();
-
-        if(isRefresh){
-            mTextView.setHeight(height + y);
-            isRefresh = false;
         }
     }
 }

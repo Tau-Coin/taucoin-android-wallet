@@ -129,7 +129,7 @@ public class UserUtil {
             SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
             stringBuilder.append(link);
             stringBuilder.setSpan(new BreakTextSpan(tvReferralLink, link), 0, stringBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            tvReferralLink.setText(stringBuilder);
+            tvReferralLink.setText(stringBuilder, TextView.BufferType.SPANNABLE);
         }
     }
 
