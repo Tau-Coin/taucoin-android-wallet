@@ -26,7 +26,7 @@
     <string name="main_invited_friends" formatted="false"><Data><![CDATA[invited <font color="#d5b060">%d</font> friends]]></Data></string>
     <string name="main_your_referral" formatted="false"><Data><![CDATA[<font color="#a9a9a9">Upon successful invitation, you will receive:</font><br/><font color="#d5b060">%d</font> TAUT/person]]></Data></string>
     <string name="main_friend_referral" formatted="false"><Data><![CDATA[<font color="#a9a9a9">Your friend will receive:</font><br/><font color="#d5b060">%d</font> TAUT/person]]></Data></string>
-    <string name="main_p2p_exchange">P2P &#38; Exchange</string>
+    <string name="main_p2p_exchange">P2P &#38; Non&#045;KYC Exchange</string>
 
     <string name="tx_send">Send</string>
     <string name="tx_receive">Receive</string>
