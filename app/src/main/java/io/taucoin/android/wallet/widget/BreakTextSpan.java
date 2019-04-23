@@ -1,11 +1,27 @@
+/**
+ * Copyright 2018 Taucoin Core Developers.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.taucoin.android.wallet.widget;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.text.style.ReplacementSpan;
 import android.widget.TextView;
+
+import com.github.naturs.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +31,12 @@ public class BreakTextSpan extends ReplacementSpan {
     private TextView mTextView;
     private String mText;
     private boolean isRefresh;
-    private long isDrawTime;
     private int oneCharWidth;
+    private int mY;
     private List<String> textList = new ArrayList<>();
     public BreakTextSpan(TextView textView, String text) {
         isRefresh = true;
-        isDrawTime = 0;
+        mY = 0;
         mText = text;
         mTextView = textView;
     }
@@ -38,34 +54,34 @@ public class BreakTextSpan extends ReplacementSpan {
             fm.bottom = top;
             fm.descent = top;
         }
-        isDrawTime = 0;
         return mSize;
     }
 
     @Override
     public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, @NonNull Paint paint) {
-        isDrawTime += 1;
         parseText(text, paint);
+
+        if(isRefresh){
+            isRefresh = false;
+            mY = y;
+            mTextView.setHeight((textList.size() + 1 ) * y);
+        }
 
         int color = paint.getColor();
         paint.setAntiAlias(true);
         paint.setColor(color);
 
+        canvas.save();
         int height = 0;
         for(String txt : textList){
-            height += y;
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-                canvas.drawText(txt, start, txt.length(), x + oneCharWidth / 2, height, paint);
-            }else{
-                if(isDrawTime % 2 == 1){
-                    canvas.drawText(txt, start, txt.length(), x + oneCharWidth / 2, height, paint);
-                }
+            if(mY != y){
+                break;
             }
+            height += mY;
+            Logger.d("text.height===" + height + "==y="+y);
+            canvas.drawText(txt, start, txt.length(), x + oneCharWidth / 2, height, paint);
         }
-        if(isRefresh){
-            isRefresh = false;
-            mTextView.setHeight(height + y);
-        }
+        canvas.restore();
     }
 
     private synchronized void parseText(CharSequence text, Paint paint) {
