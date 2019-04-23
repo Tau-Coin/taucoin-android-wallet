@@ -76,6 +76,7 @@
     <string name="send_tx_invalid_fee">Invalid Transaction Fee</string>
     <string name="send_tx_invalid_error">UTXO mismatch. </string>
     <string name="send_tx_address">Receiver&#160;Address:&#160;%s</string>
+    <string name="send_tx_range_fee">%s×%s%s(range&#058;&#160;1&#8211;9.9)&#059;&#160;%staut</string>
 
     <string name="keys_dialog_title">Please make sure your\nprivate key has been saved</string>
     <string name="keys_address">Address</string>

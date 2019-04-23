@@ -34,8 +34,8 @@ public class Constants {
     // 1 COIN
     public static final BigInteger DEFAULT_TX_FEE_MIN = new BigInteger("100000000", 10);
 
-    // 10 COIN
-    public static final BigInteger DEFAULT_TX_FEE_MAX = new BigInteger("1000000000", 10);
+    // 9.9 COIN
+    public static final BigInteger DEFAULT_TX_FEE_MAX = new BigInteger("990000000", 10);
 
     public static final long MAX_STANDARD_TX_WEIGHT = 400000;
 

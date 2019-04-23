@@ -65,10 +65,21 @@
             style="@style/style_normal_grey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:text="@string/tx_transaction_fee" />
 
+        <TextView
+            android:id="@+id/tv_fee"
+            android:layout_below="@+id/tv_fee_title"
+            style="@style/style_middle_yellow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:layout_marginTop="5dp"
+            android:layout_centerVertical="true"
+            android:text="" />
+
         <io.taucoin.android.wallet.widget.EditInput
+            android:visibility="gone"
             android:layout_toStartOf="@+id/iv_fee"
             android:layout_toEndOf="@+id/tv_fee_title"
             android:id="@+id/et_fee"
@@ -78,6 +89,7 @@
             android:layout_centerVertical="true" />
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/iv_fee"
             android:layout_width="24dp"
             android:layout_height="28dp"
