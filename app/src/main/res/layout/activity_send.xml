@@ -69,8 +69,17 @@
 
         <TextView
             android:id="@+id/tv_fee"
+            android:layout_toEndOf="@+id/tv_fee_title"
+            style="@style/style_normal_yellow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/tv_fee_calculate"
             android:layout_below="@+id/tv_fee_title"
-            style="@style/style_middle_yellow"
+            style="@style/style_normal_grey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="start"

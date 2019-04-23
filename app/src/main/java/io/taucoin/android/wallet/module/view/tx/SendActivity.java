@@ -2,7 +2,6 @@ package io.taucoin.android.wallet.module.view.tx;
 
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.view.View;
@@ -61,6 +60,8 @@ public class SendActivity extends BaseActivity implements ISendView {
     Button btnSend;
     @BindView(R.id.tv_fee)
     TextView tvFee;
+    @BindView(R.id.tv_fee_calculate)
+    TextView tvFeeCalculate;
 
     private TxPresenter mTxPresenter;
 
@@ -116,22 +117,29 @@ public class SendActivity extends BaseActivity implements ISendView {
 
     @OnTextChanged({R.id.et_amount})
     void onTextChanged(CharSequence text){
-        String feeStr = getText(R.string.send_tx_range_fee).toString();
+        String feeCalculate = getText(R.string.send_tx_range_fee).toString();
         String amount = text.toString();
         String rangeFee = "";
         if(StringUtil.isNotEmpty(amount)){
             String feeRate = "3%=";
             String fee = FmtMicrometer.fmtFormatFee(amount, "0.03");
             rangeFee = FmtMicrometer.fmtFormatRangeFee(fee);
-            feeStr = String.format(feeStr, amount, feeRate, fee, rangeFee);
+            feeCalculate = String.format(feeCalculate, amount, feeRate, fee);
         }else {
-            feeStr = "";
+            feeCalculate = "";
         }
+        String feeStr = "";
+        if(StringUtil.isNotEmpty(rangeFee)){
+            feeStr = getText(R.string.send_tx_fee).toString();
+            feeStr = String.format(feeStr, rangeFee);
+        }
+        tvFee.setText(feeStr);
         tvFee.setTag(rangeFee);
+
         SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
-        stringBuilder.append(feeStr);
-        stringBuilder.setSpan(new BreakTextSpan(tvFee, feeStr), 0, stringBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tvFee.setText(stringBuilder, TextView.BufferType.SPANNABLE);
+        stringBuilder.append(feeCalculate);
+        stringBuilder.setSpan(new BreakTextSpan(tvFeeCalculate, feeCalculate), 0, stringBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvFeeCalculate.setText(stringBuilder, TextView.BufferType.SPANNABLE);
     }
 
     @OnTouch(R.id.et_fee)

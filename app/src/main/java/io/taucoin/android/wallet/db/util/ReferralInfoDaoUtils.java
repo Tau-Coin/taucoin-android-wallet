@@ -64,9 +64,9 @@ public class ReferralInfoDaoUtils {
         ReferralInfo referralInfo = query();
         if(referralInfo == null){
             referralInfo = new ReferralInfo();
-            referralInfo.setFriendReward(friendReward);
-            referralInfo.setInvitedReward(invitedReward);
         }
+        referralInfo.setFriendReward(friendReward);
+        referralInfo.setInvitedReward(invitedReward);
         getReferralInfoDao().insertOrReplace(referralInfo);
     }
 }
