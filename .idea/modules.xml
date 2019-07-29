@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_bitcoin/lib_bitcoin.iml" filepath="$PROJECT_DIR$/lib_bitcoin/lib_bitcoin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_foundation/lib_foundation.iml" filepath="$PROJECT_DIR$/lib_foundation/lib_foundation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_platform/lib_platform.iml" filepath="$PROJECT_DIR$/lib_platform/lib_platform.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taucoin-android-wallet.iml" filepath="$PROJECT_DIR$/taucoin-android-wallet.iml" />
+    </modules>
+  </component>
+</project>

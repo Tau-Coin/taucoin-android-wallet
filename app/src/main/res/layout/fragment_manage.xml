@@ -9,6 +9,7 @@
     <io.taucoin.android.wallet.widget.ToolbarView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:leftBackImage="@drawable/ic_lock_open_black_24dp"
         app:titleText="@string/main_manage" />
 
     <RelativeLayout
@@ -77,6 +78,17 @@
             app:rightTextColor="@color/color_yellow" />
 
         <io.taucoin.android.wallet.widget.ItemLineView
+            android:id="@+id/item_pass"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            app:leftImage="@drawable/ic_lock_open_black_24dp_yellow"
+            app:rightText="change local password"
+            app:rightTextColor="@color/color_yellow" />
+
+
+
+        <io.taucoin.android.wallet.widget.ItemLineView
             android:visibility="gone"
             android:id="@+id/item_address_note"
             android:layout_width="match_parent"
@@ -94,6 +106,7 @@
             app:leftImage="@mipmap/icon_help"
             app:rightText="@string/manager_help"
             app:rightTextColor="@color/color_black" />
+
 
     </LinearLayout>
 </LinearLayout>

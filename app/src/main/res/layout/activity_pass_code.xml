@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="io.taucoin.android.wallet.module.view.intro.IntroPageOneFragment">
+
+
+    <LinearLayout
+        android:paddingTop="50dp"
+        android:id="@+id/li_root"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="Enter Local Password"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+
+        <com.andrognito.pinlockview.IndicatorDots
+            android:layout_gravity="center_horizontal"
+            android:padding="16dp"
+            android:id="@+id/indicator_dots"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="36dp" />
+
+        <com.andrognito.pinlockview.PinLockView
+            android:layout_gravity="center"
+            android:id="@+id/pin_lock_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:keypadButtonBackgroundDrawable="@drawable/bg"
+            android:layout_marginTop="16dp"
+            app:keypadButtonSize="48dp"
+            android:layout_marginLeft="8dp"
+            app:pinLength="4"
+            app:dotEmptyBackground="@drawable/dot_empty"
+            app:dotFilledBackground="@drawable/dot_filled"
+            app:keypadVerticalSpacing="@dimen/dimen_size_16"
+            app:keypadShowDeleteButton="true"
+            app:keypadTextColor="@color/colorPrimaryDark"
+            app:keypadDeleteButtonDrawable="@drawable/ic_back"
+            app:keypadTextSize="18dp" />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

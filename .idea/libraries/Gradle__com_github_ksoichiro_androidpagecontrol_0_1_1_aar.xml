@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.ksoichiro:androidpagecontrol:0.1.1@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/androidpagecontrol-0.1.1.aar/ec235784ad870c621604f1faae902057/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/androidpagecontrol-0.1.1.aar/ec235784ad870c621604f1faae902057/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.ksoichiro/androidpagecontrol/0.1.1/93825799170587e2c7eef133713b148b17412eaf/androidpagecontrol-0.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

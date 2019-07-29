@@ -7,13 +7,15 @@ import com.github.naturs.logger.Logger;
 import com.mofei.tau.R;
 
 import io.taucoin.android.wallet.base.BaseActivity;
-import io.taucoin.android.wallet.module.view.main.MainActivity;
+import io.taucoin.android.wallet.module.view.intro.IntroActivity;
 
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.taucoin.android.wallet.module.view.main.LockActivity;
 import io.taucoin.android.wallet.net.callback.CommonObserver;
+import io.taucoin.android.wallet.util.SharedPreferencesHelper;
 
 public class SplashActivity extends BaseActivity {
 
@@ -51,10 +53,27 @@ public class SplashActivity extends BaseActivity {
     };
 
     private void splashJump() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
-        Logger.i("Jump to MainActivity");
+
+        if (SharedPreferencesHelper.getInstance().getBoolean("first_run",true))
+        {
+
+
+            Intent intent = new Intent(this, IntroActivity.class);
+            startActivity(intent);
+            finish();
+            Logger.i("Jump to Intro Activity");
+
+        }else
+        {
+
+            Intent intent = new Intent(this, LockActivity.class);
+            startActivity(intent);
+            finish();
+            Logger.i("Jump to lock activity");
+
+        }
+
+
     }
 
     /**

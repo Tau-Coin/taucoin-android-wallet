@@ -137,4 +137,11 @@
         Please allow the installation of TAUT application permissions.
     </string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="first_transaction">TAUT wallet first transaction you\'re tautcoin easly transfer tautcoin you\'re wallet to other taut wallet.</string>
+    <string name="send_receive">Using TAUT wallet your easily send and receive tautcoin and hold andstore you\'re tautcoin safely.</string>
+    <string name="next">Next</string>
+    <string name="start">Start</string>
+
 </resources>

@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:rightImage="@mipmap/icon_refresh"
+        app:leftBackImage="@drawable/ic_lock_open_black_24dp"
         app:titleText="@string/main_home_title" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout

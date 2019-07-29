@@ -1,5 +1,6 @@
 package io.taucoin.android.wallet.module.view.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,7 +74,7 @@ public class HomeFragment extends BaseFragment implements IHomeView {
         return view;
     }
 
-    @OnClick({R.id.tv_nick, R.id.iv_referral_link, R.id.tv_p2p_exchange, R.id.tv_referral_link, R.id.iv_right})
+    @OnClick({R.id.tv_nick, R.id.iv_referral_link, R.id.tv_p2p_exchange, R.id.tv_referral_link, R.id.iv_right,  R.id.iv_left_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_nick:
@@ -108,6 +109,10 @@ public class HomeFragment extends BaseFragment implements IHomeView {
                     mIsToast = true;
                     onRefresh(null);
                 }
+                break;
+            case R.id.iv_left_back:
+                startActivity(new Intent(getActivity(), LockActivity.class));
+                getActivity().finish();
                 break;
             default:
                 break;

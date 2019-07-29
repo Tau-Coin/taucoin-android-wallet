@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.naturs.logger:logger-core:0.3@jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.naturs.logger/logger-core/0.3/a9dc756b7862c95e8cda4fc0c5dc773b4eefa0a3/logger-core-0.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.naturs.logger/logger-core/0.3/c4f551faba566760725a0624497f3bee8337ed94/logger-core-0.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

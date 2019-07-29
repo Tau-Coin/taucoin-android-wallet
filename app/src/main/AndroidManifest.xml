@@ -2,30 +2,30 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mofei.tau">
-
-    <!--Allow programs to access network privileges and connect to the network-->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!--Allow programs to access information about GSM network and view current network information-->
+    <!-- Allow programs to access network privileges and connect to the network -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Allow programs to access information about GSM network and view current network information -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--Allow programs to access Wi-Fi network status information, view Wifi network status,
-    imply android. hardware. WiFi privileges-->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!--Allow program access SD card to get write permission, version update-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--Allow programs to access SD cards for read permission, version updates-->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!--android9.0 startForeground() need-->
-    <!--android9.0 Require permissions for version update installer APK, version update-->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
-    <!--android9.0 Require that the service must be declared to run in the foreground-->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-
-    <!--google play Avoiding the filtering mechanism of implicit permissions-->
-    <uses-feature android:name="android.hardware.wifi" android:required="false"/>
-    <!--Android P Support for the platform support of the IEEE802.11mc Wi-Fi protocol
+    <!--
+Allow programs to access Wi-Fi network status information, view Wifi network status,
+    imply android. hardware. WiFi privileges
+    -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- Allow program access SD card to get write permission, version update -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Allow programs to access SD cards for read permission, version updates -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- android9.0 startForeground() need -->
+    <!-- android9.0 Require permissions for version update installer APK, version update -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- android9.0 Require that the service must be declared to run in the foreground -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- google play Avoiding the filtering mechanism of implicit permissions -->
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
+    <!--
+Android P Support for the platform support of the IEEE802.11mc Wi-Fi protocol
     (also known as Wi-Fi Round-Trip-Time (RTT), so that your application can take advantage
-    of the indoor positioning function. -->
-    <uses-feature android:name="android.hardware.wifi.rtt" android:required="false"/>
+    of the indoor positioning function.
+    -->
+    <uses-feature
+        android:name="android.hardware.wifi.rtt"
+        android:required="false" />
 
     <application
         android:name="io.taucoin.android.wallet.MyApplication"
@@ -37,13 +37,18 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup, android:supportsRtl">
-
-        <!-- hua wei -->
-        <meta-data android:name="android.notch_support" android:value="true"/>
-        <!-- xiao mi -->
-        <meta-data android:name="notch.config" android:value="portrait|landscape"/>
-        <!-- google oppo vivo   Configuration supports maximum aspect ratio -->
-        <meta-data android:name="android.max_aspect"  android:value="ratio_float" />
+        <activity android:name="io.taucoin.android.wallet.module.view.manage.ChangePasswordActivity"></activity>
+        <activity android:name="io.taucoin.android.wallet.module.view.main.LockActivity" />
+        <activity android:name="io.taucoin.android.wallet.module.view.intro.IntroActivity" /> <!-- hua wei -->
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true" /> <!-- xiao mi -->
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait|landscape" /> <!-- google oppo vivo   Configuration supports maximum aspect ratio -->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="ratio_float" />
 
         <activity
             android:name="io.taucoin.android.wallet.module.view.SplashActivity"
@@ -57,13 +62,13 @@
         </activity>
 
         <provider
-            android:authorities="com.mofei.tau.fileprovider"
             android:name="android.support.v4.content.FileProvider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:authorities="com.mofei.tau.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
 
         <activity
@@ -76,40 +81,36 @@
 
         <service
             android:name="io.taucoin.android.wallet.module.service.TxService"
-            android:priority="1000"
             android:enabled="true"
-            android:exported="false" />
-
+            android:exported="false"
+            android:priority="1000" />
         <service
             android:name="io.taucoin.android.wallet.module.service.UpgradeService"
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name="io.taucoin.android.wallet.module.view.manage.UpgradeActivity"
+        <activity
+            android:name="io.taucoin.android.wallet.module.view.manage.UpgradeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/transparent"/>
-
+            android:theme="@style/transparent" />
         <activity
             android:name="io.taucoin.android.wallet.module.view.tx.SendActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
-
         <activity
             android:name="io.taucoin.android.wallet.module.view.manage.KeysActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
-
         <activity
             android:name="io.taucoin.android.wallet.module.view.manage.ImportKeyActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
-
-        <activity android:name="io.taucoin.android.wallet.module.view.manage.ProfileActivity"
+        <activity
+            android:name="io.taucoin.android.wallet.module.view.manage.ProfileActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
-
-        <activity android:name="io.taucoin.android.wallet.module.view.manage.HelpActivity"
+        <activity
+            android:name="io.taucoin.android.wallet.module.view.manage.HelpActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
-
-        <activity android:name="io.taucoin.android.wallet.module.view.manage.WebViewActivity"
+        <activity
+            android:name="io.taucoin.android.wallet.module.view.manage.WebViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
-
     </application>
 
 </manifest>

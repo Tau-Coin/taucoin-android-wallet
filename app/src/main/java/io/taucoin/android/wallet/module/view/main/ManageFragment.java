@@ -57,7 +57,7 @@ public class ManageFragment extends BaseFragment implements IManageView {
         onEvent(EventBusUtil.getMessageEvent(MessageEvent.EventCode.ALL));
     }
 
-    @OnClick({R.id.tv_nick, R.id.item_keys, R.id.item_address_note, R.id.item_help, R.id.tv_version})
+    @OnClick({R.id.tv_nick, R.id.item_keys, R.id.item_address_note, R.id.item_help, R.id.tv_version, R.id.iv_left_back,R.id.item_pass})
     public void onClick(View view) {
        switch (view.getId()){
            case R.id.tv_nick:
@@ -85,6 +85,16 @@ public class ManageFragment extends BaseFragment implements IManageView {
                Intent intent = new Intent();
                intent.putExtra(TransmitKey.ISSHOWTIP, true);
                UpgradeService.startUpdateService(intent);
+               break;
+           case R.id.iv_left_back:
+               startActivity(new Intent(getActivity(), LockActivity.class));
+               getActivity().finish();
+               break;
+           case R.id.item_pass:
+               Intent intentPass=new Intent(getActivity(), LockActivity.class);
+               intentPass.putExtra("refer","pass");
+               startActivity(intentPass);
+               getActivity().finish();
                break;
            default:
                break;

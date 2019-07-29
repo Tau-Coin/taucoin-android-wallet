@@ -45,7 +45,6 @@ import io.taucoin.android.wallet.widget.CommonDialog;
 import io.taucoin.android.wallet.widget.EmptyLayout;
 import io.taucoin.foundation.net.callback.LogicObserver;
 import io.taucoin.foundation.util.DrawablesUtil;
-import io.taucoin.foundation.util.StringUtil;
 
 public class SendReceiveFragment extends BaseFragment implements ISendReceiveView {
 
@@ -114,7 +113,7 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
         DrawablesUtil.setEndDrawable(tvAddress, R.mipmap.icon_copy, 22);
     }
 
-    @OnClick({R.id.btn_send, R.id.iv_tx_log_tips, R.id.tv_address, R.id.iv_right})
+    @OnClick({R.id.btn_send, R.id.iv_tx_log_tips, R.id.tv_address, R.id.iv_right, R.id.iv_left_back})
     void onClick(View view) {
         KeyValue keyValue = MyApplication.getKeyValue();
         if (keyValue == null && view.getId() != R.id.iv_tx_log_tips) {
@@ -137,6 +136,10 @@ public class SendReceiveFragment extends BaseFragment implements ISendReceiveVie
                 ProgressManager.showProgressDialog(getActivity());
                 mIsToast = true;
                 onRefresh(null);
+                break;
+            case R.id.iv_left_back:
+                startActivity(new Intent(getActivity(), LockActivity.class));
+                getActivity().finish();
                 break;
             default:
                 break;

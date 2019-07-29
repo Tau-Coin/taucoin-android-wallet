@@ -71,6 +71,11 @@ public class ToolbarView extends RelativeLayout {
     private void loadView() {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.view_toolbar, this, true);
         viewHolder = new ViewHolder(view);
+
+
+
+
+
         if(statusBarHeight > 0){
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) viewHolder.rlToolBar.getLayoutParams();
             layoutParams.topMargin = statusBarHeight;
@@ -102,6 +107,7 @@ public class ToolbarView extends RelativeLayout {
 
 
     class ViewHolder {
+
         @BindView(R.id.iv_left_back)
         ImageButton ivLeftBack;
         @BindView(R.id.iv_right)

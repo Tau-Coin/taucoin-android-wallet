@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.hgDendi:expandable-recyclerview-adapter:1.0.1@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/expandable-recyclerview-adapter-1.0.1.aar/0fa1f1edf1660fca5bf4fc8db0eb4fca/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/expandable-recyclerview-adapter-1.0.1.aar/0fa1f1edf1660fca5bf4fc8db0eb4fca/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.hgDendi/expandable-recyclerview-adapter/1.0.1/3cc6436b69cb3abbdaad305fd90752bd82df09bb/expandable-recyclerview-adapter-1.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
